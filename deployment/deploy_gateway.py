@@ -118,6 +118,7 @@ def task_revision(definition, image, container, provider, allowed_keys):
 class Publisher:
     def __init__(self, config, session=None):
         self.config = config
+        self.entry_path = "/gateway/index.html"
         session = session or boto3.Session(region_name=config["region"])
         options = Config(
             connect_timeout=5, read_timeout=15, retries={"mode": "standard", "max_attempts": 2}
@@ -171,6 +172,13 @@ class Publisher:
         dist = distribution["DistributionConfig"]
         if distribution["Status"] != "Deployed" or not dist["Enabled"]:
             raise ValueError("CloudFront must be enabled and fully deployed")
+        self.entry_path = (
+            "/"
+            if dist.get("DefaultRootObject") == "gateway/index.html"
+            and dist["DefaultCacheBehavior"]["TargetOriginId"]
+            == behavior_for(dist, "/gateway/index.html")["TargetOriginId"]
+            else "/gateway/index.html"
+        )
         origins = {row["Id"]: row for row in dist["Origins"]["Items"]}
         oacs, policies = {}, {}
         for asset in assets:
@@ -240,7 +248,7 @@ class Publisher:
             "new_task_definition": None,
             "phase": "prepared",
             "objects": [],
-            "url": f"https://{domain}/gateway/index.html",
+            "url": f"https://{domain}{self.entry_path}",
         }
 
         def save():
@@ -308,7 +316,8 @@ class Publisher:
                     # Output folders often share the basename "release". CloudFront
                     # reuses a previous invalidation for the same caller reference.
                     "CallerReference": record["release_id"],
-                    "Paths": {"Quantity": 1, "Items": ["/gateway/*"]},
+                    # CloudFront also caches the default root object under "/".
+                    "Paths": {"Quantity": 2, "Items": ["/", "/gateway/*"]},
                 },
             )
             record["invalidation_id"] = result["Invalidation"]["Id"]
@@ -400,8 +409,8 @@ def main():
             if e["name"] in ("SERVE_FRONTEND", "GATEWAY_DECISION_PROVIDER", "GATEWAY_DECIDER_MODEL")
         },
         "frontend": [{k: a[k] for k in ("key", "size", "sha256")} for a in assets],
-        "invalidation_paths": ["/gateway/*"],
-        "url": f"https://{domain}/gateway/index.html",
+        "invalidation_paths": ["/", "/gateway/*"],
+        "url": f"https://{domain}{publisher.entry_path}",
         "dry_run": args.dry_run,
     }
     print(json.dumps(plan, indent=2), flush=True)

@@ -2,6 +2,8 @@
 
 当前入口和 AWS 资源见 [部署记录](../deployment/DEPLOYED.md)，验证结果见 [独立服务报告](../validation/independent_gateway/README.zh.md)。原项目说明保留在 [LEGACY.md](../LEGACY.md)。
 
+直接访问 https://d3eipg2g3l3an3.cloudfront.net/ 即可打开工作台。CloudFront 以 `gateway/index.html` 为默认首页，在内部读取 S3 对象，不跳转浏览器地址；样式、脚本和图标位于 `/gateway/`，API 位于 `/api/`。前端发布同时刷新根路径缓存。
+
 ## 服务边界
 
 ```mermaid

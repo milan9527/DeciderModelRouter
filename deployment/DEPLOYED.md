@@ -4,7 +4,11 @@
 
 ## DeciderModelRouter 独立服务（2026-11-24）
 
-**访问地址：https://d3eipg2g3l3an3.cloudfront.net/gateway/index.html**
+**访问地址：https://d3eipg2g3l3an3.cloudfront.net/**
+
+根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
+
+[根域名验收](../validation/independent_gateway/root-entry-2026-11-24/verification.json)通过：HTTP 200、无 HTTP 或 HTML 跳转，五个静态文件与发布内容一致；登录、20 个模板、历史刷新、已保存评测和账户管理正常，浏览器无错误。本次未调用模型推理，ECS 保持 revision 3。前端刷新 `IEVT4HF56ZWINOCB87TMY2G1BG`、默认首页切换后的根路径刷新 `I7A8QBUMTOGR106KQCNZPB59W2` 均已完成。
 
 API 文档：https://d3eipg2g3l3an3.cloudfront.net/api/docs（需登录）。
 
@@ -24,7 +28,7 @@ API 文档：https://d3eipg2g3l3an3.cloudfront.net/api/docs（需登录）。
 | GPU 服务密钥 | Secrets Manager `DeciderModelRouter/gpu-service-key` |
 | 独立 GPU | `i-01180cf02d12e6e31` · `g5.xlarge` · A10G 24GB · `us-east-1f` · 无公网 IP |
 
-当前 ECS revision **3** 已完成部署，Decider、Liquid、H2O 三个独立 GPU 服务均健康。新实例使用专用私有 AMI，未重启原 GPU；G6 多可用区容量不足后选用 G5。H2O 在 A10G 上使用 FP8 W8A16 / Marlin，结果保存实际部署配置。CloudFront 刷新 `IBPO9SQ94XXVRED1B1P48THQN3` 已完成，五个前端文件与公网逐字节一致。
+当前 ECS revision **3** 已完成部署，Decider、Liquid、H2O 三个独立 GPU 服务均健康。新实例使用专用私有 AMI，未重启原 GPU；G6 多可用区容量不足后选用 G5。H2O 在 A10G 上使用 FP8 W8A16 / Marlin，结果保存实际部署配置。完整服务初次发布的 CloudFront 刷新 `IBPO9SQ94XXVRED1B1P48THQN3` 已完成；最新根域名发布记录见上文。
 
 [真实路由验收](../validation/independent_gateway/aws-smoke-2026-11-24/verification.json)通过：两次 H2O 分类、一次 Bedrock 调用；重复请求在再次调用 GPU 前返回 409。Gemma 3 4B 完整返回 21 输入 / 31 输出 Token，目标耗时 601.442ms、后端总耗时 1329.034ms，参考费用 $0.00000239。两条真实记录保存到 DynamoDB，刷新后可读，无浏览器错误。
 

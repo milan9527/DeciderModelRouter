@@ -64,6 +64,7 @@ def create_app(api_url):
             background=BackgroundTask(response.aclose),
         )
 
+    app.mount("/gateway", StaticFiles(directory=FRONTEND, html=True), name="gateway-assets")
     app.mount("/", StaticFiles(directory=FRONTEND, html=True), name="frontend")
     return app
 

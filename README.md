@@ -2,7 +2,7 @@
 
 独立的 Amazon Bedrock 模型网关：GPU 决策模型识别任务，后端根据同批次评测、能力约束、参考费用和账户配额选择目标模型；前端展示分类、候选、执行与性能。
 
-生产服务使用专用 **CloudFront + OAC + 私有 S3、ECS Fargate、DynamoDB、g5.xlarge GPU 和 VPC**。自建用户认证，不使用 Cognito；基础设施通过 AWS SDK 创建，不使用 CloudFormation。[打开在线工作台](https://d3eipg2g3l3an3.cloudfront.net/gateway/index.html)，当前状态和资源见 [部署记录](deployment/DEPLOYED.md)。
+生产服务使用专用 **CloudFront + OAC + 私有 S3、ECS Fargate、DynamoDB、g5.xlarge GPU 和 VPC**。自建用户认证，不使用 Cognito；基础设施通过 AWS SDK 创建，不使用 CloudFormation。[打开在线工作台](https://d3eipg2g3l3an3.cloudfront.net/)，当前状态和资源见 [部署记录](deployment/DEPLOYED.md)。
 
 - **会话与历史**：按账户隔离，跨登录和容器重启保存请求、阶段事件、输出、Token、费用、错误及人工验收，可检索、复用任务和导出。
 - **性能**：按时间与会话筛选，显示路由 P50/P95、完整执行数、目标模型对比和已知费用；回放不计入性能，未知用量不按零费用处理。
@@ -27,7 +27,7 @@ SERVE_FRONTEND=false .venv/bin/uvicorn app.gateway_main:app --host 127.0.0.1 --p
 .venv/bin/python -m scripts.serve_gateway --api http://127.0.0.1:8000
 ```
 
-打开 `http://127.0.0.1:5173/gateway/index.html`。真实推理需要配置 GPU 服务地址及服务密钥；Bedrock 使用后端 AWS 凭据。未配置模型服务时可登录、管理会话和查看流程回放。详细环境变量见 [.env.example](.env.example)。
+打开 `http://127.0.0.1:5173/`。真实推理需要配置 GPU 服务地址及服务密钥；Bedrock 使用后端 AWS 凭据。未配置模型服务时可登录、管理会话和查看流程回放。详细环境变量见 [.env.example](.env.example)。
 
 ## 验证与项目历史
 

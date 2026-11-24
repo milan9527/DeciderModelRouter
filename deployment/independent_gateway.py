@@ -500,7 +500,7 @@ class Infrastructure:
                     "CallerReference": self.state["deployment_id"],
                     "Comment": "Independent DeciderModelRouter",
                     "Enabled": True,
-                    "DefaultRootObject": "index.html",
+                    "DefaultRootObject": "gateway/index.html",
                     "PriceClass": "PriceClass_100",
                     "HttpVersion": "http2and3",
                     "IsIPV6Enabled": True,
@@ -579,13 +579,6 @@ class Infrastructure:
                     ],
                 }
             ),
-        )
-        self.s3.put_object(
-            Bucket=self.state["bucket"],
-            Key="index.html",
-            ContentType="text/html; charset=utf-8",
-            CacheControl="no-cache, max-age=0, must-revalidate",
-            Body=b'<!doctype html><html><head><meta http-equiv="refresh" content="0;url=/gateway/index.html"><title>DeciderModelRouter</title></head><body><a href="/gateway/index.html">Open DeciderModelRouter</a></body></html>',
         )
         self.state["url"] = "https://" + dist["DomainName"]
         self.save()

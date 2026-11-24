@@ -315,7 +315,7 @@ def test_uploads_only_gateway_verifies_versions_and_waits_invalidation(publisher
     publisher.s3.delete_object.assert_not_called()
     assert publisher.cf.create_invalidation.call_args.kwargs["InvalidationBatch"]["Paths"][
         "Items"
-    ] == ["/gateway/*"]
+    ] == ["/", "/gateway/*"]
     publisher.cf.get_waiter.return_value.wait.assert_called_once()
 
 
