@@ -2,9 +2,34 @@
 
 最近发布日期：2026-11-24。
 
-**访问地址：https://d3i7ogfx5ml7dc.cloudfront.net**
+## DeciderModelRouter 独立服务（2026-11-24）
 
-API 文档：https://d3i7ogfx5ml7dc.cloudfront.net/api/docs
+**访问地址：https://d3eipg2g3l3an3.cloudfront.net/gateway/index.html**
+
+API 文档：https://d3eipg2g3l3an3.cloudfront.net/api/docs（需登录）。
+
+专用 CloudFront、S3/OAC、VPC、ALB、ECS、DynamoDB 和 GPU 密钥，通过直接 AWS API 创建；无 CloudFormation、Cognito。运行入口 `app.gateway_main:app`，前后端独立发布。
+
+| 资源 | 本项目独立资源 |
+| --- | --- |
+| CloudFront | `E3OCAAF3NQ1LYX` |
+| S3 | `decider-model-router-632930644527-us-east-1` |
+| OAC / VPC Origin | `E3FP5MHA6YE62X` / `vo_ICO9DXxf2dTCwLlQB2ZqlA` |
+| VPC | `vpc-05ac5abdb873adec9` |
+| ECS 集群 / 服务 | `decider-model-router` |
+| 内网 ALB | `decider-model-router` |
+| 账户表 | `decider-model-router-auth` |
+| 会话/运行/评测表 | `decider-model-router-data` |
+| 初始管理员 | `admin`；密码见 Secrets Manager `DeciderModelRouter/admin-credentials` |
+| GPU 服务密钥 | Secrets Manager `DeciderModelRouter/gpu-service-key` |
+
+当前完成第一阶段发布：ECS revision **1**，登录、会话、历史和 20 个模板可用，GPU 镜像仍在生成，三个分类器均显式未配置。[真实数据库与浏览器验收](../validation/independent_gateway/aws-prepare-2026-11-24/verification.json)通过：回放保存并跨重新登录读取，回放不计入性能，0 次真实模型调用。GPU 接入后的最终发布及评测结果将更新在本节。
+
+两张表启用按需容量、TTL 和 PITR，业务历史按账户保存 180 天。构建镜像固定为 `sha256:ff059ba6c19994bdf84e3e084eb5bab2c336ca7dce379122a51faa6e520461e0`，本机审计目录 `.deployment/independent-20261124-140400/`。**439 项软件测试通过**，最终本地浏览器联调通过；[架构与运维](../docs/INDEPENDENT_SERVICE.zh.md)、[验证口径](../validation/independent_gateway/README.zh.md)。
+
+## 原共享演示环境（历史保留）
+
+原入口：https://d3i7ogfx5ml7dc.cloudfront.net 。以下记录属于原服务，不是上述独立资源。
 
 **当前：模型网关默认调用共享 L4 上的 H2O-Lightning 4B；文字 Decider 使用同一台现有 vLLM / EC2 On-Demand `g6.xlarge`。图片 Decider 的配置指向另一台现有 `g6.xlarge` 上的官方视觉服务，图片模块同时支持 Jev / Bedrock GPT 对比。** 项目区域资源位于 `us-east-1`；CloudFront 和 IAM 为全球资源。Bedrock 按目录中的精确执行标识使用地区端点或美国跨区域推理配置。
 

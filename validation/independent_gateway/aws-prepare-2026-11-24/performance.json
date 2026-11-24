@@ -1,0 +1,22 @@
+{
+  "days": 30,
+  "scope": "all_user_sessions",
+  "total_records": 1,
+  "live_requests": 0,
+  "replays": 1,
+  "completed": 0,
+  "failed": 0,
+  "running": 0,
+  "gpu_p50_ms": null,
+  "route_p50_ms": null,
+  "route_p95_ms": null,
+  "total_p95_ms": null,
+  "observed_reference_cost_usd": null,
+  "cost_known_samples": 0,
+  "cost_unknown_samples": 0,
+  "business_reviews": 0,
+  "business_passes": 0,
+  "models": [],
+  "truncated": false,
+  "note": "回放不计入性能；完整输出不代表业务通过。参考费用不含 GPU，未知费用不按零计。"
+}

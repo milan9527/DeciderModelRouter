@@ -97,6 +97,8 @@ python -m deployment.release_independent \
 
 构建/推送前需用 AWS ECR 凭据登录，发布者需要相应 AWS 权限。资源名固定为 `decider-model-router`，当前脚本面向本账户 `us-east-1`；首次创建时间取决于快照、NAT、CloudFront 和 GPU 容量。前端发布核验 OAC、缓存策略、对象校验和及刷新完成；API 发布等待唯一目标 Task revision 健康。
 
+GPU 镜像生成较慢时，可将发布命令的 `--gpu ...` 换成 `--prepare`，先上线登录、历史和界面；三个分类器均保持未配置，不填充临时 GPU 地址。实例就绪后，再使用实际 `gpu.json` 和新的输出目录发布，完成模型接入。
+
 后续发布使用相同资源检查点和 GPU 状态，新的镜像标签及新的发布输出目录。`api-release.json` 保存前后 Task 定义，`release.json` 保存 S3 对象版本和刷新结果，可据此恢复上一版。数据库不随代码回滚删除。
 
 ## 运维边界

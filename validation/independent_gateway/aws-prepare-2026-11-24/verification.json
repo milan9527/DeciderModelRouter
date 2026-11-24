@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net",
+  "phase": "auth_history_ui_before_gpu",
+  "self_managed_login": true,
+  "secure_httponly_samesite_cookie": true,
+  "database": "DynamoDB",
+  "replay_id": "d816c628b3a95ca085f3f9da",
+  "replay_survives_relogin": true,
+  "templates": 20,
+  "gpu_configured": false,
+  "gpu_calls": 0,
+  "bedrock_target_calls": 0,
+  "invalid_replay_execute_request_rejected": 422,
+  "browser_errors": []
+}

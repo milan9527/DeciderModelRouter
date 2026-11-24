@@ -25,9 +25,9 @@ def task_definition(resources, gpu, image):
         "AUTH_ORIGIN": origin,
         "GPU_PROVIDER": "vllm",
         "GATEWAY_DECISION_PROVIDER": "h2o",
-        "GATEWAY_DECIDER_URL": f"http://{gpu['private_ip']}:8100",
+        "GATEWAY_DECIDER_URL": f"http://{gpu['private_ip']}:8100" if gpu else "",
         "GATEWAY_DECIDER_MODEL": "strands-decider-2B-hobson-v19-vllm",
-        "OPEN_MODELS_URL": f"http://{gpu['private_ip']}:18124",
+        "OPEN_MODELS_URL": f"http://{gpu['private_ip']}:18124" if gpu else "",
     }
     return {
         "family": NAME,
@@ -50,7 +50,9 @@ def task_definition(resources, gpu, image):
                 "secrets": [
                     {"name": name, "valueFrom": gpu["secret_arn"]}
                     for name in ("OPEN_MODELS_API_KEY", "DECIDER_API_KEY")
-                ],
+                ]
+                if gpu
+                else [],
                 "healthCheck": {
                     "command": [
                         "CMD-SHELL",
@@ -103,13 +105,22 @@ def seed_admin(resources, directory, session):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--resources", required=True, type=Path)
-    parser.add_argument("--gpu", required=True, type=Path)
+    stage = parser.add_mutually_exclusive_group(required=True)
+    stage.add_argument("--gpu", type=Path)
+    stage.add_argument(
+        "--prepare",
+        action="store_true",
+        help="Publish auth/history/UI while GPU is provisioning; all classifiers remain unconfigured",
+    )
     parser.add_argument("--image", required=True)
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
-    resources, gpu = json.loads(args.resources.read_text()), json.loads(args.gpu.read_text())
+    resources = json.loads(args.resources.read_text())
+    gpu = json.loads(args.gpu.read_text()) if args.gpu else None
     assert resources["project"] == NAME and resources["cluster"] == NAME
-    assert gpu["instance_id"] != "i-0ae7eb0abcb815af3"
+    if gpu:
+        assert gpu["instance_id"].startswith("i-")
+        assert gpu["instance_id"] != "i-0ae7eb0abcb815af3"
     args.output.mkdir(parents=True, exist_ok=False, mode=0o700)
     cfg = {
         "region": REGION,
@@ -131,7 +142,8 @@ def main():
         "previous_task_definition": previous,
         "task_definition": task,
         "image": image,
-        "gpu_instance": gpu["instance_id"],
+        "gpu_instance": gpu["instance_id"] if gpu else None,
+        "gpu_configured": bool(gpu),
         "started_at": int(time.time()),
     }
     (args.output / "api-release.json").write_text(json.dumps(deploy, indent=2) + "\n")
