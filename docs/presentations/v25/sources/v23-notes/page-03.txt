@@ -1,0 +1,3 @@
+新增概念说明页，不是新增实测。决策模型强调输入状态与类型化输出；有限输出空间减少文本生成开销，使高频判断更易接入软件。Strands Decider 使用基座、LoRA 与 pointer head；Jev 为专有 System One API，不能根据相似接口推断二者内部架构相同。Jev发布文描述并行采样；Strands公开实现用单次前向得到候选分数，其详细原理在后续保留的v19原页说明。choice是当前候选中的选择；noul表示对陈述的支持程度，不能未经校准视为真实业务发生概率；score是给定范围内的评分。输出格式受到约束不代表语义选择一定正确。一次请求可以含共享上下文的多个独立判断；依赖新执行结果的判断需要重新提交事实。
+来源：https://strandsagents.com/blog/introducing-strands-decider/
+https://typesafe.ai/blog/introducing-system-one-models-and-jev

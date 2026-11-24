@@ -1,0 +1,118 @@
+[
+  {
+    "scenario": "support-security",
+    "business_session_id": "bfe7fe55-business-7",
+    "trace_id": "6adf5f0101c1b5e36861de1a7c431548",
+    "expected_choice": "security",
+    "actual_choice": "security",
+    "evaluation_elapsed_s": 3.922,
+    "evaluation_results": [
+      {
+        "evaluatorArn": "arn:aws:bedrock-agentcore:::evaluator/Builtin.Correctness",
+        "evaluatorId": "Builtin.Correctness",
+        "evaluatorName": "Builtin.Correctness",
+        "explanation": "The agent response includes 'choice': 'security' within the answers object, which matches the expected response of {'choice': 'security'}. The agent provides additional metadata (probabilities, confidence, model info, usage tokens) but the core answer - routing to the security department - is correct and matches the expected response. The customer's issue of unauthorized account access and password change clearly falls under security (account takeover/compromised credentials), and the agent correctly identified this.",
+        "context": {
+          "spanContext": {
+            "sessionId": "bfe7fe55-business-7",
+            "traceId": "6adf5f0101c1b5e36861de1a7c431548"
+          }
+        },
+        "value": 1.0,
+        "label": "Correct",
+        "tokenUsage": {
+          "inputTokens": 690,
+          "outputTokens": 119,
+          "totalTokens": 809
+        }
+      }
+    ]
+  },
+  {
+    "scenario": "support-payment",
+    "business_session_id": "bfe7fe55-business-6",
+    "trace_id": "6adf5f013fc1747e0f8f04c9471c49f6",
+    "expected_choice": "payments",
+    "actual_choice": "payments",
+    "evaluation_elapsed_s": 3.485,
+    "evaluation_results": [
+      {
+        "evaluatorArn": "arn:aws:bedrock-agentcore:::evaluator/Builtin.Correctness",
+        "evaluatorId": "Builtin.Correctness",
+        "evaluatorName": "Builtin.Correctness",
+        "explanation": "The agent response includes a 'choice' field with the value 'payments', which matches the expected response exactly. The additional fields (probabilities, confidence, usage, model) are supplementary details that don't contradict the expected answer. The core answer — routing to the 'payments' department — is correct and aligns with the expected response.",
+        "context": {
+          "spanContext": {
+            "sessionId": "bfe7fe55-business-6",
+            "traceId": "6adf5f013fc1747e0f8f04c9471c49f6"
+          }
+        },
+        "value": 1.0,
+        "label": "Correct",
+        "tokenUsage": {
+          "inputTokens": 696,
+          "outputTokens": 94,
+          "totalTokens": 790
+        }
+      }
+    ]
+  },
+  {
+    "scenario": "payment-pending",
+    "business_session_id": "bfe7fe55-business-5",
+    "trace_id": "6adf5f010e0174505183972736acc6d0",
+    "expected_choice": "wait",
+    "actual_choice": "wait",
+    "evaluation_elapsed_s": 2.331,
+    "evaluation_results": [
+      {
+        "evaluatorArn": "arn:aws:bedrock-agentcore:::evaluator/Builtin.Correctness",
+        "evaluatorId": "Builtin.Correctness",
+        "evaluatorName": "Builtin.Correctness",
+        "explanation": "The agent response chose 'wait' as the action, which matches the expected response of {'choice': 'wait'}. The reasoning is sound: the transaction has only 3 of 12 required confirmations, so waiting is the correct action per the criteria. The agent response includes additional metadata (probabilities, confidence scores, model name, token usage) but the core answer - the 'wait' choice - is correct and matches the expected response.",
+        "context": {
+          "spanContext": {
+            "sessionId": "bfe7fe55-business-5",
+            "traceId": "6adf5f010e0174505183972736acc6d0"
+          }
+        },
+        "value": 1.0,
+        "label": "Correct",
+        "tokenUsage": {
+          "inputTokens": 721,
+          "outputTokens": 116,
+          "totalTokens": 837
+        }
+      }
+    ]
+  },
+  {
+    "scenario": "payment-confirmed",
+    "business_session_id": "bfe7fe55-business-4",
+    "trace_id": "6adf5f01665de598541d382f6ed06c68",
+    "expected_choice": "settle",
+    "actual_choice": "settle",
+    "evaluation_elapsed_s": 2.604,
+    "evaluation_results": [
+      {
+        "evaluatorArn": "arn:aws:bedrock-agentcore:::evaluator/Builtin.Correctness",
+        "evaluatorId": "Builtin.Correctness",
+        "evaluatorName": "Builtin.Correctness",
+        "explanation": "The agent response includes a choice of 'settle' in the answers.action.choice field, which matches the expected response of {'choice': 'settle'}. The agent provides additional information (probabilities, confidence scores, model name, usage statistics) but the core answer - the choice to 'settle' - is correct and matches the expected response. The facts support this: payment matches the order amount (100 USDC = 100 USDC), has full confirmations (12/12), and passed risk screening, all of which meet the criteria for 'settle'.",
+        "context": {
+          "spanContext": {
+            "sessionId": "bfe7fe55-business-4",
+            "traceId": "6adf5f01665de598541d382f6ed06c68"
+          }
+        },
+        "value": 1.0,
+        "label": "Correct",
+        "tokenUsage": {
+          "inputTokens": 723,
+          "outputTokens": 144,
+          "totalTokens": 867
+        }
+      }
+    ]
+  }
+]

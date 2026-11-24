@@ -1,0 +1,2 @@
+真实样本：训练 JSONL 第 267 行，seed=10001、step=27，当前 Z、下一块 T，此前消行 7。示例由微调全过程文档记录；本页是带标签的训练输入，不是模型推理返回。选项 p676=(x3,r0,y13)，p172=(x0,r0,y13)，p852=(x6,r1,y15)。三个候选均可生成下一块，p852 其余五项指标也均优于其他候选，因此 label=2。六项指标全不差且至少一项更好才生成严格支配标签；各有取舍时不强行给唯一答案。标签仅表示本题候选和单步指标下的优势，不能证明所有未来序列上的最优落点。随机候选 ID、排序及训练 collator 再次换序时，标签同步重映射。
+来源：https://github.com/milan9527/StrandsDeciderTetrisFinetuning/blob/main/docs/TETRIS_FINETUNING_WALKTHROUGH.zh.md#33-一条实际样本

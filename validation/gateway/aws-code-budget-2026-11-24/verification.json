@@ -1,0 +1,40 @@
+{
+  "url": "https://d3i7ogfx5ml7dc.cloudfront.net",
+  "scenario": "code",
+  "fixture": false,
+  "http_route": {
+    "request_id": "7ec761a3830bfe366830fcb3",
+    "decision_model": "h2oai/h2o-lightning-4b",
+    "selected_model": "anthropic.claude-sonnet-5",
+    "gpu_round_trip_ms": 515.186,
+    "route_ms": 527.015
+  },
+  "browser": {
+    "request_id": "5d048c513ff5156ef7d76008",
+    "model_id": "anthropic.claude-sonnet-5",
+    "target_ms": 82486.917,
+    "usage": {
+      "inputTokens": 74,
+      "outputTokens": 8975,
+      "totalTokens": 9049,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "observed_reference_cost_usd": "0.134847",
+    "total_ms": 83238.824
+  },
+  "assets": {
+    "index.html": "75aa8548e3a28de7365af5ff70e735c8dac608e3a8bcf491c8a16a4b81ad1ec4",
+    "mark.svg": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+    "gateway.css": "b85cf32f194ab5e06f7f2cfb878724db3da01d0f4e51852f40d55d2483267e4b",
+    "gateway.js": "4bc5152cba2826ec8706d1320a4e00021cb5c7aebee5d750802c4e8c12c9abfb"
+  },
+  "zero_quota_exclusions": [
+    "moonshotai.kimi-k3",
+    "zai.glm-5.3"
+  ],
+  "browser_errors": [],
+  "gpu_calls": 2,
+  "bedrock_target_calls": 1,
+  "status": "passed"
+}

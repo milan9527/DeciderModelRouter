@@ -1,0 +1,7 @@
+{
+  "region": "us-east-1",
+  "cluster": "strands-decider-demo",
+  "service": "strands-decider-demo",
+  "bucket": "YOUR_PRIVATE_FRONTEND_BUCKET",
+  "distribution_id": "YOUR_CLOUDFRONT_DISTRIBUTION_ID"
+}

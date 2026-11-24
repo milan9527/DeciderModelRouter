@@ -1,0 +1,12 @@
+{
+  "url": "https://benchmarkheaven.com/jev-models/api",
+  "captured_at": "2026-10-21T08:50:44.769385+00:00",
+  "file": "screenshots/jevbench-leaderboard.png",
+  "sha256": "9409d72f14f65fe542b3df81bbb874e996b7f70f36fde214bafb81590ce00b2e",
+  "data_replaced": false,
+  "viewport": {
+    "width": 1600,
+    "height": 1000
+  },
+  "interaction": "Dismissed site banner and scrolled to ranked entries."
+}

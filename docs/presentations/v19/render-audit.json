@@ -1,0 +1,63 @@
+{
+  "audited_at": "2026-10-20T01:07:34.434035+00:00",
+  "pages": 39,
+  "new_pages": [
+    24,
+    25,
+    26,
+    27,
+    28
+  ],
+  "internal_only_pages": [
+    39
+  ],
+  "preserved_v18_body_xml_images_and_notes": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    39
+  ],
+  "base_file_unchanged": true,
+  "source_checksums_valid": true,
+  "metrics_match_raw_reports": true,
+  "package_relationships_valid": true,
+  "new_notes_character_counts": [
+    443,
+    425,
+    651,
+    534,
+    576
+  ],
+  "p20_p21_short_notes_preserved": true,
+  "rendered_text_missing": [],
+  "shape_bounds_issues": [],
+  "lower_explanatory_rows": 0,
+  "pptx_sha256": "3bf4921b6ea3df3bcc7b3a477b6d17dbaeee53e05a27438e3850ccb152abe20c",
+  "pdf_sha256": "9c420ca40165ef639438ef2dbde5b4a28344ec379bf0105e19fe25b14dc54e0e"
+}

@@ -1,0 +1,4 @@
+本页承接vLLM并发：推理引擎和Agent运行体系是不同层。直接EC2部署强调模型服务与推理参数控制；AgentCore Runtime Instances把Agent入口、执行身份、session与实例生命周期纳入AWS运行体系，并可组合观测、评估与协作协议。二者均可运行GPU模型，不把AgentCore说成替代GPU或天然更低延迟。直接EC2也可以接入OpenTelemetry与评估器，观测和评估并非GPU Runtime的独占能力。
+本项目原演示文字路径为ECS→g6.xlarge/L4 vLLM；独立验证是InvokeAgentRuntime→AgentCore管理的g5.xlarge/A10G原生CUDA。实例、引擎、样本、调用路径不同，不能计算两者加速倍数。本轮未实现AgentCore内的vLLM，未来可做相同输入和硬件下的适配与回归。
+AgentCore官方支持HTTP、MCP、A2A协议；必须实现协议服务并配置Runtime，不会把普通HTTP handler自动转换为A2A。Identity/Gateway/Memory等按需组合，不表示本次都已部署。业务用户身份与状态隔离仍由应用正确绑定。
+依据：sources/AGENTCORE_GPU.md；https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html；https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.html。

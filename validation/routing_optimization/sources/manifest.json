@@ -1,0 +1,118 @@
+{
+  "captured_at": "2026-11-24T05:46:40.077605+00:00",
+  "note": "Public source snapshots only. No model inference in this capture. Current main cards are distinct from pinned October test revisions.",
+  "sources": [
+    {
+      "file": "auto.md",
+      "url": "https://openrouter.ai/docs/guides/routing/routers/auto-router.md",
+      "bytes": 28812,
+      "sha256": "a161b4c72a1d5028ffee54ca11c5984f038e5c9bc1bb089183badbffce43acb1"
+    },
+    {
+      "file": "provider.md",
+      "url": "https://openrouter.ai/docs/guides/routing/provider-selection.md",
+      "bytes": 131413,
+      "sha256": "a8e1e7665fe335c667372c6beb7491e53f81ec5a2103af3afe4dc499667c94bf"
+    },
+    {
+      "file": "jev-router.md",
+      "url": "https://openrouter.ai/docs/guides/routing/routers/jev-router.md",
+      "bytes": 24356,
+      "sha256": "e25bc706515990be616ffb866ad6e02ffbc24dde9493fbf03345c3deedc0ed11"
+    },
+    {
+      "file": "routerbench.md",
+      "url": "https://raw.githubusercontent.com/lm-sys/RouteLLM/main/README.md",
+      "bytes": 14103,
+      "sha256": "380ebee5361b8a191d92091639bc2be08e258dd2b4404f804a680f343fa16f0c"
+    },
+    {
+      "file": "routellm-license.md",
+      "url": "https://raw.githubusercontent.com/lm-sys/RouteLLM/main/LICENSE",
+      "bytes": 11356,
+      "sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1"
+    },
+    {
+      "file": "semantic.md",
+      "url": "https://raw.githubusercontent.com/vllm-project/semantic-router/main/README.md",
+      "bytes": 9058,
+      "sha256": "8cc0fb8e8d95601549959ff7cca63598fceaa04e31ab5a05566f063307157f40"
+    },
+    {
+      "file": "d3.md",
+      "url": "https://huggingface.co/vllm-sr/d3/raw/main/README.md",
+      "bytes": 22214,
+      "sha256": "b8167cec1991daf0a1fa7f504a455a92d3564cb6bcb08a43d918cdfdc38bee05"
+    },
+    {
+      "file": "d3-mini.md",
+      "url": "https://huggingface.co/vllm-sr/d3-mini/raw/main/README.md",
+      "bytes": 17368,
+      "sha256": "57e4fcc4c67283573ee1bd201bb87b0ea9b123d0a6938116fcb3dc7294686b43"
+    },
+    {
+      "file": "d3-nano.md",
+      "url": "https://huggingface.co/vllm-sr/d3-nano/raw/main/README.md",
+      "bytes": 17450,
+      "sha256": "e741b12755a91c7a002cefe2c29355869c47c5dd9b7891cbef3e711d3f006e1c"
+    },
+    {
+      "file": "liquid-card.md",
+      "url": "https://huggingface.co/LiquidAI/d1-2B/raw/main/README.md",
+      "bytes": 43457,
+      "sha256": "6db5f6609c1d5d72dccdc8de4718d72e73962a2825fc72f53dcd2e369bddd9cd"
+    },
+    {
+      "file": "liquid-license.md",
+      "url": "https://huggingface.co/LiquidAI/d1-2B/raw/main/LICENSE",
+      "bytes": 10574,
+      "sha256": "4d28ca14dedc0b3d0fcc2b3339f0e79931faa33874f3d24f522183a8fc70068c"
+    },
+    {
+      "file": "h2o-card.md",
+      "url": "https://huggingface.co/h2oai/h2o-lightning-4b/raw/main/README.md",
+      "bytes": 77979,
+      "sha256": "cd1382b2475731866df744d0d6bc3f3d6c4ece1e1724eb02f100b676a7dd7b79"
+    },
+    {
+      "file": "perplexity-card.md",
+      "url": "https://huggingface.co/perplexity-ai/pplx-decider-flash-v1.2/raw/main/README.md",
+      "bytes": 12521,
+      "sha256": "7428a155aa3484065fa97a43322a485e851f31e1eb6ea973dfec05ff224a71ad"
+    },
+    {
+      "file": "knowline-card.md",
+      "url": "https://huggingface.co/PelaAI/KnowLine-4B-Gen5.5/raw/main/README.md",
+      "bytes": 12296,
+      "sha256": "707e93e2e0bb859c648deb3b7c95485e6c457671daee941f17125a9b2edda18c"
+    },
+    {
+      "file": "strands-card.md",
+      "url": "https://huggingface.co/StrandsAgents/strands-decider-2B-hobson-v19/raw/main/README.md",
+      "bytes": 9852,
+      "sha256": "cb6041e27c4c5c68cfb2b30e490b7e8b26abaef991703e711c5f7c20995cba9b"
+    }
+  ],
+  "local_evidence": [
+    {
+      "file": "validation/open_decision_models/models.json",
+      "sha256": "c049c2a46485bd358b983b70176765ec1f572feb181b73d3425c2c63d84144f2"
+    },
+    {
+      "file": "validation/open_decision_models/results/summary.json",
+      "sha256": "123309564a8124e3d342e49fb04f55f067d4c0a77417c5e24dbb6be729501cfd"
+    },
+    {
+      "file": "validation/open_decision_models/results/business_audit.json",
+      "sha256": "6cf622eafd7978143f78f18cdb5dc95e96e112522ba231dd095b656682059266"
+    },
+    {
+      "file": "app/bedrock_catalog.json",
+      "sha256": "862351709eac67d3eb3562accdf1576870e86e6c276bc91d480aa876e54de8c6"
+    },
+    {
+      "file": "app/routing_rankings.json",
+      "sha256": "6a3e2160c6c178a8fd055a52a49d3ae3adb63c7d5674dcb41b8e618706ed21ea"
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+[
+  {
+    "url": "https://openrouter.ai/api/v1/models",
+    "file": "051e0609abb5-models",
+    "sha256": "5cac6066f3fc01bedeb52f289f930449f9fb36436a5acf53d5cb793d1a45f0db"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/amazon.yml",
+    "file": "b42529040acb-amazon.yml",
+    "sha256": "ab9ed4662c2050bdbbe65804b5fdbd82ca0f0655c83c1a43b8eccbdfc42471fb"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/anthropic.yml",
+    "file": "b360fb84138d-anthropic.yml",
+    "sha256": "a5a2e37c4797f1bb61631803f1d093e8724e64d6ea2399ecf123a2af9a8b3924"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/deepseek.yml",
+    "file": "79084643c15a-deepseek.yml",
+    "sha256": "03dbcbed32008e1ccf42cdc85a3c0a7472e962482eb5cf6460980a79710b07db"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/google.yml",
+    "file": "1285e89bdc28-google.yml",
+    "sha256": "7eb70dace13c9e1ef34b973f4f58b5276ebb72a296b7b98116dc5844e34156cd"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/meta.yml",
+    "file": "0f0d5529fe0b-meta.yml",
+    "sha256": "0dead8c5aa48a6844a6973419d12a38fabe7f06a8a0ce9c9151377af00ab94da"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/minimax.yml",
+    "file": "8e3e937df29e-minimax.yml",
+    "sha256": "d3da5d77d936cd858cd066b36d4bf827bb53c5e31384a13ab1fd6990e40469fa"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/mistral.yml",
+    "file": "6e817e7e97f5-mistral.yml",
+    "sha256": "23182e45981b975b3b1b97ed8b8f49b7431d8d388453fb832ddc312308a19cb5"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/moonshotai.yml",
+    "file": "abb28c74214d-moonshotai.yml",
+    "sha256": "a0b5ebf2ebe0a617a78cf1567baf6ab132e9461cb824cbfec0e219be8c500183"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/nvidia.yml",
+    "file": "68eb93325ac0-nvidia.yml",
+    "sha256": "7b24d3b3b7990bd033b944c8999817fea7ad2df200b85a6ddf9eb5697dc34e0f"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/openai.yml",
+    "file": "6205f7be4dda-openai.yml",
+    "sha256": "c5584de0cfdbde8a7ef0e14163a35c375ffff07430293da06c5f931192f0924b"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/qwen.yml",
+    "file": "e7007baaf914-qwen.yml",
+    "sha256": "c854705006f0ab71217029c7e0f5c69b8034e369613b17a4f2b4266baedd8ee9"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/zai.yml",
+    "file": "7fd8f0bad030-zai.yml",
+    "sha256": "2489790118b86c97c7aca81409c2858ff3df82a3ee6db324055b6558a637cdd7"
+  },
+  {
+    "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+    "file": "1c3acc66e081-cost_2026_06_25.csv",
+    "sha256": "c4227b553186ade582022ea19d04b91b75b577cccadb88f6e00857a27eeb84b8"
+  },
+  {
+    "url": "https://livebench.ai/v1/table_2024_06_24.csv",
+    "file": "4e43a662c427-table_2024_06_24.csv",
+    "sha256": "df181166a5a670a5b7678ee02f96c6896d8a88a503aec20243234b698d25a8c0"
+  },
+  {
+    "url": "https://livebench.ai/v1/categories_2024_06_24.json",
+    "file": "77bac0aac05a-categories_2024_06_24.json",
+    "sha256": "08fa233f92ca970a786f4ab8ea09639bce4c9dcbc88565254989e0bd34d08bfa"
+  },
+  {
+    "url": "https://livebench.ai/v1/table_2024_11_25.csv",
+    "file": "5e2ae9d7ec44-table_2024_11_25.csv",
+    "sha256": "17ca6b3d122921d24b591d0da52566c5552ed4f4001ae9d83a11b2712325aae4"
+  },
+  {
+    "url": "https://livebench.ai/v1/categories_2024_11_25.json",
+    "file": "9e6bdb9f223f-categories_2024_11_25.json",
+    "sha256": "31382962c060909421a3f2d8fe9f2194daadc252f654647daa8f684efbbe674b"
+  },
+  {
+    "url": "https://livebench.ai/v1/table_2025_04_02.csv",
+    "file": "9e06a853c2ad-table_2025_04_02.csv",
+    "sha256": "d7fd6a3e461cff4f96569093553789115e87adeb9cd95dca043bafa51ff2acaa"
+  },
+  {
+    "url": "https://livebench.ai/v1/categories_2025_04_02.json",
+    "file": "229df22c3b63-categories_2025_04_02.json",
+    "sha256": "182ba3b11478a1f1768020fc79b6817b5698054333d768a8c6c800f65cd90cfa"
+  },
+  {
+    "url": "https://livebench.ai/v1/table_2025_04_25.csv",
+    "file": "202c95f2940f-table_2025_04_25.csv",
+    "sha256": "251eb7461da69232733b80d1e63f00a9db5b921d90c966d139ce0e2851c762d9"
+  },
+  {
+    "url": "https://livebench.ai/v1/categories_2025_04_25.json",
+    "file": "c5cfefb47601-categories_2025_04_25.json",
+    "sha256": "742ed9e6946db311c91361781d71d3f6c3587b5ade5daf7373eb32a39d21f5fb"
+  },
+  {
+    "url": "https://livebench.ai/v1/table_2025_05_30.csv",
+    "file": "a37940c86695-table_2025_05_30.csv",
+    "sha256": "c1215f3df5b2e0a5fe69907c101d29922bf783b011df9ba82638c0145cb4c64c"
+  },
+  {
+    "url": "https://livebench.ai/v1/categories_2025_05_30.json",
+    "file": "90fc031c8c32-categories_2025_05_30.json",
+    "sha256": "f79b260f8c39b9763007dda694c2ee3f11b9898e17a85ee1c353c8a0b5a8de22"
+  },
+  {
+    "url": "https://livebench.ai/v1/table_2026_01_08.csv",
+    "file": "acf087be01e9-table_2026_01_08.csv",
+    "sha256": "bcb52d78b463adeccdd06899452a0bf68ffa84906bd37f68fdc0659d9f241241"
+  },
+  {
+    "url": "https://livebench.ai/v1/categories_2026_01_08.json",
+    "file": "0a66913a1902-categories_2026_01_08.json",
+    "sha256": "dad300ad18655b69db720e1b88fc5a5eac06c5b2f0e52c2bf50f10ff057674f3"
+  },
+  {
+    "url": "https://livebench.ai/v1/table_2026_06_25.csv",
+    "file": "936fa89b5334-table_2026_06_25.csv",
+    "sha256": "09d810986777c92b75b40a58a1829e0318e34cb5693ecae970b3145852271ba7"
+  },
+  {
+    "url": "https://livebench.ai/v1/categories_2026_06_25.json",
+    "file": "aa87624f536a-categories_2026_06_25.json",
+    "sha256": "dad300ad18655b69db720e1b88fc5a5eac06c5b2f0e52c2bf50f10ff057674f3"
+  }
+]

@@ -1,0 +1,8 @@
+支付客服原始路由：流程选择一致，具体型号选择不同。
+实际请求：回复客户的问题：USDC 已转出，为什么订单仍显示待支付？当前链上确认数为 3/12。
+2026-10-16 原始流程三轮；每阶段后端耗时取均值，预热排除。三路都选择 customer_support；每侧两次判断均由对应模型完成，同阶段输入、候选 ID 与顺序相同，没有增强输入或程序代选。
+Decider：流程选择 96.0 ms，型号选择 353.2 ms，合计 449.2 ms，m04 → Claude Opus 5。
+Jev：流程选择 492.1 ms，型号选择 425.7 ms，合计 917.8 ms，m05 → Claude Opus 5.5。
+GPT-6 Sol low：流程选择 1297.8 ms，型号选择 1176.3 ms，合计 2474.1 ms，m16 → GPT-6 Luna。
+只比较路由判断，不代表目标模型已生成答复或业务已完成。三轮重复不构成稳定延迟、吞吐或通用选型准确率结论。
+完整请求、响应与三轮耗时保留于 docs/presentations/v16/sources/support-routing-original.json。原始长备注另存 sources/original-notes-p21.txt；页面内容未修改。

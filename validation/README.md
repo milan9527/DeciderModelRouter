@@ -1,5 +1,7 @@
 # 场景验证结果汇总：Strands Decider 与 Jev
 
+开放权重模型对比（2026-10-29）：[七模型实测报告](open_decision_models/README.zh.md) · [English](open_decision_models/README.md)——现有 g6.xlarge 上测试 Strands、Liquid d1-2B、Perplexity Flash、KnowLine 和 H2O-Lightning，加入 Jev/GPT API 对照。每模型 178 次质量请求，覆盖支付、路由、设备和多选，并测 1/4/8 并发。Liquid 支付中位 39 ms；H2O 本地模型结果最好，支付 80/80、路由 54/64；Jev 为 80/80、59/64。均为本批参考一致次数，不与下文历史结果合并。
+
 独立基础设施验证（2026-10-26）：[AgentCore GPU EC2 方案与结果](../docs/AGENTCORE_GPU.md)——一台 g5.xlarge、一个原生 Runtime session 服务 8 个业务会话，24 次决策成功；单并发模型／Runtime 往返均值 80.22／209.48 ms，8 并发往返均值 477.01 ms，收到 48 个 spans，4 条 AgentCore 评估均为 Correct。这是原生 CUDA 的小样本验证，不计入下文场景准确率或三模型性能统计。
 
 图片三模型对比（2026-10-23）：[场景、截图与结论](../docs/VISION.md)——同一组 12 张图片，Decider / Jev 1.14 / GPT-6.1 Sol low 符合样例预期 **27/28、28/28、28/28**，平均后端耗时 **178.1 / 424.6 / 1,539.2 ms**。36 次正式请求全部成功；各模型另预热一次。完整请求和返回见[实测数据](../docs/results/vision-triple-2026-10-23.json)，不计入下文历史文字任务调用总数。

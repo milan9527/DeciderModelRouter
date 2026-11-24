@@ -445,19 +445,21 @@ def execution_action(s: Snapshot, stage: str, requested: str):
     return requested, None
 
 
+def initial_snapshot(case):
+    """One source for the unchanged payment catalog's initial facts."""
+    return Snapshot(
+        scenario=case["id"], message=case["message"], expected=case["amount"],
+        received=case["received"], confirmations=case["confirmations"],
+        address_verified=case["id"] != "refund",
+        settlement_minutes=120 if case["id"] == "settlement" else 0,
+    )
+
+
 @router.get("/catalog")
 def catalog(request: Request):
     cases = []
     for case in CASE_META:
-        s = Snapshot(
-            scenario=case["id"],
-            message=case["message"],
-            expected=case["amount"],
-            received=case["received"],
-            confirmations=case["confirmations"],
-            address_verified=case["id"] != "refund",
-            settlement_minutes=120 if case["id"] == "settlement" else 0,
-        )
+        s = initial_snapshot(case)
         cases.append({**case, "snapshot": s.model_dump(mode="json")})
     return {
         "cases": cases,

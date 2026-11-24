@@ -141,7 +141,15 @@
 }
 .cx-turn-model > span {
   font-size: 10px;
-  color: #69756f;
+  font-weight: 600;
+  color: #42574b;
+}
+.cx-history-notice {
+  font-size: 11px;
+  color: #8c6225;
+  background: #fff7e8;
+  border-radius: 6px;
+  padding: 8px 10px;
 }
 .cx-turn-side .cx-turn-input {
   padding: 0 0 12px;
@@ -2206,6 +2214,7 @@
 }
 .cx-table-choice {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px;
   color: #42574b;

@@ -1,0 +1,5 @@
+2026-10-13 workflow-model-v1：四个任务，每模型先选流程、再选型号，共24次正式请求，另有6次预热。用户只输入任务，服务提供区域模型目录与第三方能力资料；没有用户指定优先级，也不强制榜单第一。目录124项，按流程形成22个文本或3个embedding候选。三侧输入指纹相同。Decider v19原版g6.xlarge、Jev 1.13.0、Bedrock GPT-6 Sol low。表中时间是两次backend_total_ms相加；没有执行所选下游模型。首次GPT分析40秒超时保存在initial-run，正式表使用随后完整批次；不能据此声称无失败或稳定SLA。
+证据：docs/results/workflow-routing-2026-10-13/summary.json
+报告：https://github.com/milan9527/StrandsDecider/blob/main/docs/MODEL_ROUTING_COMPARISON.md
+原页底说明（仅保留于讲稿）：
+2026-10-13 · 四任务各测一次；型号选择差异不能直接当作下游任务准确率。

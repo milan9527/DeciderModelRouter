@@ -1,0 +1,8 @@
+价格来自2026-10-15 AWS Price List：us-east-1/Linux/Shared/g6.2xlarge。On-Demand0.9776USD/h，730h=713.648USD/月；Standard RI 1年No Upfront0.63642USD/h，月均464.5866USD，全年承诺5575.0392USD，无预付。停止实例仍付RI小时承诺，区域RI不预留容量。三条曲线只比较On-Demand、该1年RI与Jev，不展示3年RI。Jev0.042USD/百万输入token，输出免费；用真实usage而非Decider tokenizer估计。EC2图线是单台全年常驻的计算费。仅在单台可满足负载且质量达标时比较交点；g6.2xlarge未进行本批容量实测。未计EBS、网络、后端、运维、冗余、税、下游模型和业务工具。费用是公开价估算，不是账单；没有购买RI。
+来源：sources/cost-calculation.json；sources/aws-g6.2xlarge-pricing.json。
+AWS RI：https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html
+Jev：https://typesafe.ai/blog/introducing-system-one-models-and-jev
+平均 2,805.75 输入 token / 条，Jev每百万条$117.8415。费用交点：RI3.942470百万；按需6.055999百万。
+小于RI交点：Jev调用费低于两种EC2计算费；两交点之间：RI<Jev<On-Demand；高于按需交点：RI<On-Demand<Jev。各区间均假设一台实例可满足负载。
+原页底说明（仅保留于讲稿）：
+g6.2xlarge · us-east-1 · 730h/月；只比计算/API费用，容量与质量另验。RI 闲置仍计费，其他资源费用另计。

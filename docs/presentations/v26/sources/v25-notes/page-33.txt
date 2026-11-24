@@ -1,0 +1,3 @@
+本页直接使用原完整AgentCore GPU EC2架构图，未裁剪、重绘或改写图片内文字。PNG与docs/diagrams/agentcore-gpu-architecture.png字节一致；SVG另存于assets。点击整图可打开主项目的SVG源文件。
+图中实线为已验证的GPU Runtime、单实例业务会话复用、S3制品、观测与评估，灰色虚线为后续优化流程。公网子网与无入站规则保持实际部署口径。一个原生session对应一台EC2，八个业务会话由应用管理。原生CUDA forward串行，24次决策成功；模型均值80ms，单并发Runtime往返209ms。指标为2026-10-26预热后小样本，不是持续吞吐或生产准确率。
+完整部署说明：https://github.com/milan9527/StrandsDecider/blob/main/docs/AGENTCORE_GPU.md

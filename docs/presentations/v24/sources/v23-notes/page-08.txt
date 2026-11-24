@@ -1,0 +1,2 @@
+当前演示前端为私有S3+CloudFront OAC，后端为ECS Fargate，用户名密码登录。ECS通过私网互联连接共享g6.xlarge vLLM服务。Bedrock负责GPT，Jev经Lambda适配。本次只更新材料，不变更部署。配置依据deployment/DEPLOYED.md。后续支付和路由沿用此前原版v19采集数据，未改称vLLM结果；原版/vLLM对照见本版P29，与Jev的公共API比较见P30。
+此图描述文字决策接入；新增图片决策见P20–21，使用独立的官方视觉推理服务，尚非vLLM视觉适配。

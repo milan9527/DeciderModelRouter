@@ -1,0 +1,4 @@
+完整对局不使用训练或测试的种子。每个模型在 50000–50004 上，数字/自然语言各五局，每局最多 50 块，总共 20 局。保留原应用的候选分组、初选和决选，实际执行与原始模型选择一致，没有用启发式替换模型选择，895 次落块全部通过回放。原版数字 0/5 到达上限、平均消行 1.8；SFT 数字 5/5、12.2。原版自然语言 1/5、3.0；SFT 自然语言 5/5、14.2。SFT 两种输入仍分别有 17/250 指标劣选，不等同于长期策略错误；比较题高准确率没有覆盖有取舍的全部游戏状态。这是一次训练、五个新种子的短局证据，不推断无限存活或通用业务能力。项目后来提供统一 finetune.py 入口，其真实 CPU smoke 不等于重跑本批 GPU；本页所有效果和约64分钟训练时间仍来自首轮GPU实验。
+项目：https://github.com/milan9527/StrandsDeciderTetrisFinetuning
+结果：https://github.com/milan9527/StrandsDeciderTetrisFinetuning/blob/main/finetuning/RESULTS.md
+回放：sources/reports/2026-10-16/replay-verification.json

@@ -1,0 +1,4027 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Provider Routing
+
+> Route requests to the best provider
+
+OpenRouter routes requests to the best available providers for your model. By default, [OpenRouter routes each request](#default-routing) based on each provider's measured price, throughput, latency, and reliability.
+
+You can customize how your requests are routed using the `provider` object in the request body for the [Responses API](https://openrouter.ai/docs/api_reference/responses/overview.md) and [Chat Completions](https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion.md).
+
+The `provider` object can contain the following fields:
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `order` | string\[] | - | List of provider slugs to try in order (e.g. `["anthropic", "openai"]`). [Learn more](#ordering-specific-providers) |
+| `allow_fallbacks` | boolean | `true` | Whether to allow backup providers when the primary is unavailable. [Learn more](#disabling-fallbacks) |
+| `require_parameters` | boolean | `false` | Only use providers that support all parameters in your request. [Learn more](#requiring-providers-to-support-all-parameters) |
+| `data_collection` | "allow" \| "deny" | "allow" | Control whether to use providers that may store data. [Learn more](#requiring-providers-to-comply-with-data-policies) |
+| `zdr` | boolean | - | Restrict routing to only ZDR (Zero Data Retention) endpoints. [Learn more](#zero-data-retention-enforcement) |
+| `enforce_distillable_text` | boolean | - | Restrict routing to only models that allow text distillation. [Learn more](#distillable-text-enforcement) |
+| `only` | string\[] | - | List of provider slugs to allow for this request. [Learn more](#allowing-only-specific-providers) |
+| `ignore` | string\[] | - | List of provider slugs to skip for this request. [Learn more](#ignoring-providers) |
+| `quantizations` | string\[] | - | List of quantization levels to filter by (e.g. `["int4", "int8"]`). [Learn more](#quantization) |
+| `sort` | string \| object | - | Sort providers by price, throughput, or latency. Can be a string (e.g. `"price"`) or an object with `by` and `partition` fields. [Learn more](#provider-sorting) |
+| `preferred_min_throughput` | number \| object | - | Preferred minimum throughput (tokens/sec). Can be a number or an object with percentile cutoffs (p50, p75, p90, p99). [Learn more](#performance-thresholds) |
+| `preferred_max_latency` | number \| object | - | Preferred maximum latency (seconds). Can be a number or an object with percentile cutoffs (p50, p75, p90, p99). [Learn more](#performance-thresholds) |
+| `max_price` | object | - | The maximum pricing you want to pay for this request. [Learn more](#max-price) |
+
+> [!NOTE]
+>
+> **Regional data residency (Business and Enterprise)**
+>
+> OpenRouter supports in-region routing in the EU and US on the Business and Enterprise plans. There is no provider preference or setting to turn on: send the request to `https://eu.openrouter.ai` or `https://us.openrouter.ai`, and its prompts and completions are processed entirely within that region. Learn more in the [In-Region Routing guide](https://openrouter.ai/docs/guides/features/in-region-routing.md).
+
+## Default Routing
+
+For each model in your request, OpenRouter picks a provider by comparing what a good response would actually cost you at each one, not by list price alone. Each input is measured from recent production traffic, so routing reacts within minutes when a provider gets faster, slower, or less reliable:
+
+* **Effective price**: the price the provider actually charges, reflecting its real cache hit rate and its typical mix of input and output tokens.
+* **Throughput**: end-to-end output tokens per second. A faster provider can charge more and still win your request.
+* **Time to first token (TTFT)**: how long you wait before the response starts streaming.
+* **Rate limits**: how often the provider rejects requests with a 429 because it is out of capacity.
+* **Reliability**: how often requests fail because of the provider.
+* **Quality**: whether the provider's tool calls come back well formed.
+
+Providers close to the best share most of the traffic, and each request picks one at random, weighted by those shares. Providers far behind still get a small share, so routing notices when they improve. On top of the shares:
+
+* A provider whose errors or 429s are far worse than the model's other providers gets no traffic until it recovers.
+* Routing learns how much load each provider can take before it returns 429s, and sends the rest to other providers.
+* A burst of 429s or a jump in latency briefly lowers a provider's share.
+
+If a request fails, the retry is picked the same way from the providers that are left. Follow-up requests in a conversation stay with the same provider while its [prompt cache](https://openrouter.ai/docs/guides/best-practices/prompt-caching.md) is warm.
+
+For more detail on each input, see [How OpenRouter Routes Traffic Between Providers](https://openrouter.ai/docs/guides/providers/traffic-routing.md).
+
+> [!TIP]
+>
+> When you send a request with `tools` or `tool_choice`, OpenRouter makes a best effort to route to providers known to support tool use. Similarly, if you set `max_output_tokens` (or `max_tokens` on Chat Completions), then OpenRouter will only route to providers that support a response of that length.
+
+Default routing applies whenever you leave the choice of provider to OpenRouter. It is bypassed when you set `sort` (or a default provider sort in your [account settings](https://openrouter.ai/settings/preferences)), use the `:floor` or `:nitro` shortcuts, set `order`, or use your own provider key. If you set `only` or `ignore` and two or more providers remain, default routing picks among them.
+
+## Provider Sorting
+
+As described above, default routing balances price against throughput, latency, and reliability.
+
+If you instead want to *explicitly* prioritize a particular provider attribute, you can include the `sort` field in the `provider` preferences. Default routing is bypassed, and the router will try providers in that order.
+
+The three sort options are:
+
+* `"price"`: prioritize lowest price
+* `"throughput"`: prioritize highest throughput
+* `"latency"`: prioritize lowest latency
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'meta-llama/llama-3.3-70b-instruct',
+    input: 'Hello',
+    provider: {
+      sort: 'throughput',
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'meta-llama/llama-3.3-70b-instruct',
+    input: 'Hello',
+    provider: {
+      sort: 'throughput',
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'meta-llama/llama-3.3-70b-instruct',
+  'input': 'Hello',
+  'provider': {
+    'sort': 'throughput',
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "meta-llama/llama-3.3-70b-instruct",
+		"input": "Hello",
+		"provider": map[string]any{
+			"sort": "throughput",
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -d '{
+  "model": "meta-llama/llama-3.3-70b-instruct",
+  "input": "Hello",
+  "provider": {
+    "sort": "throughput"
+  },
+  "stream": false
+}'
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794950608,
+  "createdAt": 1794950607,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794950607-MffVJX8IEr5rAxWS5nxi",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "meta-llama/llama-3.3-70b-instruct",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello. How can I help you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_pa3n9i1bynm",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "flex",
+  "status": "completed",
+  "store": false,
+```
+
+To *always* prioritize low prices instead of using default routing, set `sort` to `"price"`.
+
+To *always* prioritize low latency instead of using default routing, set `sort` to `"latency"`.
+
+## Nitro Shortcut
+
+You can append `:nitro` to any model slug as a shortcut to sort by throughput. In addition to the throughput sort, `:nitro` makes [priority service tier](https://openrouter.ai/docs/guides/features/service-tiers.md) endpoints eligible for the request, so it is a superset of setting `provider.sort` to `"throughput"` (which only sorts). `:nitro` is a [routing variant](https://openrouter.ai/docs/guides/routing/model-variants/overview.md): it is not a separate entry in the models API, and the model's metadata is the base model's. See the [Nitro variant docs](https://openrouter.ai/docs/guides/routing/model-variants/nitro.md) for details.
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'meta-llama/llama-3.3-70b-instruct:nitro',
+    input: 'Hello',
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'meta-llama/llama-3.3-70b-instruct:nitro',
+    input: 'Hello',
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'meta-llama/llama-3.3-70b-instruct:nitro',
+  'input': 'Hello',
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model":  "meta-llama/llama-3.3-70b-instruct:nitro",
+		"input":  "Hello",
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -d '{
+  "model": "meta-llama/llama-3.3-70b-instruct:nitro",
+  "input": "Hello",
+  "stream": false
+}'
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794950660,
+  "createdAt": 1794950660,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794950660-wjT26c995La5kvJeI5R6",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "meta-llama/llama-3.3-70b-instruct",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello. How can I help you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_wxrut8tm85h",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "flex",
+  "status": "completed",
+  "store": false,
+```
+
+## Floor Price Shortcut
+
+You can append `:floor` to any model slug as a shortcut to sort by price. In addition to the price sort, `:floor` makes [flex service tier](https://openrouter.ai/docs/guides/features/service-tiers.md) endpoints eligible for the request, so it is a superset of setting `provider.sort` to `"price"` (which only sorts). `:floor` is a [routing variant](https://openrouter.ai/docs/guides/routing/model-variants/overview.md): it is not a separate entry in the models API, and the model's metadata is the base model's. See the [Floor variant docs](https://openrouter.ai/docs/guides/routing/model-variants/floor.md) for details.
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'meta-llama/llama-3.3-70b-instruct:floor',
+    input: 'Hello',
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'meta-llama/llama-3.3-70b-instruct:floor',
+    input: 'Hello',
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'meta-llama/llama-3.3-70b-instruct:floor',
+  'input': 'Hello',
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model":  "meta-llama/llama-3.3-70b-instruct:floor",
+		"input":  "Hello",
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -d '{
+  "model": "meta-llama/llama-3.3-70b-instruct:floor",
+  "input": "Hello",
+  "stream": false
+}'
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794950711,
+  "createdAt": 1794950710,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794950710-SoHF5HO47Apvvr7BgYhk",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "meta-llama/llama-3.3-70b-instruct",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! How can I assist you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_crp8e9ou5tl",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "default",
+  "status": "completed",
+  "store": false,
+```
+
+## Advanced Sorting with Partition
+
+When using [model fallbacks](https://openrouter.ai/docs/guides/routing/model-fallbacks.md), the `sort` field can be specified as an object with additional options to control how endpoints are sorted across multiple models.
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `sort.by` | string | - | The sorting strategy: `"price"`, `"throughput"`, or `"latency"`. |
+| `sort.partition` | string | `"model"` | How to group endpoints for sorting: `"model"` (default) or `"none"`. |
+
+By default, when you specify multiple models (fallbacks), OpenRouter groups endpoints by model before sorting. This means the primary model's endpoints are always tried first, regardless of their performance characteristics. Setting `partition` to `"none"` removes this grouping, allowing endpoints to be sorted globally across all models.
+
+To explicitly use the default behavior, set `partition: "model"`. For more details on how model fallbacks work, see [Model Fallbacks](https://openrouter.ai/docs/guides/routing/model-fallbacks.md).
+
+> [!NOTE]
+>
+> `preferred_max_latency` and `preferred_min_throughput` do *not* guarantee you will get a provider or model with this performance level. However, providers and models that hit your thresholds will be preferred. Specifying these preferences should therefore never prevent your request from being executed. This is different than `max_price`, which will prevent your request from running if the price is not available.
+
+### Use Case 1: Route to the Highest Throughput or Lowest Latency Model
+
+When you have multiple acceptable models and want to use whichever has the best performance right now, use `partition: "none"` with throughput or latency sorting. This is useful when you care more about speed than using a specific model.
+
+```typescript title="TypeScript SDK" expandable lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    models: [
+      'anthropic/claude-sonnet-4.5',
+      'openai/gpt-5-mini',
+      'google/gemini-3-flash-preview',
+    ],
+    input: 'Hello',
+    provider: {
+      sort: {
+        by: 'throughput',
+        partition: 'none',
+      },
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" expandable lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    models: [
+      'anthropic/claude-sonnet-4.5',
+      'openai/gpt-5-mini',
+      'google/gemini-3-flash-preview',
+    ],
+    input: 'Hello',
+    provider: {
+      sort: {
+        by: 'throughput',
+        partition: 'none',
+      },
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" expandable lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'models': [
+    'anthropic/claude-sonnet-4.5',
+    'openai/gpt-5-mini',
+    'google/gemini-3-flash-preview',
+  ],
+  'input': 'Hello',
+  'provider': {
+    'sort': {
+      'by': 'throughput',
+      'partition': 'none',
+    },
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer <OPENROUTER_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "models": [
+      "anthropic/claude-sonnet-4.5",
+      "openai/gpt-5-mini",
+      "google/gemini-3-flash-preview"
+    ],
+    "input": "Hello",
+    "provider": {
+      "sort": {
+        "by": "throughput",
+        "partition": "none"
+      }
+    }
+  }'
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"models": []string{
+			"anthropic/claude-sonnet-4.5",
+			"openai/gpt-5-mini",
+			"google/gemini-3-flash-preview",
+		},
+		"input": "Hello",
+		"provider": map[string]any{
+			"sort": map[string]any{
+				"by":        "throughput",
+				"partition": "none",
+			},
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794950773,
+  "createdAt": 1794950771,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794950771-Zxzclc54B9IqGZ34xsIj",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "openai/gpt-5-mini",
+  "object": "response",
+  "output": [
+    {
+      "encryptedContent": "gAAAAABq_MZ1TxZc30B7991WVUFwP21VcpzV3D55LPbzr_qfzLOcR5FlnlOD1p6S5aQ1HwH1TZFJ2fJTwSYygAmNNZ0hzQWWh1gJLKzqGJO7upjhqe87_3POc3gaQ11Dn4mPHuBQJ6J4Ow89BrHpwQNmmsQSfqxVR4LmzlgA0hBGUphJFScPtaqzFqw8xIZEK38Nv_DfAsx-aZDeDMrPR3qZBALEBOlXyYeluAOhDZh_fe_TNitR1NzSdDl4uXqitiIHl7-PswE7HMwRftx6tt_Slvamwvy9ZMplpNxbizjZdESC_BFMs2SmYTE5OcnOb455VG-AzBKQ8OWxXOEE1ZSvkGi2t1sFrE4GCM1B8I6DZxjQNPOp922auRYhZ2ifw6banXPVIduAI1juisgkkKtSmPL73u8eHyDD3Xp83OkUd5yDLIcM637pXQV72O1PzUVdGBN-4A5y9h5AReSkSMoCKO5BLRfsflia604Ctz4XDdpDlrj6D3FCaz736NkDWFkfVnY99rMI4sHR9fjpiDtvcO0dSTq1g64XFwr0QompXhHYxHTIRCLKMOVinFBVuw4bT6XAaRHbYdi7Q3Tgo0W-3r3YRwAnDNl8GZ8Mb1YtZCerZwndXJ7k1CEpBFtat2OdGc3vlMyZHWf5mXDouHhIWtZVq1ORfKA0qMV4_5EqvaXRPxSt8g1jmdsCK1H78_a4umRQUNYbYVhOCr5UZyypukRRIOKUTy04xxoiwdkrw8t0dGtFdr6kCY0lnWEakDrn7QNOKJe1EIlyrNjyyAp5Z6PDK32AI9R7hN9mGEMVi1vJ_-msPMEn5lotRlsI5Y8mfMX6vZ0EK5bRs460cLtyn8tjQYi0FtPvdNbW5F7erNQovLdsOrHklyqfwAHQ1re80JSV66jaWXTyc5KkiSc4Z2Aui0M7mLzIzhl2vsZ5k0Q8Q3U3-KK1ylh9aP75m2jmcdwXC6VqTjHLGEq6KJe4TGm1MCxHobZKb8REBcOJMBNx8poEmvp2HrIdgnu6YV_SIqUE0Wr7-J4pZXfzQtDmxmZJugC5TRx8vvUcy36cs6vRQwtnzeqKBhXBUGCZRhjPcYWCSVyv8030prlcK865MQMb7GhmyXnmTAK9FT7sWyEHSZEqvuY7CRkdiZbnsm2dpa9IVC-Lep7QYQoYEYglK4J6qNr-HBHRsMuljl4mmxljY-uOECpXrWGUAeUHtbrnpVrnSiLIZ9-Rx_tuwtcmbxhoeP2X9Hn1xCq666eVQmesWg3NJujTr-vatirVj_TixIhdGCCkHaynT5RLgIEsQD_iBjp1cM4g27-ZZjSt868m1P4_P6sONe9NsZjBqkah2Qalvj1PWpVNljzCiSMClETmOO3FKNjyiWYd5gbbL8WssKHIlQv-bufPVZtEtIv_TGzEvHhNLu0KqXxdW6mZWUqlaTkv7jnaCrpTqGfJtwQUyIkn-WvpsjLoabAS4Kj9i2NKyROv9iCBrQ6ht1fzlYayGonPGnJrER0hqzN94KfQXGpRsOUyIRJBssDz29jcWcCz1B1ExtBj-LndF_S0TAcFRL_sG6CXNsmBYF62ffuQ3i8qv6rxm4-aBjFiBCMY0Nk55UnrBJFbhEDsrG-hnmtFMg7Lc4aSIQJD1K9gZtATS3UzIjm61k_P6ZVY8y-qgcWEfCLy3YZu5mvYRouHO_eWub296L2KU9WgKz7vCvuTHl_RFbladHFoqarOeZ0bdSVbrrtx4E8tNvjPtHu9BoFrVHllbQ3zbCVWSuIZUdQ4PHyMGt3OFvW7Qv4NopJR4if0WWoWazU9ZBmIs5KbxwnxeysNnZac-iUTzA0T3DoDCht-QjJgWcrm0BXihBx4CBYh_HQTIhdbehUD9n6ClAZe9HVK1f4zpE5bZlka4c03DiG72IimniryDmbaoWC29uAUx3E9OiZrWRNPocAmMic1WjTCL8Tep7fxAiBR0NT0au3TCHn8FijmM4QCO1QOSydDn5NCsOlD-oPnY8QLQRMrVgeAWujH4Sjo940CoUrcH833EoL_FzZsb7Phl6GaNyibRmSpS4QqXlcg0RMsmmAcI6V3pyMikt_cByxozgeaBr6cQo8ma68tQO1c9IYLI4Wh0-cC3soK-jcJWAdHmtqzGtZ_TWoQAh0Gc6Vdhure0No5P1JWkJjLxw60gGiTqFPLgIWxJeU9_u9UM-1spvCxxgY9IgWlG0b_7BgY9-LMpq9Gun6a0ZIKbkOcFhbUnXbCBRYhoxU_X5RiQVt9MllgPLQ-rKf_BTOYEQXmQkOjnkI36wAS89qMw77ytBkaUUmV_aXqIKT-dgcIrzLl0n9ubUzTvK0vzCS_Jl9EH9Kj2g24otFdgN8wjOzrBv6YFFKpNr78DfPKo8JKOoKdLwg-0BC1X0mcEXAyLk1wMNcaBrSwscY=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LW1pbmktMjAyNS0wOC0wN3xhenVyZSJ9",
+      "id": "rs_05baf532b8d250c3016afcc673b7e48197ab9c6ba0a8c2da12",
+      "status": "completed",
+      "summary": [
+        {
+          "text": "**Responding to greeting**\n\nThe user just said \"Hello,\" so I need to respond in a polite way and offer my help. I could ask how they’re doing or what they need assistance with. It’s best to keep it concise and friendly. I might include examples of what I can help with, like answering questions or assisting with writing or coding. So, I will reply: \"Hi! How can I help you today?\"",
+          "type": "summary_text"
+        }
+      ],
+      "type": "reasoning",
+      "format": "azure-openai-responses-v1"
+    },
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hi — how can I help you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_ymnorb7q9oa",
+      "role": "assistant",
+      "status": "completed",
+```
+
+In this example, OpenRouter will route to whichever endpoint across all three models currently has the highest throughput, rather than always trying Claude first.
+
+## Performance Thresholds
+
+You can set minimum throughput or maximum latency thresholds to filter endpoints. Endpoints that don't meet these thresholds are deprioritized (moved to the end of the list) rather than excluded entirely.
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `preferred_min_throughput` | number \| object | - | Preferred minimum throughput in tokens per second. Can be a number (applies to p50) or an object with percentile cutoffs. |
+| `preferred_max_latency` | number \| object | - | Preferred maximum latency in seconds. Can be a number (applies to p50) or an object with percentile cutoffs. |
+
+### How Percentiles Work
+
+OpenRouter tracks latency and throughput metrics for each model and provider using percentile statistics calculated over a rolling 5-minute window. The available percentiles are:
+
+* **p50** (median): 50% of requests perform better than this value
+* **p75**: 75% of requests perform better than this value
+* **p90**: 90% of requests perform better than this value
+* **p99**: 99% of requests perform better than this value
+
+Higher percentiles (like p90 or p99) give you more confidence about worst-case performance, while lower percentiles (like p50) reflect typical performance. For example, if a model and provider has a p90 latency of 2 seconds, that means 90% of requests complete in under 2 seconds.
+
+When you specify multiple percentile cutoffs, all specified cutoffs must be met for a model and provider to be in the preferred group. This allows you to set both typical and worst-case performance requirements.
+
+### When to Use Percentile Preferences
+
+Percentile-based routing is useful when you need predictable performance characteristics:
+
+* **Real-time applications**: Use p90 or p99 latency thresholds to ensure consistent response times for user-facing features
+* **Batch processing**: Use p50 throughput thresholds when you care more about average performance than worst-case scenarios
+* **SLA compliance**: Use multiple percentile cutoffs to ensure providers meet your service level agreements across different performance tiers
+* **Cost optimization**: Combine with `sort: "price"` to get the cheapest provider that still meets your performance requirements
+
+### Use Case 2: Find the Cheapest Model Meeting Performance Requirements
+
+Combine `partition: "none"` with performance thresholds to find the cheapest option across multiple models that meets your performance requirements. This is useful when you have a performance floor but want to minimize costs.
+
+```typescript title="TypeScript SDK" expandable lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    models: [
+      'anthropic/claude-sonnet-4.5',
+      'openai/gpt-5-mini',
+      'google/gemini-3-flash-preview',
+    ],
+    input: 'Hello',
+    provider: {
+      sort: {
+        by: 'price',
+        partition: 'none',
+      },
+      preferredMinThroughput: {
+        p90: 50, // Prefer providers with >50 tokens/sec for 90% of requests in last 5 minutes
+      },
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" expandable lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    models: [
+      'anthropic/claude-sonnet-4.5',
+      'openai/gpt-5-mini',
+      'google/gemini-3-flash-preview',
+    ],
+    input: 'Hello',
+    provider: {
+      sort: {
+        by: 'price',
+        partition: 'none',
+      },
+      preferred_min_throughput: {
+        p90: 50, // Prefer providers with >50 tokens/sec for 90% of requests in last 5 minutes
+      },
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" expandable lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'models': [
+    'anthropic/claude-sonnet-4.5',
+    'openai/gpt-5-mini',
+    'google/gemini-3-flash-preview',
+  ],
+  'input': 'Hello',
+  'provider': {
+    'sort': {
+      'by': 'price',
+      'partition': 'none',
+    },
+    'preferred_min_throughput': {
+      'p90': 50, # Prefer providers with >50 tokens/sec for 90% of requests in last 5 minutes
+    },
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer <OPENROUTER_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "models": [
+      "anthropic/claude-sonnet-4.5",
+      "openai/gpt-5-mini",
+      "google/gemini-3-flash-preview"
+    ],
+    "input": "Hello",
+    "provider": {
+      "sort": {
+        "by": "price",
+        "partition": "none"
+      },
+      "preferred_min_throughput": {
+        "p90": 50
+      }
+    }
+  }'
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"models": []string{
+			"anthropic/claude-sonnet-4.5",
+			"openai/gpt-5-mini",
+			"google/gemini-3-flash-preview",
+		},
+		"input": "Hello",
+		"provider": map[string]any{
+			"sort": map[string]any{
+				"by":        "price",
+				"partition": "none",
+			},
+			// Prefer providers with >50 tokens/sec for 90% of requests in last 5 minutes
+			"preferred_min_throughput": map[string]any{
+				"p90": 50,
+			},
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794950867,
+  "createdAt": 1794950865,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794950865-aYhrMiJXHphGfu5F9Vtd",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "openai/gpt-5-mini",
+  "object": "response",
+  "output": [
+    {
+      "encryptedContent": "gAAAAABq_MbTgOnPPrcODtn018_gbf0ceqjVXehw7Xy_YFrAwAAlT7nE6HtDwLJk3liLCMBWSOnNQXNR2WKBPC5hy-czebQXkr9vOLpLj08S8zYpvrmdY2f6hfYNazl6YBavRc2omfUdxNa-HTsvjbtD1hSlyKDmiA0A5horSa53hzIIVLzGeRpwrdMnW0R7yNeMOwFOcdQwym5_UXMXtJ0kuXVpcPgAn2N9j2hJkAfbWQU5NZOJf90ibn6aONGpkMybBMw6ichqTwGAPC04AN4NVgivhV-BgYOLhYP2lh4-PVw_R-sqie5wGGvHGvqPegMRn0OJZ-650Od6kZPEixmN8c-9-uj9kaEy2ty3g2nT2nsE4J5Hn4b5qpaeAlZSp2XwhyK6Z_t4fEzmYy78CAS-ZJp6na5k_M6ARPHt2yyzby9uHp_tm87LywC2oQ0V_kcsRHDGIZgM1p6LckUmDNn5ptteyaaR1ODLYTFc912bESMVuIWoQWCUGxUBTic-YungZi5Govdk-HSTDDvs5svB2elv36dtVMxAeERLhtRU3Nn6rxPqxgtDFofdJPvVAzc-gZ0nzoL1Sh8ezueprA1vA3kIAfYARBmaKlK1C155uNeevHc0cENx6FuqrwyeF-TKy6FSss5SuM-ZZtFE4AyyS83QftlqPq-6_y2i28Az_je2tS3v9OycfAdKKZLVhMYIEkc4Q_ogb8QI2ZpM1XMYla_RWCUIUDkIEaz-RKXIlKIq6O8YAb-YJYyaQ0wJelGHVnEYLTJ-iIrlVWtP1HX0pOMUiUHRoj-c6wPoMdBJpzz3AaRMMnC2bK0XOugo7ZXkCm7mKhvojuShs9i3NSuN5qUnpBfccMKHSdO-T4XmW9ne8Mm3e8tObHh29MrHKc8PSSKbTtqRKp397K3Tb2DufKUJyrit0hw2Tq2oVtfi7pYe-hLXmWZgywxEBZb72gUJanA7JyIeBRkDbhgs1hTgC1KyvxMEFfQNo51YqcQnGNgJdLf2-s5rHG26eJX9-iaXNX3szAw7oHeqzXghvTZHvuZgQiZUtr-zSj43Gucqe803n-5PKkXS7gILG69H9FNK9GXS_WpeCgZDPZIua6WD_a39wzHitZcPQ-4IvogwrfL5Q3jPcK7Elp27OtDoGSD0LU9WrAAevNYVGnt1EPVuS-_RffbTVTOLivbZ1GcyZBvW_kmgeb44kH7_Wle1gOGTykM72zROZR2zx4NtmJSdNs_vt3ewQgw1YXh0jULKAuLo9OmEmfSH8S5wevs2Qn5hI-Jdud2gTyO57bLqE0BXee2vYbI6E1Q2djxbHytqSylP6tY6wNKgm93Kzj1rtpKshNnHgdRRQRXQnO7MiRuCs46EFj9m7xqfpD9bIb_eMcmLr9Us5hRSETzMW5V93xSleD-326HPqkrY3DkS5RkSzUB6XBlUZ8InkTytywer76ktYfDRmpLCpJ2NZQAmmkN5mNUFLsWa4BC9mlw_yYmjDh2Vm7yvcQMUtDQd1I1NGyeiHUhG--n_bCdpwETOdkyDwkV_ySQ1ZyJo2ii3xW2rsZz67wkEIad1DZdXGpO1CxhLL6LB9N16bE2vrNr8AFatwvLGbOFfL1uBgZq6vICCPRUSmCteuLoiwHm9Hju5BhI51VIl1NPZwymA-JU866MqL6apJ6XMqJufw3topAgSVO64x4BBKZraBv6ZcJkIpm_kMHy1A742YRJVS8LpiDDxJ13h4xFr.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LW1pbmktMjAyNS0wOC0wN3xhenVyZSJ9",
+      "id": "rs_0d49591c765271e0016afcc6d29b908193b034c7b56dab32b2",
+      "status": "completed",
+      "summary": [],
+      "type": "reasoning",
+      "format": "azure-openai-responses-v1"
+    },
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hi — how can I help you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_maqeb07ykgl",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+```
+
+In this example, OpenRouter will find the cheapest model and provider across all three models that has at least 50 tokens/second throughput at the p90 level (meaning 90% of requests achieve this throughput or better). Models and providers below this threshold are still available as fallbacks if all preferred options fail.
+
+You can also use `preferred_max_latency` to set a maximum acceptable latency:
+
+```typescript title="TypeScript SDK" expandable lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    models: [
+      'anthropic/claude-sonnet-4.5',
+      'openai/gpt-5-mini',
+    ],
+    input: 'Hello',
+    provider: {
+      sort: {
+        by: 'price',
+        partition: 'none',
+      },
+      preferredMaxLatency: {
+        p90: 3, // Prefer providers with <3 second latency for 90% of requests in last 5 minutes
+      },
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+```
+
+```typescript title="TypeScript (fetch)" expandable lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    models: [
+      'anthropic/claude-sonnet-4.5',
+      'openai/gpt-5-mini',
+    ],
+    input: 'Hello',
+    provider: {
+      sort: {
+        by: 'price',
+        partition: 'none',
+      },
+      preferred_max_latency: {
+        p90: 3, // Prefer providers with <3 second latency for 90% of requests in last 5 minutes
+      },
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+```
+
+```python title="Python" expandable lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'models': [
+    'anthropic/claude-sonnet-4.5',
+    'openai/gpt-5-mini',
+  ],
+  'input': 'Hello',
+  'provider': {
+    'sort': {
+      'by': 'price',
+      'partition': 'none',
+    },
+    'preferred_max_latency': {
+      'p90': 3, # Prefer providers with <3 second latency for 90% of requests in last 5 minutes
+    },
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer <OPENROUTER_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "models": [
+      "anthropic/claude-sonnet-4.5",
+      "openai/gpt-5-mini"
+    ],
+    "input": "Hello",
+    "provider": {
+      "sort": {
+        "by": "price",
+        "partition": "none"
+      },
+      "preferred_max_latency": {
+        "p90": 3
+      }
+    }
+  }'
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"models": []string{
+			"anthropic/claude-sonnet-4.5",
+			"openai/gpt-5-mini",
+		},
+		"input": "Hello",
+		"provider": map[string]any{
+			"sort": map[string]any{
+				"by":        "price",
+				"partition": "none",
+			},
+			// Prefer providers with <3 second latency for 90% of requests in last 5 minutes
+			"preferred_max_latency": map[string]any{
+				"p90": 3,
+			},
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794950958,
+  "createdAt": 1794950957,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794950957-Q8UpYoMbX6nykgY1dsBu",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "anthropic/claude-sonnet-4.5",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! How can I help you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_m2debjx3k1c",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "default",
+  "status": "completed",
+  "store": false,
+```
+
+### Example: Using Multiple Percentile Cutoffs
+
+You can specify multiple percentile cutoffs to set both typical and worst-case performance requirements. All specified cutoffs must be met for a model and provider to be in the preferred group.
+
+```typescript title="TypeScript SDK" expandable lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'deepseek/deepseek-v3.2',
+    input: 'Hello',
+    provider: {
+      preferredMaxLatency: {
+        p50: 1, // Prefer providers with <1 second latency for 50% of requests in last 5 minutes
+        p90: 3, // Prefer providers with <3 second latency for 90% of requests in last 5 minutes
+        p99: 5, // Prefer providers with <5 second latency for 99% of requests in last 5 minutes
+      },
+      preferredMinThroughput: {
+        p50: 100, // Prefer providers with >100 tokens/sec for 50% of requests in last 5 minutes
+        p90: 50, // Prefer providers with >50 tokens/sec for 90% of requests in last 5 minutes
+      },
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" expandable lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'deepseek/deepseek-v3.2',
+    input: 'Hello',
+    provider: {
+      preferred_max_latency: {
+        p50: 1, // Prefer providers with <1 second latency for 50% of requests in last 5 minutes
+        p90: 3, // Prefer providers with <3 second latency for 90% of requests in last 5 minutes
+        p99: 5, // Prefer providers with <5 second latency for 99% of requests in last 5 minutes
+      },
+      preferred_min_throughput: {
+        p50: 100, // Prefer providers with >100 tokens/sec for 50% of requests in last 5 minutes
+        p90: 50, // Prefer providers with >50 tokens/sec for 90% of requests in last 5 minutes
+      },
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" expandable lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'deepseek/deepseek-v3.2',
+  'input': 'Hello',
+  'provider': {
+    'preferred_max_latency': {
+      'p50': 1, # Prefer providers with <1 second latency for 50% of requests in last 5 minutes
+      'p90': 3, # Prefer providers with <3 second latency for 90% of requests in last 5 minutes
+      'p99': 5, # Prefer providers with <5 second latency for 99% of requests in last 5 minutes
+    },
+    'preferred_min_throughput': {
+      'p50': 100, # Prefer providers with >100 tokens/sec for 50% of requests in last 5 minutes
+      'p90': 50, # Prefer providers with >50 tokens/sec for 90% of requests in last 5 minutes
+    },
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer <OPENROUTER_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "deepseek/deepseek-v3.2",
+    "input": "Hello",
+    "provider": {
+      "preferred_max_latency": {
+        "p50": 1,
+        "p90": 3,
+        "p99": 5
+      },
+      "preferred_min_throughput": {
+        "p50": 100,
+        "p90": 50
+      }
+    }
+  }'
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "deepseek/deepseek-v3.2",
+		"input": "Hello",
+		"provider": map[string]any{
+			"preferred_max_latency": map[string]any{
+				"p50": 1, // Prefer providers with <1 second latency for 50% of requests in last 5 minutes
+				"p90": 3, // Prefer providers with <3 second latency for 90% of requests in last 5 minutes
+				"p99": 5, // Prefer providers with <5 second latency for 99% of requests in last 5 minutes
+			},
+			"preferred_min_throughput": map[string]any{
+				"p50": 100, // Prefer providers with >100 tokens/sec for 50% of requests in last 5 minutes
+				"p90": 50,  // Prefer providers with >50 tokens/sec for 90% of requests in last 5 minutes
+			},
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951030,
+  "createdAt": 1794951029,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951029-N8S73kGS7aqvOTnodAYG",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "deepseek/deepseek-v3.2",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "你好！😊 很高兴见到你！\n\n有什么我可以帮助你的吗？无论是回答问题、聊天、协助解决问题，还是其他任何事情，我都很乐意为你提供帮助！",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_ozju7gi09b",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": {
+    "effort": "none"
+  },
+  "safetyIdentifier": null,
+  "serviceTier": "default",
+```
+
+### Use Case 3: Maximize BYOK Usage Across Models
+
+If you use [Bring Your Own Key (BYOK)](https://openrouter.ai/docs/guides/overview/auth/byok.md) and want to maximize usage of your own API keys, `partition: "none"` can help. When your primary model doesn't have a BYOK provider available, OpenRouter can route to a fallback model that does support BYOK.
+
+```typescript title="TypeScript SDK" expandable lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    models: [
+      'anthropic/claude-sonnet-4.5',
+      'openai/gpt-5-mini',
+      'google/gemini-3-flash-preview',
+    ],
+    input: 'Hello',
+    provider: {
+      sort: {
+        by: 'price',
+        partition: 'none',
+      },
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+```
+
+```typescript title="TypeScript (fetch)" expandable lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    models: [
+      'anthropic/claude-sonnet-4.5',
+      'openai/gpt-5-mini',
+      'google/gemini-3-flash-preview',
+    ],
+    input: 'Hello',
+    provider: {
+      sort: {
+        by: 'price',
+        partition: 'none',
+      },
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+```
+
+```python title="Python" expandable lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'models': [
+    'anthropic/claude-sonnet-4.5',
+    'openai/gpt-5-mini',
+    'google/gemini-3-flash-preview',
+  ],
+  'input': 'Hello',
+  'provider': {
+    'sort': {
+      'by': 'price',
+      'partition': 'none',
+    },
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer <OPENROUTER_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "models": [
+      "anthropic/claude-sonnet-4.5",
+      "openai/gpt-5-mini",
+      "google/gemini-3-flash-preview"
+    ],
+    "input": "Hello",
+    "provider": {
+      "sort": {
+        "by": "price",
+        "partition": "none"
+      }
+    }
+  }'
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"models": []string{
+			"anthropic/claude-sonnet-4.5",
+			"openai/gpt-5-mini",
+			"google/gemini-3-flash-preview",
+		},
+		"input": "Hello",
+		"provider": map[string]any{
+			"sort": map[string]any{
+				"by":        "price",
+				"partition": "none",
+			},
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951129,
+  "createdAt": 1794951127,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951127-pMYSey0BOi5ZrqhwDLZ4",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "openai/gpt-5-mini",
+  "object": "response",
+  "output": [
+    {
+      "encryptedContent": "gAAAAABq_MfZXPTQjAhClXzSGJF2R12pZ2fVAAjZxliaqLLIBvR-kls0s53Fw5JyVmwHdUZBQ6gHRfHeMoYRcRYh2LaTZN9lNEk_gEeQiud3w_VCCXjROyMF__Z-geRFNc20mP9SPQg8qLvLolhn8nQaN3gy-5e0X81OwiT5YwLKzn_ize3TzKaU0Ht-A3z_CsVimDQLrO-Jj5P4CNb_rNlnQ2vr9LSOtYHS7t4DtxMyj-EDHx05pQhEkqsViigbpi1U-zF3n7NstnM9eewl6Nt4fN5MoKMR171rq-UQ5O4A7UVygN78B3Dh-wT07H2t2SDV6Kqlc14ACsyeaN6Ysv2LEcH67gJxg_ZZfyPaWa-KQCgQEnvC7gJU2kd2WL6mg37pYWUpHDXi1eWChh5CIMo5NkCAmblTMywNC0KPFEmXzYDF9dxYkWj9iAAtFkO1SFsPg4lDLbtu0ooRzNXRUf65pKUnJHUlLrRrFCI_VXVOlWCUzBxNM9GLsv45t9kZp5L9vT3hDqJI4zjX_BVN9sKnzFtJjVTBEVU7wniPyYJDFZXkUSKZ6su-QMyoBgqBLnOvbn0hSIV5EcE45PAIPbuwFs01LCy6PLrwzqldFF04P-do28PNgojx9CvChbLEXqvmg7DEi4J2THmuS2q14Qt6DIVBxWcO-8eafGVscM9lR3xi_q9a_z9YuLfY9ickuTZUhmfp96Pw9f1o0ZX5PDYy5IAr2QjSdPNnmpavilgNx2E62V4lmg-PYBtz4tpdoVIlY8lZjTe3r5wvD977eLxlOFljY2sraO-bZk0bYa0dRQbvWwWD_ThTwE_6gre4AWiqv7UCHg9IHbjn6EE8THFmym4VdADabvvRE2FL08eGxV3UP4jQ_6zwrK-wPtp4bzj5IjSdXzk9xwiWjbbWClu5EjayWBRKmhBEeiz4LMSrePUkPnTiigJNngI4vaiHQPnD6TyxT_V7JRoJkTBh7KpGGTpyYPNeceLTlQgAEZWHw7tACV8pBv4jfH4RIeqOPbQ9r-MhWdpzD4pzrlr_tv6uXXHjjUlQc9i-mb0rY9upOLpt4_KIZRKSH4820pHovvWE4E1jYQJdfzU7c_pVsE_aWramaKwD3mXoTacmk-KPBxcAGCRjidsYZdQqtxaWrh2mSK4eNI-3edQRCqTar98MOVQVV5iZaHLVrdz53mjFikS_OLM_1ycQ0XLtYS-og5VMwqdwox_6HyzP1AGb3HnZqQZ_mipfTFK3EEbXob2wFGCjxayqsJIRGVJFaHzj-oc1B3hsAgw5uqkiaM87mmXpSQojPhxGNItHuqQ4dJQ-IxT7OjzvtNj2N53u6Hy503SylEmmLd3a_29Fb8a1der6pYiu7_z83Tv2Ke73bg-18p5N3E8OVuF5RCD237JG7nYALIr6oq3MMdyY3dZa_N0E6KzaVH0-p54dHyHgMQ6Ovibw6y6MlEEGaWl-iFTbm4XMofSUGdRv-i0IbAqGhkawY6ZJ6aetKfVDuXvxhR9oCrWiFW_lqmLM8MfhUeMDVIWOdCIDK2pBXzfjdYqECtEmG9J7o0y9EHApSH2ss4LO9JrGdCNmcUBr1Mjf9v8TtnFpnf-FlZX8P2PBZ7T9nRHNUP-Oafbo7muWKw-WxiUpc4kKcTi2WaSRolWFf79gnPO0GaTE6trj1M3zsncRErsuQANBT8NtYsRljn2eLhMxGJMN_Yhd2bzWSoYDDoqB29I3XfmEMhezp6URiImRzOyBpSPUQeVgFCPwLOfKuomx-TNQheE3c9_TmHVHxjxYNHN5YWiduoJVJXrKLAlh48pchXgcxGbKh9cUnUqD4qoHEIwhobhmf9CBymzS_vICiXGu8VP-E7hwg7zUcVhR8U3HemR1MXiHUovvNz18GhYH-SVUOuNsXUeJJ5IYTxvNNa7ngg60HAxbOhOVMAY1XtzOEl6LNq1CyoDwJpZ-dMOw28ErQcZvbo5b3pPTs0O-kaveJedBegVNlubklY2HUd_MAT9YMose42Jh9sX3aGbq4JdZHJR8vMaQfKsUaezVZrYa4gPRw49ko5Q8WSGK50xyR0H_BH4vKmwZqp_FzTZWnEmVl-BNrAVRn0TuBMcRWacaqJ_B6Gp8y4dTtuv7xxgq3aAHGUDgcI3LVhZy2ZNJKCk5RZHOl8DZZWByp50348OSfhnjl4gb.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LW1pbmktMjAyNS0wOC0wN3xhenVyZSJ9",
+      "id": "rs_0f13402157844cb9016afcc7d8503c8193bfec5126a6946a61",
+      "status": "completed",
+      "summary": [
+        {
+          "text": "**Crafting a greeting response**\n\nThe user just greeted me with \"Hello\", so I need to respond with a friendly greeting and offer help. I’ll keep it concise and maybe ask how I can assist. Something like: \"Hi! How can I help you today?\" I could also offer options by suggesting info, help, or just a chat. Keeping it short and warm is important!",
+          "type": "summary_text"
+        }
+      ],
+      "type": "reasoning",
+      "format": "azure-openai-responses-v1"
+    },
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hi — how can I help you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_9k3okgnucbs",
+      "role": "assistant",
+      "status": "completed",
+```
+
+In this example, if you have a BYOK key configured for OpenAI but not for Anthropic, OpenRouter can route to the GPT-5 mini endpoint using your own key even though Claude is listed first. Without `partition: "none"`, the router would always try Claude's endpoints first before falling back to GPT-5 mini.
+
+> [!NOTE]
+>
+> BYOK endpoints are automatically prioritized when you have API keys configured for a provider and the request sets no `order`. The `partition: "none"` setting allows this prioritization to work across model boundaries. A request that sets `order` is routed in that order, with your BYOK endpoint tried first within each provider you name; see [BYOK with Provider Ordering](https://openrouter.ai/docs/guides/overview/auth/byok.md#byok-with-provider-ordering).
+
+## Ordering Specific Providers
+
+You can set the providers that OpenRouter will prioritize for your request using the `order` field.
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `order` | string\[] | - | List of provider slugs to try in order (e.g. `["anthropic", "openai"]`). |
+
+The router will prioritize providers in this list, and in this order, for the model you're using. The order also outranks the priority your [BYOK keys](https://openrouter.ai/docs/guides/overview/auth/byok.md#byok-with-provider-ordering) would otherwise get: within each provider you name, your own key is tried before OpenRouter's shared capacity. If you don't set this field, the router uses [default routing](#default-routing).
+
+> [!TIP]
+>
+> You can use the copy button next to provider names on model pages to get the exact provider slug, including any variants like "/turbo". See [Targeting Specific Provider Endpoints](#targeting-specific-provider-endpoints) for details.
+
+OpenRouter will try them one at a time and proceed to other providers if none are operational. If you don't want to allow any other public providers, you should [disable fallbacks](#disabling-fallbacks) as well. Private endpoints you have access to stay eligible, as described in [Disabling Fallbacks](#disabling-fallbacks).
+
+### Example: Specifying providers with fallbacks
+
+This example skips over OpenAI (which doesn't host Mistral Small 3.2), tries DeepInfra, and then falls back to the normal list of providers on OpenRouter:
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
+    input: 'Hello',
+    provider: {
+      order: ['openai', 'deepinfra'],
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
+    input: 'Hello',
+    provider: {
+      order: ['openai', 'deepinfra'],
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'mistralai/mistral-small-3.2-24b-instruct',
+  'input': 'Hello',
+  'provider': {
+    'order': ['openai', 'deepinfra'],
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "mistralai/mistral-small-3.2-24b-instruct",
+		"input": "Hello",
+		"provider": map[string]any{
+			"order": []string{"openai", "deepinfra"},
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "input": "Hello",
+    "provider": {
+      "order": ["openai", "deepinfra"]
+    },
+    "stream": false
+  }'
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951206,
+  "createdAt": 1794951206,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951206-PtR9QqW9K18tyR8aQA0C",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "mistralai/mistral-small-3.2-24b-instruct",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! 😊 How can I assist you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_ky65eg96ki",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "default",
+  "status": "completed",
+  "store": false,
+```
+
+### Example: Specifying providers with fallbacks disabled
+
+Here's an example with `allow_fallbacks` set to `false` that skips over OpenAI (which doesn't host Mistral Small 3.2), tries DeepInfra, and then fails if DeepInfra fails:
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
+    input: 'Hello',
+    provider: {
+      order: ['openai', 'deepinfra'],
+      allowFallbacks: false,
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
+    input: 'Hello',
+    provider: {
+      order: ['openai', 'deepinfra'],
+      allow_fallbacks: false,
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'mistralai/mistral-small-3.2-24b-instruct',
+  'input': 'Hello',
+  'provider': {
+    'order': ['openai', 'deepinfra'],
+    'allow_fallbacks': False,
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "mistralai/mistral-small-3.2-24b-instruct",
+		"input": "Hello",
+		"provider": map[string]any{
+			"order":           []string{"openai", "deepinfra"},
+			"allow_fallbacks": false,
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "input": "Hello",
+    "provider": {
+      "order": ["openai", "deepinfra"],
+      "allow_fallbacks": false
+    },
+    "stream": false
+  }'
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951268,
+  "createdAt": 1794951267,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951267-ebadPnLXbzx83aBcyIwB",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "mistralai/mistral-small-3.2-24b-instruct",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! 😊 How can I assist you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_fia3ajma8r7",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "priority",
+  "status": "completed",
+  "store": false,
+```
+
+## Targeting Specific Provider Endpoints
+
+Each provider on OpenRouter may host multiple endpoints for the same model, such as a default endpoint and a specialized "turbo" endpoint, or region-specific endpoints like `google-vertex/us-east5`. To target a specific endpoint, you can use the copy button next to the provider name on the model detail page to obtain the exact provider slug.
+
+### Base Slug Matching
+
+When you use a base provider slug (e.g. `"google-vertex"`) in any provider routing field (`order`, `only`, or `ignore`), it matches **all** eligible endpoints for that provider, including any variants or regions. For example, `"google-vertex"` matches `google-vertex`, `google-vertex/us-east5`, `google-vertex/us-central1`, and so on. A base slug does not by itself opt into a [service tier endpoint](https://openrouter.ai/docs/guides/features/service-tiers.md) (e.g. `openai/fast`, `google-vertex/flex`); select one with the `service_tier` parameter or its tier-suffixed slug. Tier endpoints already in the routing pool, such as priority endpoints of open-weight models, do match their base slug.
+
+To target a **specific** variant or region, use the full slug including the suffix (e.g. `"google-vertex/us-east5"` or `"deepinfra/turbo"`). When a provider serves the same variant from more than one region, the region follows the variant as its own segment (e.g. `"baseten/fp4/us"`); the variant slug alone (`"baseten/fp4"`) still matches every region of it.
+
+Every endpoint slug has the shape `provider[/variant][/region][/tier]`, with each segment present only when the endpoint needs it: the variant (a quantization such as `fp4`, or a provider-specific label such as `zdr`), then the region, then the [service tier](https://openrouter.ai/docs/guides/features/service-tiers.md) in the provider's spelling (`priority`, `fast`, `turbo`, `flex`), always last. A tier endpoint's slug is therefore its standard sibling's slug plus the tier (`google-vertex/global` and `google-vertex/global/priority`, `baseten/fp4/us` and `baseten/fp4/us/priority`), and dropping a trailing segment matches every endpoint that shares the remaining prefix, except that dropping the tier never matches a tier endpoint.
+
+| Slug in request | What it matches |
+| - | - |
+| `"google-vertex"` | All Google Vertex endpoints (every region) |
+| `"google-vertex/us-east5"` | Only the `us-east5` region endpoint |
+| `"deepinfra"` | All DeepInfra endpoints (for example, fp8 and turbo) |
+| `"deepinfra/turbo"` | Only the DeepInfra turbo endpoint |
+
+### Example: Targeting a specific endpoint variant
+
+For example, DeepInfra offers Gemma 4 31B through multiple endpoints, including:
+
+* FP8 endpoint with slug `deepinfra/fp8`
+* Turbo endpoint with slug `deepinfra/turbo`
+
+By copying the exact provider slug and using it in your request's `order` array, you can ensure your request is routed to the specific endpoint you want:
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'google/gemma-4-31b-it',
+    input: 'Hello',
+    provider: {
+      order: ['deepinfra/turbo'],
+      allowFallbacks: false,
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'google/gemma-4-31b-it',
+    input: 'Hello',
+    provider: {
+      order: ['deepinfra/turbo'],
+      allow_fallbacks: false,
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import json
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'google/gemma-4-31b-it',
+  'input': 'Hello',
+  'provider': {
+    'order': ['deepinfra/turbo'],
+    'allow_fallbacks': False,
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "google/gemma-4-31b-it",
+		"input": "Hello",
+		"provider": map[string]any{
+			"order":           []string{"deepinfra/turbo"},
+			"allow_fallbacks": false,
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "google/gemma-4-31b-it",
+    "input": "Hello",
+    "provider": {
+      "order": ["deepinfra/turbo"],
+      "allow_fallbacks": false
+    },
+    "stream": false
+  }'
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951343,
+  "createdAt": 1794951343,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951343-4jEdh4B9xhjon8XLrZH7",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "google/gemma-4-31b-it",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! How can I help you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_z7kaaegl2oi",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": {
+    "effort": "none"
+  },
+  "safetyIdentifier": null,
+  "serviceTier": "priority",
+```
+
+This approach is especially useful when you want to consistently use a specific variant of a model from a particular provider.
+
+> [!TIP]
+>
+> To route to **all** endpoints of a provider (across all regions and variants), just use the base slug without a suffix. For example, `"google-vertex"` will route across all Vertex AI regions.
+
+## Requiring Providers to Support All Parameters
+
+You can restrict requests only to providers that support all parameters in your request using the `require_parameters` field.
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `require_parameters` | boolean | `false` | Only use providers that support all parameters in your request. |
+
+With the default routing strategy, providers that don't support all the [LLM parameters](https://openrouter.ai/docs/api_reference/parameters.md) specified in your request can still receive the request, but will ignore unknown parameters. When you set `require_parameters` to `true`, the request won't even be routed to that provider.
+
+### Default parameter preferences
+
+Even when `require_parameters` is `false`, a small set of parameters is used as a soft preference when choosing between providers of the same model: `tools`, the response format (`text.format` on the Responses API, `response_format` on Chat Completions, including structured outputs), and `verbosity`. If some of a model's providers support one of these parameters and others don't, the request is only routed to the supporting providers. If none of a model's providers support the parameter, the request is still routed to that model and the parameter is ignored — this preference never removes a model from your request's candidate list (such as the [`models` fallback list](https://openrouter.ai/docs/guides/routing/model-fallbacks)).
+
+### Example: Excluding providers that don't support JSON formatting
+
+For example, to only use providers that support JSON formatting:
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
+    input: 'Hello',
+    provider: {
+      requireParameters: true,
+    },
+    text: { format: { type: 'json_object' } },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
+    input: 'Hello',
+    provider: {
+      require_parameters: true,
+    },
+    text: { format: { type: 'json_object' } },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'mistralai/mistral-small-3.2-24b-instruct',
+  'input': 'Hello',
+  'provider': {
+    'require_parameters': True,
+  },
+  'text': { 'format': { 'type': 'json_object' } },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "mistralai/mistral-small-3.2-24b-instruct",
+		"input": "Hello",
+		"provider": map[string]any{
+			"require_parameters": true,
+		},
+		"text": map[string]any{
+			"format": map[string]any{"type": "json_object"},
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "input": "Hello",
+    "provider": {
+      "require_parameters": true
+    },
+    "text": { "format": { "type": "json_object" } },
+    "stream": false
+  }'
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951416,
+  "createdAt": 1794951416,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951416-5B2f8gCvAlW79MNXCV6a",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "mistralai/mistral-small-3.2-24b-instruct",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "[8]",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_w7rmzkrzw5n",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "priority",
+  "status": "completed",
+  "store": false,
+```
+
+## Requiring Providers to Comply with Data Policies
+
+You can restrict requests only to providers that comply with your data policies using the `data_collection` field.
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `data_collection` | "allow" \| "deny" | "allow" | Control whether to use providers that may store data. |
+
+* `allow`: (default) allow providers which store user data non-transiently and may train on it
+* `deny`: use only providers which do not collect user data
+
+Some model providers may log prompts, so we display them with a **Data Policy** tag on model pages. This is not a definitive source of third party data policies, but represents our best knowledge.
+
+> [!TIP]
+>
+> **Account-Wide Data Policy Filtering**
+>
+> This is also available as an account-wide setting in [your privacy settings](https://openrouter.ai/settings/privacy). You can disable third party model providers that store inputs for training.
+
+### Example: Excluding providers that don't comply with data policies
+
+To exclude providers that don't comply with your data policies, set `data_collection` to `deny`:
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
+    input: 'Hello',
+    provider: {
+      dataCollection: 'deny', // or "allow"
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
+    input: 'Hello',
+    provider: {
+      data_collection: 'deny', // or "allow"
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'mistralai/mistral-small-3.2-24b-instruct',
+  'input': 'Hello',
+  'provider': {
+    'data_collection': 'deny', # or "allow"
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "mistralai/mistral-small-3.2-24b-instruct",
+		"input": "Hello",
+		"provider": map[string]any{
+			"data_collection": "deny", // or "allow"
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "input": "Hello",
+    "provider": {
+      "data_collection": "deny"
+    },
+    "stream": false
+  }'
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951477,
+  "createdAt": 1794951476,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951476-cnH2xLWns2mq8QYmtZrR",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "mistralai/mistral-small-3.2-24b-instruct",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! 😊 How can I assist you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_22py720g68y",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "priority",
+  "status": "completed",
+  "store": false,
+```
+
+## Zero Data Retention Enforcement
+
+You can enforce Zero Data Retention (ZDR) on a per-request basis using the `zdr` parameter, ensuring your request only routes to ZDR endpoints, or to Safety Retention endpoints if your settings allow them.
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `zdr` | boolean | - | Restrict routing to only ZDR (Zero Data Retention) endpoints. |
+
+When `zdr` is set to `true`, the request will only be routed to ZDR endpoints. Safety Retention endpoints (which may retain prompts and responses from any request, only to prevent abuse, and don't train on them) are also eligible unless your privacy settings or guardrail are set to **ZDR only**. See [Allowing or excluding Safety Retention](https://openrouter.ai/docs/guides/features/zdr.md#allowing-or-excluding-safety-retention). When `zdr` is `false` or not provided, it has no effect on routing.
+
+`zdr` filters model inference endpoints. The [Advisor](https://openrouter.ai/docs/guides/features/server-tools/advisor.md) and [Subagent](https://openrouter.ai/docs/guides/features/server-tools/subagent.md) server tools forward your `provider` preferences, including `zdr`, to their inner generations. Tool backends are not filtered by `zdr`. See [Privacy and regional availability](https://openrouter.ai/docs/guides/features/server-tools.md#privacy-and-regional-availability).
+
+> [!TIP]
+>
+> **Per-Model-Group and Account-Wide ZDR**
+>
+> ZDR can also be enforced per model group (Anthropic, OpenAI, Google, SpaceXSI, and all other models) in your [privacy settings](https://openrouter.ai/settings/privacy) or via [guardrails](https://openrouter.ai/docs/guides/features/guardrails.md). The per-request `zdr` parameter operates as an "OR" with your account-wide and guardrail ZDR settings — if any of them is enabled, ZDR enforcement is applied. The request-level parameter can only ensure ZDR is enabled, not override account-wide or guardrail enforcement. See [Zero Data Retention](https://openrouter.ai/docs/guides/features/zdr.md#per-model-group-zdr-enforcement) for details.
+
+### Example: Enforcing ZDR for a specific request
+
+To ensure a request only uses ZDR endpoints, set `zdr` to `true`:
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'openai/gpt-5-mini',
+    input: 'Hello',
+    provider: {
+      zdr: true,
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'openai/gpt-5-mini',
+    input: 'Hello',
+    provider: {
+      zdr: true,
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'openai/gpt-5-mini',
+  'input': 'Hello',
+  'provider': {
+    'zdr': True,
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "openai/gpt-5-mini",
+		"input": "Hello",
+		"provider": map[string]any{
+			"zdr": true,
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-5-mini",
+    "input": "Hello",
+    "provider": {
+      "zdr": true
+    },
+    "stream": false
+  }'
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951536,
+  "createdAt": 1794951534,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951534-RtYQDyw7jquxxRwKLOI4",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "openai/gpt-5-mini",
+  "object": "response",
+  "output": [
+    {
+      "encryptedContent": "gAAAAABq_Mlwm1KnJu5R2NnTh-4PU3IN-rIDaqaxKwmmMohzX0RX5cERP97zqkHROBxBwcn9brCJAylxP0EMwrGuoC61Aeg9QxK1Q7rq9XYxRNCbUJT4bwskZ4KkgHuW4MLUWel8h7T9ZDLx54NVY6X3f6JOz09Z60_r8TdZppYXiyThDrlJaNW7Rkta2nXWnOEuAAgkmNfXmE3qqbkWBmuTNkXRX-mAQUeaFwqJHaQXq5wQR55S-rp17GCdocy7FhUrvPFl4h3JLVHWeBbhT1LYw-4Mi-fJf1_ODOtD62QFQo5jc927MZeXzRkzBucPqGlJPYhAmIlY8ejlh9CZ7c4FFs2xt8EB1xzayj5NvhoPucJWKYYRjzQp-HoWEHe2mcrt5j2-D_CKOLtPQwHmQTY6Z1XZK7jthEaUah4GrkotJcNSOWGosJlHXhle_1ZoPDxcgwKT9-IjTQaPuadZ0aIUyGaOIrEj_ZDe18D40Jc9JUhvuL4Q5qmCjYALmZOtZONh3ZuskTCrV66nY1MKhouad4vqQrtHvlZRdOAuLb8aLB20PvykkEtdSjLVOygeFt-QD0hZaGHI1MY5hvPFujBu8C5otlfmoc1se1Krj1aK8DChqpy1PtGwSpSyTeN1SIIEiuVtkdQJb73vLlJElP03IFXKWjYncGUeuYJEcu0DfffiEWA3md0SqV0z1IxMNxeudXFVKIbTJkQ1sPgacwzQtLJTtlQCmHI7s_l08DB3V9nkDf5wahc_7G-jzdt5aoLFZdUKjMQLSAuTncfsWofLwtFIL0QkC5lqfsUnvtUZ9h2nfXcBRxtduo8zZoi6M1ywMtkyCzkEqdJ3ncPPeX7o7aPfOmHuCdH_e1J6Dcd73q0aEIeTlrc6jOb-w_fNGnZ_dOI1XQrU65s6Q3PaawkZMmnhVTW3fr2AcX7aDYEVUIqBtPjJyeuaKRwexVttuoD3jlBV8nBOp_8SdHZF46mRC30zI17E2V3DdgHDC7vGACd8z8IZGET5lgVdVVAjL-3zGCFtr4c4YT5wJki9l7p5vdaHaiKlQ8ykhu0hpXHhWjGiyb76bZbyb-UAfWPQLEoXgt3T0vHq66wktgwEPgRpa5wcv08U06dC3DfaS3tVXTo0NKR-4l9oJ_VyGO1xIoJFQ4lod5R4bkNbXi2aP73GmF6zd4ypmRMLpDzZQrgRk6Wo_fO8_2f5lGZgJb8MgKxnsAMe61omIaTmQSt_gdzOL8132KxCs8FiITj5tjJINX_snxcluN-Tcnc2SBbWQNamOo-zWvF2jnaFqGLvA02tzNpxZPK3TE0DGF4M7Ha0eqsd-jBf9LPw7tWvSy7a8t_hJPOtEK1QgNbAks9nPxIi08i4tVytuLbo3a5mgq2QNuW3jMyg4pRjrmSGauXmFBZaJKgoAocS2vfPxEVr3q5G9g8--8Kr1-C5958quMv8SI5vSLKCiL422bfvjI50IF2LBGeIdbhgvO0D1JR3uPD-YmcSuUcfrqnbb-x1-aZ3awXxspbQGED7mhrrmp4-9W8vXzm2fCRDDnKeBEWKyZN-RJmWihl50pKCOCsiY0cP5xk9mINSRfwyHQUa-ha_oKVetmuD0PNJMDkokq5VPYYj9DtiLlSRvsH9bI0pEndDCcIx620vClr52Q-k-V6-KPmAJEBuNs-ymDHAtYwSm7m1wUI3wy41SyPwPvwajSrGyCVIkn-klXeKcy2MAA9_SMYHbx4fuIx7ZLbAvvTMLtAMBYgFUXrpkd9ByApjTy0I8U0CCco928WxbA6VS4eYWOMdxVO_2fPG3Bfd4U5aefxqO7B2hcZReHyd6nzg1oCsoqttTzSUy0JX9RIjyld3o0fqzDTZugGEtpG9AYjwAKkuz4tUzLn4SiDAxizgAb7Rf-DOJJRcxgXpzA6dq63xAQiRVG-u8Txykx3KGegNkxA36aEMzdYa5_cMa7WIL7J-EVHbW0sDzPwyarfo8kyjIQp3ibYIqI-bypqCkd1tF8Hvh-A8elEHTBQ37RdxHQQs5T9HeZt73SKlIHMh_gilPZCZet8Wlb_ReArK-GA2BynbAaDRJKz1Gm4GPiCcxXdvcpHlsnfECJDVGfvsX77bmTQOA_mgm5KMQzkp__G4OQf3zLjUtcFVA-d_QgnvC2EO2olAbfEaBdIw4PUftUITuQ7ewuf7GBmkeAcQTlpy4BkS4-Ishwf0ZlKF3k_z92Wm_G3tMOAZJDs=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LW1pbmktMjAyNS0wOC0wN3xhenVyZSJ9",
+      "id": "rs_0634e16552cd4228016afcc96ecea88193ae78b91ed1da9a0f",
+      "status": "completed",
+      "summary": [
+        {
+          "text": "**Greeting warmly**\n\nThe user just said \"Hello,\" so it's clear they probably expect a friendly response back. I think it makes sense to keep it concise and welcoming. I'll definitely ask how I can help or if there's anything specific on their mind. Maybe I can also suggest a few examples of services I offer, but I want to ensure I don't overwhelm them. So, I'll aim for a warm and inviting reply, ready to assist!",
+          "type": "summary_text"
+        }
+      ],
+      "type": "reasoning",
+      "format": "azure-openai-responses-v1"
+    },
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello — how can I help you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_plsibnjir0l",
+      "role": "assistant",
+      "status": "completed",
+```
+
+This is useful for customers who don't want to globally enforce ZDR but need to ensure specific requests only route to ZDR endpoints.
+
+## Distillable Text Enforcement
+
+You can enforce distillable text filtering on a per-request basis using the `enforce_distillable_text` parameter, ensuring your request only routes to models where the author has allowed text distillation.
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `enforce_distillable_text` | boolean | - | Restrict routing to only models that allow text distillation. |
+
+When `enforce_distillable_text` is set to `true`, the request will only be routed to models where the author has explicitly enabled text distillation. When `enforce_distillable_text` is `false` or not provided, it has no effect on routing.
+
+This parameter is useful for applications that need to ensure their requests only use models that allow text distillation for training purposes, such as when building datasets for model fine-tuning or distillation workflows.
+
+### Example: Enforcing distillable text for a specific request
+
+To ensure a request only uses models that allow text distillation, set `enforce_distillable_text` to `true`:
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'meta-llama/llama-3.3-70b-instruct',
+    input: 'Hello',
+    provider: {
+      enforceDistillableText: true,
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'meta-llama/llama-3.3-70b-instruct',
+    input: 'Hello',
+    provider: {
+      enforce_distillable_text: true,
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'meta-llama/llama-3.3-70b-instruct',
+  'input': 'Hello',
+  'provider': {
+    'enforce_distillable_text': True,
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "meta-llama/llama-3.3-70b-instruct",
+		"input": "Hello",
+		"provider": map[string]any{
+			"enforce_distillable_text": true,
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "input": "Hello",
+    "provider": {
+      "enforce_distillable_text": true
+    },
+    "stream": false
+  }'
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951607,
+  "createdAt": 1794951607,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951607-rKH8TsYOUYCwFvjrDqZF",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "meta-llama/llama-3.3-70b-instruct",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! How can I assist you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_heier9ivero",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "auto",
+  "status": "completed",
+  "store": false,
+```
+
+## Disabling Fallbacks
+
+To stop OpenRouter from falling back to other providers, you can disable fallbacks. Without `order`, the request is served only by the top-ranked provider.
+
+This is combined with the `order` field from [Ordering Specific Providers](#ordering-specific-providers) to restrict the providers that OpenRouter will prioritize to just your chosen list.
+
+> [!NOTE]
+>
+> When you disable fallbacks and set a non-empty `order`, private endpoints you have access to stay eligible even if their provider isn't in `order`. OpenRouter tries the providers in `order` first, then your private endpoints, and no other public providers. If your organization has access to a private model, every endpoint of that model counts as a private endpoint, so all of them stay eligible. Without `order`, disabling fallbacks keeps only the top-ranked endpoint, and private endpoints get no exception. For details, see [Private endpoints and disabled fallbacks](https://openrouter.ai/docs/guides/routing/private-endpoints.md#private-endpoints-and-disabled-fallbacks).
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'meta-llama/llama-3.3-70b-instruct',
+    input: 'Hello',
+    provider: {
+      allowFallbacks: false,
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'meta-llama/llama-3.3-70b-instruct',
+    input: 'Hello',
+    provider: {
+      allow_fallbacks: false,
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'meta-llama/llama-3.3-70b-instruct',
+  'input': 'Hello',
+  'provider': {
+    'allow_fallbacks': False,
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "meta-llama/llama-3.3-70b-instruct",
+		"input": "Hello",
+		"provider": map[string]any{
+			"allow_fallbacks": false,
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "input": "Hello",
+    "provider": {
+      "allow_fallbacks": false
+    },
+    "stream": false
+  }'
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951671,
+  "createdAt": 1794951667,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951667-lXwLyLTysJvG0OAlgSSB",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "meta-llama/llama-3.3-70b-instruct",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! It's nice to meet you. Is there something I can help you with or would you like to chat?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_cfj8o5y1kte",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "default",
+  "status": "completed",
+  "store": false,
+```
+
+## Allowing Only Specific Providers
+
+You can allow only specific providers for a request by setting the `only` field in the `provider` object.
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `only` | string\[] | - | List of provider slugs to allow for this request. |
+
+If two or more of the allowed providers can serve the model, [default routing](#default-routing) picks among them.
+
+> [!WARNING]
+>
+> Only allowing some providers may significantly reduce fallback options and limit request recovery.
+
+> [!TIP]
+>
+> **Account-Wide Allowed Providers**
+>
+> You can allow providers for all account requests in your [privacy settings](https://openrouter.ai/settings/privacy). This configuration applies to all API requests and chatroom messages.
+>
+> Note that when you allow providers for a specific request, both restrictions apply: your account-wide allowed providers act as the ceiling, and the request's `only` list narrows within it. If no provider satisfies both, the request fails with a 404.
+
+### Example: Allowing Azure for a request calling GPT-5 mini
+
+Here's an example that will only use Azure for a request calling GPT-5 mini:
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'openai/gpt-5-mini',
+    input: 'Hello',
+    provider: {
+      only: ['azure'],
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'openai/gpt-5-mini',
+    input: 'Hello',
+    provider: {
+      only: ['azure'],
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'openai/gpt-5-mini',
+  'input': 'Hello',
+  'provider': {
+    'only': ['azure'],
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "openai/gpt-5-mini",
+		"input": "Hello",
+		"provider": map[string]any{
+			"only": []string{"azure"},
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-5-mini",
+    "input": "Hello",
+    "provider": {
+      "only": ["azure"]
+    },
+    "stream": false
+  }'
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951737,
+  "createdAt": 1794951733,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951733-GjGodQo2XN0h0miAnccg",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "openai/gpt-5-mini",
+  "object": "response",
+  "output": [
+    {
+      "encryptedContent": "gAAAAABq_Mo5O_MfyZvZgpMw8OynMYnx43bTBFXq_7VtIuUTMH3Xmn0-ToVVRpbOXyWdPzUhzfG91b21F9dc8KFnVafVcKKdbRXbVJQhN_UHylz3LY0txUZgMPpcJkHc5cRmqTHsax17lPET_FebSV8sq4gALOaZkx4rk3PCeOy7dLJFbenW0sKWB6fSdGL1FXPRHkVax0z2ejV4VwNvJO9Sa-bLAEqZL0BHNrlzskm4j4Lm3v4tfhjvvgSzkGhOa1mwvJvsE3SitUqWrE3HmNk0kMDqpb_VgIiqKlhIAIbvT7dAtZ1qHBM5BmoTvRYLHAjatuLnp_BOzKhlxk-VF2pbyO4KqBa11FWXkm9MqUpGHMz6Cf0o4TTi_FJNnG2wpp0GPZ5VWgHwxc-Kup7pa9zxse-uXPzLnjwxfxX8MS4aR5CcbePe3HCBYS-JKpFBYir5gnZ6Fw9BbkC_kNQ_adqf9i0dL17zGF9_Z-rHW-m5NFbVbEure_WafEWQB4Yhb8VUh1yWZFqD_9Eqxwl3nshYo27ZWN5N5xtLt6g9PUQugP0HxYb8ccNE4IEVuom_eTU0xW8XIGg3u_WcKPk-SnRRiCIxH5pzdk8WB_cA9tiJtBwyLcp4zIS3fR9gHc7auMJ13uWgqDDJMb8hZBLRkRJYV8fqqa7zN1ZSFjjp7OUQ-WE5IUAYXYVX5F4mKOSz1gnyy-LUyjak1SbLNBwozJgS3ueWEDOSAFxmKnfNltzCIXlbeDiTLaTt3Cu-hp8onn67JFw-gtuDlLD2dEoDTCZyqOMiY3urqtEdlREz-tZGEPt_E4rDQWKzdRXB8qeDodDCKLsbshVOTtmsgiGaGpiRddHIdY7O-GZl-HFxYnO0PImsKi1FxnU1DjTVpsHQQC-8Od1eV9ZzdzMQEltTY_w5BigQbrgcSZsig6NsVhAjlJ7YCJ-yZaaJpAYfwErnZAxFVJqv-6LSoPRDOIoHEIUkmbsR2fu5VLPJAxkCCY40vVZW6h3iE3-KzexzhtArvVm_EpJ3iqeihVqBxZ3KIReAGSyFnK3Bok0LGq9iNiuj56lbBgu7W-GWBlU6qbjuS2t_ET6Wyciy7od1BlNyg0hoBD5Um6SjiEJbk7L5P3IFYBOiiMfDB3e-iPpDi6IxSdoTm_wPONX-HXAxfZuvy-tyPHv4IYHXwtMikP1Fmj2_81HCiC7fhYL5TP4euT_8N1YP47hQlHdasSpLaIX_5Ppd2QrxHUtrWJ3VijjB_TrNz53-eIMc1W6ob9yiurHjWsQDwvI3bntVUpdIy1E_Yhvtt4YxucA301d-cQ2LBFa3r65GiMGo2L9cMOpo4Dum3moMYAYDRCD5uGJjy6K-FcEbJATiolsLQPDddIq1N_P55WWGnFj5UnfjQNIuJ4tAq-pU_K9XHHeouYptmSTwRm6We2dggKhfI-oc9ZiSBhC0j5FMEP-u8zZg7VO0I2ApxEMv1K0krzIo1fpvfJtqqW7SRnZzB6v64kieJli9rd7tal0NmrBMVv7fzMZznnokE6q5GoSwNze4_b6DH-gwGHJZQyn3jh4nXc1rYM9_bffjicT_2a4__deQEaqJ7TVI9PzYX6WxYeDaa4aKMQNgphYl0NWGMSvdebk0VxnTcVLCDsEJ4TLjb89GQwvNSk5TyPQUnzsGvnu4st5aoXVHe_5jfKiP3US4I8Lzu-ZkQ9LniHV1wHBTbqUfQJBFU29Xi4GQBDum4Bt18NBOm2AFxUFAWXrEoADEOOZ49wlUjK77DlkNyt5oGNwWIPglvn1aWpFQhvVTCHSFvX9kdPbW5vmdG7FkDlhgF5M1d3CpqkHUSI-UeWH9gCqVZ2Nbx1az6qN0cdPa1yHjNftVpQtHOWPbKXqGcbnUnoF-85cd6S4cqJasIIs_zholJIKIesrihmCMtSLKavWD_EkQouz-BbPNHX_07gXfCIvdSNcR0sjyWyLLTtAOyIk4jWfJlNk37CyGhHbSW_9RuKZRsmO3UjxVhsDFrscnlzZirCm5StY_2j4RjQtHT1NoGfrmpEPW8j3Ss2UANOBk-uiaKfKDpzddCmrxhitFOQ0JNzX_tSXT5cA2ltBzOvYMy5AOhxYkl7WljGcRWraVkWu65GYA9Od2bappyw4SuvsSqh1hwdcGwdfBIQxskns0pnwLH44rPKewpeWm2RudlK01ybgPpIQLv66QqZRRLwCKjYmd1JyXRtehQZt-WY9kiPiHBJ6bOZShAwKvAtitsEIc65HxBz7Zj_a0Z8uf8UslCkbJrkSFdP2xaBKaJbUyLctwKmSmhi6pmILRAgKRvTWcEUSPyRUtKmOr3uy7Tiplc3sVbLa1_zxbQkmiVNxCPy-xBmGGyk_-n7vhnNydZsR0wnE80Zgri-R7PjwsITSm0xoYFXm9uy6iApJ3hebykxH0ujTNIDbQ4XqBuaaw1wtxVwIYvmPjBBqF81KaK-DCzRE-2M8EgIYZMGqt589HnsNN_NqZaVLRtSaorAI8lascmT2mxLOGUx8Z3RFNtpmFAiab5XBHG7jfM07k-dW6erg2nb48YmKQ0A4cmMCGf0fDh0lVfMkicf5jzTSvtaz5HqHQaIJhjQsu6LMafL35WLQX5k556q78goZPpvSDQcAqC0Gtsdpub1HLv9o34UZP1_XdHCiluikTeccH86E6cu_6FUkN2BuKtqnD6sl5lqmOxRxO9x84VbAZzGUks_5k0VDgB63499yaEMVk84uEdWtB9zGXw8hYvYLwN0KmtvajQe9xbpAvW90dLB0EZEfJOZQk8qR1qI3Ab5Kr1yWSpy0J99K-zA7MUUHfIfZb3e3tzwZj0yQQWUJx96ZYQLx6nlU1TMd0HBF-lNmsQW4_CSuUR7LtygaI0YsqPZU2BX6DnEBlUeI25XBnaXqRmd0W1wKoTasMb3Sv9G6M295DSKdVMZM_Fvr4X4dYYECaDngdvNJP2SAv_G2Lzn2oonBnclrHfY98allnIhTk0hvOwxwy9imCaZu76wQ4vEUip-hP4ldC-2uAdZqMxmMRYvrjp9IDUP-SaRJtkfdy1hOfQEtpA9LIq591i-xEssB-g_HEuUlrkoTZGbgoPeKhYGP0VlEItvBXSUlnTAuOx-14lAgGjW9ppLShbYVBSyzEpFCNsbTiaVKmQ4f3LHz47X-l2Q7wMTD6en5gQ6rI7occy4Sr66T10eIqCF7NiweHWvVWelqMHYxjxFV9KzVkayukXpNUXt4YOCjV8LuawKuP1OSMMMw9yfELrmoEWlOfMGSTKA1lQcJ_X-8-3jclylrNHQWWTOx7zdjYv9NtHEQfnCXGMJoKhtLK9LMsPIjC4_IUeUnXTnTzf5OSX-13RQt4kAk1csu6M78zPd23ft60osGVkAhrVu4p3zLl6lvJJNzIpMcC61NgCVB555tPfhQEluUnDUrOQoGmm4hohh_W_k3z5XR-nATicMczQff5dqBKu59ypa86MQKJiRorZviak-uZZQeH-7zwjEb-zhsdo0mUfvTnhPYXrUBOKe162ONy_JwTKQ7-2BD-NEg0ZWM4SyhRKe-2MhNwkezhwImS45MLtk2cgGApkwIl_1yIENMRU72VtA9ATl27et25Ub2I4FpuFJ-IwkxwiFOQFLoAi5slyudXG-s68Gb8NpucYRbW8nVzxASs31nDwlfZqgbDXkzwJ0rdFizK-Y87Vmui2KkHfyMbesNWbFtzvXR81U2mKKcm7vmufE_E6iBCwdvvanru3nJbSzAtzuZ7a62d3v1gs35WGVdTvXUNC_Sw84lLx5ShVvfNsBrq5EVr1tRhOrq7Y_qa9VCVv25uedWdeF4m4StpMnEKwHMiwCNDVl0g2DiEPAquL_hn6GnCylquE-wPFjq3lni2dvT-8G5WgoWzple4MOP7WkmuOhA60EP_fAjK1uYc1cPo-vtud5RogxhWYIPvPxcv58yfdlc8TB8uyJRtJ_WqP0oAvmYFKEWVjWJNUL6IpIftRoP4HDsPh8w_zVF6ktBMuSntaW-0i6uTpVo-tJ8cnbAlCakt7GaT2_IHRaowte9zNv2oK4aYmsFqiiqmpydY8O7yKEcBpGy8MHp_5rm88dH0-gW5W1TQH9MzvxmktwiR2pPzol9l85zeoKGGre8uXu55bBBQy1EYbY1ZRFf7jgJpFqkBc2ZFcd4l1wR8bTP82hUucw7zNW4mRlZ9t_2yPwG09VKQvkJNdJ1VP6T3LzhbEnZY.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LW1pbmktMjAyNS0wOC0wN3xhenVyZSJ9",
+      "id": "rs_0e77b609bff7db25016afcca35d9e881959e2057b74fb8706c",
+      "status": "completed",
+      "summary": [
+        {
+          "text": "**Responding to a greeting**\n\nThe user just said \"Hello,\" so they're likely expecting a friendly reply. I should keep my response concise and open, perhaps offering help options. I could ask how I can assist them or if they have something specific in mind. Keeping a helpful tone, I’ll provide example tasks like answering questions, writing, coding, summarizing, translating, planning, troubleshooting, or even math. I could respond with: \"Hello! I'm ChatGPT. How can I assist you today?\"**Offering assistance options**\n\nI can handle various tasks like answering questions, writing or editing text, debugging code, creating plans, summarizing, translating, or brainstorming ideas. It's a good range of options to provide. Now, I'm wondering what the user specifically needs. I could phrase this in a friendly way to make them feel comfortable asking for help. So, I might ask, \"What do you need assistance with today?\" That should keep things open and inviting!",
+          "type": "summary_text"
+        }
+      ],
+      "type": "reasoning",
+      "format": "azure-openai-responses-v1"
+    },
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! I'm ChatGPT. How can I help you today? I can answer questions, write or edit text, debug code, summarize or translate, plan projects, brainstorm ideas, and more—what would you like?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_pe9l9bou9yf",
+      "role": "assistant",
+      "status": "completed",
+```
+
+## Ignoring Providers
+
+You can ignore providers for a request by setting the `ignore` field in the `provider` object.
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `ignore` | string\[] | - | List of provider slugs to skip for this request. |
+
+If two or more providers remain, [default routing](#default-routing) picks among them.
+
+> [!WARNING]
+>
+> Ignoring multiple providers may significantly reduce fallback options and limit request recovery.
+
+> [!TIP]
+>
+> **Account-Wide Ignored Providers**
+>
+> You can ignore providers for all account requests in your [privacy settings](https://openrouter.ai/settings/privacy). This configuration applies to all API requests and chatroom messages.
+>
+> Note that when you ignore providers for a specific request, the list of ignored providers is merged with your account-wide ignored providers.
+
+### Example: Ignoring DeepInfra for a request calling Llama 3.3 70b
+
+Here's an example that will ignore DeepInfra for a request calling Llama 3.3 70b:
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'meta-llama/llama-3.3-70b-instruct',
+    input: 'Hello',
+    provider: {
+      ignore: ['deepinfra'],
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'meta-llama/llama-3.3-70b-instruct',
+    input: 'Hello',
+    provider: {
+      ignore: ['deepinfra'],
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'meta-llama/llama-3.3-70b-instruct',
+  'input': 'Hello',
+  'provider': {
+    'ignore': ['deepinfra'],
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "meta-llama/llama-3.3-70b-instruct",
+		"input": "Hello",
+		"provider": map[string]any{
+			"ignore": []string{"deepinfra"},
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "input": "Hello",
+    "provider": {
+      "ignore": ["deepinfra"]
+    },
+    "stream": false
+  }'
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951808,
+  "createdAt": 1794951808,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951808-VSzshPhGZBbKftfzdakG",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "meta-llama/llama-3.3-70b-instruct",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! It's nice to meet you. Is there something I can help you with or would you like to chat?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_irbxwjl32fh",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "auto",
+  "status": "completed",
+  "store": false,
+```
+
+## Quantization
+
+Quantization reduces model size and computational requirements while aiming to preserve performance. Most LLMs today use FP16 or BF16 for training and inference, cutting memory requirements in half compared to FP32. Some optimizations use FP8 or quantization to reduce size further (e.g., INT8, INT4).
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `quantizations` | string\[] | - | List of quantization levels to filter by (e.g. `["int4", "int8"]`). [Learn more](#quantization) |
+
+> [!WARNING]
+>
+> Quantized models may exhibit degraded performance for certain prompts, depending on the method used.
+
+Providers can support various quantization levels for open-weight models.
+
+### Quantization Levels
+
+By default, requests use [default routing](#default-routing) across all available providers. To filter providers by quantization level, specify the `quantizations` field in the `provider` parameter with the following values:
+
+* `int4`: Integer (4 bit)
+* `int8`: Integer (8 bit)
+* `fp4`: Floating point (4 bit), including `mxfp4` or `nvfp4`
+* `mxfp4`: Microscaling floating point (4 bit)
+* `nvfp4`: NVIDIA floating point (4 bit)
+* `fp6`: Floating point (6 bit)
+* `fp8`: Floating point (8 bit), including `mxfp8`
+* `mxfp8`: Microscaling floating point (8 bit)
+* `fp16`: Floating point (16 bit)
+* `bf16`: Brain floating point (16 bit)
+* `fp32`: Floating point (32 bit)
+* `unknown`: Unknown
+
+### Example: Requesting FP8 Quantization
+
+Here's an example that will only use providers that support FP8 quantization:
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: 'meta-llama/llama-3.1-8b-instruct',
+    input: 'Hello',
+    provider: {
+      quantizations: ['fp8'],
+    },
+    stream: false,
+  },
+});
+
+console.log(JSON.stringify(response, null, 2));
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'HTTP-Referer': '<YOUR_SITE_URL>',
+    'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'meta-llama/llama-3.1-8b-instruct',
+    input: 'Hello',
+    provider: {
+      quantizations: ['fp8'],
+    },
+  }),
+});
+
+const data = await response.json();
+console.log(JSON.stringify(data, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'meta-llama/llama-3.1-8b-instruct',
+  'input': 'Hello',
+  'provider': {
+    'quantizations': ['fp8'],
+  },
+})
+
+print(json.dumps(response.json(), indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "meta-llama/llama-3.1-8b-instruct",
+		"input": "Hello",
+		"provider": map[string]any{
+			"quantizations": []string{"fp8"},
+		},
+		"stream": false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	data, _ := io.ReadAll(resp.Body)
+	var out bytes.Buffer
+	if err := json.Indent(&out, data, "", "  "); err != nil {
+		log.Fatalf("%s: %s", resp.Status, data)
+	}
+	fmt.Println(out.String())
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "meta-llama/llama-3.1-8b-instruct",
+    "input": "Hello",
+    "provider": {
+      "quantizations": ["fp8"]
+    },
+    "stream": false
+  }'
+
+```
+
+```text title="Output" theme={null}
+{
+  "background": false,
+  "completedAt": 1794951859,
+  "createdAt": 1794951858,
+  "error": null,
+  "frequencyPenalty": 0,
+  "id": "gen-1794951858-IOYr7dlQiG70n0p5RqQf",
+  "incompleteDetails": null,
+  "instructions": null,
+  "maxOutputTokens": null,
+  "maxToolCalls": null,
+  "metadata": {},
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "Hello! How can I assist you today?",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_tmp_9fo2zhr2t47",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallelToolCalls": true,
+  "presencePenalty": 0,
+  "previousResponseId": null,
+  "promptCacheKey": null,
+  "promptCacheOptions": null,
+  "reasoning": null,
+  "safetyIdentifier": null,
+  "serviceTier": "default",
+  "status": "completed",
+  "store": false,
+```
+
+### Max Price
+
+To filter providers by price, specify the `max_price` field in the `provider` parameter with a JSON object specifying the highest provider pricing you will accept.
+
+For example, the value `{"prompt": 1, "completion": 2}` will route to any provider with a price of `<= $1/m` prompt tokens, and `<= $2/m` completion tokens or less.
+
+Some providers support per request pricing, in which case you can use the `request` attribute of max\_price. Lastly, `image` is also available, which specifies the max price per image you will accept.
+
+Practically, this field is often combined with a provider `sort` to express, for example, "Use the provider with the highest throughput, as long as it doesn't cost more than `$x/m` tokens."
+
+## Provider-Specific Headers
+
+Some providers support beta features that can be enabled through special headers. OpenRouter allows you to pass through certain provider-specific beta headers when making requests.
+
+### Anthropic Beta Features
+
+When using Anthropic models (Claude), you can request specific beta features by including the `x-anthropic-beta` header in your request. OpenRouter will pass through supported beta features to Anthropic.
+
+#### Supported Beta Features
+
+| Feature | Header Value | Description |
+| - | - | - |
+| Interleaved Thinking | `interleaved-thinking-2025-05-14` | Allows Claude's thinking/reasoning to be interleaved with regular output, rather than appearing as a single block |
+| Structured Outputs | `structured-outputs-2025-11-13` | Enables the strict tool use feature for supported Claude models, validating tool parameters against your schema to ensure correctly-typed arguments |
+
+> [!NOTE]
+>
+> OpenRouter manages some Anthropic features automatically:
+>
+> * **Prompt caching and extended context** are enabled based on model capabilities
+> * **Structured outputs for JSON schema response format** (`text.format.type: "json_schema"`, or `response_format.type: "json_schema"` on Chat Completions) — the header is automatically applied
+> * **Fine-grained tool streaming** — for every streamed request (`stream: true`) that includes user-defined tools, OpenRouter sets `eager_input_streaming: true` on each tool so Anthropic emits tool arguments as a sequence of incremental chunks rather than buffering them. This matches the streaming behavior already exposed by other providers. See [Anthropic's fine-grained tool streaming docs](https://platform.claude.com/docs/en/agents-and-tools/tool-use/fine-grained-tool-streaming) for details.
+>
+> For **strict tool use** (`strict: true` on tools), you must explicitly pass the `structured-outputs-2025-11-13` header. Without this header, OpenRouter will strip the `strict` field and route normally.
+
+OpenRouter keeps an allowlist of other `x-anthropic-beta` values for each provider and forwards only the values on the list for the provider that serves the request. Providers that serve Anthropic's Messages API directly have the longest list, and Google Vertex and Amazon Bedrock receive only the values they accept. OpenRouter drops every other value, and some values it recognizes are withheld on purpose.
+
+#### Example: Enabling Interleaved Thinking
+
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send(
+  {
+    responsesRequest: {
+      model: 'anthropic/claude-sonnet-4.5',
+      input: 'Solve this step by step: What is 15% of 240?',
+      stream: true,
+    },
+  },
+  {
+    headers: {
+      'x-anthropic-beta': 'interleaved-thinking-2025-05-14',
+    },
+  },
+);
+
+for await (const event of response) {
+  if (event.type === 'response.output_text.delta') {
+    process.stdout.write(event.delta);
+  }
+}
+console.log();
+
+```
+
+```typescript title="TypeScript (fetch)" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+    'Content-Type': 'application/json',
+    'x-anthropic-beta': 'interleaved-thinking-2025-05-14',
+  },
+  body: JSON.stringify({
+    model: 'anthropic/claude-sonnet-4.5',
+    input: 'Solve this step by step: What is 15% of 240?',
+    stream: true,
+  }),
+});
+
+if (!response.ok) {
+  throw new Error(`${response.status}: ${await response.text()}`);
+}
+
+const reader = response.body!.getReader();
+const decoder = new TextDecoder();
+let buffer = '';
+
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  buffer += decoder.decode(value, { stream: true });
+  const lines = buffer.split('\n');
+  buffer = lines.pop() ?? '';
+  for (const line of lines) {
+    if (!line.startsWith('data: ')) continue;
+    const data = line.slice(6).trim();
+    if (data === '[DONE]') continue;
+    try {
+      const event = JSON.parse(data);
+      if (event.type === 'response.output_text.delta') {
+        process.stdout.write(event.delta);
+      }
+    } catch {
+      // ignore non-JSON lines
+    }
+  }
+}
+console.log();
+
+```
+
+```python title="Python" lines theme={null}
+import requests
+import json
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'Content-Type': 'application/json',
+  'x-anthropic-beta': 'interleaved-thinking-2025-05-14',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/responses', headers=headers, json={
+  'model': 'anthropic/claude-sonnet-4.5',
+  'input': 'Solve this step by step: What is 15% of 240?',
+  'stream': True,
+}, stream=True)
+response.raise_for_status()
+
+for line in response.iter_lines(decode_unicode=True):
+  if not line or not line.startswith('data: '):
+    continue
+  data = line[len('data: '):].strip()
+  if data == '[DONE]':
+    continue
+  try:
+    event = json.loads(data)
+  except json.JSONDecodeError:
+    continue
+  if event.get('type') == 'response.output_text.delta':
+    print(event.get('delta', ''), end='', flush=True)
+print()
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bufio"
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"strings"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model":  "anthropic/claude-sonnet-4.5",
+		"input":  "Solve this step by step: What is 15% of 240?",
+		"stream": true,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("x-anthropic-beta", "interleaved-thinking-2025-05-14")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		log.Fatal(resp.Status)
+	}
+
+	scanner := bufio.NewScanner(resp.Body)
+	scanner.Buffer(make([]byte, 1024*1024), 1024*1024)
+	for scanner.Scan() {
+		data, ok := strings.CutPrefix(scanner.Text(), "data: ")
+		if !ok || data == "[DONE]" {
+			continue
+		}
+		var event struct {
+			Type  string `json:"type"`
+			Delta string `json:"delta"`
+		}
+		if json.Unmarshal([]byte(data), &event) == nil && event.Type == "response.output_text.delta" {
+			fmt.Print(event.Delta)
+		}
+	}
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println()
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl -sN https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "x-anthropic-beta: interleaved-thinking-2025-05-14" \
+  -d '{
+    "model": "anthropic/claude-sonnet-4.5",
+    "input": "Solve this step by step: What is 15% of 240?",
+    "stream": true
+  }' | jq -Rj 'select(startswith("data: ")) | .[6:] | fromjson? | select(.type == "response.output_text.delta") | .delta'
+echo
+
+```
+
+```text title="Output" theme={null}
+# Finding 15% of 240
+
+## Method 1: Using decimal conversion
+
+**Step 1:** Convert the percentage to a decimal
+- 15% = 15 ÷ 100 = 0.15
+
+**Step 2:** Multiply the decimal by the number
+- 0.15 × 240 = 36
+
+## Method 2: Using fraction form
+
+**Step 1:** Convert percentage to a fraction
+- 15% = 15/100
+
+**Step 2:** Multiply the fraction by the number
+- (15/100) × 240 = (15 × 240) ÷ 100
+
+**Step 3:** Calculate
+- 3,600 ÷ 100 = 36
+
+## Answer: **36**
+
+15% of 240 is **36**
+```
+
+#### Combining Multiple Beta Features
+
+You can enable multiple beta features by separating them with commas:
+
+```bash lines theme={null}
+x-anthropic-beta: interleaved-thinking-2025-05-14,structured-outputs-2025-11-13
+```
+
+> [!WARNING]
+>
+> Beta features are experimental and may change or be deprecated by Anthropic. Check [Anthropic's documentation](https://docs.anthropic.com/en/api/beta-features) for the latest information on available beta features.
+
+## Terms of Service
+
+You can view the terms of service for each provider below. You may not violate the terms of service or policies of third-party providers that power the models on OpenRouter.

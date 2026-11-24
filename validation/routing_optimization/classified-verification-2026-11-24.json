@@ -1,0 +1,79 @@
+{
+  "verified_at": "2026-11-24T06:39:19.119718+00:00",
+  "full_suite": {
+    "command": ".venv/bin/pytest -q",
+    "passed": 354
+  },
+  "new_classification_and_calibration_tests": 33,
+  "classified_browser": {
+    "mode": "replay",
+    "model_calls": 0,
+    "bedrock_cases": 4,
+    "local_classifiers": 3,
+    "no_route_requirement_checked": true,
+    "category_filter_checked": true,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "forbidden_calls": []
+  },
+  "legacy_browser_regression": [
+    {
+      "live": false,
+      "cases": 4,
+      "route_steps": 24,
+      "strategy": "original",
+      "router_group": "existing",
+      "local_frontend_override": false,
+      "executed_targets": false,
+      "target_results": {},
+      "browser_errors": [],
+      "gpu_mutations": [],
+      "mobile_overflow": false
+    },
+    {
+      "live": false,
+      "cases": 4,
+      "route_steps": 24,
+      "strategy": "optimized",
+      "router_group": "existing",
+      "local_frontend_override": false,
+      "executed_targets": false,
+      "target_results": {},
+      "browser_errors": [],
+      "gpu_mutations": [],
+      "mobile_overflow": false
+    },
+    {
+      "live": false,
+      "cases": 4,
+      "route_steps": 24,
+      "strategy": "balanced",
+      "router_group": "existing",
+      "local_frontend_override": false,
+      "executed_targets": false,
+      "target_results": {},
+      "browser_errors": [],
+      "gpu_mutations": [],
+      "mobile_overflow": false
+    }
+  ],
+  "lint": "passed",
+  "javascript_syntax": "passed",
+  "exported_bedrock_configurations": 25,
+  "live_model_calls": 0,
+  "business_calibration_status": "uncalibrated; tests use synthetic fixtures only",
+  "code_sha256": {
+    "app/routing.py": "1fa113cce8b6ab7feb81ceb8338fa352bb465aa12bf1b5a25d238af2891b86c8",
+    "app/routing_profile.py": "51b8156442ca2fe7263908f2c42c4545b792d42c58920442dc32fe50c90d7f85",
+    "app/routing_selector.py": "a2d8d2e23c469fb6b28677ff27b7f396c869cd9904437bb92e5d825bc7e2ce32",
+    "app/routing_calibration.py": "adb1c19ebd92f6aa808785dc97f38fe642db2bdb12904ccb5e1fa151ac15d044",
+    "app/routing_calibration.json": "27001ae2e4835971babaca415a3e280c48047c6d5d6f32c3292084340a0272e1",
+    "app/routing_balance.py": "9727a2a3a76b91456d1a44c6977751c4ce3830acb3779f7b559e906f41f2dd78",
+    "frontend/static/routing.js": "40211d438317f7a81f4986cc21f0a0da2df22b44070ceb40aa8c0b32c927bf7f",
+    "frontend/static/routing.css": "472518fa8e94b6e84d12f8b31de76d75eea5dc801ec353254287cc2bd97fddbb",
+    "scripts/calibrate_routing.py": "0d069bdf87ff6e360acd8f0a2310737b2d980201be539c38dfbfe8d5eaee359d",
+    "scripts/check_classified_routing_browser.py": "2e6468f89916efb6f67fa5706746eeccf5fea0a8023c53280f597f005f4071a8",
+    "tests/test_routing_classified.py": "25973bf23004d2b5fbc637090cbc56ec8464a47f32f51423b4bc7508ed87384c",
+    "tests/test_routing_calibration.py": "27714a89b0608bd70be1ad5f3e6c22abdeac6044b877629eedbdb9b1d6749621"
+  }
+}

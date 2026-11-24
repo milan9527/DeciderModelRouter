@@ -1,4 +1,12 @@
-# Strands Decider · 决策实验室、支付与模型路由对比
+# DeciderModelRouter
+
+基于独立 GPU 决策服务的 Amazon Bedrock 模型网关。H2O-Lightning 4B 识别任务属性，ECS 后端结合同批次评测、参考费用和账户配额选择目标模型；前端展示完整路由过程与性能。项目沿用 Strands Decider 实验项目的代码，保留已有支付、视觉和多模型对比模块及历史验证记录。
+
+- [当前路由机制与评测标准](docs/BEDROCK_CLASSIFIED_ROUTING.zh.md)
+- [网关开发与 AWS 直接部署](docs/MODEL_GATEWAY.zh.md)
+- [评测映射与验证证据](validation/routing_mappings/README.zh.md)：124 个 Bedrock 型号，60 个有公开评测映射，其中 9 个配置待核验；424 项软件测试通过。公开评测映射不等于已完成业务校准。
+
+**[模型网关工作台](docs/MODEL_GATEWAY.zh.md)**：S3 + CloudFront + OAC 前端、ECS 后端与独立 GPU 决策服务；通过 AWS SDK 直接发布，不使用 CloudFormation。逐阶段展示分类、Bedrock 选模、执行、耗时与参考费用。**[打开在线网关](https://d3i7ogfx5ml7dc.cloudfront.net/gateway/index.html)**；独立开发前端端口 5173。
 
 **Strands Decider 在本项目典型任务中可用几十到几百毫秒完成决策，兼具快速响应与实用的判断效果，适用于模型路由、客服队列和工具选择等高频场景，并可通过补充明确的判断条件和使用领域数据微调，进一步提升准确性与稳定性。**
 
@@ -242,6 +250,7 @@ Decider 的判断过程、confidence 含义，以及与常见 BERT 固定标签�
 **如何解读：**
 
 - 每步 `backend_total_ms` 包含后端到模型的通信、处理和排队，不能视为纯 GPU 计算时间。
+- 每轮输出与流程表的「决策耗时」使用同一字段；整次请求时间另列。闭环表格标明最近一次判断的轮次，历史对比记录与当前流程表分别标明批次。
 - 当前同一步的三模型并发运行。表中的合计是各自五步时间之和，**不是浏览器整轮等待时间**，也不能将三列相加当作端到端延迟。
 - 当前页面按模型显示成功决策累计耗时和成功次数，Jev、GPT 相对 Decider 的倍数只计算两者同输入且均成功的步骤。页面另外显示浏览器往返、三套沙盒流程的总经过时间；一个模型失败不隐藏其他模型结果。
 - 每个模型的累计时间保留所有成功调用；相对耗时倍数只使用同输入且双方成功的配对。失败、规则回放和输入不一致的数据不进入倍数统计。历史连接失败记录见 [项目历史](docs/HISTORY.md#2026-10-12jev-接入与三模型统一对比)。
@@ -264,6 +273,8 @@ Decider 的判断过程、confidence 含义，以及与常见 BERT 固定标签�
 需要 Python 3.11+ 和 [uv](https://docs.astral.sh/uv/getting-started/installation/)；前端无需 Node.js 构建。
 
 ```bash
+git clone https://github.com/milan9527/DeciderModelRouter.git
+cd DeciderModelRouter
 uv sync
 uv run python -m scripts.manage_users create admin \
   --generate-to .deployment/local-credentials.json

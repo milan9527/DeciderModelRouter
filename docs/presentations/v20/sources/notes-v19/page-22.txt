@@ -1,0 +1,48 @@
+2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。
+报告：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md
+原始索引：validation/model_comparison/summary.json
+原页底说明（仅保留于讲稿）：
+问题数、任务数与请求数不同，不计算跨场景总准确率；来源：validation/README.md。
+2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。
+报告：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md
+原始索引：validation/model_comparison/summary.json
+证据：validation/jev_skills/scenario_summary.json。Decider queued任务尚无产物却finish，测试替换成assert True仍通过，缺发票地址时选一般咨询地址。一个评分1.4936与参考2相差0.5064，刚超容差；不能与错误放行等量解释。客户端RTT中位数Decider164.6ms/Jev119.9ms；P95911.1/163.8ms。没有正式预热阶段，Decider首次六问题请求13.511秒原样保留，具体原因未确定。
+原页底说明（仅保留于讲稿）：
+参考在调用前冻结；按业务用途事后归类。量表采用固定 ±0.5 容差。
+2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。
+报告：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md
+原始索引：validation/model_comparison/summary.json
+使用scored-summary修订后结果：CFPB官方页面为60 calendar days，原匹配60 days漏判。根据保存页面将Jev8/10更正10/10，无模型重跑；修订与原记录均保留。
+原页底说明（仅保留于讲稿）：
+每任务最多 12 步、150 秒；截图留证但不作为视觉输入。五任务各独立运行两次。
+2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。
+报告：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md
+原始索引：validation/model_comparison/summary.json
+Decider第二轮2步，在BankFind入口结束；Jev第二轮6步返回机构结果，Cert628。Jev第一轮10步，包含重复操作；完成率高不代表路径最优。
+原页底说明（仅保留于讲稿）：
+原始页面截图仅裁切可读区域，完整图片与每步 URL / DOM / 动作保存在 validation/browser_finance。
+2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。
+报告：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md
+原始索引：validation/model_comparison/summary.json
+新闻人工标签，其他业务输入由测试构造，无真实客户资金。财报正确收入FY2025=281724百万美元，FY2024=245122百万美元；Decider误认年份/单位。给定1EUR=1.1181USD，历史报表10000EUR=11181USD，Decider混为真实付款要求可执行报价。同一人、同一家受保银行、同一所有权类别合并300000美元，250000受保50000超限；两者均误判。
+原页底说明（仅保留于讲稿）：
+反转顺序后 Decider 24/30、Jev 28/30；仍是同一批 30 道题。
+2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。
+报告：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md
+原始索引：validation/model_comparison/summary.json
+Decider首轮40次存在合格候选的机会中37次false no_route；自然语言48/48全拒绝，其中仅8次符合参考。Jev也漏能力与总价条件。输入最大1485token<4096，不能归因上下文超限。建议硬约束代码核验，但该组合方案尚未完成端到端复测。
+原页底说明（仅保留于讲稿）：
+能力 / 价格来自 OpenRouter 目录，健康 / 延迟等为题设；未调用 openrouter/auto 或下游模型。
+2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。
+报告：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md
+原始索引：validation/model_comparison/summary.json
+游戏原始来源已随validation/model_comparison/sources/tetris打包。固定3失败棋盘：Decider数字3/3次受支配动作，自然语言2/3；Jev两者0/3。二选一自然语言两者6/6，不能推广完整候选集合。历史规则版430/550程序代选，排除。
+v11补充结论：本局自然语言Jev50块19行，Decider43块2行；每落点平均251.1/1414.5ms。这是动作级耗时，不能当作单次API RTT。原始游戏汇总未保存token usage，不套用支付输入估算成本。
+原页底说明（仅保留于讲稿）：
+落点耗时为 Jev / Decider 均值，可含多次请求。游戏未保存 token usage，费用不作估算。
+数据重新汇总自原始receipts，未新调用模型。Skills32输入65可评分问题；浏览器10个任务，Decider22次/Jev36次请求；金融只使用原始顺序各30请求；政策路由32题两种顺序各64请求。Jev直连API，Decider经现有应用网关访问官方原版服务；延迟是整个HTTP调用，不是纯GPU前向耗时。费用为Jev input_tokens × 0.042USD/百万，输出免费。千次费用是按本批输入配比放大，不是1000个独立任务。质量分别为Jev/Decider：Skills65/65 vs50/65、浏览器10/10 vs4/10、金融28/30 vs22/30、政策46/64 vs25/64。分类与局部选择两者接近；Jev在证据、多步完成中更好。金融共享额度误判、路由能力与预算漏判仍存在。
+浏览器Jev每任务平均3.6调用，任务总耗时中位数3694.6ms，每千条同配比任务的模型费约$0.2881，不含浏览器运行费；其他表格展示每千API请求，不能混成每千任务。
+原始数据与计算：sources/jev-scenario-metrics.json；validation/*/receipts.jsonl。
+原页底说明（仅保留于讲稿）：
+API RTT 中位数：Jev 直连，Decider 经应用网关；金融仅首轮。费用按实测 usage，不含工具与运维。
+v13将原v12第18–25页压缩为一页最终对照，未新增这些实验调用。Skills业务正确50/65 vs65/65；其中分类意图13/13和局部动作10/10两者相同。Jev千API费用按实测input_tokens与$0.042/MTok计算，不是每千完整任务费用。游戏仅seed42自然语言版本，无token usage，不估算费用。

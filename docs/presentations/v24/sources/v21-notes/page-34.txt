@@ -1,0 +1,6 @@
+性能证据来自独立StrandsDeciderVLLM项目；v9/sources/vllm/provenance.json保存来源提交与哈希。v19、vLLM0.31.0，BF16 torso/FP32 Pointer Head，单L4。原版对齐比较在g6.4xlarge同机，容器限制4vCPU/14GiB，回环HTTP；后续独立公网压测在g6.xlarge。20个固定支付输入，每次一个choice，固定worker收到完整响应后发下一个请求；失败不重试，预热另计。吞吐=成功数/正式总时长，失败占用总时长；分位数仅统计成功响应。相同输入反复调用只测性能，不扩充独立质量样本。数值对齐是对原版，不证明选择正确。
+性能报告：https://github.com/milan9527/StrandsDeciderVLLM/blob/main/docs/VLLM_PERFORMANCE.zh-CN.md
+Jev对比：https://github.com/milan9527/StrandsDeciderVLLM/blob/main/docs/JEV_CONCURRENCY.zh-CN.md
+8并发原版14.76RPS/P95542.8ms；vLLM复测34.91RPS/P95237.6ms。更早测试的5次超时保留在原始报告，本图为标明的复测。
+原页底说明（仅保留于讲稿）：
+每档 80 请求，预热另计。提升同时包含推理路径和调度变化，不能全部归因于批处理。

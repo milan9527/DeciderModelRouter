@@ -1,14 +1,72 @@
 # 已部署环境
 
-最近发布日期：2026-10-23。
+最近发布日期：2026-11-24。
 
 **访问地址：https://d3i7ogfx5ml7dc.cloudfront.net**
 
 API 文档：https://d3i7ogfx5ml7dc.cloudfront.net/api/docs
 
-**当前：文字 Decider 调用共享 vLLM / EC2 On-Demand `g6.xlarge`；图片 Decider 调用另一台现有 `g6.xlarge` 上的官方视觉服务，两者持续运行。图片模块同时支持 Jev / Bedrock GPT 对比。** 项目区域资源位于 `us-east-1`；CloudFront 和 IAM 为全球资源。Bedrock 使用美国跨区域推理配置。
+**当前：模型网关默认调用共享 L4 上的 H2O-Lightning 4B；文字 Decider 使用同一台现有 vLLM / EC2 On-Demand `g6.xlarge`。图片 Decider 的配置指向另一台现有 `g6.xlarge` 上的官方视觉服务，图片模块同时支持 Jev / Bedrock GPT 对比。** 项目区域资源位于 `us-east-1`；CloudFront 和 IAM 为全球资源。Bedrock 按目录中的精确执行标识使用地区端点或美国跨区域推理配置。
 
 **加密支付业务台：https://d3i7ogfx5ml7dc.cloudfront.net/#crypto**。演示路线、比较口径与实测结果见 [CRYPTO.md](CRYPTO.md)。
+
+## Bedrock 评测映射扩展（2026-11-24）
+
+- [在线网关](https://d3i7ogfx5ml7dc.cloudfront.net/gateway/index.html)现有 124 个型号中，精确评测映射由 **25 → 60**：51 个配置已映射、9 个配置待核验。其余分别显示型号参考资料、容量变体待评测、专用任务待评测或未找到成绩。配置待核验不进入自动路由；映射数量不代表健康端点数量。
+- 修复 LiveBench 历史源迁移，接入七个评测批次和官方配置证据。单次决策只比较同一数据集、同一任务分项；前端可指定批次、搜索型号、筛选状态和展开来源。OpenRouter 资料与参考价独立标注，不充当质量分；保留价格未知。账户精确端点配额覆盖增至 48 个，继续排除两项零配额型号。
+- ECS 从 **revision 35 → 36**，唯一部署已完成，运行任务 1/1 且健康；镜像 `gateway-mappings-20261124-131418-verified`，实际摘要 `sha256:1c81c60024b5fef87a1a209f7b821bf7ecf3276867d2eb323df4ad635e7c147f`。目录版本 `9c9167c3f9c97193`，榜单版本 `1d0a074a9e3a3fba`，策略版本 `bedrock-classified-v2`。
+- 四个前端文件在 S3 和公网均与本地逐字节一致。发现发布目录同名导致 CloudFront 复用旧刷新请求，已将发布标识改为每次唯一并补做刷新 `I3O8BYY1RP3T2TYQKPN3H10YPF`，状态 Completed。沿用私有 S3/OAC 和原 GPU `i-0ae7eb0abcb815af3`，本次未启停或新建 GPU，未使用 CloudFormation。
+- [真实浏览器验收](../validation/routing_mappings/aws-live-2026-11-24/verification.json)通过：指定 `2025-04-02` 后选中 Gemma 3 4B，完整返回 21 输入 / 32 输出 Token，目标调用 **529.354 ms**，后端总耗时 **1,096.108 ms**，参考费用 **$0.00000244**。新增 Nova Micro 的[真实调用](../validation/routing_mappings/aws-live-2026-11-24/nova-run.json)也完整返回，目标 **566.802 ms**，22 输入 / 59 输出 Token，参考费用 **$0.00000903**。本次共 3 次 H2O 分类、2 次 Bedrock 执行，无自动重试；这是部署冒烟，不是业务正确率或 AWS 账单。
+- **424 项测试通过**，本地三进程浏览器与 ARM64 镜像冒烟通过。[覆盖清单与来源](../validation/routing_mappings/README.zh.md)保存逐型号状态、本地测试、真实结果与部署证据。本机审计位于 `.deployment/mapping-expansion-20261124-130448/`，保留前一 revision 35 的恢复信息。
+
+## 代码场景零配额修复（2026-11-24）
+
+- 复现代码示例选中 `us.moonshotai.kimi-k3` 后返回 `ThrottlingException: Too many tokens`。AWS 显示该模型已授权、US profile 为 ACTIVE，但账户 US 跨区域 Token 配额 `L-51FF35D5` 为 **0**；GLM 5.3 对应配额也为 **0**。
+- 为 23 个已评测型号采集精确调用端点的配额证据，零配额在选模前及执行复核时排除；目录仍保留型号和排除原因。未映射配额保持未知，不借用 Mantle/global 的额度。原模型信息、榜单分项和测试配置保持原值。
+- 配额恢复后通过 `python -m scripts.refresh_routing_catalog --quotas-only` 重新采集，再构建并直接发布 API。快照会更新目录版本；本次由 `6eb66a1994726070` 更新为 `70dcd487416044e9`，旧页面需刷新。运行时限流返回 429 和重试间隔提示，不自动重复提交或换模型。
+- 复测发现代码生成超过原 40 秒读取等待，以及 4096 Token 全用于推理的情况，两次未完成记录均保留。目标生成改用独立 120 秒客户端；代码示例在运行前显式显示期望 8192、上限 16384 Token，可修改。参考费用约束按上限复核，API 默认值仍为 512 / 4096，评测推理配置不变，不自动加量重试。
+- **409 项测试通过**；三进程浏览器联调与实际 ARM64 镜像离线冒烟通过。ECS revision **35** 已稳定运行，镜像 `gateway-code-budget-20261124-125648`，固定摘要 `sha256:ce614887f91134a422abd7bf0840e52afbbd0410ce2b2ae9aacc796d57248dad`。前端四个文件已直接发布 S3，CloudFront 刷新 `I9W28D1I6YMH4CIJBVAMZREW1H` 已完成；沿用 OAC、ECS 和现有 GPU，本次修复未启停 GPU，未使用 CloudFormation。
+- [原代码示例真实验收](../validation/gateway/aws-code-budget-2026-11-24/verification.json)通过：均衡策略选择 `us.anthropic.claude-sonnet-5`，保持 adaptive / xhigh 配置，完整返回处理函数及两个测试示例，`stopReason=end_turn`。浏览器样本 GPU 往返 **510.612 ms**，目标执行 **82,486.917 ms**，后端总耗时 **83,238.824 ms**；74 输入 / 8975 输出 Token，参考费用 **$0.134847**。输出用量包含推理；该样本不是 P95、业务正确率或 AWS 账单。桌面、手机、零配额展示、导出及退出登录正常，无 JavaScript 错误。
+- [根因与发布证据](../validation/gateway/quota-fix-2026-11-24.json)。本机审计、原 Task 和发布记录在 `.deployment/gateway-throttle-20261124-123630/`，可恢复到原 revision 32。
+
+## 模型网关直接发布（2026-11-24）
+
+- 入口：**https://d3i7ogfx5ml7dc.cloudfront.net/gateway/index.html**。前端为私有 S3 + CloudFront + OAC；后端 ECS Fargate 独立调用 GPU HTTP 服务，再按 Bedrock 目录和能力、成本证据选模。页面展示分类、候选、执行与分阶段耗时。
+- 通过 `deployment/deploy_gateway.py` 直接调用 AWS SDK 发布，未使用 CloudFormation。ECS 从 revision **31 → 32**，指定的新版本已稳定，运行任务 1/1；API 镜像标签 `gateway-20261124-101423`，实际任务固定摘要 `sha256:00e6b52133279dd910e55f66bd35795832c5938526897802a992e01e18412859`。
+- 仅发布四个 `gateway/*` 对象，逐一核对 S3 版本与本地 SHA-256；CloudFront invalidation `ICZDL0JMO6S9REO25ARCSVLKTC` 已完成。S3 四项公共访问阻止、OAC 保持启用。
+- GPU 复用 `i-0ae7eb0abcb815af3`，型号 `g6.xlarge` / NVIDIA L4 24 GB，未新增实例。发布前该实例已停止，本轮启动原实例；第一次因可用区容量不足失败，第二次成功。发现 NVIDIA 内核模块已加载但 NVML/计算库缺失，安装相同版本 **615.71.09** 的两个用户态包，未更换内核或重建 GPU。
+- 完成后 H2O、Decider、Liquid 的模型健康检查及 ECS 到各服务的连接检查均通过，四个原有 systemd 服务运行，GPU 保持常驻。初始化需要数分钟；本轮真实路由验收使用默认 H2O，其他两个模型仅做健康检查。
+- 发布前 **390 项自动化测试通过**，实际 ARM64 API 镜像离线冒烟通过。部署快照、镜像构建记录、GPU 修复记录与恢复所需原 Task 定义保存在本机 `.deployment/gateway-20261124-101423/`，其中 `release/release.json` 保存 ECS 和前端发布结果。
+- [真实线上验收](../validation/gateway/aws-live-2026-11-24/verification.json)通过：2 次 H2O 分类请求，1 次浏览器实际 Bedrock GPT-6 Luna 执行；登录、流式阶段、候选、计时、导出、手机布局与退出登录正常，无 JavaScript 错误。浏览器样本 GPU 往返 **600.831 ms**，目标调用 **1,284.118 ms**，后端总耗时 **1,958.303 ms**，完整输出 100 Token；仅作为部署冒烟结果。前端四个公网资源与本地逐字节一致，匿名 S3 访问返回 403，未登录网关业务 API 返回 401。
+
+## 清理历史 SageMaker 栈（2026-11-04）
+
+已按用户要求删除 us-east-1 的 `strands-decider-demo-sagemaker`，栈及其 10 个资源均为 `DELETE_COMPLETE`。闲置 SageMaker Runtime 接口端点 `vpce-0ac20b7499b2c9045` 和对应 ENI 已移除，节省接口端点固定费约 $7.30/月（$0.01/小时，按 730 小时估算）。
+
+删除后确认主栈 `UPDATE_COMPLETE`、API revision 31 运行正常，vLLM 健康检查通过。现有两台 g6.xlarge 仍运行，GPU 状态表保留；该表由原 GPU 栈管理，并非此次删除栈的资源。审计及删除证据保存在本机 `.deployment/sagemaker-cleanup-20261104/`。
+
+## 五模型设备场景归类（2026-10-29，device-scenes-v1）
+
+“常用温度”入口合并到“设备控制”的业务场景下拉框，显示为“设置常用温度范围”；原场景 ID、任务输入、三步决策和后端执行保留。仅发布前端，API 仍为 revision 29。CloudFront invalidation `I3SS2DDQ2M2KJHPCJGC525W345` 已完成，三个发布文件与本地逐字节一致。浏览器合成响应验证场景选择、三步展示、任务编辑、导出与 390px 布局通过，无 JavaScript 错误；未新增模型性能测试。
+
+## 五模型恢复原模块输入并复测（2026-10-29，original-contract-v1）
+
+- 修正上一版改变支付初始状态、注入反馈、边判断边执行、改写 GPT 协议及自动执行路由目标的问题。支付直接复用原固定流程：原始快照五步判断后执行建议；路由直接复用原任务、候选证据与两步选型，目标执行由用户另行触发。支付 GPT-6.1 Sol、路由 GPT-6 Sol 均保留原提示词与单个 choice 返回协议。支付/路由输入和候选顺序锁定；设备/温度仍可编辑。
+- 原模块预先采集 44 份模型输入，线上八场景五模型共 **140 次真实调用全部成功，140 份输入逐项及顺序核对通过**。支付原始参考一致 Decider / Liquid / H2O / Jev / GPT 为 **14/20、12/20、14/20、18/20、20/20**；每步平均后端耗时 **48.5 / 37.4 / 77.9 / 446.4 / 1018.7 ms**。资金条件未满足时保留挂起与跟进；不再用改变输入后的完成数说明原流程效果。路由流程类型均为 4/4，Decider 中英文索引仍选 Embed English；完整型号选择及两步计时见[当前报告](../docs/FIVE_MODELS.md)。
+- API 标签 `original-contract-20261029`，镜像摘要 `sha256:61219c74a68ed837a153faa1114350520b59b3db60ac0880e1d09caff4ab9899`；ECS revision **29**、CloudFormation 与滚动部署完成。CloudFront invalidation `I1D7E5HZWPDVJ9EYQ624TPSC9E` 完成，四项发布前端资源与本地逐字节一致，前端版本 `original-contract-v1`。
+- **291 项自动化测试通过**，浏览器八场景真实调用、输入、计时核对均通过，无 JavaScript 错误；本地浏览器另验证可选目标按钮、原任务锁定、设备编辑、导出与手机布局。实测[请求/结果](../docs/results/five-models-original-2026-10-29.json)与[截图](../docs/screenshots/five-models-original/)单独保存。
+- 部署使用 `--keep-model-catalog`，模型目录与评测快照和修正前采集时逐字节一致。三个本地模型的同卡常驻配置及 GPU 保留，无模型重启或实例变更。S3 四项公共访问阻止及 CloudFront OAC 已复核。过程记录位于 `.deployment/original-contract/`；本轮未推送 GitHub。
+
+## 历史：五模型业务流程与同卡常驻（2026-10-29，resident-workflows）
+
+本节为变更输入版的历史记录。支付输入与流程被改变，路由还自动执行了目标；其完成数和耗时不作为当前原输入对比结论。当前行为及新测量见上节，历史详表见[变更输入版记录](../docs/FIVE_MODELS_CHANGED_INPUTS.md)。
+
+- 五模型模块改为四类 **11 条业务流程，每条 3–5 步**，单并发依次运行；显示逐步输入输出、累计决策时间、工具执行与实际业务目标。路由真实调用所选 Bedrock 型号，失败不自动换模型；任务编辑、候选反转及 JSON 导出保留。
+- Decider v19 BF16（vLLM 0.31.0）、Liquid d1-2B BF16（官方 Transformers）与 H2O 4B FP8（隔离的补丁 vLLM 0.30.0）同驻现有 `i-0ae7eb0abcb815af3` / g6.xlarge / L4。Decider 显存比例 0.26、问题/引擎并发 1、HTTP 准入 32；新私网网关 `172.31.33.164:18124` 只对 API 安全组开放。三个模型与网关分别由 systemd 常驻管理，初始化按 Decider → H2O → Liquid。
+- 12 次 GPU 烟测成功；185 次线上决策调用全部成功，另完成 20 次目标调用的成功/失败验收。37 次不同步骤请求的每模型平均耗时：Decider **75.2 ms**、Liquid **56.4 ms**、H2O **139.1 ms**、Jev **381.0 ms**、GPT **1035.8 ms**。业务目标完成为 8/11、7/11、7/11、6/11、10/11，包含下游超时和 token 截断，不能视为决策准确率。[历史逐场景实测与原始记录](../docs/FIVE_MODELS_CHANGED_INPUTS.md)。
+- 全部场景测试后 GPU 使用 19,149 / 23,034 MiB，主存约 4.9 GiB 可用，无 swap，四个新/现有服务均无重启。旧 GPU 上的 `decider-open-models-20261029` 已撤下，原版/SFT `:8099` 与图片服务 `:18123` 健康，其他工作负载保留。本次未新增 EC2。
+- 288 项自动化测试通过；真实浏览器覆盖 11 场景，另验证错误分支、输入编辑、反转、导出和手机布局。最后补充了失败工具调用的等待计时及明确的超时提示，未改写模型选择；API 标签 `resident-workflows-20261029-v2`，镜像摘要 `sha256:0066cc9a80e902f276d4db55d73e7e8eb6821e233d7fcb88beb91ad9974e1757`，前端资源版本 `resident-workflows-v3`。 ECS revision **28**、CloudFormation 与滚动发布均完成，四项线上前端资源与本地逐字节一致；最终路由复核确认目标超时的 40.0 秒正确计入工具时间。
+- 运行环境、模型来源与维护见 [open_models](open_models/README.zh.md)。S3 四项 Block Public Access 与 CloudFront OAC 保持启用，账号认证与模型密钥仍由服务端管理。测试、部署与清理记录保存在本机 `.deployment/resident-models/`；GitHub 推送另按用户指令执行。
 
 ## 图片三模型对比（2026-10-23，vision-triple-v1）
 
@@ -27,6 +85,14 @@ API 文档：https://d3i7ogfx5ml7dc.cloudfront.net/api/docs
 - API 镜像 `vision-20261023-v1`，ECR 摘要 `sha256:c325096f871c4e1b0d73156e45fd503a29c99f1644f98e978d5342442cc81ccd`，Task Definition **revision 23**。主 stack `UPDATE_COMPLETE`，ECS 滚动部署 `COMPLETED`；CloudFront invalidation `IAG1DN0XU18OULLXTL7GBHPIJH` 已完成，17 个前端与图片资源逐字节核对通过，S3 四项公共访问阻止及 OAC 保持启用。
 - **256 项自动化测试通过**。线上 API 三次、浏览器五次实时调用均成功；浏览器验证三场景、换序／无图／白图、上传不套用样例预期、历史标识和 390px 布局，无 JavaScript 错误。五次浏览器调用中四次带图后端耗时为 **166.7–170.7 ms**，无图为 **142.1 ms**，仅作为接入验收记录。
 - [模块说明](../docs/VISION.md)保留既有小样本实测及错误结果；新接入数据不替代先前基准。部署、API 和浏览器证据位于本机 `.deployment/vision-module/`，不含在公开仓库中。
+
+## 支付计时口径与展示修正（2026-10-16，payment-timing-v1）
+
+- 每轮输出与逐步流程表同时显示「决策耗时」和「整次请求（含网络）」，前者统一取同一次响应的 `backend_total_ms`，后者共用前端接收响应时记录的 `client_ms`。闭环的后者标为「整轮请求（含执行）」。
+- 修正闭环 `finally` 在页面渲染后才结束计时的问题；成功及失败均在响应或错误返回时记录请求耗时，后续整理与渲染不重复计入。闭环表格标明每步最近一次判断的轮次；切换历史对比时明确提示当前流程表所属批次。
+- 浏览器合成延迟验证覆盖固定流程、优化流程、闭环重判、模拟事件、失败请求、历史记录和 320 / 390px 布局，校验两处展示及 JSON 导出的计时完全对应。合成数据仅用于界面回归，不计入模型性能。
+- 线上固定流程完成三模型各五步、共 15 次真实调用；逐轮、流程表及导出计时一致，无浏览器错误。Decider 首步决策 69.479ms、页面请求 116.2ms，仅为接入复核样本。
+- 仅更新 S3 前端，CloudFront invalidation `IAZUBDETMYJL88F8EOYUQOYYQ4` 已完成；四个发布文件与本地逐字节一致。API 仍为 revision 22，未启停 GPU、未修改模型或后台测试任务。证据保存在 `.deployment/payment-timing-20261016/`，本次尚未推送 GitHub。
 
 ## 全模块切换共享 vLLM（2026-10-16）
 

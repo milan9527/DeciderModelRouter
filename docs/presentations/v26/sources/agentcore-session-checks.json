@@ -1,0 +1,550 @@
+{
+  "inspections": [
+    {
+      "business_session_id": "bfe7fe55-business-0",
+      "state": {
+        "facts": "The customer paid 100 USDC. The order requires 100 USDC. The transaction has 12 of 12 required confirmations and passed risk screening.",
+        "case_id": "case-0"
+      },
+      "turns": [
+        {
+          "request_id": "bfe7fe55-0-1",
+          "turn": 1,
+          "state_sha256": "ddbebca2d82ed3fff48e255204e6fa2db90f8802e9397f89d8bcae0269e3a004",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "settle",
+              "probabilities": {
+                "settle": 0.9683,
+                "wait": 0.0117,
+                "review": 0.0201
+              },
+              "confidence": 0.9524
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-0-2",
+          "turn": 2,
+          "state_sha256": "ddbebca2d82ed3fff48e255204e6fa2db90f8802e9397f89d8bcae0269e3a004",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "settle",
+              "probabilities": {
+                "settle": 0.9683,
+                "wait": 0.0117,
+                "review": 0.0201
+              },
+              "confidence": 0.9524
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-0-3",
+          "turn": 3,
+          "state_sha256": "ddbebca2d82ed3fff48e255204e6fa2db90f8802e9397f89d8bcae0269e3a004",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "settle",
+              "probabilities": {
+                "settle": 0.9683,
+                "wait": 0.0117,
+                "review": 0.0201
+              },
+              "confidence": 0.9524
+            }
+          }
+        }
+      ],
+      "process_boot_id": "7bfa03f6-0408-4c6a-a812-d65d3ee48ce3",
+      "runtime_session_id": "decider-gpu-proof-39ee302a-44bd-47da-97c5-51f685e4260d",
+      "client_roundtrip_ms": 108.431
+    },
+    {
+      "business_session_id": "bfe7fe55-business-1",
+      "state": {
+        "facts": "The customer paid 100 USDC. The amount matches the order, risk screening passed, but the transaction has only 3 of 12 required confirmations.",
+        "case_id": "case-1"
+      },
+      "turns": [
+        {
+          "request_id": "bfe7fe55-1-1",
+          "turn": 1,
+          "state_sha256": "3101c716b2d13688076c182174eecec17b406d3c4732afe185d4d26646e275a1",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "wait",
+              "probabilities": {
+                "settle": 0.1469,
+                "wait": 0.8205,
+                "review": 0.0325
+              },
+              "confidence": 0.7308
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-1-2",
+          "turn": 2,
+          "state_sha256": "3101c716b2d13688076c182174eecec17b406d3c4732afe185d4d26646e275a1",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "wait",
+              "probabilities": {
+                "settle": 0.1469,
+                "wait": 0.8205,
+                "review": 0.0325
+              },
+              "confidence": 0.7308
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-1-3",
+          "turn": 3,
+          "state_sha256": "3101c716b2d13688076c182174eecec17b406d3c4732afe185d4d26646e275a1",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "wait",
+              "probabilities": {
+                "settle": 0.1469,
+                "wait": 0.8205,
+                "review": 0.0325
+              },
+              "confidence": 0.7308
+            }
+          }
+        }
+      ],
+      "process_boot_id": "7bfa03f6-0408-4c6a-a812-d65d3ee48ce3",
+      "runtime_session_id": "decider-gpu-proof-39ee302a-44bd-47da-97c5-51f685e4260d",
+      "client_roundtrip_ms": 164.489
+    },
+    {
+      "business_session_id": "bfe7fe55-business-2",
+      "state": {
+        "facts": "Customer message: I sent USDC twenty minutes ago. Please check why my payment is pending.",
+        "case_id": "case-2"
+      },
+      "turns": [
+        {
+          "request_id": "bfe7fe55-2-1",
+          "turn": 1,
+          "state_sha256": "6f692d37e03e3c07f6aa9f66d3cd303523d30292ead0709e7021f4baafe2a112",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "payments",
+              "probabilities": {
+                "payments": 0.9895,
+                "security": 0.0068,
+                "technical": 0.0037
+              },
+              "confidence": 0.9843
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-2-2",
+          "turn": 2,
+          "state_sha256": "6f692d37e03e3c07f6aa9f66d3cd303523d30292ead0709e7021f4baafe2a112",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "payments",
+              "probabilities": {
+                "payments": 0.9895,
+                "security": 0.0068,
+                "technical": 0.0037
+              },
+              "confidence": 0.9843
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-2-3",
+          "turn": 3,
+          "state_sha256": "6f692d37e03e3c07f6aa9f66d3cd303523d30292ead0709e7021f4baafe2a112",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "payments",
+              "probabilities": {
+                "payments": 0.9895,
+                "security": 0.0068,
+                "technical": 0.0037
+              },
+              "confidence": 0.9843
+            }
+          }
+        }
+      ],
+      "process_boot_id": "7bfa03f6-0408-4c6a-a812-d65d3ee48ce3",
+      "runtime_session_id": "decider-gpu-proof-39ee302a-44bd-47da-97c5-51f685e4260d",
+      "client_roundtrip_ms": 128.731
+    },
+    {
+      "business_session_id": "bfe7fe55-business-3",
+      "state": {
+        "facts": "Customer message: Someone logged into my account and changed my password without permission.",
+        "case_id": "case-3"
+      },
+      "turns": [
+        {
+          "request_id": "bfe7fe55-3-1",
+          "turn": 1,
+          "state_sha256": "72ace9cff8ef7e3cd30edcb27df0297b353169ebf83429ffbe9a27bec0f89ed9",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "security",
+              "probabilities": {
+                "payments": 0.0032,
+                "security": 0.9945,
+                "technical": 0.0022
+              },
+              "confidence": 0.9918
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-3-2",
+          "turn": 2,
+          "state_sha256": "72ace9cff8ef7e3cd30edcb27df0297b353169ebf83429ffbe9a27bec0f89ed9",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "security",
+              "probabilities": {
+                "payments": 0.0032,
+                "security": 0.9945,
+                "technical": 0.0022
+              },
+              "confidence": 0.9918
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-3-3",
+          "turn": 3,
+          "state_sha256": "72ace9cff8ef7e3cd30edcb27df0297b353169ebf83429ffbe9a27bec0f89ed9",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "security",
+              "probabilities": {
+                "payments": 0.0032,
+                "security": 0.9945,
+                "technical": 0.0022
+              },
+              "confidence": 0.9918
+            }
+          }
+        }
+      ],
+      "process_boot_id": "7bfa03f6-0408-4c6a-a812-d65d3ee48ce3",
+      "runtime_session_id": "decider-gpu-proof-39ee302a-44bd-47da-97c5-51f685e4260d",
+      "client_roundtrip_ms": 128.215
+    },
+    {
+      "business_session_id": "bfe7fe55-business-4",
+      "state": {
+        "facts": "The customer paid 100 USDC. The order requires 100 USDC. The transaction has 12 of 12 required confirmations and passed risk screening.",
+        "case_id": "case-4"
+      },
+      "turns": [
+        {
+          "request_id": "bfe7fe55-4-1",
+          "turn": 1,
+          "state_sha256": "0e00f86bbdf9f2b6e930f5220ee5620d0d03cfe3dfed2162610484e2352f0f9b",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "settle",
+              "probabilities": {
+                "settle": 0.9686,
+                "wait": 0.0115,
+                "review": 0.0199
+              },
+              "confidence": 0.9529
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-4-2",
+          "turn": 2,
+          "state_sha256": "0e00f86bbdf9f2b6e930f5220ee5620d0d03cfe3dfed2162610484e2352f0f9b",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "settle",
+              "probabilities": {
+                "settle": 0.9686,
+                "wait": 0.0115,
+                "review": 0.0199
+              },
+              "confidence": 0.9529
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-4-3",
+          "turn": 3,
+          "state_sha256": "0e00f86bbdf9f2b6e930f5220ee5620d0d03cfe3dfed2162610484e2352f0f9b",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "settle",
+              "probabilities": {
+                "settle": 0.9686,
+                "wait": 0.0115,
+                "review": 0.0199
+              },
+              "confidence": 0.9529
+            }
+          }
+        }
+      ],
+      "process_boot_id": "7bfa03f6-0408-4c6a-a812-d65d3ee48ce3",
+      "runtime_session_id": "decider-gpu-proof-39ee302a-44bd-47da-97c5-51f685e4260d",
+      "client_roundtrip_ms": 104.368
+    },
+    {
+      "business_session_id": "bfe7fe55-business-5",
+      "state": {
+        "facts": "The customer paid 100 USDC. The amount matches the order, risk screening passed, but the transaction has only 3 of 12 required confirmations.",
+        "case_id": "case-5"
+      },
+      "turns": [
+        {
+          "request_id": "bfe7fe55-5-1",
+          "turn": 1,
+          "state_sha256": "dd4936d915b22dd5b02306c7ec1607c75b4bab4895bdcbfaef3addbf1cbf7a47",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "wait",
+              "probabilities": {
+                "settle": 0.1512,
+                "wait": 0.8149,
+                "review": 0.0339
+              },
+              "confidence": 0.7223
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-5-2",
+          "turn": 2,
+          "state_sha256": "dd4936d915b22dd5b02306c7ec1607c75b4bab4895bdcbfaef3addbf1cbf7a47",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "wait",
+              "probabilities": {
+                "settle": 0.1512,
+                "wait": 0.8149,
+                "review": 0.0339
+              },
+              "confidence": 0.7223
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-5-3",
+          "turn": 3,
+          "state_sha256": "dd4936d915b22dd5b02306c7ec1607c75b4bab4895bdcbfaef3addbf1cbf7a47",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "wait",
+              "probabilities": {
+                "settle": 0.1512,
+                "wait": 0.8149,
+                "review": 0.0339
+              },
+              "confidence": 0.7223
+            }
+          }
+        }
+      ],
+      "process_boot_id": "7bfa03f6-0408-4c6a-a812-d65d3ee48ce3",
+      "runtime_session_id": "decider-gpu-proof-39ee302a-44bd-47da-97c5-51f685e4260d",
+      "client_roundtrip_ms": 119.546
+    },
+    {
+      "business_session_id": "bfe7fe55-business-6",
+      "state": {
+        "facts": "Customer message: I sent USDC twenty minutes ago. Please check why my payment is pending.",
+        "case_id": "case-6"
+      },
+      "turns": [
+        {
+          "request_id": "bfe7fe55-6-1",
+          "turn": 1,
+          "state_sha256": "62c62313382fe322612298b916e1ade35451e4443676fd0e20ddb894712554be",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "payments",
+              "probabilities": {
+                "payments": 0.9895,
+                "security": 0.0067,
+                "technical": 0.0038
+              },
+              "confidence": 0.9842
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-6-2",
+          "turn": 2,
+          "state_sha256": "62c62313382fe322612298b916e1ade35451e4443676fd0e20ddb894712554be",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "payments",
+              "probabilities": {
+                "payments": 0.9895,
+                "security": 0.0067,
+                "technical": 0.0038
+              },
+              "confidence": 0.9842
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-6-3",
+          "turn": 3,
+          "state_sha256": "62c62313382fe322612298b916e1ade35451e4443676fd0e20ddb894712554be",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "payments",
+              "probabilities": {
+                "payments": 0.9895,
+                "security": 0.0067,
+                "technical": 0.0038
+              },
+              "confidence": 0.9842
+            }
+          }
+        }
+      ],
+      "process_boot_id": "7bfa03f6-0408-4c6a-a812-d65d3ee48ce3",
+      "runtime_session_id": "decider-gpu-proof-39ee302a-44bd-47da-97c5-51f685e4260d",
+      "client_roundtrip_ms": 118.078
+    },
+    {
+      "business_session_id": "bfe7fe55-business-7",
+      "state": {
+        "facts": "Customer message: Someone logged into my account and changed my password without permission.",
+        "case_id": "case-7"
+      },
+      "turns": [
+        {
+          "request_id": "bfe7fe55-7-1",
+          "turn": 1,
+          "state_sha256": "36a982d051f7f9ac358452611fae342a28a72c063b1479e014ca0ec93e78f7bc",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "security",
+              "probabilities": {
+                "payments": 0.0032,
+                "security": 0.9947,
+                "technical": 0.0021
+              },
+              "confidence": 0.992
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-7-2",
+          "turn": 2,
+          "state_sha256": "36a982d051f7f9ac358452611fae342a28a72c063b1479e014ca0ec93e78f7bc",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "security",
+              "probabilities": {
+                "payments": 0.0032,
+                "security": 0.9947,
+                "technical": 0.0021
+              },
+              "confidence": 0.992
+            }
+          }
+        },
+        {
+          "request_id": "bfe7fe55-7-3",
+          "turn": 3,
+          "state_sha256": "36a982d051f7f9ac358452611fae342a28a72c063b1479e014ca0ec93e78f7bc",
+          "answers": {
+            "action": {
+              "type": "choice",
+              "choice": "security",
+              "probabilities": {
+                "payments": 0.0032,
+                "security": 0.9947,
+                "technical": 0.0021
+              },
+              "confidence": 0.992
+            }
+          }
+        }
+      ],
+      "process_boot_id": "7bfa03f6-0408-4c6a-a812-d65d3ee48ce3",
+      "runtime_session_id": "decider-gpu-proof-39ee302a-44bd-47da-97c5-51f685e4260d",
+      "client_roundtrip_ms": 204.863
+    }
+  ],
+  "denial": {
+    "Message": "Received error (403) from runtime. Please check your CloudWatch logs for more information.",
+    "Code": "RuntimeClientError"
+  },
+  "replay": {
+    "decision": {
+      "model": "strands-decider-2B-hobson-v19",
+      "answers": {
+        "action": {
+          "type": "choice",
+          "choice": "settle",
+          "probabilities": {
+            "settle": 0.9683,
+            "wait": 0.0117,
+            "review": 0.0201
+          },
+          "confidence": 0.9524
+        }
+      },
+      "usage": {
+        "input_tokens": 159,
+        "output_tokens": 1
+      }
+    },
+    "business_session_id": "bfe7fe55-business-0",
+    "runtime_session_id": "decider-gpu-proof-39ee302a-44bd-47da-97c5-51f685e4260d",
+    "request_id": "bfe7fe55-0-1",
+    "turn": 1,
+    "state_sha256": "ddbebca2d82ed3fff48e255204e6fa2db90f8802e9397f89d8bcae0269e3a004",
+    "process_boot_id": "7bfa03f6-0408-4c6a-a812-d65d3ee48ce3",
+    "gpu": "NVIDIA A10G, GPU-1fd998a7-dab7-0142-cbc1-694743b821b1, 595.71.05, 23028 MiB",
+    "model_load_count": 1,
+    "timing_ms": {
+      "gpu_queue": 0.001,
+      "model_inference": 85.155,
+      "handler_total": 85.516
+    },
+    "trace_id": "6adf5efe291d00f563505f2f33a2e3ee",
+    "span_id": "200464300a40b7b6",
+    "idempotent_replay": true,
+    "client_roundtrip_ms": 130.272
+  }
+}

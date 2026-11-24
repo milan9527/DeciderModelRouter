@@ -5,10 +5,10 @@
     "name": "LiveBench",
     "url": "https://livebench.ai/",
     "release": "2026-06-25",
-    "quality_label": "LiveBench 各类别均分",
-    "coding_label": "LiveBench Coding",
+    "quality_label": "LiveBench 同批次类别分项",
+    "coding_label": "LiveBench Coding / 可用时 Agentic Coding",
     "speed_available": false,
-    "note": "分数按官方类别分组计算；价格来自同批次 cost CSV，是外部参考价，非 Bedrock 报价。"
+    "note": "不同批次不能混排；分项缺失为未知。价格来源逐配置标注，均为外部参考价。"
   },
   "embedding_source": {
     "name": "MTEB",
@@ -18,17 +18,2147 @@
     "note": "本项目取中英文两个子集均分，不是 MTEB 总榜；CC0 结果，提交结果可来自模型提供方。"
   },
   "entries": {
+    "meta.llama3-1-8b-instruct-v1:0": {
+      "source": "livebench",
+      "source_id": "meta-llama-3.1-8b-instruct-turbo",
+      "source_url": "https://livebench.ai/#/release/2025-04-02",
+      "release": "2025-04-02",
+      "dataset_revision": "livebench-2025-04-02",
+      "benchmark_configuration": "meta-llama-3.1-8b-instruct-turbo",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 24.954097222222224,
+        "coding": 11.048,
+        "reasoning": 14.777666666666667,
+        "language": 21.096,
+        "input_price": 0.05,
+        "output_price": 0.08,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 14.777666666666667,
+        "Coding": 11.048,
+        "Mathematics": 15.078666666666667,
+        "Data Analysis": 32.82,
+        "Language": 21.096,
+        "IF": 54.90425
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/meta-llama/llama-3.1-8b-instruct",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "meta-llama-3.1-8b-instruct-turbo",
+          "source_url": "https://livebench.ai/#/release/2024-11-25",
+          "release": "2024-11-25",
+          "dataset_revision": "livebench-2024-11-25",
+          "benchmark_configuration": "meta-llama-3.1-8b-instruct-turbo",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 25.970291666666665,
+            "coding": 18.743499999999997,
+            "reasoning": 13.333333333333334,
+            "language": 17.714,
+            "input_price": 0.05,
+            "output_price": 0.08,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 13.333333333333334,
+            "Coding": 18.743499999999997,
+            "Mathematics": 18.30666666666667,
+            "Data Analysis": 32.82,
+            "Language": 17.714,
+            "IF": 54.90425
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/meta-llama/llama-3.1-8b-instruct",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        },
+        {
+          "source": "livebench",
+          "source_id": "meta-llama-3.1-8b-instruct-turbo",
+          "source_url": "https://livebench.ai/#/release/2024-06-24",
+          "release": "2024-06-24",
+          "dataset_revision": "livebench-2024-06-24",
+          "benchmark_configuration": "meta-llama-3.1-8b-instruct-turbo",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 28.11348611111111,
+            "coding": 21.579,
+            "reasoning": 14.0,
+            "language": 20.047333333333334,
+            "input_price": 0.05,
+            "output_price": 0.08,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 14.0,
+            "Coding": 21.579,
+            "Mathematics": 24.368,
+            "Data Analysis": 32.153333333333336,
+            "Language": 20.047333333333334,
+            "IF": 56.53325
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/meta-llama/llama-3.1-8b-instruct",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "meta.llama3-1-70b-instruct-v1:0": {
+      "source": "livebench",
+      "source_id": "meta-llama-3.1-70b-instruct-turbo",
+      "source_url": "https://livebench.ai/#/release/2025-04-02",
+      "release": "2025-04-02",
+      "dataset_revision": "livebench-2025-04-02",
+      "benchmark_configuration": "meta-llama-3.1-70b-instruct-turbo",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 40.52497222222222,
+        "coding": 19.857,
+        "reasoning": 29.666666666666668,
+        "language": 38.35333333333333,
+        "input_price": 0.72,
+        "output_price": 0.72,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 29.666666666666668,
+        "Coding": 19.857,
+        "Mathematics": 32.536,
+        "Data Analysis": 53.75333333333333,
+        "Language": 38.35333333333333,
+        "IF": 68.98349999999999
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/meta-llama/llama-3.1-70b-instruct",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "meta-llama-3.1-70b-instruct-turbo",
+          "source_url": "https://livebench.ai/#/release/2024-11-25",
+          "release": "2024-11-25",
+          "dataset_revision": "livebench-2024-11-25",
+          "benchmark_configuration": "meta-llama-3.1-70b-instruct-turbo",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 44.89369444444444,
+            "coding": 33.486999999999995,
+            "reasoning": 43.0,
+            "language": 35.41833333333333,
+            "input_price": 0.72,
+            "output_price": 0.72,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 43.0,
+            "Coding": 33.486999999999995,
+            "Mathematics": 34.72,
+            "Data Analysis": 53.75333333333333,
+            "Language": 35.41833333333333,
+            "IF": 68.98349999999999
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/meta-llama/llama-3.1-70b-instruct",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        },
+        {
+          "source": "livebench",
+          "source_id": "meta-llama-3.1-70b-instruct-turbo",
+          "source_url": "https://livebench.ai/#/release/2024-06-24",
+          "release": "2024-06-24",
+          "dataset_revision": "livebench-2024-06-24",
+          "benchmark_configuration": "meta-llama-3.1-70b-instruct-turbo",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 48.902902777777776,
+            "coding": 33.1055,
+            "reasoning": 43.0,
+            "language": 42.363,
+            "input_price": 0.72,
+            "output_price": 0.72,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 43.0,
+            "Coding": 33.1055,
+            "Mathematics": 45.57633333333333,
+            "Data Analysis": 50.29333333333334,
+            "Language": 42.363,
+            "IF": 79.07925
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/meta-llama/llama-3.1-70b-instruct",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "meta.llama3-8b-instruct-v1:0": {
+      "source": "livebench",
+      "source_id": "meta-llama-3-8b-instruct",
+      "source_url": "https://livebench.ai/#/release/2024-06-24",
+      "release": "2024-06-24",
+      "dataset_revision": "livebench-2024-06-24",
+      "benchmark_configuration": "meta-llama-3-8b-instruct",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 27.464624999999998,
+        "coding": 18.262999999999998,
+        "reasoning": 25.0,
+        "language": 18.718666666666667,
+        "input_price": null,
+        "output_price": null,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 25.0,
+        "Coding": 18.262999999999998,
+        "Mathematics": 19.66433333333333,
+        "Data Analysis": 26.0,
+        "Language": 18.718666666666667,
+        "IF": 57.14175
+      },
+      "pricing_source": null,
+      "configurations": []
+    },
+    "meta.llama3-70b-instruct-v1:0": {
+      "source": "livebench",
+      "source_id": "meta-llama-3-70b-instruct",
+      "source_url": "https://livebench.ai/#/release/2024-06-24",
+      "release": "2024-06-24",
+      "dataset_revision": "livebench-2024-06-24",
+      "benchmark_configuration": "meta-llama-3-70b-instruct",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 37.60336111111111,
+        "coding": 20.947499999999998,
+        "reasoning": 31.0,
+        "language": 34.107,
+        "input_price": null,
+        "output_price": null,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 31.0,
+        "Coding": 20.947499999999998,
+        "Mathematics": 32.315,
+        "Data Analysis": 43.74666666666667,
+        "Language": 34.107,
+        "IF": 63.504
+      },
+      "pricing_source": null,
+      "configurations": []
+    },
+    "mistral.mistral-7b-instruct-v0:2": {
+      "source": "livebench",
+      "source_id": "mistral-7b-instruct-v0.2",
+      "source_url": "https://livebench.ai/#/release/2024-06-24",
+      "release": "2024-06-24",
+      "dataset_revision": "livebench-2024-06-24",
+      "benchmark_configuration": "mistral-7b-instruct-v0.2",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/mistral.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 19.506569444444445,
+        "coding": 11.631499999999999,
+        "reasoning": 13.0,
+        "language": 9.055,
+        "input_price": null,
+        "output_price": null,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 13.0,
+        "Coding": 11.631499999999999,
+        "Mathematics": 17.082666666666665,
+        "Data Analysis": 14.62,
+        "Language": 9.055,
+        "IF": 51.65025
+      },
+      "pricing_source": null,
+      "configurations": []
+    },
+    "mistral.mistral-large-2402-v1:0": {
+      "source": "livebench",
+      "source_id": "mistral-large-2402",
+      "source_url": "https://livebench.ai/#/release/2024-06-24",
+      "release": "2024-06-24",
+      "dataset_revision": "livebench-2024-06-24",
+      "benchmark_configuration": "mistral-large-2402",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/mistral.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 38.922513888888886,
+        "coding": 26.842,
+        "reasoning": 35.0,
+        "language": 28.744,
+        "input_price": null,
+        "output_price": null,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 35.0,
+        "Coding": 26.842,
+        "Mathematics": 32.204,
+        "Data Analysis": 42.553333333333335,
+        "Language": 28.744,
+        "IF": 68.19175
+      },
+      "pricing_source": null,
+      "configurations": []
+    },
+    "mistral.mistral-small-2402-v1:0": {
+      "source": "livebench",
+      "source_id": "mistral-small-2402",
+      "source_url": "https://livebench.ai/#/release/2024-06-24",
+      "release": "2024-06-24",
+      "dataset_revision": "livebench-2024-06-24",
+      "benchmark_configuration": "mistral-small-2402",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/mistral.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 33.03338888888889,
+        "coding": 24.2105,
+        "reasoning": 28.0,
+        "language": 22.055333333333333,
+        "input_price": null,
+        "output_price": null,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 28.0,
+        "Coding": 24.2105,
+        "Mathematics": 28.145999999999997,
+        "Data Analysis": 31.88,
+        "Language": 22.055333333333333,
+        "IF": 63.908500000000004
+      },
+      "pricing_source": null,
+      "configurations": []
+    },
+    "mistral.mixtral-8x7b-instruct-v0:1": {
+      "source": "livebench",
+      "source_id": "mixtral-8x7b-instruct-v0.1",
+      "source_url": "https://livebench.ai/#/release/2024-06-24",
+      "release": "2024-06-24",
+      "dataset_revision": "livebench-2024-06-24",
+      "benchmark_configuration": "mixtral-8x7b-instruct-v0.1",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/mistral.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 22.786930555555557,
+        "coding": 11.316,
+        "reasoning": 18.0,
+        "language": 13.761333333333333,
+        "input_price": null,
+        "output_price": null,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 18.0,
+        "Coding": 11.316,
+        "Mathematics": 20.709333333333333,
+        "Data Analysis": 28.126666666666665,
+        "Language": 13.761333333333333,
+        "IF": 44.80825
+      },
+      "pricing_source": null,
+      "configurations": []
+    },
+    "amazon.nova-lite-v1:0": {
+      "source": "livebench",
+      "source_id": "amazon.nova-lite-v1:0",
+      "source_url": "https://livebench.ai/#/release/2025-04-25",
+      "release": "2025-04-25",
+      "dataset_revision": "livebench-2025-04-25",
+      "benchmark_configuration": "amazon.nova-lite-v1:0",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 39.10715277777778,
+        "coding": 45.04,
+        "reasoning": 32.0,
+        "language": 27.619666666666667,
+        "input_price": 0.06,
+        "output_price": 0.24,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 32.0,
+        "Coding": 45.04,
+        "Mathematics": 34.616,
+        "Data Analysis": 41.238,
+        "Language": 27.619666666666667,
+        "IF": 54.12925
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/amazon/nova-lite-v1",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "amazon.nova-lite-v1:0",
+          "source_url": "https://livebench.ai/#/release/2025-04-02",
+          "release": "2025-04-02",
+          "dataset_revision": "livebench-2025-04-02",
+          "benchmark_configuration": "amazon.nova-lite-v1:0",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 33.47159722222222,
+            "coding": 15.238,
+            "reasoning": 32.0,
+            "language": 27.619666666666667,
+            "input_price": 0.06,
+            "output_price": 0.24,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 32.0,
+            "Coding": 15.238,
+            "Mathematics": 34.616,
+            "Data Analysis": 37.22666666666667,
+            "Language": 27.619666666666667,
+            "IF": 54.12925
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/amazon/nova-lite-v1",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        },
+        {
+          "source": "livebench",
+          "source_id": "amazon.nova-lite-v1:0",
+          "source_url": "https://livebench.ai/#/release/2024-11-25",
+          "release": "2024-11-25",
+          "dataset_revision": "livebench-2024-11-25",
+          "benchmark_configuration": "amazon.nova-lite-v1:0",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 36.352402777777776,
+            "coding": 27.4615,
+            "reasoning": 36.666666666666664,
+            "language": 25.931,
+            "input_price": 0.06,
+            "output_price": 0.24,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 36.666666666666664,
+            "Coding": 27.4615,
+            "Mathematics": 36.699333333333335,
+            "Data Analysis": 37.22666666666667,
+            "Language": 25.931,
+            "IF": 54.12925
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/amazon/nova-lite-v1",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "amazon.nova-micro-v1:0": {
+      "source": "livebench",
+      "source_id": "amazon.nova-micro-v1:0",
+      "source_url": "https://livebench.ai/#/release/2025-04-25",
+      "release": "2025-04-25",
+      "dataset_revision": "livebench-2025-04-25",
+      "benchmark_configuration": "amazon.nova-micro-v1:0",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 33.668486111111115,
+        "coding": 28.919,
+        "reasoning": 25.416666666666668,
+        "language": 24.191666666666666,
+        "input_price": 0.035,
+        "output_price": 0.14,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 25.416666666666668,
+        "Coding": 28.919,
+        "Mathematics": 34.147333333333336,
+        "Data Analysis": 41.2945,
+        "Language": 24.191666666666666,
+        "IF": 48.04175
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/amazon/nova-micro-v1",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "amazon.nova-micro-v1:0",
+          "source_url": "https://livebench.ai/#/release/2025-04-02",
+          "release": "2025-04-02",
+          "dataset_revision": "livebench-2025-04-02",
+          "benchmark_configuration": "amazon.nova-micro-v1:0",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 28.64784722222222,
+            "coding": 6.143,
+            "reasoning": 25.416666666666668,
+            "language": 24.191666666666666,
+            "input_price": 0.035,
+            "output_price": 0.14,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 25.416666666666668,
+            "Coding": 6.143,
+            "Mathematics": 34.147333333333336,
+            "Data Analysis": 33.946666666666665,
+            "Language": 24.191666666666666,
+            "IF": 48.04175
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/amazon/nova-micro-v1",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        },
+        {
+          "source": "livebench",
+          "source_id": "amazon.nova-micro-v1:0",
+          "source_url": "https://livebench.ai/#/release/2024-11-25",
+          "release": "2024-11-25",
+          "dataset_revision": "livebench-2024-11-25",
+          "benchmark_configuration": "amazon.nova-micro-v1:0",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 29.587430555555557,
+            "coding": 20.1795,
+            "reasoning": 25.083333333333332,
+            "language": 15.779,
+            "input_price": 0.035,
+            "output_price": 0.14,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 25.083333333333332,
+            "Coding": 20.1795,
+            "Mathematics": 34.49433333333333,
+            "Data Analysis": 33.946666666666665,
+            "Language": 15.779,
+            "IF": 48.04175
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/amazon/nova-micro-v1",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "amazon.nova-pro-v1:0": {
+      "source": "livebench",
+      "source_id": "amazon.nova-pro-v1:0",
+      "source_url": "https://livebench.ai/#/release/2025-04-25",
+      "release": "2025-04-25",
+      "dataset_revision": "livebench-2025-04-25",
+      "benchmark_configuration": "amazon.nova-pro-v1:0",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 44.33358333333334,
+        "coding": 49.647999999999996,
+        "reasoning": 28.25,
+        "language": 38.935,
+        "input_price": 0.8,
+        "output_price": 3.2,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 28.25,
+        "Coding": 49.647999999999996,
+        "Mathematics": 37.696,
+        "Data Analysis": 44.3435,
+        "Language": 38.935,
+        "IF": 67.129
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/amazon/nova-pro-v1",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "amazon.nova-pro-v1:0",
+          "source_url": "https://livebench.ai/#/release/2025-04-02",
+          "release": "2025-04-02",
+          "dataset_revision": "livebench-2025-04-02",
+          "benchmark_configuration": "amazon.nova-pro-v1:0",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 40.05277777777778,
+            "coding": 20.0,
+            "reasoning": 28.25,
+            "language": 38.935,
+            "input_price": 0.8,
+            "output_price": 3.2,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 28.25,
+            "Coding": 20.0,
+            "Mathematics": 37.696,
+            "Data Analysis": 48.306666666666665,
+            "Language": 38.935,
+            "IF": 67.129
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/amazon/nova-pro-v1",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        },
+        {
+          "source": "livebench",
+          "source_id": "amazon.nova-pro-v1:0",
+          "source_url": "https://livebench.ai/#/release/2024-11-25",
+          "release": "2024-11-25",
+          "dataset_revision": "livebench-2024-11-25",
+          "benchmark_configuration": "amazon.nova-pro-v1:0",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 43.53022222222222,
+            "coding": 38.153999999999996,
+            "reasoning": 32.583333333333336,
+            "language": 36.964999999999996,
+            "input_price": 0.8,
+            "output_price": 3.2,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 32.583333333333336,
+            "Coding": 38.153999999999996,
+            "Mathematics": 38.04333333333334,
+            "Data Analysis": 48.306666666666665,
+            "Language": 36.964999999999996,
+            "IF": 67.129
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/amazon/nova-pro-v1",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "deepseek.r1-v1:0": {
+      "source": "livebench",
+      "source_id": "deepseek-r1",
+      "source_url": "https://livebench.ai/#/release/2025-04-25",
+      "release": "2025-04-25",
+      "dataset_revision": "livebench-2025-04-25",
+      "benchmark_configuration": "deepseek-r1",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/deepseek.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 72.67534722222223,
+        "coding": 76.0715,
+        "reasoning": 77.16666666666667,
+        "language": 54.77066666666666,
+        "input_price": null,
+        "output_price": null,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 77.16666666666667,
+        "Coding": 76.0715,
+        "Mathematics": 77.91,
+        "Data Analysis": 69.625,
+        "Language": 54.77066666666666,
+        "IF": 80.50825
+      },
+      "pricing_source": null,
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "deepseek-r1",
+          "source_url": "https://livebench.ai/#/release/2025-04-02",
+          "release": "2025-04-02",
+          "dataset_revision": "livebench-2025-04-02",
+          "benchmark_configuration": "deepseek-r1",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/deepseek.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 67.47204166666667,
+            "coding": 48.4765,
+            "reasoning": 76.58333333333333,
+            "language": 54.77066666666666,
+            "input_price": null,
+            "output_price": null,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 76.58333333333333,
+            "Coding": 48.4765,
+            "Mathematics": 77.91,
+            "Data Analysis": 67.6,
+            "Language": 54.77066666666666,
+            "IF": 79.49175
+          },
+          "pricing_source": null
+        },
+        {
+          "source": "livebench",
+          "source_id": "deepseek-r1",
+          "source_url": "https://livebench.ai/#/release/2024-11-25",
+          "release": "2024-11-25",
+          "dataset_revision": "livebench-2024-11-25",
+          "benchmark_configuration": "deepseek-r1",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/deepseek.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 71.57318055555555,
+            "coding": 66.7435,
+            "reasoning": 83.16666666666667,
+            "language": 48.52766666666667,
+            "input_price": null,
+            "output_price": null,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 83.16666666666667,
+            "Coding": 66.7435,
+            "Mathematics": 80.713,
+            "Data Analysis": 69.78,
+            "Language": 48.52766666666667,
+            "IF": 80.50825
+          },
+          "pricing_source": null
+        }
+      ]
+    },
+    "google.gemma-3-27b-it": {
+      "source": "livebench",
+      "source_id": "gemma-3-27b-it",
+      "source_url": "https://livebench.ai/#/release/2025-04-25",
+      "release": "2025-04-25",
+      "dataset_revision": "livebench-2025-04-25",
+      "benchmark_configuration": "gemma-3-27b-it",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/google.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 48.44033333333333,
+        "coding": 48.9435,
+        "reasoning": 34.416666666666664,
+        "language": 41.31433333333333,
+        "input_price": 0.08,
+        "output_price": 0.16,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 34.416666666666664,
+        "Coding": 48.9435,
+        "Mathematics": 52.266999999999996,
+        "Data Analysis": 38.796499999999995,
+        "Language": 41.31433333333333,
+        "IF": 74.904
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/google/gemma-3-27b-it",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "gemma-3-27b-it",
+          "source_url": "https://livebench.ai/#/release/2025-04-02",
+          "release": "2025-04-02",
+          "dataset_revision": "livebench-2025-04-02",
+          "benchmark_configuration": "gemma-3-27b-it",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/google.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 46.629527777777774,
+            "coding": 25.4285,
+            "reasoning": 34.416666666666664,
+            "language": 41.31433333333333,
+            "input_price": 0.08,
+            "output_price": 0.16,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 34.416666666666664,
+            "Coding": 25.4285,
+            "Mathematics": 52.266999999999996,
+            "Data Analysis": 51.446666666666665,
+            "Language": 41.31433333333333,
+            "IF": 74.904
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/google/gemma-3-27b-it",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        },
+        {
+          "source": "livebench",
+          "source_id": "gemma-3-27b-it",
+          "source_url": "https://livebench.ai/#/release/2024-11-25",
+          "release": "2024-11-25",
+          "dataset_revision": "livebench-2024-11-25",
+          "benchmark_configuration": "gemma-3-27b-it",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/google.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 49.99261111111111,
+            "coding": 39.872,
+            "reasoning": 43.75,
+            "language": 34.591,
+            "input_price": 0.08,
+            "output_price": 0.16,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 43.75,
+            "Coding": 39.872,
+            "Mathematics": 55.391999999999996,
+            "Data Analysis": 51.446666666666665,
+            "Language": 34.591,
+            "IF": 74.904
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/google/gemma-3-27b-it",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "meta.llama3-3-70b-instruct-v1:0": {
+      "source": "livebench",
+      "source_id": "llama-3.3-70b-instruct-turbo",
+      "source_url": "https://livebench.ai/#/release/2025-04-25",
+      "release": "2025-04-25",
+      "dataset_revision": "livebench-2025-04-25",
+      "benchmark_configuration": "llama-3.3-70b-instruct-turbo",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 48.86284722222222,
+        "coding": 51.822,
+        "reasoning": 32.52766666666667,
+        "language": 43.965666666666664,
+        "input_price": 0.71,
+        "output_price": 0.71,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 32.52766666666667,
+        "Coding": 51.822,
+        "Mathematics": 41.403999999999996,
+        "Data Analysis": 40.787,
+        "Language": 43.965666666666664,
+        "IF": 82.67075
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/meta-llama/llama-3.3-70b-instruct",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "llama-3.3-70b-instruct-turbo",
+          "source_url": "https://livebench.ai/#/release/2025-04-02",
+          "release": "2025-04-02",
+          "dataset_revision": "livebench-2025-04-02",
+          "benchmark_configuration": "llama-3.3-70b-instruct-turbo",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 45.683791666666664,
+            "coding": 24.048000000000002,
+            "reasoning": 32.52766666666667,
+            "language": 43.965666666666664,
+            "input_price": 0.71,
+            "output_price": 0.71,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 32.52766666666667,
+            "Coding": 24.048000000000002,
+            "Mathematics": 41.403999999999996,
+            "Data Analysis": 49.486666666666665,
+            "Language": 43.965666666666664,
+            "IF": 82.67075
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/meta-llama/llama-3.3-70b-instruct",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        },
+        {
+          "source": "livebench",
+          "source_id": "llama-3.3-70b-instruct-turbo",
+          "source_url": "https://livebench.ai/#/release/2024-11-25",
+          "release": "2024-11-25",
+          "dataset_revision": "livebench-2024-11-25",
+          "benchmark_configuration": "llama-3.3-70b-instruct-turbo",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 50.155208333333334,
+            "coding": 36.5895,
+            "reasoning": 50.75,
+            "language": 39.19766666666667,
+            "input_price": 0.71,
+            "output_price": 0.71,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 50.75,
+            "Coding": 36.5895,
+            "Mathematics": 42.236666666666665,
+            "Data Analysis": 49.486666666666665,
+            "Language": 39.19766666666667,
+            "IF": 82.67075
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/meta-llama/llama-3.3-70b-instruct",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "google.gemma-3-4b-it": {
+      "source": "livebench",
+      "source_id": "gemma-3-4b-it",
+      "source_url": "https://livebench.ai/#/release/2025-04-02",
+      "release": "2025-04-02",
+      "dataset_revision": "livebench-2025-04-02",
+      "benchmark_configuration": "gemma-3-4b-it",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/google.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 30.126791666666666,
+        "coding": 11.714500000000001,
+        "reasoning": 19.777666666666665,
+        "language": 15.059333333333333,
+        "input_price": 0.04,
+        "output_price": 0.05,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 19.777666666666665,
+        "Coding": 11.714500000000001,
+        "Mathematics": 31.326,
+        "Data Analysis": 39.3,
+        "Language": 15.059333333333333,
+        "IF": 63.58325
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/google/gemma-3-4b-it",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "google.gemma-3-12b-it": {
+      "source": "livebench",
+      "source_id": "gemma-3-12b-it",
+      "source_url": "https://livebench.ai/#/release/2025-04-02",
+      "release": "2025-04-02",
+      "dataset_revision": "livebench-2025-04-02",
+      "benchmark_configuration": "gemma-3-12b-it",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/google.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 41.251041666666666,
+        "coding": 19.095,
+        "reasoning": 28.611,
+        "language": 31.269666666666666,
+        "input_price": 0.05,
+        "output_price": 0.15,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 28.611,
+        "Coding": 19.095,
+        "Mathematics": 48.141333333333336,
+        "Data Analysis": 46.56,
+        "Language": 31.269666666666666,
+        "IF": 73.82925
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/google/gemma-3-12b-it",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "meta.llama4-maverick-17b-instruct-v1:0": {
+      "source": "livebench",
+      "source_id": "llama4-maverick-instruct-basic",
+      "source_url": "https://livebench.ai/#/release/2025-04-25",
+      "release": "2025-04-25",
+      "dataset_revision": "livebench-2025-04-25",
+      "benchmark_configuration": "llama4-maverick-instruct-basic",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 55.185541666666666,
+        "coding": 54.194500000000005,
+        "reasoning": 43.833333333333336,
+        "language": 49.647666666666666,
+        "input_price": 0.35,
+        "output_price": 1.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 43.833333333333336,
+        "Coding": 54.194500000000005,
+        "Mathematics": 60.579,
+        "Data Analysis": 47.113,
+        "Language": 49.647666666666666,
+        "IF": 75.74575
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/meta-llama/llama-4-maverick",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "qwen.qwen3-32b-v1:0": {
+      "source": "livebench",
+      "source_id": "qwen3-32b-thinking",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "qwen3-32b-thinking",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/qwen.yml",
+      "configuration_note": "公开评测额外使用 /think 提示；当前执行适配尚未核验等价推理模式。",
+      "metrics": {
+        "quality": 43.558523809523805,
+        "coding": 66.0285,
+        "reasoning": 48.25475,
+        "language": 55.54233333333333,
+        "input_price": 0.08,
+        "output_price": 0.28,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 48.25475,
+        "Coding": 66.0285,
+        "Agentic Coding": 3.3333333333333335,
+        "Mathematics": 67.44,
+        "Data Analysis": 46.54,
+        "Language": 55.54233333333333,
+        "IF": 17.77075
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/qwen/qwen3-32b",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "qwen3-32b-thinking",
+          "source_url": "https://livebench.ai/#/release/2025-05-30",
+          "release": "2025-05-30",
+          "dataset_revision": "livebench-2025-05-30",
+          "benchmark_configuration": "qwen3-32b-thinking",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "pending",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/qwen.yml",
+          "configuration_note": "公开评测额外使用 /think 提示；当前执行适配尚未核验等价推理模式。",
+          "metrics": {
+            "quality": 62.77804761904761,
+            "coding": 66.0285,
+            "reasoning": 83.08333333333333,
+            "language": 55.153333333333336,
+            "input_price": 0.08,
+            "output_price": 0.28,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 83.08333333333333,
+            "Coding": 66.0285,
+            "Agentic Coding": 1.6666666666666667,
+            "Mathematics": 80.05499999999999,
+            "Data Analysis": 68.2885,
+            "Language": 55.153333333333336,
+            "IF": 85.17099999999999
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/qwen/qwen3-32b",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        },
+        {
+          "source": "livebench",
+          "source_id": "qwen3-32b-thinking",
+          "source_url": "https://livebench.ai/#/release/2025-04-25",
+          "release": "2025-04-25",
+          "dataset_revision": "livebench-2025-04-25",
+          "benchmark_configuration": "qwen3-32b-thinking",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "pending",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/qwen.yml",
+          "configuration_note": "公开评测额外使用 /think 提示；当前执行适配尚未核验等价推理模式。",
+          "metrics": {
+            "quality": 72.66486111111111,
+            "coding": 64.238,
+            "reasoning": 83.08333333333333,
+            "language": 55.153333333333336,
+            "input_price": 0.08,
+            "output_price": 0.28,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 83.08333333333333,
+            "Coding": 64.238,
+            "Mathematics": 80.05499999999999,
+            "Data Analysis": 68.2885,
+            "Language": 55.153333333333336,
+            "IF": 85.17099999999999
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/qwen/qwen3-32b",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "anthropic.claude-haiku-4-5-20251001-v1:0": {
+      "source": "livebench",
+      "source_id": "claude-haiku-4-5-20251001",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "claude-haiku-4-5-20251001",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 45.33360714285715,
+        "coding": 72.168,
+        "reasoning": 33.9375,
+        "language": 57.04566666666667,
+        "input_price": 1.0,
+        "output_price": 5.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 33.9375,
+        "Coding": 72.168,
+        "Agentic Coding": 33.333333333333336,
+        "Mathematics": 57.9715,
+        "Data Analysis": 45.125,
+        "Language": 57.04566666666667,
+        "IF": 17.75425
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/anthropic/claude-haiku-4.5",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "claude-haiku-4-5-20251001",
+          "source_url": "https://livebench.ai/#/release/2025-05-30",
+          "release": "2025-05-30",
+          "dataset_revision": "livebench-2025-05-30",
+          "benchmark_configuration": "claude-haiku-4-5-20251001",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 60.42190476190476,
+            "coding": 72.168,
+            "reasoning": 54.77766666666667,
+            "language": 53.601333333333336,
+            "input_price": 1.0,
+            "output_price": 5.0,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 54.77766666666667,
+            "Coding": 72.168,
+            "Agentic Coding": 28.333333333333332,
+            "Mathematics": 74.442,
+            "Data Analysis": 66.1935,
+            "Language": 53.601333333333336,
+            "IF": 73.4375
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/anthropic/claude-haiku-4.5",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "anthropic.claude-opus-4-1-20250805-v1:0": {
+      "source": "livebench",
+      "source_id": "claude-4-1-opus-20250805-base",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "claude-4-1-opus-20250805-base",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 54.45291666666667,
+        "coding": 76.0715,
+        "reasoning": 40.89425,
+        "language": 76.75233333333333,
+        "input_price": 15.0,
+        "output_price": 75.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 40.89425,
+        "Coding": 76.0715,
+        "Agentic Coding": 53.333333333333336,
+        "Mathematics": 62.82625,
+        "Data Analysis": 45.376,
+        "Language": 76.75233333333333,
+        "IF": 25.91675
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/anthropic/claude-opus-4.1",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "claude-4-1-opus-20250805-base",
+          "source_url": "https://livebench.ai/#/release/2025-05-30",
+          "release": "2025-05-30",
+          "dataset_revision": "livebench-2025-05-30",
+          "benchmark_configuration": "claude-4-1-opus-20250805-base",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 67.77470238095238,
+            "coding": 76.0715,
+            "reasoning": 56.80566666666667,
+            "language": 75.64133333333334,
+            "input_price": 15.0,
+            "output_price": 75.0,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 56.80566666666667,
+            "Coding": 76.0715,
+            "Agentic Coding": 36.666666666666664,
+            "Mathematics": 82.473,
+            "Data Analysis": 66.9525,
+            "Language": 75.64133333333334,
+            "IF": 79.81225
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/anthropic/claude-opus-4.1",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "anthropic.claude-opus-4-5-20251101-v1:0": {
+      "source": "livebench",
+      "source_id": "claude-opus-4-5-20251101-low-effort",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "claude-opus-4-5-20251101-low-effort",
+      "request_fields": {
+        "output_config": {
+          "effort": "low"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 55.77140476190476,
+        "coding": 78.1845,
+        "reasoning": 47.8125,
+        "language": 77.17866666666667,
+        "input_price": 5.0,
+        "output_price": 25.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 47.8125,
+        "Coding": 78.1845,
+        "Agentic Coding": 50.0,
+        "Mathematics": 64.10325,
+        "Data Analysis": 44.16666666666667,
+        "Language": 77.17866666666667,
+        "IF": 28.954250000000002
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/anthropic/claude-opus-4.5",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "claude-opus-4-5-20251101-low-effort",
+          "source_url": "https://livebench.ai/#/release/2025-05-30",
+          "release": "2025-05-30",
+          "dataset_revision": "livebench-2025-05-30",
+          "benchmark_configuration": "claude-opus-4-5-20251101-low-effort",
+          "request_fields": {
+            "output_config": {
+              "effort": "low"
+            }
+          },
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 71.61751190476191,
+            "coding": 78.1845,
+            "reasoning": 64.66666666666667,
+            "language": 76.17866666666667,
+            "input_price": 5.0,
+            "output_price": 25.0,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 64.66666666666667,
+            "Coding": 78.1845,
+            "Agentic Coding": 50.0,
+            "Mathematics": 86.059,
+            "Data Analysis": 65.3755,
+            "Language": 76.17866666666667,
+            "IF": 80.85825
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/anthropic/claude-opus-4.5",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "anthropic.claude-sonnet-4-5-20250929-v1:0": {
+      "source": "livebench",
+      "source_id": "claude-sonnet-4-5-20250929",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "claude-sonnet-4-5-20250929",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 53.69170238095238,
+        "coding": 76.0715,
+        "reasoning": 42.29325,
+        "language": 75.99833333333333,
+        "input_price": 3.0,
+        "output_price": 15.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 42.29325,
+        "Coding": 76.0715,
+        "Agentic Coding": 48.333333333333336,
+        "Mathematics": 62.619749999999996,
+        "Data Analysis": 47.005,
+        "Language": 75.99833333333333,
+        "IF": 23.52075
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/anthropic/claude-sonnet-4.5",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "claude-sonnet-4-5-20250929",
+          "source_url": "https://livebench.ai/#/release/2025-05-30",
+          "release": "2025-05-30",
+          "dataset_revision": "livebench-2025-05-30",
+          "benchmark_configuration": "claude-sonnet-4-5-20250929",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 70.56382142857143,
+            "coding": 76.0715,
+            "reasoning": 63.083333333333336,
+            "language": 76.22033333333333,
+            "input_price": 3.0,
+            "output_price": 15.0,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 63.083333333333336,
+            "Coding": 76.0715,
+            "Agentic Coding": 50.0,
+            "Mathematics": 82.18033333333334,
+            "Data Analysis": 67.337,
+            "Language": 76.22033333333333,
+            "IF": 79.05425
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/anthropic/claude-sonnet-4.5",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "minimax.minimax-m2": {
+      "source": "livebench",
+      "source_id": "minimax-m2",
+      "source_url": "https://livebench.ai/#/release/2025-05-30",
+      "release": "2025-05-30",
+      "dataset_revision": "livebench-2025-05-30",
+      "benchmark_configuration": "minimax-m2",
+      "request_fields": {},
+      "inference_config": {
+        "temperature": 1
+      },
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/minimax.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 64.26302380952382,
+        "coding": 57.777,
+        "reasoning": 88.22233333333334,
+        "language": 47.647666666666666,
+        "input_price": null,
+        "output_price": null,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 88.22233333333334,
+        "Coding": 57.777,
+        "Agentic Coding": 21.666666666666668,
+        "Mathematics": 85.953,
+        "Data Analysis": 67.55799999999999,
+        "Language": 47.647666666666666,
+        "IF": 81.01650000000001
+      },
+      "pricing_source": null,
+      "configurations": []
+    },
+    "moonshot.kimi-k2-thinking": {
+      "source": "livebench",
+      "source_id": "kimi-k2-thinking",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "kimi-k2-thinking",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/moonshotai.yml",
+      "configuration_note": "公开配置固定了特定供应商；需核验 Bedrock 对应推理模式。",
+      "metrics": {
+        "quality": 61.589059523809524,
+        "coding": 67.437,
+        "reasoning": 63.4855,
+        "language": 66.45333333333333,
+        "input_price": null,
+        "output_price": null,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 63.4855,
+        "Coding": 67.437,
+        "Agentic Coding": 38.333333333333336,
+        "Mathematics": 81.09575000000001,
+        "Data Analysis": 52.285000000000004,
+        "Language": 66.45333333333333,
+        "IF": 62.033500000000004
+      },
+      "pricing_source": null,
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "kimi-k2-thinking",
+          "source_url": "https://livebench.ai/#/release/2025-05-30",
+          "release": "2025-05-30",
+          "dataset_revision": "livebench-2025-05-30",
+          "benchmark_configuration": "kimi-k2-thinking",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "pending",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/moonshotai.yml",
+          "configuration_note": "公开配置固定了特定供应商；需核验 Bedrock 对应推理模式。",
+          "metrics": {
+            "quality": 71.5644761904762,
+            "coding": 68.2025,
+            "reasoning": 87.69433333333333,
+            "language": 61.919333333333334,
+            "input_price": null,
+            "output_price": null,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 87.69433333333333,
+            "Coding": 68.2025,
+            "Agentic Coding": 35.0,
+            "Mathematics": 88.46166666666667,
+            "Data Analysis": 69.078,
+            "Language": 61.919333333333334,
+            "IF": 90.5955
+          },
+          "pricing_source": null
+        }
+      ]
+    },
+    "openai.gpt-oss-120b-1:0": {
+      "source": "livebench",
+      "source_id": "gpt-oss-120b",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "gpt-oss-120b",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/openai.yml",
+      "configuration_note": "公开成绩未标明默认推理档位，不能推定为 Bedrock 的某一 effort。",
+      "metrics": {
+        "quality": 46.09229761904762,
+        "coding": 60.2115,
+        "reasoning": 39.20675,
+        "language": 48.590666666666664,
+        "input_price": 0.05,
+        "output_price": 0.25,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 39.20675,
+        "Coding": 60.2115,
+        "Agentic Coding": 16.666666666666668,
+        "Mathematics": 68.87375,
+        "Data Analysis": 38.805,
+        "Language": 48.590666666666664,
+        "IF": 50.29175
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/openai/gpt-oss-120b",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "gpt-oss-120b",
+          "source_url": "https://livebench.ai/#/release/2025-05-30",
+          "release": "2025-05-30",
+          "dataset_revision": "livebench-2025-05-30",
+          "benchmark_configuration": "gpt-oss-120b",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "pending",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/openai.yml",
+          "configuration_note": "公开成绩未标明默认推理档位，不能推定为 Bedrock 的某一 effort。",
+          "metrics": {
+            "quality": 55.56152380952381,
+            "coding": 60.2115,
+            "reasoning": 77.611,
+            "language": 43.146,
+            "input_price": 0.05,
+            "output_price": 0.25,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 77.611,
+            "Coding": 60.2115,
+            "Agentic Coding": 15.0,
+            "Mathematics": 69.88566666666667,
+            "Data Analysis": 56.772499999999994,
+            "Language": 43.146,
+            "IF": 66.304
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/openai/gpt-oss-120b",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "qwen.qwen3-next-80b-a3b": {
+      "source": "livebench",
+      "source_id": "qwen3-next-80b-a3b-instruct",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "qwen3-next-80b-a3b-instruct",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/qwen.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 48.34784523809524,
+        "coding": 68.2025,
+        "reasoning": 54.74525,
+        "language": 66.33766666666666,
+        "input_price": 0.1,
+        "output_price": 1.1,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 54.74525,
+        "Coding": 68.2025,
+        "Agentic Coding": 10.0,
+        "Mathematics": 70.178,
+        "Data Analysis": 49.784,
+        "Language": 66.33766666666666,
+        "IF": 19.1875
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/qwen/qwen3-next-80b-a3b-instruct",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "qwen3-next-80b-a3b-instruct",
+          "source_url": "https://livebench.ai/#/release/2025-05-30",
+          "release": "2025-05-30",
+          "dataset_revision": "livebench-2025-05-30",
+          "benchmark_configuration": "qwen3-next-80b-a3b-instruct",
+          "request_fields": {},
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/qwen.yml",
+          "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+          "metrics": {
+            "quality": 66.29922619047619,
+            "coding": 68.2025,
+            "reasoning": 88.22233333333334,
+            "language": 68.17099999999999,
+            "input_price": 0.1,
+            "output_price": 1.1,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 88.22233333333334,
+            "Coding": 68.2025,
+            "Agentic Coding": 10.0,
+            "Mathematics": 80.668,
+            "Data Analysis": 68.6265,
+            "Language": 68.17099999999999,
+            "IF": 80.20425
+          },
+          "pricing_source": {
+            "source": "openrouter",
+            "url": "https://openrouter.ai/qwen/qwen3-next-80b-a3b-instruct",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "deepseek.v3.2": {
+      "source": "livebench",
+      "source_id": "deepseek-v3.2",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "deepseek-v3.2",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/deepseek.yml",
+      "configuration_note": "已对应非推理成绩；Bedrock 推理开关的等价参数待核验。",
+      "metrics": {
+        "quality": 51.84225,
+        "coding": 75.689,
+        "reasoning": 44.25,
+        "language": 64.23933333333333,
+        "input_price": 0.26,
+        "output_price": 0.38,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 44.25,
+        "Coding": 75.689,
+        "Agentic Coding": 46.666666666666664,
+        "Mathematics": 63.95425,
+        "Data Analysis": 45.034,
+        "Language": 64.23933333333333,
+        "IF": 23.0625
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/deepseek/deepseek-v3.2",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "minimax.minimax-m2.5": {
+      "source": "livebench",
+      "source_id": "minimax-m2.5",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "minimax-m2.5",
+      "request_fields": {},
+      "inference_config": {
+        "temperature": 1
+      },
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/minimax.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 60.14480952380953,
+        "coding": 70.69800000000001,
+        "reasoning": 59.303,
+        "language": 55.101,
+        "input_price": 0.27,
+        "output_price": 0.95,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 59.303,
+        "Coding": 70.69800000000001,
+        "Agentic Coding": 51.666666666666664,
+        "Mathematics": 77.40675,
+        "Data Analysis": 49.605000000000004,
+        "Language": 55.101,
+        "IF": 57.23325
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/minimax/minimax-m2.5",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "mistral.devstral-2-123b": {
+      "source": "livebench",
+      "source_id": "devstral-2512",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "devstral-2512",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/mistral.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 41.2419880952381,
+        "coding": 66.79400000000001,
+        "reasoning": 27.7405,
+        "language": 45.669,
+        "input_price": 0.4,
+        "output_price": 2.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 27.7405,
+        "Coding": 66.79400000000001,
+        "Agentic Coding": 43.333333333333336,
+        "Mathematics": 52.51575,
+        "Data Analysis": 39.141333333333336,
+        "Language": 45.669,
+        "IF": 13.5
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/mistralai/devstral-2512",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "moonshotai.kimi-k2.5": {
+      "source": "livebench",
+      "source_id": "kimi-k2.5-thinking",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "kimi-k2.5-thinking",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/moonshotai.yml",
+      "configuration_note": "已对应 thinking 成绩；Bedrock 推理开关的等价参数待核验。",
+      "metrics": {
+        "quality": 69.06532142857142,
+        "coding": 77.863,
+        "reasoning": 75.95675,
+        "language": 77.666,
+        "input_price": 0.5,
+        "output_price": 2.5,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 75.95675,
+        "Coding": 77.863,
+        "Agentic Coding": 48.333333333333336,
+        "Mathematics": 84.868,
+        "Data Analysis": 61.35766666666667,
+        "Language": 77.666,
+        "IF": 57.4125
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/moonshotai/kimi-k2.5",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "nvidia.nemotron-super-3-120b": {
+      "source": "livebench",
+      "source_id": "nemotron-3-super-120b-a12b",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "nemotron-3-super-120b-a12b",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/nvidia.yml",
+      "configuration_note": "公开评测使用 NVFP4 推理端点；Bedrock 精度和推理开关待核验。",
+      "metrics": {
+        "quality": null,
+        "coding": 54.072,
+        "reasoning": null,
+        "language": null,
+        "input_price": 0.075,
+        "output_price": 0.4,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": null,
+        "Coding": 54.072,
+        "Agentic Coding": null,
+        "Mathematics": 36.42875,
+        "Data Analysis": 21.230666666666668,
+        "Language": null,
+        "IF": 28.40775
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/nvidia/nemotron-3-super-120b-a12b",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "zai.glm-4.7": {
+      "source": "livebench",
+      "source_id": "glm-4.7",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "glm-4.7",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/zai.yml",
+      "configuration_note": "已找到精确型号成绩；Bedrock 与评测端点的默认推理模式待核验。",
+      "metrics": {
+        "quality": 58.08629761904762,
+        "coding": 73.132,
+        "reasoning": 59.73075,
+        "language": 65.22633333333333,
+        "input_price": 0.6,
+        "output_price": 2.2,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 59.73075,
+        "Coding": 73.132,
+        "Agentic Coding": 41.666666666666664,
+        "Mathematics": 76.01875,
+        "Data Analysis": 55.17133333333334,
+        "Language": 65.22633333333333,
+        "IF": 35.65825
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/z-ai/glm-4.7",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "zai.glm-5": {
+      "source": "livebench",
+      "source_id": "glm-5",
+      "source_url": "https://livebench.ai/#/release/2026-01-08",
+      "release": "2026-01-08",
+      "dataset_revision": "livebench-2026-01-08",
+      "benchmark_configuration": "glm-5",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/zai.yml",
+      "configuration_note": "已找到精确型号成绩；Bedrock 与评测端点的默认推理模式待核验。",
+      "metrics": {
+        "quality": 68.85214285714285,
+        "coding": 73.63749999999999,
+        "reasoning": 69.1105,
+        "language": 77.528,
+        "input_price": 1.0,
+        "output_price": 3.2,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 69.1105,
+        "Coding": 73.63749999999999,
+        "Agentic Coding": 55.0,
+        "Mathematics": 83.464,
+        "Data Analysis": 67.896,
+        "Language": 77.528,
+        "IF": 55.329
+      },
+      "pricing_source": {
+        "source": "openrouter",
+        "url": "https://openrouter.ai/z-ai/glm-5",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
     "openai.gpt-5.4": {
       "source": "livebench",
       "source_id": "gpt-5.4-xhigh",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "gpt-5.4-xhigh",
       "request_fields": {
         "reasoning": {
           "effort": "xhigh"
         }
       },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 77.97244047619047,
         "coding": 77.5415,
@@ -47,19 +2177,72 @@
         "Data Analysis": 79.31333333333333,
         "Language": 82.63366666666667,
         "IF": 70.21675
-      }
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "gpt-5.4-xhigh",
+          "source_url": "https://livebench.ai/#/release/2026-01-08",
+          "release": "2026-01-08",
+          "dataset_revision": "livebench-2026-01-08",
+          "benchmark_configuration": "gpt-5.4-xhigh",
+          "request_fields": {
+            "reasoning": {
+              "effort": "xhigh"
+            }
+          },
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": null,
+          "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+          "metrics": {
+            "quality": 80.28125,
+            "coding": 77.5415,
+            "reasoning": 88.1155,
+            "language": 82.63366666666667,
+            "input_price": 2.5,
+            "output_price": 15.0,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 88.1155,
+            "Coding": 77.5415,
+            "Agentic Coding": 70.0,
+            "Mathematics": 94.148,
+            "Data Analysis": 79.31333333333333,
+            "Language": 82.63366666666667,
+            "IF": 70.21675
+          },
+          "pricing_source": {
+            "source": "livebench",
+            "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
     },
     "openai.gpt-5.5": {
       "source": "livebench",
       "source_id": "gpt-5.5-xhigh",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "gpt-5.5-xhigh",
       "request_fields": {
         "reasoning": {
           "effort": "xhigh"
         }
       },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 80.18829761904762,
         "coding": 82.14949999999999,
@@ -78,229 +2261,62 @@
         "Data Analysis": 81.57566666666666,
         "Language": 87.363,
         "IF": 70.72925
-      }
-    },
-    "openai.gpt-5.6-sol": {
-      "source": "livebench",
-      "source_id": "gpt-5.6-sol-max",
-      "source_url": "https://livebench.ai/",
-      "benchmark_configuration": "gpt-5.6-sol-max",
-      "request_fields": {
-        "reasoning": {
-          "effort": "max"
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "gpt-5.5-xhigh",
+          "source_url": "https://livebench.ai/#/release/2026-01-08",
+          "release": "2026-01-08",
+          "dataset_revision": "livebench-2026-01-08",
+          "benchmark_configuration": "gpt-5.5-xhigh",
+          "request_fields": {
+            "reasoning": {
+              "effort": "xhigh"
+            }
+          },
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": null,
+          "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+          "metrics": {
+            "quality": 80.70721428571429,
+            "coding": 82.471,
+            "reasoning": 87.7115,
+            "language": 87.659,
+            "input_price": 5.0,
+            "output_price": 30.0,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 87.7115,
+            "Coding": 82.471,
+            "Agentic Coding": 56.666666666666664,
+            "Mathematics": 96.32025,
+            "Data Analysis": 81.08033333333333,
+            "Language": 87.659,
+            "IF": 73.04175000000001
+          },
+          "pricing_source": {
+            "source": "livebench",
+            "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
         }
-      },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
-      "metrics": {
-        "quality": 81.05354761904762,
-        "coding": 83.941,
-        "reasoning": 91.65375,
-        "language": 87.68366666666667,
-        "input_price": 5.0,
-        "output_price": 30.0,
-        "output_tps": null,
-        "ttft_seconds": null
-      },
-      "category_scores": {
-        "Reasoning": 91.65375,
-        "Coding": 83.941,
-        "Agentic Coding": 56.212,
-        "Mathematics": 96.19775,
-        "Data Analysis": 79.84066666666666,
-        "Language": 87.68366666666667,
-        "IF": 71.846
-      }
-    },
-    "openai.gpt-5.6-terra": {
-      "source": "livebench",
-      "source_id": "gpt-5.6-terra-max",
-      "source_url": "https://livebench.ai/",
-      "benchmark_configuration": "gpt-5.6-terra-max",
-      "request_fields": {
-        "reasoning": {
-          "effort": "max"
-        }
-      },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
-      "metrics": {
-        "quality": 77.93625,
-        "coding": 78.24549999999999,
-        "reasoning": 90.6345,
-        "language": 82.89266666666667,
-        "input_price": 2.5,
-        "output_price": 15.0,
-        "output_tps": null,
-        "ttft_seconds": null
-      },
-      "category_scores": {
-        "Reasoning": 90.6345,
-        "Coding": 78.24549999999999,
-        "Agentic Coding": 54.949666666666666,
-        "Mathematics": 94.90825,
-        "Data Analysis": 79.30666666666667,
-        "Language": 82.89266666666667,
-        "IF": 64.6165
-      }
-    },
-    "openai.gpt-5.6-luna": {
-      "source": "livebench",
-      "source_id": "gpt-5.6-luna-max",
-      "source_url": "https://livebench.ai/",
-      "benchmark_configuration": "gpt-5.6-luna-max",
-      "request_fields": {
-        "reasoning": {
-          "effort": "max"
-        }
-      },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
-      "metrics": {
-        "quality": 73.55938095238095,
-        "coding": 82.91499999999999,
-        "reasoning": 85.64425,
-        "language": 72.56700000000001,
-        "input_price": 1.0,
-        "output_price": 6.0,
-        "output_tps": null,
-        "ttft_seconds": null
-      },
-      "category_scores": {
-        "Reasoning": 85.64425,
-        "Coding": 82.91499999999999,
-        "Agentic Coding": 48.434333333333335,
-        "Mathematics": 87.20075,
-        "Data Analysis": 78.03333333333333,
-        "Language": 72.56700000000001,
-        "IF": 60.121
-      }
-    },
-    "openai.gpt-6-sol": {
-      "source": "livebench",
-      "source_id": "gpt-6-sol-max",
-      "source_url": "https://livebench.ai/",
-      "benchmark_configuration": "gpt-6-sol-max",
-      "request_fields": {
-        "reasoning": {
-          "effort": "max"
-        }
-      },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
-      "metrics": {
-        "quality": 79.24545238095237,
-        "coding": 81.767,
-        "reasoning": 88.65375,
-        "language": 85.29866666666666,
-        "input_price": 2.0,
-        "output_price": 10.0,
-        "output_tps": null,
-        "ttft_seconds": null
-      },
-      "category_scores": {
-        "Reasoning": 88.65375,
-        "Coding": 81.767,
-        "Agentic Coding": 52.87866666666667,
-        "Mathematics": 96.356,
-        "Data Analysis": 81.18933333333334,
-        "Language": 85.29866666666666,
-        "IF": 68.57475
-      }
-    },
-    "openai.gpt-6-luna": {
-      "source": "livebench",
-      "source_id": "gpt-6-luna-max",
-      "source_url": "https://livebench.ai/",
-      "benchmark_configuration": "gpt-6-luna-max",
-      "request_fields": {
-        "reasoning": {
-          "effort": "max"
-        }
-      },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
-      "metrics": {
-        "quality": 72.02647619047619,
-        "coding": 78.95,
-        "reasoning": 81.76925,
-        "language": 73.82766666666666,
-        "input_price": 0.1,
-        "output_price": 0.5,
-        "output_tps": null,
-        "ttft_seconds": null
-      },
-      "category_scores": {
-        "Reasoning": 81.76925,
-        "Coding": 78.95,
-        "Agentic Coding": 51.212,
-        "Mathematics": 89.1235,
-        "Data Analysis": 73.36966666666666,
-        "Language": 73.82766666666666,
-        "IF": 55.93325
-      }
-    },
-    "openai.gpt-6-astra": {
-      "source": "livebench",
-      "source_id": "gpt-6-astra-max",
-      "source_url": "https://livebench.ai/",
-      "benchmark_configuration": "gpt-6-astra-max",
-      "request_fields": {
-        "reasoning": {
-          "effort": "max"
-        }
-      },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
-      "metrics": {
-        "quality": 82.16064285714286,
-        "coding": 80.35849999999999,
-        "reasoning": 92.65375,
-        "language": 89.43066666666667,
-        "input_price": 10.0,
-        "output_price": 50.0,
-        "output_tps": null,
-        "ttft_seconds": null
-      },
-      "category_scores": {
-        "Reasoning": 92.65375,
-        "Coding": 80.35849999999999,
-        "Agentic Coding": 57.323,
-        "Mathematics": 96.80625,
-        "Data Analysis": 82.97333333333333,
-        "Language": 89.43066666666667,
-        "IF": 75.57900000000001
-      }
-    },
-    "openai.gpt-6.1-sol": {
-      "source": "livebench",
-      "source_id": "gpt-6.1-sol-max",
-      "source_url": "https://livebench.ai/",
-      "benchmark_configuration": "gpt-6.1-sol-max",
-      "request_fields": {
-        "reasoning": {
-          "effort": "max"
-        }
-      },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
-      "metrics": {
-        "quality": 81.61566666666667,
-        "coding": 80.35849999999999,
-        "reasoning": 92.6345,
-        "language": 90.126,
-        "input_price": 2.0,
-        "output_price": 10.0,
-        "output_tps": null,
-        "ttft_seconds": null
-      },
-      "category_scores": {
-        "Reasoning": 92.6345,
-        "Coding": 80.35849999999999,
-        "Agentic Coding": 54.54533333333333,
-        "Mathematics": 96.83175,
-        "Data Analysis": 82.65933333333334,
-        "Language": 90.126,
-        "IF": 74.15424999999999
-      }
+      ]
     },
     "anthropic.claude-opus-4-6-v1": {
       "source": "livebench",
       "source_id": "claude-opus-4-6-thinking-auto-high-effort",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "claude-opus-4-6-thinking-auto-high-effort",
       "request_fields": {
         "thinking": {
@@ -310,7 +2326,10 @@
           "effort": "high"
         }
       },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 74.51990476190477,
         "coding": 78.1845,
@@ -329,12 +2348,65 @@
         "Data Analysis": 69.893,
         "Language": 83.26966666666667,
         "IF": 63.3125
-      }
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "claude-opus-4-6-thinking-auto-high-effort",
+          "source_url": "https://livebench.ai/#/release/2026-01-08",
+          "release": "2026-01-08",
+          "dataset_revision": "livebench-2026-01-08",
+          "benchmark_configuration": "claude-opus-4-6-thinking-auto-high-effort",
+          "request_fields": {
+            "thinking": {
+              "type": "adaptive"
+            },
+            "output_config": {
+              "effort": "high"
+            }
+          },
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": null,
+          "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+          "metrics": {
+            "quality": 76.33090476190476,
+            "coding": 78.1845,
+            "reasoning": 88.673,
+            "language": 83.26966666666667,
+            "input_price": 5.0,
+            "output_price": 25.0,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 88.673,
+            "Coding": 78.1845,
+            "Agentic Coding": 61.666666666666664,
+            "Mathematics": 89.31700000000001,
+            "Data Analysis": 69.893,
+            "Language": 83.26966666666667,
+            "IF": 63.3125
+          },
+          "pricing_source": {
+            "source": "livebench",
+            "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
     },
     "anthropic.claude-opus-4-7": {
       "source": "livebench",
       "source_id": "claude-opus-4-7-xhigh-effort",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "claude-opus-4-7-xhigh-effort",
       "request_fields": {
         "thinking": {
@@ -344,7 +2416,10 @@
           "effort": "xhigh"
         }
       },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 76.52935714285714,
         "coding": 82.088,
@@ -363,114 +2438,65 @@
         "Data Analysis": 78.26366666666667,
         "Language": 77.914,
         "IF": 66.7375
-      }
-    },
-    "anthropic.claude-opus-4-8": {
-      "source": "livebench",
-      "source_id": "claude-opus-4-8-max-effort",
-      "source_url": "https://livebench.ai/",
-      "benchmark_configuration": "claude-opus-4-8-max-effort",
-      "request_fields": {
-        "thinking": {
-          "type": "adaptive"
-        },
-        "output_config": {
-          "effort": "max"
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "claude-opus-4-7-xhigh-effort",
+          "source_url": "https://livebench.ai/#/release/2026-01-08",
+          "release": "2026-01-08",
+          "dataset_revision": "livebench-2026-01-08",
+          "benchmark_configuration": "claude-opus-4-7-xhigh-effort",
+          "request_fields": {
+            "thinking": {
+              "type": "adaptive"
+            },
+            "output_config": {
+              "effort": "xhigh"
+            }
+          },
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": null,
+          "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+          "metrics": {
+            "quality": 76.91477380952381,
+            "coding": 82.088,
+            "reasoning": 87.69225,
+            "language": 77.914,
+            "input_price": 5.0,
+            "output_price": 25.0,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 87.69225,
+            "Coding": 82.088,
+            "Agentic Coding": 60.0,
+            "Mathematics": 93.10375,
+            "Data Analysis": 78.26366666666667,
+            "Language": 77.914,
+            "IF": 59.34175
+          },
+          "pricing_source": {
+            "source": "livebench",
+            "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
         }
-      },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
-      "metrics": {
-        "quality": 76.2239880952381,
-        "coding": 81.828,
-        "reasoning": 89.19225,
-        "language": 79.65933333333334,
-        "input_price": 5.0,
-        "output_price": 25.0,
-        "output_tps": null,
-        "ttft_seconds": null
-      },
-      "category_scores": {
-        "Reasoning": 89.19225,
-        "Coding": 81.828,
-        "Agentic Coding": 50.505,
-        "Mathematics": 94.3165,
-        "Data Analysis": 66.03333333333333,
-        "Language": 79.65933333333334,
-        "IF": 72.0335
-      }
-    },
-    "anthropic.claude-opus-5": {
-      "source": "livebench",
-      "source_id": "claude-opus-5-max-effort",
-      "source_url": "https://livebench.ai/",
-      "benchmark_configuration": "claude-opus-5-max-effort",
-      "request_fields": {
-        "thinking": {
-          "type": "adaptive"
-        },
-        "output_config": {
-          "effort": "max"
-        }
-      },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
-      "metrics": {
-        "quality": 80.08497619047618,
-        "coding": 81.4455,
-        "reasoning": 91.2115,
-        "language": 88.688,
-        "input_price": 5.0,
-        "output_price": 25.0,
-        "output_tps": null,
-        "ttft_seconds": null
-      },
-      "category_scores": {
-        "Reasoning": 91.2115,
-        "Coding": 81.4455,
-        "Agentic Coding": 65.202,
-        "Mathematics": 95.731,
-        "Data Analysis": 74.55033333333333,
-        "Language": 88.688,
-        "IF": 63.7665
-      }
-    },
-    "anthropic.claude-opus-5-5": {
-      "source": "livebench",
-      "source_id": "claude-opus-5-5-max-effort",
-      "source_url": "https://livebench.ai/",
-      "benchmark_configuration": "claude-opus-5-5-max-effort",
-      "request_fields": {
-        "thinking": {
-          "type": "adaptive"
-        },
-        "output_config": {
-          "effort": "max"
-        }
-      },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
-      "metrics": {
-        "quality": 83.21657142857143,
-        "coding": 89.253,
-        "reasoning": 92.15375,
-        "language": 86.27,
-        "input_price": 4.0,
-        "output_price": 20.0,
-        "output_tps": null,
-        "ttft_seconds": null
-      },
-      "category_scores": {
-        "Reasoning": 92.15375,
-        "Coding": 89.253,
-        "Agentic Coding": 71.717,
-        "Mathematics": 97.0775,
-        "Data Analysis": 80.307,
-        "Language": 86.27,
-        "IF": 65.73775
-      }
+      ]
     },
     "anthropic.claude-sonnet-4-6": {
       "source": "livebench",
       "source_id": "claude-sonnet-4-6-thinking-auto-medium-effort",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "claude-sonnet-4-6-thinking-auto-medium-effort",
       "request_fields": {
         "thinking": {
@@ -480,7 +2506,10 @@
           "effort": "medium"
         }
       },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 72.9900238095238,
         "coding": 79.2715,
@@ -499,12 +2528,577 @@
         "Data Analysis": 77.946,
         "Language": 76.10266666666666,
         "IF": 63.22075
-      }
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": [
+        {
+          "source": "livebench",
+          "source_id": "claude-sonnet-4-6-thinking-auto-medium-effort",
+          "source_url": "https://livebench.ai/#/release/2026-01-08",
+          "release": "2026-01-08",
+          "dataset_revision": "livebench-2026-01-08",
+          "benchmark_configuration": "claude-sonnet-4-6-thinking-auto-medium-effort",
+          "request_fields": {
+            "thinking": {
+              "type": "adaptive"
+            },
+            "output_config": {
+              "effort": "medium"
+            }
+          },
+          "inference_config": {},
+          "configuration_status": "verified",
+          "configuration_source": null,
+          "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+          "metrics": {
+            "quality": 75.4720238095238,
+            "coding": 79.2715,
+            "reasoning": 84.76925,
+            "language": 76.10266666666666,
+            "input_price": 3.0,
+            "output_price": 15.0,
+            "output_tps": null,
+            "ttft_seconds": null
+          },
+          "category_scores": {
+            "Reasoning": 84.76925,
+            "Coding": 79.2715,
+            "Agentic Coding": 60.0,
+            "Mathematics": 86.994,
+            "Data Analysis": 77.946,
+            "Language": 76.10266666666666,
+            "IF": 63.22075
+          },
+          "pricing_source": {
+            "source": "livebench",
+            "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+            "captured_at": "2026-11-24T13:15:23.115653+00:00"
+          }
+        }
+      ]
+    },
+    "anthropic.claude-fable-5": {
+      "source": "livebench",
+      "source_id": "claude-fable-5-max-effort",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "claude-fable-5-max-effort",
+      "request_fields": {},
+      "inference_config": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "公开评测配置包含回退到 Opus 4.8，不能将组合成绩用于 Fable 单模型选模。",
+      "metrics": {
+        "quality": 82.97079761904762,
+        "coding": 85.992,
+        "reasoning": 89.65375,
+        "language": 90.684,
+        "input_price": 10.0,
+        "output_price": 50.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 89.65375,
+        "Coding": 85.992,
+        "Agentic Coding": 62.17166666666667,
+        "Mathematics": 95.98575,
+        "Data Analysis": 80.53766666666667,
+        "Language": 90.684,
+        "IF": 75.77075
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "anthropic.claude-fable-5-1": {
+      "source": "livebench",
+      "source_id": "claude-fable-5-1-max-effort",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "claude-fable-5-1-max-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "max"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "metrics": {
+        "quality": 83.41415476190477,
+        "coding": 86.375,
+        "reasoning": 91.69225,
+        "language": 89.501,
+        "input_price": 10.0,
+        "output_price": 50.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 91.69225,
+        "Coding": 86.375,
+        "Agentic Coding": 66.06066666666666,
+        "Mathematics": 97.00675,
+        "Data Analysis": 80.27566666666667,
+        "Language": 89.501,
+        "IF": 72.98775
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "openai.gpt-5.6-sol": {
+      "source": "livebench",
+      "source_id": "gpt-5.6-sol-max",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "gpt-5.6-sol-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+      "metrics": {
+        "quality": 81.05354761904762,
+        "coding": 83.941,
+        "reasoning": 91.65375,
+        "language": 87.68366666666667,
+        "input_price": 5.0,
+        "output_price": 30.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 91.65375,
+        "Coding": 83.941,
+        "Agentic Coding": 56.212,
+        "Mathematics": 96.19775,
+        "Data Analysis": 79.84066666666666,
+        "Language": 87.68366666666667,
+        "IF": 71.846
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "openai.gpt-5.6-terra": {
+      "source": "livebench",
+      "source_id": "gpt-5.6-terra-max",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "gpt-5.6-terra-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+      "metrics": {
+        "quality": 77.93625,
+        "coding": 78.24549999999999,
+        "reasoning": 90.6345,
+        "language": 82.89266666666667,
+        "input_price": 2.5,
+        "output_price": 15.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 90.6345,
+        "Coding": 78.24549999999999,
+        "Agentic Coding": 54.949666666666666,
+        "Mathematics": 94.90825,
+        "Data Analysis": 79.30666666666667,
+        "Language": 82.89266666666667,
+        "IF": 64.6165
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "openai.gpt-5.6-luna": {
+      "source": "livebench",
+      "source_id": "gpt-5.6-luna-max",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "gpt-5.6-luna-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+      "metrics": {
+        "quality": 73.55938095238095,
+        "coding": 82.91499999999999,
+        "reasoning": 85.64425,
+        "language": 72.56700000000001,
+        "input_price": 1.0,
+        "output_price": 6.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 85.64425,
+        "Coding": 82.91499999999999,
+        "Agentic Coding": 48.434333333333335,
+        "Mathematics": 87.20075,
+        "Data Analysis": 78.03333333333333,
+        "Language": 72.56700000000001,
+        "IF": 60.121
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "openai.gpt-6-sol": {
+      "source": "livebench",
+      "source_id": "gpt-6-sol-max",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "gpt-6-sol-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+      "metrics": {
+        "quality": 79.24545238095237,
+        "coding": 81.767,
+        "reasoning": 88.65375,
+        "language": 85.29866666666666,
+        "input_price": 2.0,
+        "output_price": 10.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 88.65375,
+        "Coding": 81.767,
+        "Agentic Coding": 52.87866666666667,
+        "Mathematics": 96.356,
+        "Data Analysis": 81.18933333333334,
+        "Language": 85.29866666666666,
+        "IF": 68.57475
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "openai.gpt-6-luna": {
+      "source": "livebench",
+      "source_id": "gpt-6-luna-max",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "gpt-6-luna-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+      "metrics": {
+        "quality": 72.02647619047619,
+        "coding": 78.95,
+        "reasoning": 81.76925,
+        "language": 73.82766666666666,
+        "input_price": 0.1,
+        "output_price": 0.5,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 81.76925,
+        "Coding": 78.95,
+        "Agentic Coding": 51.212,
+        "Mathematics": 89.1235,
+        "Data Analysis": 73.36966666666666,
+        "Language": 73.82766666666666,
+        "IF": 55.93325
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "openai.gpt-6-astra": {
+      "source": "livebench",
+      "source_id": "gpt-6-astra-max",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "gpt-6-astra-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+      "metrics": {
+        "quality": 82.16064285714286,
+        "coding": 80.35849999999999,
+        "reasoning": 92.65375,
+        "language": 89.43066666666667,
+        "input_price": 10.0,
+        "output_price": 50.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 92.65375,
+        "Coding": 80.35849999999999,
+        "Agentic Coding": 57.323,
+        "Mathematics": 96.80625,
+        "Data Analysis": 82.97333333333333,
+        "Language": 89.43066666666667,
+        "IF": 75.57900000000001
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "openai.gpt-6.1-sol": {
+      "source": "livebench",
+      "source_id": "gpt-6.1-sol-max",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "gpt-6.1-sol-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+      "metrics": {
+        "quality": 81.61566666666667,
+        "coding": 80.35849999999999,
+        "reasoning": 92.6345,
+        "language": 90.126,
+        "input_price": 2.0,
+        "output_price": 10.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 92.6345,
+        "Coding": 80.35849999999999,
+        "Agentic Coding": 54.54533333333333,
+        "Mathematics": 96.83175,
+        "Data Analysis": 82.65933333333334,
+        "Language": 90.126,
+        "IF": 74.15424999999999
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "anthropic.claude-opus-4-8": {
+      "source": "livebench",
+      "source_id": "claude-opus-4-8-max-effort",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "claude-opus-4-8-max-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "max"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+      "metrics": {
+        "quality": 76.2239880952381,
+        "coding": 81.828,
+        "reasoning": 89.19225,
+        "language": 79.65933333333334,
+        "input_price": 5.0,
+        "output_price": 25.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 89.19225,
+        "Coding": 81.828,
+        "Agentic Coding": 50.505,
+        "Mathematics": 94.3165,
+        "Data Analysis": 66.03333333333333,
+        "Language": 79.65933333333334,
+        "IF": 72.0335
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "anthropic.claude-opus-5": {
+      "source": "livebench",
+      "source_id": "claude-opus-5-max-effort",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "claude-opus-5-max-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "max"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+      "metrics": {
+        "quality": 80.08497619047618,
+        "coding": 81.4455,
+        "reasoning": 91.2115,
+        "language": 88.688,
+        "input_price": 5.0,
+        "output_price": 25.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 91.2115,
+        "Coding": 81.4455,
+        "Agentic Coding": 65.202,
+        "Mathematics": 95.731,
+        "Data Analysis": 74.55033333333333,
+        "Language": 88.688,
+        "IF": 63.7665
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
+    },
+    "anthropic.claude-opus-5-5": {
+      "source": "livebench",
+      "source_id": "claude-opus-5-5-max-effort",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
+      "benchmark_configuration": "claude-opus-5-5-max-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "max"
+        }
+      },
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
+      "metrics": {
+        "quality": 83.21657142857143,
+        "coding": 89.253,
+        "reasoning": 92.15375,
+        "language": 86.27,
+        "input_price": 4.0,
+        "output_price": 20.0,
+        "output_tps": null,
+        "ttft_seconds": null
+      },
+      "category_scores": {
+        "Reasoning": 92.15375,
+        "Coding": 89.253,
+        "Agentic Coding": 71.717,
+        "Mathematics": 97.0775,
+        "Data Analysis": 80.307,
+        "Language": 86.27,
+        "IF": 65.73775
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
     },
     "anthropic.claude-sonnet-5": {
       "source": "livebench",
       "source_id": "claude-sonnet-5-xhigh-effort",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "claude-sonnet-5-xhigh-effort",
       "request_fields": {
         "thinking": {
@@ -514,7 +3108,10 @@
           "effort": "xhigh"
         }
       },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 76.03971428571428,
         "coding": 80.68,
@@ -533,12 +3130,20 @@
         "Data Analysis": 71.74066666666667,
         "Language": 74.97033333333333,
         "IF": 63.8585
-      }
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
     },
     "anthropic.claude-sonnet-5-5": {
       "source": "livebench",
       "source_id": "claude-sonnet-5-5-max-effort",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "claude-sonnet-5-5-max-effort",
       "request_fields": {
         "thinking": {
@@ -548,7 +3153,10 @@
           "effort": "max"
         }
       },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 75.67214285714286,
         "coding": 91.366,
@@ -567,12 +3175,20 @@
         "Data Analysis": 59.48766666666667,
         "Language": 77.984,
         "IF": 56.78775
-      }
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
     },
     "anthropic.claude-haiku-5-5": {
       "source": "livebench",
       "source_id": "claude-haiku-5-5-max-effort",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "claude-haiku-5-5-max-effort",
       "request_fields": {
         "thinking": {
@@ -582,7 +3198,10 @@
           "effort": "max"
         }
       },
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 67.88196428571429,
         "coding": 77.863,
@@ -601,15 +3220,26 @@
         "Data Analysis": 51.78333333333333,
         "Language": 62.628,
         "IF": 54.65825
-      }
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
     },
     "moonshotai.kimi-k3": {
       "source": "livebench",
       "source_id": "kimi-k3",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "kimi-k3",
       "request_fields": {},
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 79.19304761904762,
         "coding": 81.4455,
@@ -628,15 +3258,26 @@
         "Data Analysis": 78.73366666666666,
         "Language": 85.528,
         "IF": 71.36275
-      }
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
     },
     "zai.glm-5.3": {
       "source": "livebench",
       "source_id": "glm-5.3",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "glm-5.3",
       "request_fields": {},
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 76.13780952380952,
         "coding": 78.95,
@@ -655,15 +3296,26 @@
         "Data Analysis": 70.24433333333333,
         "Language": 79.85633333333334,
         "IF": 69.304
-      }
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
     },
     "xai.grok-4.6": {
       "source": "livebench",
       "source_id": "grok-4.6",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "grok-4.6",
       "request_fields": {},
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 78.042,
         "coding": 76.77600000000001,
@@ -682,15 +3334,26 @@
         "Data Analysis": 73.857,
         "Language": 83.697,
         "IF": 71.8665
-      }
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
     },
     "xai.grok-4.7": {
       "source": "livebench",
       "source_id": "grok-4.7-xhigh",
-      "source_url": "https://livebench.ai/",
+      "source_url": "https://livebench.ai/#/release/2026-06-25",
+      "release": "2026-06-25",
+      "dataset_revision": "livebench-2026-06-25",
       "benchmark_configuration": "grok-4.7-xhigh",
       "request_fields": {},
-      "configuration_note": "按映射请求推理配置；token 上限及运行环境与基准测试不完全相同。",
+      "inference_config": {},
+      "configuration_status": "verified",
+      "configuration_source": null,
+      "configuration_note": "按精确型号和推理配置映射；输出上限、端点和运行环境与评测可能不同。",
       "metrics": {
         "quality": 77.39673809523809,
         "coding": 77.1585,
@@ -709,7 +3372,13 @@
         "Data Analysis": 76.88333333333334,
         "Language": 80.13866666666667,
         "IF": 75.27525
-      }
+      },
+      "pricing_source": {
+        "source": "livebench",
+        "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00"
+      },
+      "configurations": []
     },
     "cohere.embed-english-v3": {
       "source": "mteb",
@@ -760,18 +3429,637 @@
       "mteb_version": "1.38.54"
     }
   },
-  "evidence": [
+  "model_references": {
+    "amazon.nova-lite-v1:0": {
+      "source": "openrouter",
+      "id": "amazon/nova-lite-v1",
+      "canonical_slug": "amazon/nova-lite-v1",
+      "name": "Amazon: Nova Lite 1.0",
+      "url": "https://openrouter.ai/amazon/nova-lite-v1",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.06,
+      "output_price": 0.24,
+      "context_tokens": 300000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "amazon.nova-micro-v1:0": {
+      "source": "openrouter",
+      "id": "amazon/nova-micro-v1",
+      "canonical_slug": "amazon/nova-micro-v1",
+      "name": "Amazon: Nova Micro 1.0",
+      "url": "https://openrouter.ai/amazon/nova-micro-v1",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.035,
+      "output_price": 0.14,
+      "context_tokens": 128000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "amazon.nova-pro-v1:0": {
+      "source": "openrouter",
+      "id": "amazon/nova-pro-v1",
+      "canonical_slug": "amazon/nova-pro-v1",
+      "name": "Amazon: Nova Pro 1.0",
+      "url": "https://openrouter.ai/amazon/nova-pro-v1",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.8,
+      "output_price": 3.2,
+      "context_tokens": 300000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "anthropic.claude-fable-5": {
+      "source": "openrouter",
+      "id": "anthropic/claude-fable-5",
+      "canonical_slug": "anthropic/claude-5-fable-20260609",
+      "name": "Anthropic: Claude Fable 5",
+      "url": "https://openrouter.ai/anthropic/claude-fable-5",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 10.0,
+      "output_price": 50.0,
+      "context_tokens": 1000000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "anthropic.claude-fable-5-1": {
+      "source": "openrouter",
+      "id": "anthropic/claude-fable-5.1",
+      "canonical_slug": "anthropic/claude-fable-5.1-20260831",
+      "name": "Anthropic: Claude Fable 5.1",
+      "url": "https://openrouter.ai/anthropic/claude-fable-5.1",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 10.0,
+      "output_price": 50.0,
+      "context_tokens": 1000000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "anthropic.claude-haiku-4-5-20251001-v1:0": {
+      "source": "openrouter",
+      "id": "anthropic/claude-haiku-4.5",
+      "canonical_slug": "anthropic/claude-4.5-haiku-20251001",
+      "name": "Anthropic: Claude Haiku 4.5",
+      "url": "https://openrouter.ai/anthropic/claude-haiku-4.5",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 1.0,
+      "output_price": 5.0,
+      "context_tokens": 200000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "anthropic.claude-opus-4-1-20250805-v1:0": {
+      "source": "openrouter",
+      "id": "anthropic/claude-opus-4.1",
+      "canonical_slug": "anthropic/claude-4.1-opus-20250805",
+      "name": "Anthropic: Claude Opus 4.1",
+      "url": "https://openrouter.ai/anthropic/claude-opus-4.1",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 15.0,
+      "output_price": 75.0,
+      "context_tokens": 200000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "anthropic.claude-opus-4-5-20251101-v1:0": {
+      "source": "openrouter",
+      "id": "anthropic/claude-opus-4.5",
+      "canonical_slug": "anthropic/claude-4.5-opus-20251124",
+      "name": "Anthropic: Claude Opus 4.5",
+      "url": "https://openrouter.ai/anthropic/claude-opus-4.5",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 5.0,
+      "output_price": 25.0,
+      "context_tokens": 200000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "anthropic.claude-sonnet-4-5-20250929-v1:0": {
+      "source": "openrouter",
+      "id": "anthropic/claude-sonnet-4.5",
+      "canonical_slug": "anthropic/claude-4.5-sonnet-20250929",
+      "name": "Anthropic: Claude Sonnet 4.5",
+      "url": "https://openrouter.ai/anthropic/claude-sonnet-4.5",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 3.0,
+      "output_price": 15.0,
+      "context_tokens": 1000000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "deepseek.v3.2": {
+      "source": "openrouter",
+      "id": "deepseek/deepseek-v3.2",
+      "canonical_slug": "deepseek/deepseek-v3.2-20251201",
+      "name": "DeepSeek: DeepSeek V3.2",
+      "url": "https://openrouter.ai/deepseek/deepseek-v3.2",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.26,
+      "output_price": 0.38,
+      "context_tokens": 163840,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "google.gemma-3-4b-it": {
+      "source": "openrouter",
+      "id": "google/gemma-3-4b-it",
+      "canonical_slug": "google/gemma-3-4b-it",
+      "name": "Google: Gemma 3 4B",
+      "url": "https://openrouter.ai/google/gemma-3-4b-it",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.04,
+      "output_price": 0.05,
+      "context_tokens": 131072,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "google.gemma-3-12b-it": {
+      "source": "openrouter",
+      "id": "google/gemma-3-12b-it",
+      "canonical_slug": "google/gemma-3-12b-it",
+      "name": "Google: Gemma 3 12B",
+      "url": "https://openrouter.ai/google/gemma-3-12b-it",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.05,
+      "output_price": 0.15,
+      "context_tokens": 131072,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "google.gemma-3-27b-it": {
+      "source": "openrouter",
+      "id": "google/gemma-3-27b-it",
+      "canonical_slug": "google/gemma-3-27b-it",
+      "name": "Google: Gemma 3 27B",
+      "url": "https://openrouter.ai/google/gemma-3-27b-it",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.08,
+      "output_price": 0.16,
+      "context_tokens": 131072,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "meta.llama3-1-8b-instruct-v1:0": {
+      "source": "openrouter",
+      "id": "meta-llama/llama-3.1-8b-instruct",
+      "canonical_slug": "meta-llama/llama-3.1-8b-instruct",
+      "name": "Meta: Llama 3.1 8B Instruct",
+      "url": "https://openrouter.ai/meta-llama/llama-3.1-8b-instruct",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.05,
+      "output_price": 0.08,
+      "context_tokens": 131072,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "meta.llama3-1-70b-instruct-v1:0": {
+      "source": "openrouter",
+      "id": "meta-llama/llama-3.1-70b-instruct",
+      "canonical_slug": "meta-llama/llama-3.1-70b-instruct",
+      "name": "Meta: Llama 3.1 70B Instruct",
+      "url": "https://openrouter.ai/meta-llama/llama-3.1-70b-instruct",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.72,
+      "output_price": 0.72,
+      "context_tokens": 131072,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "meta.llama3-3-70b-instruct-v1:0": {
+      "source": "openrouter",
+      "id": "meta-llama/llama-3.3-70b-instruct",
+      "canonical_slug": "meta-llama/llama-3.3-70b-instruct",
+      "name": "Meta: Llama 3.3 70B Instruct",
+      "url": "https://openrouter.ai/meta-llama/llama-3.3-70b-instruct",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.71,
+      "output_price": 0.71,
+      "context_tokens": 131072,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "meta.llama4-maverick-17b-instruct-v1:0": {
+      "source": "openrouter",
+      "id": "meta-llama/llama-4-maverick",
+      "canonical_slug": "meta-llama/llama-4-maverick-17b-128e-instruct",
+      "name": "Meta: Llama 4 Maverick",
+      "url": "https://openrouter.ai/meta-llama/llama-4-maverick",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.35,
+      "output_price": 1.0,
+      "context_tokens": 524288,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "minimax.minimax-m2.5": {
+      "source": "openrouter",
+      "id": "minimax/minimax-m2.5",
+      "canonical_slug": "minimax/minimax-m2.5-20260211",
+      "name": "MiniMax: MiniMax M2.5",
+      "url": "https://openrouter.ai/minimax/minimax-m2.5",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.27,
+      "output_price": 0.95,
+      "context_tokens": 198000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "mistral.devstral-2-123b": {
+      "source": "openrouter",
+      "id": "mistralai/devstral-2512",
+      "canonical_slug": "mistralai/devstral-2512",
+      "name": "Mistral: Devstral 2 2512",
+      "url": "https://openrouter.ai/mistralai/devstral-2512",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.4,
+      "output_price": 2.0,
+      "context_tokens": 262144,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "moonshotai.kimi-k2.5": {
+      "source": "openrouter",
+      "id": "moonshotai/kimi-k2.5",
+      "canonical_slug": "moonshotai/kimi-k2.5-0127",
+      "name": "MoonshotAI: Kimi K2.5",
+      "url": "https://openrouter.ai/moonshotai/kimi-k2.5",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.5,
+      "output_price": 2.5,
+      "context_tokens": 262144,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "nvidia.nemotron-super-3-120b": {
+      "source": "openrouter",
+      "id": "nvidia/nemotron-3-super-120b-a12b",
+      "canonical_slug": "nvidia/nemotron-3-super-120b-a12b-20230311",
+      "name": "NVIDIA: Nemotron 3 Super",
+      "url": "https://openrouter.ai/nvidia/nemotron-3-super-120b-a12b",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.075,
+      "output_price": 0.4,
+      "context_tokens": 262144,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "openai.gpt-oss-120b-1:0": {
+      "source": "openrouter",
+      "id": "openai/gpt-oss-120b",
+      "canonical_slug": "openai/gpt-oss-120b",
+      "name": "OpenAI: gpt-oss-120b",
+      "url": "https://openrouter.ai/openai/gpt-oss-120b",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.05,
+      "output_price": 0.25,
+      "context_tokens": 131072,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "qwen.qwen3-32b-v1:0": {
+      "source": "openrouter",
+      "id": "qwen/qwen3-32b",
+      "canonical_slug": "qwen/qwen3-32b-04-28",
+      "name": "Qwen: Qwen3 32B",
+      "url": "https://openrouter.ai/qwen/qwen3-32b",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.08,
+      "output_price": 0.28,
+      "context_tokens": 131072,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "qwen.qwen3-next-80b-a3b": {
+      "source": "openrouter",
+      "id": "qwen/qwen3-next-80b-a3b-instruct",
+      "canonical_slug": "qwen/qwen3-next-80b-a3b-instruct-2509",
+      "name": "Qwen: Qwen3 Next 80B A3B Instruct",
+      "url": "https://openrouter.ai/qwen/qwen3-next-80b-a3b-instruct",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.1,
+      "output_price": 1.1,
+      "context_tokens": 262144,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "zai.glm-4.7": {
+      "source": "openrouter",
+      "id": "z-ai/glm-4.7",
+      "canonical_slug": "z-ai/glm-4.7-20251222",
+      "name": "Z.ai: GLM 4.7",
+      "url": "https://openrouter.ai/z-ai/glm-4.7",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.6,
+      "output_price": 2.2,
+      "context_tokens": 204800,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "zai.glm-5": {
+      "source": "openrouter",
+      "id": "z-ai/glm-5",
+      "canonical_slug": "z-ai/glm-5-20260211",
+      "name": "Z.ai: GLM 5",
+      "url": "https://openrouter.ai/z-ai/glm-5",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 1.0,
+      "output_price": 3.2,
+      "context_tokens": 204800,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "amazon.nova-2-lite-v1:0": {
+      "source": "openrouter",
+      "id": "amazon/nova-2-lite-v1",
+      "canonical_slug": "amazon/nova-2-lite-v1",
+      "name": "Amazon: Nova 2 Lite",
+      "url": "https://openrouter.ai/amazon/nova-2-lite-v1",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.3,
+      "output_price": 2.5,
+      "context_tokens": 1000000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "meta.llama4-scout-17b-instruct-v1:0": {
+      "source": "openrouter",
+      "id": "meta-llama/llama-4-scout",
+      "canonical_slug": "meta-llama/llama-4-scout-17b-16e-instruct",
+      "name": "Meta: Llama 4 Scout",
+      "url": "https://openrouter.ai/meta-llama/llama-4-scout",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.1,
+      "output_price": 0.3,
+      "context_tokens": 1310720,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "mistral.ministral-3-3b-instruct": {
+      "source": "openrouter",
+      "id": "mistralai/ministral-3b-2512",
+      "canonical_slug": "mistralai/ministral-3b-2512",
+      "name": "Mistral: Ministral 3 3B 2512",
+      "url": "https://openrouter.ai/mistralai/ministral-3b-2512",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.1,
+      "output_price": 0.1,
+      "context_tokens": 131072,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "mistral.ministral-3-8b-instruct": {
+      "source": "openrouter",
+      "id": "mistralai/ministral-8b-2512",
+      "canonical_slug": "mistralai/ministral-8b-2512",
+      "name": "Mistral: Ministral 3 8B 2512",
+      "url": "https://openrouter.ai/mistralai/ministral-8b-2512",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.15,
+      "output_price": 0.15,
+      "context_tokens": 262144,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "mistral.ministral-3-14b-instruct": {
+      "source": "openrouter",
+      "id": "mistralai/ministral-14b-2512",
+      "canonical_slug": "mistralai/ministral-14b-2512",
+      "name": "Mistral: Ministral 3 14B 2512",
+      "url": "https://openrouter.ai/mistralai/ministral-14b-2512",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.2,
+      "output_price": 0.2,
+      "context_tokens": 262144,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "mistral.mistral-large-3-675b-instruct": {
+      "source": "openrouter",
+      "id": "mistralai/mistral-large-2512",
+      "canonical_slug": "mistralai/mistral-large-2512",
+      "name": "Mistral: Mistral Large 3 2512",
+      "url": "https://openrouter.ai/mistralai/mistral-large-2512",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.5,
+      "output_price": 1.5,
+      "context_tokens": 262144,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "mistral.pixtral-large-2502-v1:0": {
+      "source": "openrouter",
+      "id": "mistralai/pixtral-large-2502",
+      "canonical_slug": "mistralai/pixtral-large-2502",
+      "name": "Mistral: Pixtral Large 2502",
+      "url": "https://openrouter.ai/mistralai/pixtral-large-2502",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 2.0,
+      "output_price": 6.0,
+      "context_tokens": 128000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "mistral.voxtral-small-24b-2507": {
+      "source": "openrouter",
+      "id": "mistralai/voxtral-small-24b-2507",
+      "canonical_slug": "mistralai/voxtral-small-24b-2507",
+      "name": "Mistral: Voxtral Small 24B 2507",
+      "url": "https://openrouter.ai/mistralai/voxtral-small-24b-2507",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.1,
+      "output_price": 0.3,
+      "context_tokens": 32768,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "nvidia.nemotron-nano-3-30b": {
+      "source": "openrouter",
+      "id": "nvidia/nemotron-3-nano-30b-a3b",
+      "canonical_slug": "nvidia/nemotron-3-nano-30b-a3b",
+      "name": "NVIDIA: Nemotron 3 Nano 30B A3B",
+      "url": "https://openrouter.ai/nvidia/nemotron-3-nano-30b-a3b",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.06,
+      "output_price": 0.24,
+      "context_tokens": 262144,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "qwen.qwen3-coder-30b-a3b-v1:0": {
+      "source": "openrouter",
+      "id": "qwen/qwen3-coder-30b-a3b-instruct",
+      "canonical_slug": "qwen/qwen3-coder-30b-a3b-instruct",
+      "name": "Qwen: Qwen3 Coder 30B A3B Instruct",
+      "url": "https://openrouter.ai/qwen/qwen3-coder-30b-a3b-instruct",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.07,
+      "output_price": 0.28,
+      "context_tokens": 262144,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "qwen.qwen3-coder-next": {
+      "source": "openrouter",
+      "id": "qwen/qwen3-coder-next",
+      "canonical_slug": "qwen/qwen3-coder-next-2025-02-03",
+      "name": "Qwen: Qwen3 Coder Next",
+      "url": "https://openrouter.ai/qwen/qwen3-coder-next",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.12,
+      "output_price": 0.8,
+      "context_tokens": 262144,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "qwen.qwen3-vl-235b-a22b": {
+      "source": "openrouter",
+      "id": "qwen/qwen3-vl-235b-a22b-instruct",
+      "canonical_slug": "qwen/qwen3-vl-235b-a22b-instruct",
+      "name": "Qwen: Qwen3 VL 235B A22B Instruct",
+      "url": "https://openrouter.ai/qwen/qwen3-vl-235b-a22b-instruct",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.21,
+      "output_price": 1.9,
+      "context_tokens": 262144,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "openai.gpt-oss-20b-1:0": {
+      "source": "openrouter",
+      "id": "openai/gpt-oss-20b",
+      "canonical_slug": "openai/gpt-oss-20b",
+      "name": "OpenAI: gpt-oss-20b",
+      "url": "https://openrouter.ai/openai/gpt-oss-20b",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.03,
+      "output_price": 0.13,
+      "context_tokens": 131072,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    },
+    "zai.glm-4.7-flash": {
+      "source": "openrouter",
+      "id": "z-ai/glm-4.7-flash",
+      "canonical_slug": "z-ai/glm-4.7-flash-20260119",
+      "name": "Z.ai: GLM 4.7 Flash",
+      "url": "https://openrouter.ai/z-ai/glm-4.7-flash",
+      "captured_at": "2026-11-24T13:15:23.115653+00:00",
+      "input_price": 0.0605,
+      "output_price": 0.4,
+      "context_tokens": 200000,
+      "scope": "External model reference and pricing, not a benchmark or Bedrock capability."
+    }
+  },
+  "benchmark_releases": [
     {
-      "url": "https://livebench.ai/table_2026_06_25.csv",
-      "sha256": "bf9ce6130134893d61157c214865de13d265a5e30790ff6cd4e3142a25113799"
+      "release": "2024-06-24",
+      "configurations": 8,
+      "source_url": "https://livebench.ai/v1/table_2024_06_24.csv"
     },
     {
-      "url": "https://livebench.ai/categories_2026_06_25.json",
+      "release": "2024-11-25",
+      "configurations": 8,
+      "source_url": "https://livebench.ai/v1/table_2024_11_25.csv"
+    },
+    {
+      "release": "2025-04-02",
+      "configurations": 10,
+      "source_url": "https://livebench.ai/v1/table_2025_04_02.csv"
+    },
+    {
+      "release": "2025-04-25",
+      "configurations": 8,
+      "source_url": "https://livebench.ai/v1/table_2025_04_25.csv"
+    },
+    {
+      "release": "2025-05-30",
+      "configurations": 9,
+      "source_url": "https://livebench.ai/v1/table_2025_05_30.csv"
+    },
+    {
+      "release": "2026-01-08",
+      "configurations": 20,
+      "source_url": "https://livebench.ai/v1/table_2026_01_08.csv"
+    },
+    {
+      "release": "2026-06-25",
+      "configurations": 24,
+      "source_url": "https://livebench.ai/v1/table_2026_06_25.csv"
+    }
+  ],
+  "evidence": [
+    {
+      "url": "https://openrouter.ai/api/v1/models",
+      "sha256": "5cac6066f3fc01bedeb52f289f930449f9fb36436a5acf53d5cb793d1a45f0db"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/amazon.yml",
+      "sha256": "ab9ed4662c2050bdbbe65804b5fdbd82ca0f0655c83c1a43b8eccbdfc42471fb"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/anthropic.yml",
+      "sha256": "a5a2e37c4797f1bb61631803f1d093e8724e64d6ea2399ecf123a2af9a8b3924"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/deepseek.yml",
+      "sha256": "03dbcbed32008e1ccf42cdc85a3c0a7472e962482eb5cf6460980a79710b07db"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/google.yml",
+      "sha256": "7eb70dace13c9e1ef34b973f4f58b5276ebb72a296b7b98116dc5844e34156cd"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/meta.yml",
+      "sha256": "0dead8c5aa48a6844a6973419d12a38fabe7f06a8a0ce9c9151377af00ab94da"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/minimax.yml",
+      "sha256": "d3da5d77d936cd858cd066b36d4bf827bb53c5e31384a13ab1fd6990e40469fa"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/mistral.yml",
+      "sha256": "23182e45981b975b3b1b97ed8b8f49b7431d8d388453fb832ddc312308a19cb5"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/moonshotai.yml",
+      "sha256": "a0b5ebf2ebe0a617a78cf1567baf6ab132e9461cb824cbfec0e219be8c500183"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/nvidia.yml",
+      "sha256": "7b24d3b3b7990bd033b944c8999817fea7ad2df200b85a6ddf9eb5697dc34e0f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/openai.yml",
+      "sha256": "c5584de0cfdbde8a7ef0e14163a35c375ffff07430293da06c5f931192f0924b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/qwen.yml",
+      "sha256": "c854705006f0ab71217029c7e0f5c69b8034e369613b17a4f2b4266baedd8ee9"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LiveBench/LiveBench/main/livebench/model/model_configs/zai.yml",
+      "sha256": "2489790118b86c97c7aca81409c2858ff3df82a3ee6db324055b6558a637cdd7"
+    },
+    {
+      "url": "https://livebench.ai/v1/cost_2026_06_25.csv",
+      "sha256": "c4227b553186ade582022ea19d04b91b75b577cccadb88f6e00857a27eeb84b8"
+    },
+    {
+      "url": "https://livebench.ai/v1/table_2024_06_24.csv",
+      "sha256": "df181166a5a670a5b7678ee02f96c6896d8a88a503aec20243234b698d25a8c0"
+    },
+    {
+      "url": "https://livebench.ai/v1/categories_2024_06_24.json",
+      "sha256": "08fa233f92ca970a786f4ab8ea09639bce4c9dcbc88565254989e0bd34d08bfa"
+    },
+    {
+      "url": "https://livebench.ai/v1/table_2024_11_25.csv",
+      "sha256": "17ca6b3d122921d24b591d0da52566c5552ed4f4001ae9d83a11b2712325aae4"
+    },
+    {
+      "url": "https://livebench.ai/v1/categories_2024_11_25.json",
+      "sha256": "31382962c060909421a3f2d8fe9f2194daadc252f654647daa8f684efbbe674b"
+    },
+    {
+      "url": "https://livebench.ai/v1/table_2025_04_02.csv",
+      "sha256": "d7fd6a3e461cff4f96569093553789115e87adeb9cd95dca043bafa51ff2acaa"
+    },
+    {
+      "url": "https://livebench.ai/v1/categories_2025_04_02.json",
+      "sha256": "182ba3b11478a1f1768020fc79b6817b5698054333d768a8c6c800f65cd90cfa"
+    },
+    {
+      "url": "https://livebench.ai/v1/table_2025_04_25.csv",
+      "sha256": "251eb7461da69232733b80d1e63f00a9db5b921d90c966d139ce0e2851c762d9"
+    },
+    {
+      "url": "https://livebench.ai/v1/categories_2025_04_25.json",
+      "sha256": "742ed9e6946db311c91361781d71d3f6c3587b5ade5daf7373eb32a39d21f5fb"
+    },
+    {
+      "url": "https://livebench.ai/v1/table_2025_05_30.csv",
+      "sha256": "c1215f3df5b2e0a5fe69907c101d29922bf783b011df9ba82638c0145cb4c64c"
+    },
+    {
+      "url": "https://livebench.ai/v1/categories_2025_05_30.json",
+      "sha256": "f79b260f8c39b9763007dda694c2ee3f11b9898e17a85ee1c353c8a0b5a8de22"
+    },
+    {
+      "url": "https://livebench.ai/v1/table_2026_01_08.csv",
+      "sha256": "bcb52d78b463adeccdd06899452a0bf68ffa84906bd37f68fdc0659d9f241241"
+    },
+    {
+      "url": "https://livebench.ai/v1/categories_2026_01_08.json",
       "sha256": "dad300ad18655b69db720e1b88fc5a5eac06c5b2f0e52c2bf50f10ff057674f3"
     },
     {
-      "url": "https://livebench.ai/cost_2026_06_25.csv",
-      "sha256": "97b94c053871780242f941b04c5a08e297efc02c364913562140d048629ef7e5"
+      "url": "https://livebench.ai/v1/table_2026_06_25.csv",
+      "sha256": "09d810986777c92b75b40a58a1829e0318e34cb5693ecae970b3145852271ba7"
+    },
+    {
+      "url": "https://livebench.ai/v1/categories_2026_06_25.json",
+      "sha256": "dad300ad18655b69db720e1b88fc5a5eac06c5b2f0e52c2bf50f10ff057674f3"
     },
     {
       "url": "https://raw.githubusercontent.com/embeddings-benchmark/results/34a4409680a1deeb9ffc06942be546c6bed6a3e8/results/Cohere__Cohere-embed-english-v3.0/1/MIRACLRetrievalHardNegatives.json",
@@ -786,6 +4074,6 @@
       "sha256": "f5998f14b80182f6a36b2878f8a20d2ced344abe6f95f3d63da2408f2526a234"
     }
   ],
-  "version": "75d59020478318df",
-  "captured_at": "2026-10-13T12:12:29.210512+00:00"
+  "version": "1d0a074a9e3a3fba",
+  "captured_at": "2026-11-24T13:15:23.115653+00:00"
 }

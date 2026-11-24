@@ -1,0 +1,157 @@
+{
+  "verified_at": "2026-11-24T10:28:07.841385+00:00",
+  "method": "Direct AWS SDK, no CloudFormation operations",
+  "release": {
+    "resources": {
+      "cluster": "strands-decider-demo",
+      "service": "strands-decider-demo",
+      "bucket": "strands-decider-demo-frontendbucket-sdeevobzfie4",
+      "distribution_id": "EJSAOZVC0U08G",
+      "region": "us-east-1"
+    },
+    "previous_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:31",
+    "new_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:32",
+    "phase": "complete",
+    "objects": [
+      {
+        "key": "gateway/gateway.css",
+        "sha256": "b85cf32f194ab5e06f7f2cfb878724db3da01d0f4e51852f40d55d2483267e4b",
+        "size": 19775,
+        "previous_version": null,
+        "version": "fyMhlnfCaYs4iTRvdXV8RdyAiehQdYKD"
+      },
+      {
+        "key": "gateway/gateway.js",
+        "sha256": "08e3bdf39d086e7953fe4f03fc8db0572ff00abaa9756d9af66086e88173e502",
+        "size": 26742,
+        "previous_version": null,
+        "version": "MSz8ccT9cVrVuquwVhSDsO1YdVY1ihsg"
+      },
+      {
+        "key": "gateway/mark.svg",
+        "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+        "size": 276,
+        "previous_version": null,
+        "version": "ptECWJZNCl0Upj2TUFbb76A2Y97AG8A3"
+      },
+      {
+        "key": "gateway/index.html",
+        "sha256": "4ac4048399bd314779b8d99f3d91edc4db7b286b62db7df049d2cb426ad57490",
+        "size": 13689,
+        "previous_version": null,
+        "version": "CfvMwaLB6gjKEOIxYmov4ZPnecmZHTIN"
+      }
+    ],
+    "url": "https://d3i7ogfx5ml7dc.cloudfront.net/gateway/index.html",
+    "invalidation_id": "ICZDL0JMO6S9REO25ARCSVLKTC"
+  },
+  "aws": {
+    "ecs": {
+      "taskDefinition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:32",
+      "desiredCount": 1,
+      "runningCount": 1,
+      "pendingCount": 0
+    },
+    "deployments": [
+      {
+        "status": "PRIMARY",
+        "taskDefinition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:32",
+        "runningCount": 1,
+        "rolloutState": "COMPLETED"
+      }
+    ],
+    "containers": [
+      {
+        "name": "api",
+        "image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/strands-decider-demo-api@sha256:00e6b52133279dd910e55f66bd35795832c5938526897802a992e01e18412859"
+      }
+    ],
+    "s3_public_access_block": {
+      "BlockPublicAcls": true,
+      "IgnorePublicAcls": true,
+      "BlockPublicPolicy": true,
+      "RestrictPublicBuckets": true
+    },
+    "s3_origins": [
+      {
+        "id": "frontend",
+        "oac_id": "E1SVDBT0VAM7H8"
+      }
+    ],
+    "invalidation_status": "Completed",
+    "anonymous_s3_status": 403
+  },
+  "gpu": {
+    "created": false,
+    "before_state": {
+      "Code": 80,
+      "Name": "stopped"
+    },
+    "after": {
+      "InstanceId": "i-0ae7eb0abcb815af3",
+      "InstanceType": "g6.xlarge",
+      "State": {
+        "Code": 16,
+        "Name": "running"
+      },
+      "LaunchTime": "2026-11-24 10:16:20+00:00",
+      "AvailabilityZone": "us-east-1d"
+    },
+    "nvidia_userspace_repair": {
+      "kernel_driver": "615.71.09",
+      "installed": [
+        "libnvidia-compute-615-server=615.71.09-0ubuntu0.24.04.2",
+        "nvidia-utils-615-server=615.71.09-0ubuntu0.24.04.2"
+      ],
+      "gpu": "NVIDIA L4",
+      "memory_mib": 23034
+    },
+    "models_ready": {
+      "decider": true,
+      "liquid": true,
+      "h2o": true
+    }
+  },
+  "tests_passed": 390,
+  "model_execution_verification": {
+    "status": "passed",
+    "report": "aws-live-2026-11-24/verification.json",
+    "gateway_gpu_requests": 2,
+    "bedrock_requests": 1,
+    "model": "h2oai/h2o-lightning-4b",
+    "target_model": "openai.gpt-6-luna",
+    "note": "Deployment smoke test only; startup warmup is excluded from gateway request counts."
+  },
+  "gateway_health": {
+    "h2o": {
+      "api": "ready",
+      "decision": {
+        "provider": "h2o",
+        "connected": true,
+        "check_ms": 7.761,
+        "message": "GPU 决策服务可连接"
+      },
+      "bedrock_configured": true
+    },
+    "decider": {
+      "api": "ready",
+      "decision": {
+        "provider": "decider",
+        "connected": true,
+        "check_ms": 4.027,
+        "message": "GPU 决策服务可连接"
+      },
+      "bedrock_configured": true
+    },
+    "liquid": {
+      "api": "ready",
+      "decision": {
+        "provider": "liquid",
+        "connected": true,
+        "check_ms": 5.654,
+        "message": "GPU 决策服务可连接"
+      },
+      "bedrock_configured": true
+    }
+  }
+}

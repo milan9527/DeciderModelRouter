@@ -70,13 +70,18 @@
   gap: 6px;
 }
 .rt-controls select,
-.rt-fields select {
+.rt-fields select,
+.rt-fields input[type="number"],
+[data-rt-category] {
   background: #fff;
   border: 1px solid #dbe3e9;
   border-radius: 8px;
   padding: 9px;
   color: #253047;
   max-width: 100%;
+}
+.rt-sides:has(> :only-child) {
+  grid-template-columns: minmax(0, 1fr);
 }
 .rt-input {
   padding: 20px;
@@ -261,6 +266,12 @@
   font-size: 17px;
   margin: 10px 0;
   overflow-wrap: anywhere;
+}
+.rt-turn-output > code {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 11px;
 }
 .rt-turn-output p,
 .rt-turn-output small {

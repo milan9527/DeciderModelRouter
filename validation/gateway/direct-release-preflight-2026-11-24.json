@@ -1,0 +1,48 @@
+{
+  "verification": "Read-only AWS preflight; current deployed image used only to verify publisher configuration. New gateway image not built or deployed.",
+  "aws_mutations": 0,
+  "plan": {
+    "resources": {
+      "cluster": "strands-decider-demo",
+      "service": "strands-decider-demo",
+      "bucket": "strands-decider-demo-frontendbucket-sdeevobzfie4",
+      "distribution_id": "EJSAOZVC0U08G",
+      "region": "us-east-1"
+    },
+    "previous_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:31",
+    "api_image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/strands-decider-demo-api@sha256:952f9d11d78db7e744f90e8ed539ae47fd0938fbd16bd93a793dfa4b45745701",
+    "update_ecs": true,
+    "gateway_environment": {
+      "SERVE_FRONTEND": "false",
+      "GATEWAY_DECISION_PROVIDER": "h2o",
+      "GATEWAY_DECIDER_MODEL": "strands-decider-2B-hobson-v19-vllm"
+    },
+    "frontend": [
+      {
+        "key": "gateway/gateway.css",
+        "size": 19775,
+        "sha256": "b85cf32f194ab5e06f7f2cfb878724db3da01d0f4e51852f40d55d2483267e4b"
+      },
+      {
+        "key": "gateway/gateway.js",
+        "size": 26742,
+        "sha256": "08e3bdf39d086e7953fe4f03fc8db0572ff00abaa9756d9af66086e88173e502"
+      },
+      {
+        "key": "gateway/mark.svg",
+        "size": 276,
+        "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb"
+      },
+      {
+        "key": "gateway/index.html",
+        "size": 13689,
+        "sha256": "4ac4048399bd314779b8d99f3d91edc4db7b286b62db7df049d2cb426ad57490"
+      }
+    ],
+    "invalidation_paths": [
+      "/gateway/*"
+    ],
+    "url": "https://d3i7ogfx5ml7dc.cloudfront.net/gateway/index.html",
+    "dry_run": true
+  }
+}

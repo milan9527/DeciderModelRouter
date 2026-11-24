@@ -31,10 +31,14 @@ def main():
     )
     parser.add_argument("--frontend-only", action="store_true")
     parser.add_argument("--api-only", action="store_true", help="Keep the existing model image")
+    parser.add_argument("--keep-model-catalog", action="store_true",
+                        help="Keep the existing routing catalog for a controlled same-input comparison")
     parser.add_argument("--gpu-state-table", help="GPU control table from the GPU stack")
     parser.add_argument("--model-provider", choices=["ec2", "sagemaker", "vllm"])
     parser.add_argument("--vision-url", help="Private official vision service URL")
     parser.add_argument("--vision-security-group", help="Security group of the vision EC2 host")
+    parser.add_argument("--open-models-url", help="Private resident Liquid/H2O gateway URL")
+    parser.add_argument("--open-models-security-group", help="Security group of the existing GPU host")
     parser.add_argument(
         "--vllm-config", type=Path,
         help="JSON of nonsecret Vllm* CloudFormation parameters; never include API keys",
@@ -72,7 +76,7 @@ def main():
                 return None
             raise
 
-    def wait_stack():
+    def wait_stack(*, allow_previous_rollback=False):
         deadline = time.monotonic() + 2400
         previous = None
         while time.monotonic() < deadline:
@@ -82,6 +86,8 @@ def main():
                 print(f"CloudFormation: {status}", flush=True)
                 previous = status
             if status in ("CREATE_COMPLETE", "UPDATE_COMPLETE"):
+                return current
+            if allow_previous_rollback and status == "UPDATE_ROLLBACK_COMPLETE":
                 return current
             if "ROLLBACK" in status or status.endswith("FAILED"):
                 events = aws("cloudformation", "describe-stack-events", "--stack-name", args.stack)
@@ -110,6 +116,10 @@ def main():
     vision_sg = args.vision_security_group or previous_parameters.get("VisionSecurityGroupId", "")
     if bool(vision_url) != bool(vision_sg):
         parser.error("Vision requires both URL and security group")
+    open_models_url = args.open_models_url or previous_parameters.get("OpenModelsUrl", "")
+    open_models_sg = args.open_models_security_group or previous_parameters.get("OpenModelsSecurityGroupId", "")
+    if bool(open_models_url) != bool(open_models_sg):
+        parser.error("Open models require both URL and security group")
     if (args.model_provider or previous_parameters.get("ModelProvider")) == "vllm":
         if any(not vllm_config.get(k, previous_parameters.get(k)) for k in vllm_names):
             parser.error("vLLM requires all six Vllm* parameters in --vllm-config or the existing stack")
@@ -188,7 +198,7 @@ def main():
                 "Key=Project,Value=StrandsDecider",
                 "Key=Environment,Value=demo",
             )
-        elif "ROLLBACK" in current["StackStatus"]:
+        elif "ROLLBACK" in current["StackStatus"] and current["StackStatus"] != "UPDATE_ROLLBACK_COMPLETE":
             raise RuntimeError(
                 "The existing stack has rolled back; inspect its events before retrying."
             )
@@ -203,14 +213,13 @@ def main():
             return
 
         if not args.skip_build:
-            run(
-                [
+            if not args.keep_model_catalog:
+                run([
                     sys.executable,
                     "scripts/refresh_routing_catalog.py",
                     "--region",
                     args.region,
-                ]
-            )
+                ])
             for name in image_names:
                 extra = ["--extra", "model"] if name == "model" else []
                 run(
@@ -270,11 +279,30 @@ def main():
             text=True,
         )
         for name in image_names:
+            if name == "api":
+                run([
+                    "docker", "run", "--rm", "--entrypoint", "python",
+                    f"strands-decider-{name}:{args.tag}", "-c", "import app.main",
+                ])
             image = f"{image_repositories[f'{args.stack}-{name}']}:{args.tag}"
             run(["docker", "tag", f"strands-decider-{name}:{args.tag}", image])
-            run(["docker", "push", image])
+            existing_images = aws(
+                "ecr", "batch-get-image", "--repository-name", f"{args.stack}-{name}",
+                "--image-ids", f"imageTag={args.tag}",
+            ).get("images", [])
+            if existing_images:
+                manifest = json.loads(existing_images[0]["imageManifest"])
+                local_id = subprocess.run(
+                    ["docker", "image", "inspect", "--format", "{{.Id}}", image],
+                    check=True, capture_output=True, text=True,
+                ).stdout.strip()
+                if manifest.get("config", {}).get("digest") != local_id:
+                    raise RuntimeError(f"Image tag {args.tag} already contains a different image; use a new tag")
+                print(f"Reusing verified existing image: {image}", flush=True)
+            else:
+                run(["docker", "push", image])
 
-        current = wait_stack()
+        current = wait_stack(allow_previous_rollback=True)
         parameters = [
             (
                 {"ParameterKey": "ImageTag", "UsePreviousValue": True}
@@ -330,6 +358,8 @@ def main():
         parameters.extend([
             {"ParameterKey": "VisionUrl", "ParameterValue": vision_url},
             {"ParameterKey": "VisionSecurityGroupId", "ParameterValue": vision_sg},
+            {"ParameterKey": "OpenModelsUrl", "ParameterValue": open_models_url},
+            {"ParameterKey": "OpenModelsSecurityGroupId", "ParameterValue": open_models_sg},
         ])
         try:
             aws(

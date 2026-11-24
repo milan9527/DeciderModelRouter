@@ -1,0 +1,5 @@
+合并原三页榜单介绍。综合分基于能力、校准、速度、成本四轴的调和平均与低分惩罚，不是简单准确率。这里无Strands v19和GPT-6.1 Sol同口径条目，不插入自测排名。
+原始快照：docs/presentations/v8/sources/jevbench-api-20261012.json
+评测链接：https://benchmarkheaven.com/jev-models/api
+原页底说明（仅保留于讲稿）：
+榜单 v1.7.46 快照：2026-10-12。第三方公布结果，本项目未重跑，也不是 AWS 官方评分。

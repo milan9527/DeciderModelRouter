@@ -1,0 +1,318 @@
+{
+  "retrieved_utc": "2026-11-19T11:17:04.945346+00:00",
+  "note": "Public source extracts and read-only AWS Price List query. No new model inference, Redotpay data evaluation, training, deployment, or paid instance creation was performed.",
+  "board": {
+    "generated_utc": "2026-11-17T18:35:28Z",
+    "edition": "Decision Index 0.4.1",
+    "model_count": 307,
+    "hardware": "1 x NVIDIA RTX PRO 6000",
+    "full_score_formula": {
+      "id": "balanced_skill",
+      "normalization": "skill",
+      "formula": "0.60*private_same_skills + 0.40*private_new_domains, both mapped onto the public scale with untuned stock models",
+      "label": "Full score"
+    },
+    "models": [
+      {
+        "engine": "strands-decider-2b",
+        "name": "Strands Decider 2B",
+        "meta": {
+          "kind": "LoRA + head",
+          "technique": "autoregressive",
+          "technique_name": "autoregressive",
+          "served_params": 1900000000,
+          "params_estimated": false,
+          "params_from_name": false,
+          "trained_bytes": null,
+          "model_url": "https://huggingface.co/StrandsAgents/strands-decider-2B-hobson-v21",
+          "code_url": null,
+          "base_model": "Qwen/Qwen3.5-2B-Base",
+          "base_url": "https://huggingface.co/Qwen/Qwen3.5-2B-Base",
+          "weights_repo": null,
+          "served_checkpoint": null,
+          "org": {
+            "id": "StrandsAgents",
+            "name": "Strands Agents",
+            "logo": "data/orgs/StrandsAgents.png"
+          }
+        },
+        "latency": {
+          "median": 52.3,
+          "p95": 126,
+          "mean": 74.7
+        },
+        "scores": {
+          "balanced_raw": 44.43,
+          "balanced_skill": 20.72,
+          "breadth_skill": 23.26,
+          "public_skill": 25.41
+        }
+      },
+      {
+        "engine": "d1-2b",
+        "name": "LiquidAI d1-2B",
+        "meta": {
+          "kind": "full fine-tune",
+          "technique": "autoregressive",
+          "technique_name": "autoregressive",
+          "served_params": 1918181888,
+          "params_estimated": false,
+          "params_from_name": false,
+          "trained_bytes": null,
+          "model_url": "https://huggingface.co/LiquidAI/d1-2B",
+          "code_url": null,
+          "base_model": "LiquidAI/LFM3-VL-2B",
+          "base_url": "https://huggingface.co/LiquidAI/LFM3-VL-2B",
+          "weights_repo": null,
+          "served_checkpoint": null,
+          "org": {
+            "id": "LiquidAI",
+            "name": "Liquid AI",
+            "logo": "data/orgs/LiquidAI.png"
+          },
+          "pr": 332,
+          "new": true
+        },
+        "latency": {
+          "median": 94.7,
+          "p95": 224.9,
+          "mean": 113.8
+        },
+        "scores": {
+          "balanced_raw": 63.68,
+          "balanced_skill": 34.39,
+          "breadth_skill": 48.48,
+          "public_skill": 51.1
+        }
+      },
+      {
+        "engine": "glide-v1.2.1-loop",
+        "name": "GLiDE 27B",
+        "meta": {
+          "kind": "full fine-tune",
+          "technique": "autoregressive",
+          "technique_name": "autoregressive",
+          "served_params": 26085330160,
+          "params_estimated": false,
+          "params_from_name": false,
+          "trained_bytes": null,
+          "model_url": "https://huggingface.co/fastino/GLiDE-27B",
+          "code_url": null,
+          "base_model": "Qwen/Qwen3.8-27B",
+          "base_url": "https://huggingface.co/Qwen/Qwen3.8-27B",
+          "weights_repo": null,
+          "served_checkpoint": null,
+          "org": {
+            "id": "fastino",
+            "name": "Fastino",
+            "logo": "data/orgs/fastino.png"
+          },
+          "pr": 375,
+          "replaces": "glide-v1.2",
+          "new": true
+        },
+        "latency": {
+          "median": 122.4,
+          "p95": 1545.1,
+          "mean": 387.6
+        },
+        "scores": {
+          "balanced_raw": 79.17,
+          "balanced_skill": 73.37,
+          "breadth_skill": 72.02,
+          "public_skill": 72.49
+        }
+      },
+      {
+        "engine": "karpo-decision-31b",
+        "name": "karpo-decision-31B",
+        "meta": {
+          "kind": "full fine-tune",
+          "technique": "autoregressive",
+          "technique_name": "autoregressive",
+          "served_params": 31273088876,
+          "params_estimated": false,
+          "params_from_name": false,
+          "trained_bytes": null,
+          "model_url": "https://huggingface.co/MachinePulseAI/karpo-decision-31B",
+          "code_url": null,
+          "base_model": "google/gemma-4-31B-it",
+          "base_url": "https://huggingface.co/google/gemma-4-31B-it",
+          "weights_repo": null,
+          "served_checkpoint": null,
+          "org": {
+            "id": "MachinePulseAI",
+            "name": "MachinePulse",
+            "logo": "data/orgs/MachinePulseAI.png"
+          },
+          "pr": 391,
+          "new": true
+        },
+        "latency": {
+          "median": 94.3,
+          "p95": 585.9,
+          "mean": 249.1
+        },
+        "scores": {
+          "balanced_raw": 80.9,
+          "balanced_skill": 73.86,
+          "breadth_skill": 74.69,
+          "public_skill": 75.05
+        }
+      }
+    ]
+  },
+  "karpo": {
+    "choice_max_options": 255,
+    "31b_context_tokens": 32768,
+    "31b_bf16_weight_gb": 62.5,
+    "4b_bf16_weight_gb": 9.1,
+    "serving": "Per-GPU Runner.lock serializes requests; torchrun duplicates the whole checkpoint per GPU, distributing requests, not tensor parallelism.",
+    "cache": "Do not assume causal prefix caching is valid for branch or bidirectional attention.",
+    "training": "Public repository includes inference and train/order.py; an end-to-end Redotpay fine-tuning pipeline was not validated."
+  },
+  "aws_price_query": {
+    "service": "AmazonEC2",
+    "api": "AWS Pricing GetProducts, us-east-1",
+    "location": "US East (N. Virginia)",
+    "os": "Linux",
+    "tenancy": "Shared",
+    "preInstalledSw": "NA",
+    "capacitystatus": "Used",
+    "monthly_hours": 730,
+    "excluded": "Capacity Block placeholder zero-price entries; storage, network, tax, CPU services and redundancy are not in instance hourly prices.",
+    "instances": [
+      {
+        "instance": "g6.xlarge",
+        "vcpu": "4",
+        "host_memory": "16 GiB",
+        "gpu_count": "1",
+        "gpu_memory": "24 GB",
+        "usd_per_hour": 0.8048,
+        "usd_per_730_hours": 587.5,
+        "effective_date": "2026-11-01T00:00:00Z",
+        "description": "$0.8048 per On Demand Linux g6.xlarge Instance Hour"
+      },
+      {
+        "instance": "g6.2xlarge",
+        "vcpu": "8",
+        "host_memory": "32 GiB",
+        "gpu_count": "1",
+        "gpu_memory": "24 GB",
+        "usd_per_hour": 0.9776,
+        "usd_per_730_hours": 713.65,
+        "effective_date": "2026-11-01T00:00:00Z",
+        "description": "$0.9776 per On Demand Linux g6.2xlarge Instance Hour"
+      },
+      {
+        "instance": "g6e.xlarge",
+        "vcpu": "4",
+        "host_memory": "32 GiB",
+        "gpu_count": "1",
+        "gpu_memory": "48 GB",
+        "usd_per_hour": 1.861,
+        "usd_per_730_hours": 1358.53,
+        "effective_date": "2026-11-01T00:00:00Z",
+        "description": "$1.861 per On Demand Linux g6e.xlarge Instance Hour"
+      },
+      {
+        "instance": "g6e.2xlarge",
+        "vcpu": "8",
+        "host_memory": "64 GiB",
+        "gpu_count": "1",
+        "gpu_memory": "48 GB",
+        "usd_per_hour": 2.24208,
+        "usd_per_730_hours": 1636.72,
+        "effective_date": "2026-11-01T00:00:00Z",
+        "description": "$2.24208 per On Demand Linux g6e.2xlarge Instance Hour"
+      },
+      {
+        "instance": "p5.4xlarge",
+        "vcpu": "16",
+        "host_memory": "256 GiB",
+        "gpu_count": "1",
+        "gpu_memory": "80 GB HBM3",
+        "usd_per_hour": 6.88,
+        "usd_per_730_hours": 5022.4,
+        "effective_date": "2026-11-01T00:00:00Z",
+        "description": "$6.88 per On Demand Linux p5.4xlarge Instance Hour"
+      },
+      {
+        "instance": "p4d.24xlarge",
+        "vcpu": "96",
+        "host_memory": "1152 GiB",
+        "gpu_count": "8",
+        "gpu_memory": "320 GB HBM2",
+        "usd_per_hour": 21.957642,
+        "usd_per_730_hours": 16029.08,
+        "effective_date": "2026-11-01T00:00:00Z",
+        "description": "$21.957642 per On Demand Linux p4d.24xlarge Instance Hour"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "name": "index_data",
+      "url": "https://huggingface.co/spaces/multimodalart/jev-decision-index/raw/main/data/index.json",
+      "sha256": "813d41bb910d95fad97195921d2f02ae7ee7c9adf088452e48e4351360324a97",
+      "bytes": 4170836
+    },
+    {
+      "name": "index_method",
+      "url": "https://huggingface.co/spaces/multimodalart/jev-decision-index/raw/main/data/methodology.json",
+      "sha256": "bf299b4961972eae6c8c6924c494e934205e72eab1aa062b9b3457eebcbc1bdc",
+      "bytes": 294537
+    },
+    {
+      "name": "karpo31",
+      "url": "https://huggingface.co/MachinePulseAI/karpo-decision-31B/raw/main/README.md",
+      "sha256": "34c34d3a352cf21d76f7be521bb000f3ec71d8880f3adaa8ddf8e37a474db344",
+      "bytes": 10406
+    },
+    {
+      "name": "karpo4",
+      "url": "https://huggingface.co/MachinePulseAI/karpo-decision-4B/raw/main/README.md",
+      "sha256": "4b6055924fe7ce24716c3974681b76c65a62c81d5160ccc86f1dcb803e582289",
+      "bytes": 7429
+    },
+    {
+      "name": "karpo_readme",
+      "url": "https://raw.githubusercontent.com/machinepulse-ai/karpo-decision/main/README.md",
+      "sha256": "1e2ded440e47ba452571c830766454fa47bbb50a1d945989628ca30defb47f74",
+      "bytes": 9924
+    },
+    {
+      "name": "karpo_server",
+      "url": "https://raw.githubusercontent.com/machinepulse-ai/karpo-decision/main/src/karpo_decision/serve/server.py",
+      "sha256": "601278321af45df88d7f33e6c22f9b10e7cd2a2c11eb3e644601de909b10406b",
+      "bytes": 21211
+    },
+    {
+      "name": "strands_v21",
+      "url": "https://huggingface.co/StrandsAgents/strands-decider-2B-hobson-v21/raw/main/README.md",
+      "sha256": "cf8f497f01320521a46e999f498928dee412f563a80c9d257a593762a790a953",
+      "bytes": 14982
+    },
+    {
+      "name": "finetuning",
+      "url": "https://raw.githubusercontent.com/milan9527/StrandsDeciderTetrisFinetuning/main/finetuning/RESULTS.md",
+      "sha256": "48e629a589d4fc42f1ccc13f4b6d57740c77e3e3dc4b1261c6dca4a19e9aba48",
+      "bytes": 3903
+    },
+    {
+      "path": "validation/open_decision_models/README.zh.md",
+      "sha256": "9ca13ada70ac96f0509a3df45b594603c4974a3f84e7a345d72c54509d192eb0",
+      "bytes": 15107
+    },
+    {
+      "path": "docs/presentations/v9/sources/vllm/VLLM_PERFORMANCE.zh-CN.md",
+      "sha256": "22a198e82172e252fffe64a9a589d400bcbc28896a2c827fe21114e9d606478d",
+      "bytes": 7161
+    },
+    {
+      "path": "validation/vision/sources/upstream/strands_decider/schema.py",
+      "sha256": "a8ff32aa6bde8ce0dacb07aafe79264af5dbd47e7c147f4543ee8b758b662afc",
+      "bytes": 6971
+    }
+  ]
+}

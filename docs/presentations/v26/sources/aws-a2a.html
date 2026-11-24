@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Deploy A2A servers in AgentCore Runtime - Amazon Bedrock AgentCore</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="runtime-a2a" /><meta name="default_state" content="runtime-a2a" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.md" title="Markdown version" /><meta name="description" content="Amazon Bedrock AgentCore Runtime lets you deploy and run Agent-to-Agent (A2A) servers in the AgentCore Runtime. This guide walks you through creating, testing, and deploying your first A2A server." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Bedrock AgentCore" /><meta name="guide" content="Developer Guide" /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.html" hreflang="x-default" /><meta name="feedback-item" content="bedrock-agentcore" /><meta name="this_doc_product" content="Amazon Bedrock AgentCore" /><meta name="this_doc_guide" content="Developer Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'bedrock-agentcore'}"></script><meta id="panorama-serviceSubSection" value="Developer Guide" /><meta id="panorama-serviceConsolePage" value="Deploy A2A servers in AgentCore Runtime" /><meta name="uiVersion" content="2024.10" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="runtime-a2a.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Deploy A2A servers in AgentCore Runtime - Amazon Bedrock AgentCore</title><meta name="pdf" content="/pdfs/bedrock-agentcore/latest/devguide/bedrock-agentcore-dg.pdf#runtime-a2a" /><meta name="rss" content="bedrock-agentcore-dg.rss" /><meta name="forums" content="https://repost.aws/search/content?globalSearch=Amazon Bedrock AgentCore" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=bedrock-agentcore&amp;topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/runtime-a2a.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/runtime-a2a.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/runtime-a2a.html" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon Bedrock AgentCore",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Developer Guide",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Host agent or tools with Amazon Bedrock AgentCore Runtime",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Deploy A2A servers in AgentCore Runtime",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/bedrock-agentcore/latest/devguide/bedrock-agentcore-dg.pdf#runtime-a2a" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/bedrock-agentcore/index.html">Amazon Bedrock AgentCore</a><a href="what-is-bedrock-agentcore.html">Developer Guide</a></div><div id="page-toc-src"><a href="#runtime-a2a-how-agentcore-supports">How Amazon Bedrock AgentCore supports A2A</a><a href="#runtime-a2a-steps">Using A2A with AgentCore Runtime</a><a href="#runtime-a2a-appendix">Appendix</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="runtime-a2a">Deploy A2A servers in AgentCore Runtime</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>Amazon Bedrock AgentCore Runtime lets you deploy and run Agent-to-Agent (A2A) servers in the AgentCore Runtime. This guide walks you through creating, testing, and deploying your first A2A server.</p><p>In this section, you learn:</p><div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+   <ul class="itemizedlist"><li class="listitem">
+         <p>How Amazon Bedrock AgentCore supports A2A</p>
+      </li><li class="listitem">
+         <p>How to create an A2A server with agent capabilities</p>
+      </li><li class="listitem">
+         <p>How to test your server locally</p>
+      </li><li class="listitem">
+         <p>How to deploy your server to AWS
+         </p>
+      </li><li class="listitem">
+         <p>How to invoke your deployed server</p>
+      </li><li class="listitem">
+         <p>How to retrieve agent cards for discovery</p>
+      </li></ul></div><p>For more information about A2A, see <a href="./runtime-a2a-protocol-contract.html">A2A protocol contract</a>.</p><div class="highlights" id="inline-topiclist"><h6>Topics</h6><ul><li><p><a href="#runtime-a2a-how-agentcore-supports">How Amazon Bedrock AgentCore supports A2A</a></p></li><li><p><a href="#runtime-a2a-steps">Using A2A with AgentCore Runtime</a></p></li><li><p><a href="#runtime-a2a-appendix">Appendix</a></p></li></ul></div>
+      <h2 id="runtime-a2a-how-agentcore-supports">How Amazon Bedrock AgentCore supports A2A</h2>
+      <p>Amazon Bedrock AgentCore acts as a proxy between clients and your A2A server. When configured for A2A, Amazon Bedrock AgentCore expects containers to run stateless, streamable HTTP servers on port <code class="code">9000</code> at the root path ( <code class="code">0.0.0.0:9000/</code> ), which aligns with the default A2A server configuration.</p>
+      <p>The service provides session isolation while maintaining protocol transparency - JSON-RPC payloads from the <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/APIReference/API_InvokeAgentRuntime.html">InvokeAgentRuntime</a> API are passed through directly to the A2A container without modification. This architecture preserves the standard A2A protocol features like built-in agent discovery through Agent Cards at <code class="code">/.well-known/agent-card.json</code> and JSON-RPC communication, while adding authentication (SigV4/OAuth 2.0) and scalability.</p>
+      <p>Key differences from other protocols:</p>
+      <div class="variablelist">
+          
+          
+          
+          
+          
+      <dl>
+            <dt><span class="term">
+               <strong>Port</strong>
+            </span></dt>
+            <dd>
+               <p>A2A servers run on port 9000 (vs 8080 for HTTP, 8000 for MCP)</p>
+            </dd>
+          
+            <dt><span class="term">
+               <strong>Path</strong>
+            </span></dt>
+            <dd>
+               <p>A2A servers are mounted at <code class="code">/</code> (vs <code class="code">/invocations</code> for HTTP, <code class="code">/mcp</code> for MCP)</p>
+            </dd>
+          
+            <dt><span class="term">
+               <strong>Agent Cards</strong>
+            </span></dt>
+            <dd>
+               <p>A2A provides built-in agent discovery through Agent Cards at <code class="code">/.well-known/agent-card.json</code>
+               </p>
+            </dd>
+          
+            <dt><span class="term">
+               <strong>Protocol</strong>
+            </span></dt>
+            <dd>
+               <p>Uses JSON-RPC for agent-to-agent communication</p>
+            </dd>
+          
+            <dt><span class="term">
+               <strong>Authentication</strong>
+            </span></dt>
+            <dd>
+               <p>Supports both SigV4 and OAuth 2.0 authentication schemes</p>
+            </dd>
+         </dl></div>
+      <p>For more information, see <a href="https://a2a-protocol.org/" rel="noopener noreferrer" target="_blank"><span>https://a2a-protocol.org/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+    
+      <h2 id="runtime-a2a-steps">Using A2A with AgentCore Runtime</h2>
+      <p>In this tutorial you create, test, and deploy an A2A server.</p>
+      <div class="highlights" id="inline-topiclist"><h6>Topics</h6><ul><li><p><a href="#runtime-a2a-prerequisites">Prerequisites</a></p></li><li><p><a href="#runtime-a2a-create-server">Step 1: Create your A2A project</a></p></li><li><p><a href="#runtime-a2a-test-locally">Step 2: Test your A2A server locally</a></p></li><li><p><a href="#runtime-a2a-deploy">Step 3: Deploy your A2A server to Bedrock AgentCore Runtime</a></p></li><li><p><a href="#runtime-a2a-step-4">Step 4: Get the agent card</a></p></li><li><p><a href="#runtime-a2a-step-5">Step 5: Invoke your deployed A2A server</a></p></li></ul></div>
+       
+         <h3 id="runtime-a2a-prerequisites">Prerequisites</h3>
+         <div class="itemizedlist">
+             
+             
+             
+             
+             
+         <ul class="itemizedlist"><li class="listitem">
+               <p>Python 3.10 or higher installed and basic understanding of Python</p>
+            </li><li class="listitem">
+               <p>The AgentCore CLI installed and configured. For instructions, see <a href="./runtime-get-started-cli.html">Get started with the AgentCore CLI</a>.</p>
+            </li><li class="listitem">
+               <p>An AWS account with appropriate permissions and local credentials configured</p>
+            </li><li class="listitem">
+               <p>Understanding of the A2A protocol and agent-to-agent communication concepts</p>
+            </li><li class="listitem">
+               <p>A Cognito user pool configured as described in <a href="./runtime-mcp.html#runtime-mcp-appendix-a">Set up Cognito user pool for authentication</a>. Source the setup script so that <code class="code">REGION</code>, <code class="code">POOL_ID</code>, and <code class="code">CLIENT_ID</code> are available in your shell.</p>
+            </li></ul></div>
+       
+       
+         <h3 id="runtime-a2a-create-server">Step 1: Create your A2A project</h3>
+         <p>This example uses Strands with the A2A protocol.</p>
+          
+            <h4 id="runtime-a2a-scaffold-project">Scaffold the project</h4>
+            <p>Run the following command:</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">agentcore create --name A2AProject --template empty
+cd A2AProject
+agentcore add runtime \
+  --name A2AAgent \
+  --language python \
+  --protocol A2A \
+  --authorizer-type CUSTOM_JWT \
+  --authorizer-configuration \
+  "<span>{</span>\"customJwtAuthorizer\":<span>{</span>\"discoveryUrl\":\"https://cognito-idp.$REGION.amazonaws.com/$POOL_ID/.well-known/openid-configuration\",\"allowedClients\":[\"$CLIENT_ID\"]}}" \
+  --request-header-allowlist Authorization
+cd app/A2AAgent
+uv init --bare
+uv add \
+  "a2a-sdk[all]~=0.3.26" \
+  "aws-opentelemetry-distro~=0.21.0" \
+  "bedrock-agentcore[a2a,strands-agents]~=1.24.0" \
+  "botocore[crt]~=1.43.107" \
+  "strands-agents~=1.57.2"
+cd ../..</code></pre>
+            <p>The CLI registers a Python A2A Runtime with Cognito authorization and creates <code class="code">README.md</code> and <code class="code">AGENTS.md</code> in its code directory. The commands above initialize the dependencies used by this example. To use another model provider, configure the Strands <code class="code">Agent</code> in your application code.</p>
+            <p>Create <code class="code">app/A2AAgent/main.py</code> with the following A2A server:</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (python)--><code class="python ">from strands import Agent, tool
+from strands.multiagent.a2a.executor import StrandsA2AExecutor
+from bedrock_agentcore.runtime import serve_a2a
+
+@tool
+def add_numbers(a: int, b: int) -&gt; int:
+    """Return the sum of two numbers."""
+    return a + b
+
+tools = [add_numbers]
+
+def create_agent(_context_id: str) -&gt; Agent:
+    return Agent(
+        name="A2AAgent",
+        system_prompt="You are a helpful assistant. Use tools when appropriate.",
+        tools=tools,
+    )
+
+if __name__ == "__main__":
+    serve_a2a(StrandsA2AExecutor(agent_factory=create_agent))</code></pre>
+          
+          
+            <h4 id="runtime-a2a-understanding-code">Understanding the code</h4>
+            <div class="variablelist">
+                
+                
+                
+                
+            <dl>
+                  <dt><span class="term">
+                     <strong>Strands Agent</strong>
+                  </span></dt>
+                  <dd>
+                     <p>Creates an agent with specific tools and capabilities</p>
+                  </dd>
+                
+                  <dt><span class="term">
+                     <strong>StrandsA2AExecutor</strong>
+                  </span></dt>
+                  <dd>
+                     <p>Uses <code class="code">agent_factory=create_agent</code> to create a context-scoped Strands agent for the A2A interaction</p>
+                  </dd>
+                
+                  <dt><span class="term">
+                     <strong>serve_a2a</strong>
+                  </span></dt>
+                  <dd>
+                     <p>The Amazon Bedrock AgentCore SDK helper that starts a Bedrock-compatible A2A server. It handles the <code class="code">/ping</code> health endpoint, Agent Card serving, <code class="code">AGENTCORE_RUNTIME_URL</code> environment variable, Bedrock header propagation, and runs on port 9000 by default.</p>
+                  </dd>
+                
+                  <dt><span class="term">
+                     <strong>Port 9000</strong>
+                  </span></dt>
+                  <dd>
+                     <p>A2A servers run on port 9000 by default in AgentCore Runtime</p>
+                  </dd>
+               </dl></div>
+            <p>To customize this agent, replace the <code class="code">add_numbers</code> tool with your own tools and update the system prompt.</p>
+          
+       
+       
+         <h3 id="runtime-a2a-test-locally">Step 2: Test your A2A server locally</h3>
+         <p>Run and test your A2A server in a local development environment.</p>
+          
+            <h4 id="runtime-a2a-start-server">Start your A2A server</h4>
+            <p>Start your A2A server locally using the AgentCore CLI:</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">agentcore dev --mode browser</code></pre>
+            <p>This opens the AgentCore agent inspector in your web browser. Run <code class="code">agentcore dev</code> without <code class="code">--mode browser</code> for headless local development.</p>
+            <p>You should see output indicating the server is running on port <code class="code">9000</code>.</p>
+          
+          
+            <h4 id="runtime-a2a-invoke-agent">Invoke agent</h4>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">curl -X POST http://localhost:9000/ \
+-H "Content-Type: application/json" \
+-d '<span>{</span>
+  "jsonrpc": "2.0",
+  "id": "req-001",
+  "method": "message/send",
+  "params": <span>{</span>
+    "message": <span>{</span>
+      "role": "user",
+      "parts": [
+        <span>{</span>
+          "kind": "text",
+          "text": "what is 101 * 11?"
+        }
+      ],
+      "messageId": "12345678-1234-1234-1234-123456789012"
+    }
+  }
+}' | jq .</code></pre>
+          
+          
+            <h4 id="runtime-a2a-test-agent-card">Test agent card retrieval</h4>
+            <p>You can test the agent card endpoint locally:</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">curl http://localhost:9000/.well-known/agent-card.json | jq .</code></pre>
+            <p>You can also test your deployed server using the A2A Inspector as described in <a href="https://github.com/a2aproject/a2a-inspector" rel="noopener noreferrer" target="_blank"><span>Remote testing with A2A inspector</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+          
+       
+       
+         <h3 id="runtime-a2a-deploy">Step 3: Deploy your A2A server to Bedrock AgentCore Runtime</h3>
+          
+            <h4 id="runtime-a2a-deploy-aws">Deploy to AWS</h4>
+            <p>Build and deploy your agent:</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">agentcore build
+agentcore deploy</code></pre>
+            <p>After deployment, get the Runtime ARN:</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">agentcore status --json</code></pre>
+            <p>The Runtime resource’s <code class="code">arn</code> field contains its ARN.</p>
+          
+       
+       
+         <h3 id="runtime-a2a-step-4">Step 4: Get the agent card</h3>
+         <p>Agent Cards are JSON metadata documents that describe an A2A server’s identity, capabilities, skills, service endpoint, and authentication requirements. They enable automatic agent discovery in the A2A ecosystem.</p>
+          
+            <h4 id="runtime-a2a-step-4-setup-environment-variables">Set up environment variables</h4>
+            <p>Set the following environment variables:</p>
+            <div class="orderedlist">
+                
+                
+            <ol style="list-style-type:arabic ! important;"><li>
+                  <p>Export bearer token as an environment variable. For bearer token setup, see <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-mcp.html#runtime-mcp-appendix">Bearer token setup</a>.</p>
+                  <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">export BEARER_TOKEN="&lt;BEARER_TOKEN&gt;"</code></pre>
+               </li><li>
+                  <p>Export the agent ARN.</p>
+                  <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">export AGENT_ARN="arn:aws:bedrock-agentcore:us-west-2:accountId:runtime/A2AProject_default_A2AAgent-xyz123"</code></pre>
+               </li></ol></div>
+          
+          
+            <h4 id="retrieve-agent-card">Retrieve agent card</h4>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (python)--><code class="python ">import os
+import json
+import requests
+from uuid import uuid4
+from urllib.parse import quote
+
+def fetch_agent_card():
+    # Get environment variables
+    agent_arn = os.environ.get('AGENT_ARN')
+    bearer_token = os.environ.get('BEARER_TOKEN')
+
+    if not agent_arn:
+        print("Error: AGENT_ARN environment variable not set")
+        return
+
+    if not bearer_token:
+        print("Error: BEARER_TOKEN environment variable not set")
+        return
+
+    # URL encode the agent ARN
+    escaped_agent_arn = quote(agent_arn, safe='')
+
+    # Construct the URL
+    url = f"https://bedrock-agentcore.us-west-2.amazonaws.com/runtimes/<span>{</span>escaped_agent_arn}/invocations/.well-known/agent-card.json"
+
+    # Generate a unique session ID
+    session_id = str(uuid4())
+    print(f"Generated session ID: <span>{</span>session_id}")
+
+    # Set headers
+    headers = <span>{</span>
+        'Accept': '*/*',
+        'Authorization': f'Bearer <span>{</span>bearer_token}',
+        'X-Amzn-Bedrock-AgentCore-Runtime-Session-Id': session_id
+    }
+
+    try:
+        # Make the request
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+
+        # Parse and pretty print JSON
+        agent_card = response.json()
+        print(json.dumps(agent_card, indent=2))
+
+        return agent_card
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching agent card: <span>{</span>e}")
+        return None
+
+if __name__ == "__main__":
+    fetch_agent_card()</code></pre>
+            <p>After you get the URL from the Agent Card, export <code class="code">AGENTCORE_RUNTIME_URL</code> as an environment variable:</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">export AGENTCORE_RUNTIME_URL="https://bedrock-agentcore.us-west-2.amazonaws.com/runtimes/&lt;ARN&gt;/invocations/"</code></pre>
+          
+       
+       
+         <h3 id="runtime-a2a-step-5">Step 5: Invoke your deployed A2A server</h3>
+         <p>Create client code to invoke your deployed Amazon Bedrock AgentCore A2A server and send messages to test the functionality.</p>
+         <p>Create a new file <code class="code">my_a2a_client_remote.py</code> to invoke your deployed A2A server:</p>
+         <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (python)--><code class="python ">import asyncio
+import logging
+import os
+from uuid import uuid4
+
+import httpx
+from a2a.client import A2ACardResolver, ClientConfig, ClientFactory
+from a2a.types import Message, Part, Role, TextPart
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+DEFAULT_TIMEOUT = 300  # set request timeout to 5 minutes
+
+def create_message(*, role: Role = Role.user, text: str) -&gt; Message:
+    return Message(
+        kind="message",
+        role=role,
+        parts=[Part(TextPart(kind="text", text=text))],
+        message_id=uuid4().hex,
+    )
+
+async def send_sync_message(message: str):
+    # Get runtime URL from environment variable
+    runtime_url = os.environ.get('AGENTCORE_RUNTIME_URL')
+
+    # Generate a unique session ID
+    session_id = str(uuid4())
+    print(f"Generated session ID: <span>{</span>session_id}")
+
+    # Add authentication headers for Amazon Bedrock AgentCore
+    headers = <span>{</span>"Authorization": f"Bearer <span>{</span>os.environ.get('BEARER_TOKEN')}",
+        'X-Amzn-Bedrock-AgentCore-Runtime-Session-Id': session_id}
+
+    async with httpx.AsyncClient(timeout=DEFAULT_TIMEOUT, headers=headers) as httpx_client:
+        # Get agent card from the runtime URL
+        resolver = A2ACardResolver(httpx_client=httpx_client, base_url=runtime_url)
+        agent_card = await resolver.get_agent_card()
+
+        # Agent card contains the correct URL (same as runtime_url in this case)
+        # No manual override needed - this is the path-based mounting pattern
+
+        # Create client using factory
+        config = ClientConfig(
+            httpx_client=httpx_client,
+            streaming=False,  # Use non-streaming mode for sync response
+        )
+        factory = ClientFactory(config)
+        client = factory.create(agent_card)
+
+        # Create and send message
+        msg = create_message(text=message)
+
+        # With streaming=False, this will yield exactly one result
+        async for event in client.send_message(msg):
+            if isinstance(event, Message):
+                logger.info(event.model_dump_json(exclude_none=True, indent=2))
+                return event
+            elif isinstance(event, tuple) and len(event) == 2:
+                # (Task, UpdateEvent) tuple
+                task, update_event = event
+                logger.info(f"Task: <span>{</span>task.model_dump_json(exclude_none=True, indent=2)}")
+                if update_event:
+                    logger.info(f"Update: <span>{</span>update_event.model_dump_json(exclude_none=True, indent=2)}")
+                return task
+            else:
+                # Fallback for other response types
+                logger.info(f"Response: <span>{</span>str(event)}")
+                return event
+
+# Usage - Uses AGENTCORE_RUNTIME_URL environment variable
+asyncio.run(send_sync_message("what is 101 * 11"))</code></pre>
+       
+    
+      <h2 id="runtime-a2a-appendix">Appendix</h2>
+      <div class="highlights" id="inline-topiclist"><h6>Topics</h6><ul><li><p><a href="#runtime-a2a-setup-cognito-appendix">Set up Cognito user pool for authentication</a></p></li><li><p><a href="#runtime-a2a-remote-testing">Remote testing with A2A inspector</a></p></li><li><p><a href="#runtime-a2a-troubleshooting">Troubleshooting</a></p></li></ul></div>
+       
+         <h3 id="runtime-a2a-setup-cognito-appendix">Set up Cognito user pool for authentication</h3>
+         <p>For detailed Cognito setup instructions, see <a href="./runtime-mcp.html#runtime-mcp-appendix-a">Set up Cognito user pool for authentication</a>.</p>
+       
+       
+         <h3 id="runtime-a2a-remote-testing">Remote testing with A2A inspector</h3>
+         <p>See <a href="https://github.com/a2aproject/a2a-inspector" rel="noopener noreferrer" target="_blank"><span>https://github.com/a2aproject/a2a-inspector</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+       
+       
+         <h3 id="runtime-a2a-troubleshooting">Troubleshooting</h3>
+         <p>
+            <strong>Common A2A-specific issues</strong>
+         </p>
+         <p>The following are common issues you might encounter:</p>
+         <div class="variablelist">
+             
+             
+             
+         <dl>
+               <dt><span class="term">Port conflicts</span></dt>
+               <dd>
+                  <p>A2A servers must run on port 9000 in the AgentCore Runtime environment</p>
+               </dd>
+             
+               <dt><span class="term">JSON-RPC errors</span></dt>
+               <dd>
+                  <p>Check that your client is sending properly formatted JSON-RPC 2.0 messages</p>
+               </dd>
+             
+               <dt><span class="term">Authorization method mismatch</span></dt>
+               <dd>
+                  <p>Make sure your request uses the same authentication method (OAuth or SigV4) that the agent was configured with</p>
+               </dd>
+            </dl></div>
+         <p>
+            <strong>Exception handling</strong>
+         </p>
+         <p>A2A specifications for Error handling: <a href="https://a2a-protocol.org/latest/specification/#81-standard-json-rpc-errors" rel="noopener noreferrer" target="_blank"><span>https://a2a-protocol.org/latest/specification/#81-standard-json-rpc-errors</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+         </p>
+         <p>A2A servers return most errors as standard JSON-RPC error responses. The service returns authentication and authorization failures (for example, <code class="code">AccessDeniedException</code>) as native HTTP errors with their own status codes, as shown in the following table. The service automatically translates internal runtime errors to JSON-RPC internal errors to maintain protocol compliance.</p>
+         <p>The service provides A2A-compliant error responses with standardized JSON-RPC error codes:</p>
+         <div class="table-container"><div class="table-contents"><table id="w363aac15c29c17b9c17"><thead>
+                  <tr>
+                     <th align="left" style="text-align: left;vertical-align: top;">JSON-RPC Error Code</th>
+                     <th align="left" style="text-align: left;vertical-align: top;">Runtime Exception</th>
+                     <th align="left" style="text-align: left;vertical-align: top;">HTTP Error Code</th>
+                     <th align="left" style="text-align: left;vertical-align: top;">JSON-RPC Error Message</th>
+                  </tr>
+               </thead>
+                  <tr>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>Not applicable</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>
+                           <code class="code">AccessDeniedException</code>
+                        </p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>403</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>Access denied (returned as a standard HTTP error, not a JSON-RPC error)</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>-32051</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>
+                           <code class="code">ResourceNotFoundException</code>
+                        </p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>404</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>Resource not found – Requested resource does not exist</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>-32052</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>
+                           <code class="code">ValidationException</code>
+                        </p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>400</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>Validation error – Invalid request data</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>-32053</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>
+                           <code class="code">ThrottlingException</code>
+                        </p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>429</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>Rate limit exceeded – Too many requests</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>-32053</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>
+                           <code class="code">ServiceQuotaExceededException</code>
+                        </p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>429</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>Rate limit exceeded – Too many requests</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>-32054</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>
+                           <code class="code">ConflictException</code>
+                        </p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>409</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>Resource conflict – Resource already exists</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>-32054</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>
+                           <code class="code">RetryableConflictException</code>
+                        </p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>409</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>Session operation in progress, please retry</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>-32055</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>
+                           <code class="code">RuntimeClientError</code>
+                        </p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>424</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>Runtime client error – Check your CloudWatch logs for more information.</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>-32603</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>
+                           <code class="code">Any other exception</code>
+                        </p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>500</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>Internal error - An unexpected error occurred while processing the request</p>
+                     </td>
+                  </tr>
+               </table></div></div>
+       
+   <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./mcp-stateful-features.html">Stateful MCP features</div><div id="next" class="next-link" accesskey="n" href="./runtime-agui.html">Deploy AG-UI servers</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=bedrock-agentcore&amp;topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/runtime-a2a.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=bedrock-agentcore&amp;topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/runtime-a2a.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

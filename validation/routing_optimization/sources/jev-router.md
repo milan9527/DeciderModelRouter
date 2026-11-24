@@ -1,0 +1,667 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Jev Router
+
+> Route requests with Jev, choose a cost tier, and control model selection and reasoning effort
+
+The [Jev Router](https://openrouter.ai/typesafe/jev-router) (`typesafe/jev-router`) selects a model and reasoning effort for each request. [Jev](https://openrouter.ai/docs/guides/community/jev.md), TypeSafe's decision model, assesses the task, its difficulty, and the potential benefit of a stronger model. The routing policy balances those signals against estimated cost and your preferences.
+
+Use it as a model, or add the `jev-router` plugin to choose a cost tier and set model preferences. Jev makes the routing decision; the selected model generates the response.
+
+The plugin id `decisions-router` is an alias of `jev-router`. Either id configures the same plugin, and router metadata always reports the stage as `jev-router`.
+
+## How it works
+
+1. **Assess the request.** Jev evaluates the conversation to identify what the task needs.
+2. **Select a model and effort.** The router applies the selected cost policy, available model capabilities, and your model and provider restrictions.
+3. **Adapt across turns.** During supported agentic workflows, the router can retain a model, adjust its effort, or switch models as the task progresses. When the policy permits it, an expert advisor can assist the model doing the work.
+
+The available models and routing policies can change over time. A cost tier is a routing preference, not a fixed model, guaranteed score, or per-request price cap.
+
+## Usage
+
+Set `model` to `typesafe/jev-router`. No plugin is required:
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "typesafe/jev-router",
+    "input": "Explain the difference between a mutex and a semaphore."
+  }'
+```
+
+```typescript title="TypeScript" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'typesafe/jev-router',
+    input: 'Explain the difference between a mutex and a semaphore.',
+  }),
+});
+
+if (!response.ok) {
+  throw new Error(`Request failed (${response.status}): ${await response.text()}`);
+}
+
+const data = await response.json();
+
+// The router picks a concrete model; `data.model` shows which one served the request.
+console.log('Routed to:', data.model);
+
+const text = data.output
+  .filter((item: any) => item.type === 'message')
+  .flatMap((item: any) => item.content)
+  .filter((part: any) => part.type === 'output_text')
+  .map((part: any) => part.text)
+  .join('');
+console.log(text);
+
+```
+
+```python title="Python" lines theme={null}
+import os
+import requests
+
+response = requests.post(
+    "https://openrouter.ai/api/v1/responses",
+    headers={
+        "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "typesafe/jev-router",
+        "input": "Explain the difference between a mutex and a semaphore.",
+    },
+)
+response.raise_for_status()
+data = response.json()
+
+# The router picks the underlying model; the response reports which one served it
+print("Routed to:", data["model"])
+
+for item in data["output"]:
+    if item["type"] == "message":
+        for part in item["content"]:
+            if part["type"] == "output_text":
+                print(part["text"])
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"time"
+)
+
+func main() {
+	body, err := json.Marshal(map[string]any{
+		"model": "typesafe/jev-router",
+		"input": "Explain the difference between a mutex and a semaphore.",
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	req, err := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{Timeout: 120 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		log.Fatalf("request failed: %s\n%s", resp.Status, raw)
+	}
+
+	var result struct {
+		Model  string          `json:"model"`
+		Status string          `json:"status"`
+		Error  json.RawMessage `json:"error"`
+		Output []struct {
+			Type    string `json:"type"`
+			Content []struct {
+				Type string `json:"type"`
+				Text string `json:"text"`
+			} `json:"content"`
+		} `json:"output"`
+	}
+	if err := json.Unmarshal(raw, &result); err != nil {
+		log.Fatal(err)
+	}
+	if len(result.Error) > 0 && string(result.Error) != "null" {
+		log.Fatalf("response error: %s", result.Error)
+	}
+
+	// The router picks a model for you; the response reports which one it used.
+	fmt.Printf("Routed to: %s (status: %s)\n\n", result.Model, result.Status)
+
+	printed := false
+	for _, item := range result.Output {
+		if item.Type != "message" {
+			continue
+		}
+		for _, c := range item.Content {
+			if c.Type == "output_text" {
+				fmt.Println(c.Text)
+				printed = true
+			}
+		}
+	}
+	if !printed {
+		log.Fatalf("no output text in response: %s", raw)
+	}
+}
+
+```
+
+```text title="Output" theme={null}
+Routed to: openai/gpt-6-luna
+A **mutex** and a **semaphore** both coordinate access to shared resources, but they have different purposes:
+
+- **Mutex (mutual exclusion):** Lets only one thread at a time enter a protected section. The thread that locks it is expected to unlock it. Use it to protect shared data.
+- **Semaphore:** Maintains a counter representing how many units of a resource are available. A thread waits when the count is zero; another operation increases the count. Use it to limit access to a pool of resources or to signal between threads.
+
+A **binary semaphore** has a count of 0 or 1, so it can look like a mutex. The key distinction is ownership: mutexes are owned by the thread that locks them, while semaphores generally can be signaled by a different thread.
+```
+
+The response `model` field reports the model that served the request. The router works with Chat Completions, Responses, and Messages, streaming and non-streaming.
+
+## Plugin parameters
+
+The plugin is optional. Add it to configure routing for a request:
+
+| Parameter | Type | Behavior |
+| - | - | - |
+| `id` | string | Required. Must be `"jev-router"`. |
+| `cost_tier` | string | Select `"low"`, `"medium"`, or `"high"`. Omit to use Jev's default routing policy. |
+| `models` | string array | Include preferences with fallback, applied before dynamic pool selection. If they leave no routable candidates, Jev retries without them, unless no entry matches any catalog model. Omitted or empty means no include restriction. |
+| `allowed_models` | string array | Alias of `models`, with the same fallback behavior. Entries from both fields are combined. |
+| `excluded_models` | string array | Hard exclusions. Matching models are never selected, including during include fallback. |
+
+All fields except `id` are optional. Unknown fields and invalid values return `400`; for example, `allowed_model` is not accepted as an alias.
+
+```typescript title="TypeScript (fetch)" expandable lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'typesafe/jev-router',
+    plugins: [
+      {
+        id: 'jev-router',
+        cost_tier: 'medium',
+      },
+    ],
+    input: 'Summarize this incident report.',
+  }),
+});
+
+const data = await response.json();
+console.log('Model used:', data.model);
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "typesafe/jev-router",
+    "plugins": [
+      {
+        "id": "jev-router",
+        "cost_tier": "medium"
+      }
+    ],
+    "input": "Summarize this incident report."
+  }'
+```
+
+```python title="Python" lines theme={null}
+import os
+import requests
+
+response = requests.post(
+    "https://openrouter.ai/api/v1/responses",
+    headers={
+        "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "typesafe/jev-router",
+        "plugins": [
+            {
+                "id": "jev-router",
+                "cost_tier": "medium",
+            },
+        ],
+        "input": "Summarize this incident report.",
+    },
+)
+
+data = response.json()
+print("Model used:", data["model"])
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"time"
+)
+
+func main() {
+	body, err := json.Marshal(map[string]any{
+		"model": "typesafe/jev-router",
+		"plugins": []map[string]any{
+			{
+				"id":        "jev-router",
+				"cost_tier": "medium",
+			},
+		},
+		"input": "Summarize this incident report in two sentences: At 14:02 UTC the checkout service began returning 502 errors after a config deploy removed a database connection pool limit. Connections were exhausted within minutes. The deploy was rolled back at 14:31 and error rates returned to normal by 14:40.",
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	req, err := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{Timeout: 120 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		log.Fatalf("request failed: %s\n%s", resp.Status, raw)
+	}
+
+	var data struct {
+		Model  string `json:"model"`
+		Output []struct {
+			Type    string `json:"type"`
+			Content []struct {
+				Type string `json:"type"`
+				Text string `json:"text"`
+			} `json:"content"`
+		} `json:"output"`
+	}
+	if err := json.Unmarshal(raw, &data); err != nil {
+		log.Fatal(err)
+	}
+
+	// Jev picks a model from the medium cost tier; the response reports which one.
+	fmt.Println("Model used:", data.Model)
+
+	for _, item := range data.Output {
+		if item.Type != "message" {
+			continue
+		}
+		for _, c := range item.Content {
+			if c.Type == "output_text" {
+				fmt.Println(c.Text)
+			}
+		}
+	}
+}
+
+```
+
+```text title="Output" theme={null}
+Model used: deepseek/deepseek-v4.1-flash-1017
+```
+
+## Cost tiers
+
+`cost_tier` selects the routing policy, not the model's reasoning effort:
+
+| Tier | Intent |
+| - | - |
+| `low` | Prioritize lower estimated cost. |
+| `medium` | Balance estimated cost and capability. |
+| `high` | Favor more capable models when the expected benefit justifies the added cost. |
+
+Set `cost_tier` to choose a policy for your request. Your model and provider restrictions still apply.
+
+If you omit `cost_tier`, Jev uses its default routing policy. To explicitly choose the medium policy, set `cost_tier: "medium"`. An unrecognized tier name returns `400`.
+
+Changing cost tiers can change the selected model, even within the same conversation.
+
+## Reasoning effort
+
+The router normally chooses reasoning effort. You can supply the standard top-level `reasoning.effort` field as a hint, independently of `cost_tier`:
+
+```json theme={null}
+{
+  "model": "typesafe/jev-router",
+  "plugins": [{"id": "jev-router", "cost_tier": "medium"}],
+  "reasoning": {"effort": "high"},
+  "input": "Analyze the tradeoffs in this design."
+}
+```
+
+On Chat Completions, the legacy top-level `reasoning_effort` field is also accepted. The router can select a different effort or adapt it across turns, so a hint is not a guarantee of the setting sent to the final model. `reasoning.max_tokens` and `reasoning.mode: "pro"` are not supported and return `400`. See [Reasoning tokens](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md) for the standard reasoning fields.
+
+## Model preferences
+
+Combine a cost tier with include and exclude preferences when needed:
+
+```json theme={null}
+{
+  "id": "jev-router",
+  "cost_tier": "high",
+  "models": ["anthropic/*", "google/*"],
+  "excluded_models": ["anthropic/claude-opus*"]
+}
+```
+
+Each entry can be:
+
+* An exact model slug, such as `openai/gpt-6-luna`. It matches every dated revision of that slug.
+* A dated revision, such as `openai/gpt-6-luna-20260922`, which matches only that revision.
+* A wildcard pattern, such as `anthropic/*` or `*flash*`. Matching is case-sensitive.
+* A `~author/family-latest` alias, such as `~openai/gpt-luna-latest`, which matches every revision of that family.
+
+Each list takes up to 1,024 patterns, with at most 1,024 characters per pattern and 65,536 characters total per list.
+
+### How the lists apply
+
+`models` and `allowed_models` are include preferences with fallback, not hard allowlists. Jev first tries to build a routable pool within the combined include set. If that pool is empty, it retries without includes. `excluded_models` is a hard restriction and stays enforced in both attempts.
+
+For dynamic pools, these filters apply before ranking and the pool cap. This can bring an eligible model into consideration even if it would have missed the global cutoff; excluding a higher-ranked model can free a slot for another eligible model. Includes never bypass model eligibility, endpoint policy, capabilities, or token-budget checks. Explicit operator pools and built-in pools retain their configured membership.
+
+For example, `models: ["anthropic/*"]` prefers Anthropic, but can fall back to another author when it leaves no routable candidates. Do not use an include list to enforce an author restriction.
+
+* **Includes are relaxed only when they leave no routable candidates.** This also covers a matching model with no eligible endpoint. The router rebuilds the pool without the include list, and `excluded_models` still applies before the cap. This keeps requests working when the pool changes under a list or an entry names an ineligible model. The [pipeline stage](#seeing-what-the-router-did) reports `list_fallback: "models_ignored"`.
+* **Includes that match no catalog model are never relaxed.** When no entry in `models` or `allowed_models` matches a public text model in the catalog, for example a misspelled slug or a slug for an image-only model, the request fails with `404` naming the field instead of routing to the whole pool.
+* **Exclusions are never ignored.** If `excluded_models` removes every pool model, the request fails with `404` instead of routing to an excluded model.
+* **The lists can lower the capability tier.** When a hard request needs stronger models than the lists leave, the router can lower its capability requirement. The stage reports this as `list_tier_cap`; it is not the `low`/`medium`/`high` cost tier.
+
+If no eligible model remains in the pool, the request fails with `404`. The error names the fields you sent, such as `widen allowed_models` or `remove excluded_models`.
+
+## Seeing what the router did
+
+The response's `model` field identifies the model that served the request. Send `X-OpenRouter-Metadata: enabled` for more detail in [router metadata](https://openrouter.ai/docs/guides/routing/routers/router-metadata.md). The `jev-router` entry in `openrouter_metadata.pipeline` includes:
+
+| Field | Meaning |
+| - | - |
+| `resolved_models` | Models the router selected, in fallback order. |
+| `candidates` | Routed candidates with `model`, `effort`, capability `tier`, and `estimated_cost`. Estimates are not final billed costs. |
+| `reason` | The policy's reason for selecting or retaining a route. |
+| `pipeline` | `"default"` or `"agentic"`. |
+| `advisor_model` | The advisor, when one is selected. |
+| `models`, `excluded_models` | The lists the router applied. `models` includes `allowed_models` entries. |
+| `list_fallback` | `"models_ignored"` when the include list matched catalog models but no pool model. |
+| `list_tier_cap` | The tier the lists capped the request at, when they lowered it. |
+| `max_fallback` | `"deep"` when a request that would get an advisor was served without one. |
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-OpenRouter-Metadata: enabled" \
+  -d '{
+    "model": "typesafe/jev-router",
+    "plugins": [{"id": "jev-router", "cost_tier": "medium"}],
+    "input": "Reply with ok"
+  }' | jq '.openrouter_metadata.pipeline[] | select(.name == "jev-router") | .data | {resolved_models, candidates, reason, pipeline, advisor_model}'
+```
+
+```typescript title="TypeScript" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+    'Content-Type': 'application/json',
+    'X-OpenRouter-Metadata': 'enabled',
+  },
+  body: JSON.stringify({
+    model: 'typesafe/jev-router',
+    plugins: [{ id: 'jev-router', cost_tier: 'medium' }],
+    input: 'Reply with ok',
+  }),
+});
+
+const data = await response.json();
+const jev = data.openrouter_metadata?.pipeline?.find((step: any) => step.name === 'jev-router');
+const { resolved_models, candidates, reason, pipeline, advisor_model = null } = jev?.data ?? {};
+console.log(JSON.stringify({ resolved_models, candidates, reason, pipeline, advisor_model }, null, 2));
+
+```
+
+```python title="Python" lines theme={null}
+import json
+import os
+import requests
+
+response = requests.post(
+    "https://openrouter.ai/api/v1/responses",
+    headers={
+        "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
+        "Content-Type": "application/json",
+        "X-OpenRouter-Metadata": "enabled",
+    },
+    json={
+        "model": "typesafe/jev-router",
+        "plugins": [{"id": "jev-router", "cost_tier": "medium"}],
+        "input": "Reply with ok",
+    },
+)
+
+data = response.json()
+for step in data["openrouter_metadata"]["pipeline"]:
+    if step["name"] == "jev-router":
+        d = step["data"]
+        keys = ["resolved_models", "candidates", "reason", "pipeline", "advisor_model"]
+        print(json.dumps({k: d.get(k) for k in keys}, indent=2))
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"time"
+)
+
+func main() {
+	body, err := json.Marshal(map[string]any{
+		"model":   "typesafe/jev-router",
+		"plugins": []map[string]any{{"id": "jev-router", "cost_tier": "medium"}},
+		"input":   "Reply with ok",
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	req, err := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-OpenRouter-Metadata", "enabled")
+
+	resp, err := (&http.Client{Timeout: 120 * time.Second}).Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		log.Fatalf("request failed: %s\n%s", resp.Status, raw)
+	}
+
+	type routerData struct {
+		ResolvedModels json.RawMessage `json:"resolved_models"`
+		Candidates     json.RawMessage `json:"candidates"`
+		Reason         json.RawMessage `json:"reason"`
+		Pipeline       json.RawMessage `json:"pipeline"`
+		AdvisorModel   json.RawMessage `json:"advisor_model"`
+	}
+	var data struct {
+		OpenRouterMetadata struct {
+			Pipeline []struct {
+				Name string     `json:"name"`
+				Data routerData `json:"data"`
+			} `json:"pipeline"`
+		} `json:"openrouter_metadata"`
+	}
+	if err := json.Unmarshal(raw, &data); err != nil {
+		log.Fatal(err)
+	}
+
+	for _, step := range data.OpenRouterMetadata.Pipeline {
+		if step.Name != "jev-router" {
+			continue
+		}
+		if step.Data.AdvisorModel == nil {
+			step.Data.AdvisorModel = json.RawMessage("null")
+		}
+		out, err := json.MarshalIndent(step.Data, "", "  ")
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(string(out))
+		return
+	}
+	log.Fatalf("no jev-router entry in openrouter_metadata.pipeline: %s", raw)
+}
+
+```
+
+```text title="Output" theme={null}
+{
+  "resolved_models": [
+    "openai/gpt-6.1-terra-20261026",
+    "openai/gpt-6-luna-20260922",
+    "deepseek/deepseek-v4.1-flash-20261017"
+  ],
+  "candidates": [
+    {
+      "model": "openai/gpt-6.1-terra-20261026",
+      "effort": "low",
+      "tier": "basic",
+      "estimated_cost": 0.00072792
+    },
+    {
+      "model": "openai/gpt-6-luna-20260922",
+      "effort": "low",
+      "tier": "basic",
+      "estimated_cost": 0.00007189333333333333
+    },
+    {
+      "model": "deepseek/deepseek-v4.1-flash-20261017",
+      "effort": "low",
+      "tier": "basic",
+      "estimated_cost": 0.00010910958608695652
+    },
+    {
+      "model": "google/gemini-4-hydrogen-20261112",
+      "effort": "low",
+      "tier": "basic",
+      "estimated_cost": 0.00106155
+    },
+    {
+      "model": "google/gemini-4-carbon-20261110",
+      "effort": "low",
+      "tier": "basic",
+      "estimated_cost": 0.001348
+    },
+    {
+      "model": "anthropic/claude-sonnet-5.5-20260928",
+      "effort": "low",
+```
+
+## Availability and errors
+
+Jev Router is available only in the global data region and only in workspaces that allow it. Access to the router and the selected models is still required. Do not combine `typesafe/jev-router` with another router model in the same request.
+
+| Status | Examples |
+| - | - |
+| `400` | Unknown cost tier or plugin field, unsupported reasoning settings, regional routing, or combining router models. |
+| `404` | No eligible model remains after applying model preferences and request requirements, or you don't have access to the router. |
+| `503` | Jev Router is unavailable. |
+
+## Related
+
+* [Jev](https://openrouter.ai/docs/guides/community/jev.md): the decision model behind the router
+* [Auto Router](https://openrouter.ai/docs/guides/routing/routers/auto-router.md): a separate router with its own cost-tier behavior
+* [Router metadata](https://openrouter.ai/docs/guides/routing/routers/router-metadata.md): the `openrouter_metadata` response field
+
+## Author routers
+
+When available in the catalog, `openai/auto`, `anthropic/auto`, and other `<author>/auto` models run Jev with that author's models. They use the same pool discovery, task policy, reasoning effort, and cost tiers as Jev. Author scope applies before the pool cap, like selecting that author on the Mission Control Jev Router page. The page simulates the selection; using the alias sends a real request.
+
+The scope is the model author, so an OpenAI model may still be served by another provider such as Azure. Provider preferences and account policies continue to apply.
+
+**Author scope is a hard restriction.** Caller `models` and `allowed_models` remain include preferences with fallback; `excluded_models` remains a hard restriction. All three operate within the author's pool. If includes leave no routable candidates, Jev retries without them within the same author; exclusions remain enforced. An author with no eligible model returns `404`. This constrains the alias selection; separately requested fallback models retain their normal behavior. `openrouter/auto` is a separate router and does not use this author-alias behavior.
+
+```json theme={null}
+{
+  "model": "anthropic/auto",
+  "input": "Explain this query plan.",
+  "plugins": [{ "id": "jev-router", "excluded_models": ["~anthropic/claude-opus-latest"] }]
+}
+```
+
+An alias requires its own catalog router row and, if private, access to that row. Availability is controlled by the catalog; the API does not create aliases on request.

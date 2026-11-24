@@ -20,7 +20,7 @@ def valid_request(event):
         or not isinstance(event["state"], str)
         or len(event["state"]) > 32_768
         or not isinstance(event["questions"], dict)
-        or not 1 <= len(event["questions"]) <= 8
+        or not 1 <= len(event["questions"]) <= 16
     ):
         return False
     for key, question in event["questions"].items():

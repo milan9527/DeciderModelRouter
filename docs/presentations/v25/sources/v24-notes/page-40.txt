@@ -1,0 +1,1 @@
+演示、原始记录、vLLM、微调、JevBench与AgentCore方案入口。AgentCore使用主项目的公开文档链接，独立实现仓库StrandsDeciderAgentCore当前私有，访问代码需要仓库权限。文档已注明A2A协作为后续方案、基础GPU与Evaluation已验证。下一页延续internal only的候选顺序诊断，外部分享前应按听众范围处理。

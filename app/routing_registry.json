@@ -1,0 +1,482 @@
+{
+  "schema_version": 1,
+  "releases": [
+    "2024-06-24",
+    "2024-11-25",
+    "2025-04-02",
+    "2025-04-25",
+    "2025-05-30",
+    "2026-01-08",
+    "2026-06-25"
+  ],
+  "models": {
+    "amazon.nova-lite-v1:0": {
+      "reference_id": "amazon/nova-lite-v1",
+      "benchmark_ids": [
+        "amazon.nova-lite-v1:0"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "amazon/nova-lite-v1"
+    },
+    "amazon.nova-micro-v1:0": {
+      "reference_id": "amazon/nova-micro-v1",
+      "benchmark_ids": [
+        "amazon.nova-micro-v1:0"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "amazon/nova-micro-v1"
+    },
+    "amazon.nova-pro-v1:0": {
+      "reference_id": "amazon/nova-pro-v1",
+      "benchmark_ids": [
+        "amazon.nova-pro-v1:0"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/amazon.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "amazon/nova-pro-v1"
+    },
+    "anthropic.claude-fable-5": {
+      "reference_id": "anthropic/claude-fable-5",
+      "benchmark_ids": [
+        "claude-fable-5-max-effort"
+      ],
+      "request_fields": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "公开评测配置包含回退到 Opus 4.8，不能将组合成绩用于 Fable 单模型选模。",
+      "reference_canonical_slug": "anthropic/claude-5-fable-20260609"
+    },
+    "anthropic.claude-fable-5-1": {
+      "reference_id": "anthropic/claude-fable-5.1",
+      "benchmark_ids": [
+        "claude-fable-5-1-max-effort"
+      ],
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "max"
+        }
+      },
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "anthropic/claude-fable-5.1-20260831"
+    },
+    "anthropic.claude-haiku-4-5-20251001-v1:0": {
+      "reference_id": "anthropic/claude-haiku-4.5",
+      "benchmark_ids": [
+        "claude-haiku-4-5-20251001"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "anthropic/claude-4.5-haiku-20251001"
+    },
+    "anthropic.claude-opus-4-1-20250805-v1:0": {
+      "reference_id": "anthropic/claude-opus-4.1",
+      "benchmark_ids": [
+        "claude-4-1-opus-20250805-base"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "anthropic/claude-4.1-opus-20250805"
+    },
+    "anthropic.claude-opus-4-5-20251101-v1:0": {
+      "reference_id": "anthropic/claude-opus-4.5",
+      "benchmark_ids": [
+        "claude-opus-4-5-20251101-low-effort"
+      ],
+      "request_fields": {
+        "output_config": {
+          "effort": "low"
+        }
+      },
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "anthropic/claude-4.5-opus-20251124"
+    },
+    "anthropic.claude-sonnet-4-5-20250929-v1:0": {
+      "reference_id": "anthropic/claude-sonnet-4.5",
+      "benchmark_ids": [
+        "claude-sonnet-4-5-20250929"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/anthropic.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "anthropic/claude-4.5-sonnet-20250929"
+    },
+    "deepseek.r1-v1:0": {
+      "reference_id": "deepseek/deepseek-r1",
+      "benchmark_ids": [
+        "deepseek-r1"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/deepseek.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。"
+    },
+    "deepseek.v3.2": {
+      "reference_id": "deepseek/deepseek-v3.2",
+      "benchmark_ids": [
+        "deepseek-v3.2"
+      ],
+      "request_fields": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/deepseek.yml",
+      "configuration_note": "已对应非推理成绩；Bedrock 推理开关的等价参数待核验。",
+      "reference_canonical_slug": "deepseek/deepseek-v3.2-20251201"
+    },
+    "google.gemma-3-4b-it": {
+      "reference_id": "google/gemma-3-4b-it",
+      "benchmark_ids": [
+        "gemma-3-4b-it"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/google.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "google/gemma-3-4b-it"
+    },
+    "google.gemma-3-12b-it": {
+      "reference_id": "google/gemma-3-12b-it",
+      "benchmark_ids": [
+        "gemma-3-12b-it"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/google.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "google/gemma-3-12b-it"
+    },
+    "google.gemma-3-27b-it": {
+      "reference_id": "google/gemma-3-27b-it",
+      "benchmark_ids": [
+        "gemma-3-27b-it"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/google.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "google/gemma-3-27b-it"
+    },
+    "meta.llama3-1-8b-instruct-v1:0": {
+      "reference_id": "meta-llama/llama-3.1-8b-instruct",
+      "benchmark_ids": [
+        "meta-llama-3.1-8b-instruct-turbo"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "meta-llama/llama-3.1-8b-instruct"
+    },
+    "meta.llama3-1-70b-instruct-v1:0": {
+      "reference_id": "meta-llama/llama-3.1-70b-instruct",
+      "benchmark_ids": [
+        "meta-llama-3.1-70b-instruct-turbo"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "meta-llama/llama-3.1-70b-instruct"
+    },
+    "meta.llama3-3-70b-instruct-v1:0": {
+      "reference_id": "meta-llama/llama-3.3-70b-instruct",
+      "benchmark_ids": [
+        "llama-3.3-70b-instruct-turbo"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "meta-llama/llama-3.3-70b-instruct"
+    },
+    "meta.llama3-8b-instruct-v1:0": {
+      "reference_id": null,
+      "benchmark_ids": [
+        "meta-llama-3-8b-instruct"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。"
+    },
+    "meta.llama3-70b-instruct-v1:0": {
+      "reference_id": null,
+      "benchmark_ids": [
+        "meta-llama-3-70b-instruct"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。"
+    },
+    "meta.llama4-maverick-17b-instruct-v1:0": {
+      "reference_id": "meta-llama/llama-4-maverick",
+      "benchmark_ids": [
+        "llama4-maverick-instruct-basic"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/meta.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "meta-llama/llama-4-maverick-17b-128e-instruct"
+    },
+    "minimax.minimax-m2": {
+      "reference_id": "minimax/minimax-m2",
+      "benchmark_ids": [
+        "minimax-m2"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/minimax.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "inference_config": {
+        "temperature": 1
+      }
+    },
+    "minimax.minimax-m2.5": {
+      "reference_id": "minimax/minimax-m2.5",
+      "benchmark_ids": [
+        "minimax-m2.5"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/minimax.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "inference_config": {
+        "temperature": 1
+      },
+      "reference_canonical_slug": "minimax/minimax-m2.5-20260211"
+    },
+    "mistral.devstral-2-123b": {
+      "reference_id": "mistralai/devstral-2512",
+      "benchmark_ids": [
+        "devstral-2512"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/mistral.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "mistralai/devstral-2512"
+    },
+    "mistral.mistral-7b-instruct-v0:2": {
+      "reference_id": null,
+      "benchmark_ids": [
+        "mistral-7b-instruct-v0.2"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/mistral.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。"
+    },
+    "mistral.mistral-large-2402-v1:0": {
+      "reference_id": null,
+      "benchmark_ids": [
+        "mistral-large-2402"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/mistral.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。"
+    },
+    "mistral.mistral-small-2402-v1:0": {
+      "reference_id": null,
+      "benchmark_ids": [
+        "mistral-small-2402"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/mistral.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。"
+    },
+    "mistral.mixtral-8x7b-instruct-v0:1": {
+      "reference_id": null,
+      "benchmark_ids": [
+        "mixtral-8x7b-instruct-v0.1"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/mistral.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。"
+    },
+    "moonshot.kimi-k2-thinking": {
+      "reference_id": "moonshotai/kimi-k2-thinking",
+      "benchmark_ids": [
+        "kimi-k2-thinking"
+      ],
+      "request_fields": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/moonshotai.yml",
+      "configuration_note": "公开配置固定了特定供应商；需核验 Bedrock 对应推理模式。"
+    },
+    "moonshotai.kimi-k2.5": {
+      "reference_id": "moonshotai/kimi-k2.5",
+      "benchmark_ids": [
+        "kimi-k2.5-thinking"
+      ],
+      "request_fields": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/moonshotai.yml",
+      "configuration_note": "已对应 thinking 成绩；Bedrock 推理开关的等价参数待核验。",
+      "reference_canonical_slug": "moonshotai/kimi-k2.5-0127"
+    },
+    "nvidia.nemotron-super-3-120b": {
+      "reference_id": "nvidia/nemotron-3-super-120b-a12b",
+      "benchmark_ids": [
+        "nemotron-3-super-120b-a12b"
+      ],
+      "request_fields": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/nvidia.yml",
+      "configuration_note": "公开评测使用 NVFP4 推理端点；Bedrock 精度和推理开关待核验。",
+      "reference_canonical_slug": "nvidia/nemotron-3-super-120b-a12b-20230311"
+    },
+    "openai.gpt-oss-120b-1:0": {
+      "reference_id": "openai/gpt-oss-120b",
+      "benchmark_ids": [
+        "gpt-oss-120b"
+      ],
+      "request_fields": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/openai.yml",
+      "configuration_note": "公开成绩未标明默认推理档位，不能推定为 Bedrock 的某一 effort。",
+      "reference_canonical_slug": "openai/gpt-oss-120b"
+    },
+    "qwen.qwen3-32b-v1:0": {
+      "reference_id": "qwen/qwen3-32b",
+      "benchmark_ids": [
+        "qwen3-32b-thinking"
+      ],
+      "request_fields": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/qwen.yml",
+      "configuration_note": "公开评测额外使用 /think 提示；当前执行适配尚未核验等价推理模式。",
+      "reference_canonical_slug": "qwen/qwen3-32b-04-28"
+    },
+    "qwen.qwen3-next-80b-a3b": {
+      "reference_id": "qwen/qwen3-next-80b-a3b-instruct",
+      "benchmark_ids": [
+        "qwen3-next-80b-a3b-instruct"
+      ],
+      "request_fields": {},
+      "configuration_status": "verified",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/qwen.yml",
+      "configuration_note": "精确型号与评测模式映射；供应商端点、采样默认值与输出上限可能不同，分数仅作能力代理。",
+      "reference_canonical_slug": "qwen/qwen3-next-80b-a3b-instruct-2509"
+    },
+    "zai.glm-4.7": {
+      "reference_id": "z-ai/glm-4.7",
+      "benchmark_ids": [
+        "glm-4.7"
+      ],
+      "request_fields": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/zai.yml",
+      "configuration_note": "已找到精确型号成绩；Bedrock 与评测端点的默认推理模式待核验。",
+      "reference_canonical_slug": "z-ai/glm-4.7-20251222"
+    },
+    "zai.glm-5": {
+      "reference_id": "z-ai/glm-5",
+      "benchmark_ids": [
+        "glm-5"
+      ],
+      "request_fields": {},
+      "configuration_status": "pending",
+      "configuration_source": "https://github.com/LiveBench/LiveBench/blob/main/livebench/model/model_configs/zai.yml",
+      "configuration_note": "已找到精确型号成绩；Bedrock 与评测端点的默认推理模式待核验。",
+      "reference_canonical_slug": "z-ai/glm-5-20260211"
+    },
+    "amazon.nova-2-lite-v1:0": {
+      "reference_id": "amazon/nova-2-lite-v1",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "amazon/nova-2-lite-v1"
+    },
+    "meta.llama4-scout-17b-instruct-v1:0": {
+      "reference_id": "meta-llama/llama-4-scout",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "meta-llama/llama-4-scout-17b-16e-instruct"
+    },
+    "mistral.ministral-3-3b-instruct": {
+      "reference_id": "mistralai/ministral-3b-2512",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "mistralai/ministral-3b-2512"
+    },
+    "mistral.ministral-3-8b-instruct": {
+      "reference_id": "mistralai/ministral-8b-2512",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "mistralai/ministral-8b-2512"
+    },
+    "mistral.ministral-3-14b-instruct": {
+      "reference_id": "mistralai/ministral-14b-2512",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "mistralai/ministral-14b-2512"
+    },
+    "mistral.mistral-large-3-675b-instruct": {
+      "reference_id": "mistralai/mistral-large-2512",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "mistralai/mistral-large-2512"
+    },
+    "mistral.pixtral-large-2502-v1:0": {
+      "reference_id": "mistralai/pixtral-large-2502",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "mistralai/pixtral-large-2502"
+    },
+    "mistral.voxtral-small-24b-2507": {
+      "reference_id": "mistralai/voxtral-small-24b-2507",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "mistralai/voxtral-small-24b-2507"
+    },
+    "nvidia.nemotron-nano-3-30b": {
+      "reference_id": "nvidia/nemotron-3-nano-30b-a3b",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "nvidia/nemotron-3-nano-30b-a3b"
+    },
+    "qwen.qwen3-coder-30b-a3b-v1:0": {
+      "reference_id": "qwen/qwen3-coder-30b-a3b-instruct",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "qwen/qwen3-coder-30b-a3b-instruct"
+    },
+    "qwen.qwen3-coder-next": {
+      "reference_id": "qwen/qwen3-coder-next",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "qwen/qwen3-coder-next-2025-02-03"
+    },
+    "qwen.qwen3-vl-235b-a22b": {
+      "reference_id": "qwen/qwen3-vl-235b-a22b-instruct",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "qwen/qwen3-vl-235b-a22b-instruct"
+    },
+    "openai.gpt-oss-20b-1:0": {
+      "reference_id": "openai/gpt-oss-20b",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "openai/gpt-oss-20b"
+    },
+    "zai.glm-4.7-flash": {
+      "reference_id": "z-ai/glm-4.7-flash",
+      "benchmark_ids": [],
+      "reference_canonical_slug": "z-ai/glm-4.7-flash-20260119"
+    }
+  },
+  "rules": [
+    "Only exact reviewed model IDs; no capacity-variant inheritance.",
+    "Reference metadata and prices do not constitute benchmark scores or verified Bedrock capabilities.",
+    "Pending configurations are displayed with scores but cannot enter automatic routing."
+  ]
+}

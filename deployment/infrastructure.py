@@ -557,6 +557,17 @@ def template():
         Condition="HasVision",
     )
     add(
+        "OpenModelsApiIngress",
+        "EC2::SecurityGroupIngress",
+        {
+            "GroupId": ref("OpenModelsSecurityGroupId"),
+            "IpProtocol": "tcp", "FromPort": 18124, "ToPort": 18124,
+            "SourceSecurityGroupId": ref("TaskSecurityGroup"),
+            "Description": "Authenticated API to private resident Liquid and H2O gateway",
+        },
+        Condition="HasOpenModels",
+    )
+    add(
         "SecretsManagerEndpoint",
         "EC2::VPCEndpoint",
         {
@@ -642,6 +653,7 @@ def template():
                         }},
                         {"Name": "GPU_PROVIDER", "Value": ref("ModelProvider")},
                         {"Name": "DECIDER_VISION_URL", "Value": ref("VisionUrl")},
+                        {"Name": "OPEN_MODELS_URL", "Value": ref("OpenModelsUrl")},
                         {"Name": "VLLM_INSTANCE_ID", "Value": ref("VllmInstanceId")},
                         {"Name": "BEDROCK_ENABLED", "Value": "true"},
                         {
@@ -948,6 +960,7 @@ def template():
                 "VllmPrivateIp", "VllmSecretArn", "VllmInstanceId", "VllmSecurityGroupId",
                 "VllmRouteTableId", "VllmPeeringConnectionId",
                 "VisionUrl", "VisionSecurityGroupId",
+                "OpenModelsUrl", "OpenModelsSecurityGroupId",
             )},
             "JevSecretArn": {
                 "Type": "String",
@@ -964,6 +977,7 @@ def template():
             "HasJev": {"Fn::Not": [{"Fn::Equals": [ref("JevSecretArn"), ""]}]},
             "HasVllm": {"Fn::Equals": [ref("ModelProvider"), "vllm"]},
             "HasVision": {"Fn::Not": [{"Fn::Equals": [ref("VisionUrl"), ""]}]},
+            "HasOpenModels": {"Fn::Not": [{"Fn::Equals": [ref("OpenModelsUrl"), ""]}]},
         },
         "Resources": resources,
         "Outputs": {key: {"Value": value} for key, value in outputs.items()},

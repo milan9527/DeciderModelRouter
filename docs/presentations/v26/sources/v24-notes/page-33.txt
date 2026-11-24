@@ -1,0 +1,5 @@
+这是已验证架构的演示简图，完整SVG/PNG保存在assets/agentcore-gpu-architecture.*，本页均使用AWS官方服务图标。受信任客户端通过IAM InvokeAgentRuntime进入GPU Runtime；所有验证决策在AgentCore管理的g5.xlarge内部执行，未走原g6/vLLM服务。
+Python3.11直接部署：约32.9MB代码ZIP，CUDA依赖与原始v19权重来自固定digest，S3全部PublicAccessBlock开启，执行角色读取固定制品并SHA-256校验。模型缓存放EBS的home目录；/tmp为tmpfs，不作大模型缓存。验证实际为公网子网、安全组无入站规则，不把公网子网误标为私有子网。
+一个(Capacity Provider,runtimeSessionId)对应一台EC2；8个是应用内business_session_id，不是8个原生session，也不是8个独立Agent进程。owner来自可信调用方，状态暂存进程内存，不能声称操作系统租户隔离或状态已持久化。原生CUDA forward使用GPU锁串行，模型加载一次。
+24次请求成功；单并发16次模型均值80.216ms、Runtime往返209.48ms；8并发8次模型81.82ms、队列269.817ms、往返477.013ms。均为预热后小样本，不是持续吞吐，也不能与前面不同硬件/批次的vLLM比较倍数。验证GPU已释放，未新增运行实例。
+来源：sources/agentcore-summary.json；sources/AGENTCORE_GPU.md；https://github.com/milan9527/StrandsDecider/blob/main/docs/AGENTCORE_GPU.md

@@ -1,0 +1,10 @@
+{
+  "api": "ready",
+  "decision": {
+    "provider": "h2o",
+    "connected": true,
+    "check_ms": 9.666,
+    "message": "GPU 决策服务可连接"
+  },
+  "bedrock_configured": true
+}

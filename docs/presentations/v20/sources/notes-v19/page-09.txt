@@ -1,0 +1,1 @@
+当前演示前端为私有 S3 + CloudFront OAC，后端 ECS Fargate；用户名密码登录，未使用 Cognito。ECS 直接经私网访问共享 g6.xlarge vLLM Decider 服务；Bedrock 负责 GPT，Jev 保留应用 Lambda 适配。图省略网络端点节点。当前调用链依据 deployment/DEPLOYED.md；本次制作不变更部署。后续支付和路由数字复用此前原版 Decider 的真实采集，未改写成 vLLM 性能；vLLM 独立对照在第 32–34 页，具体批次、GPU与计时边界在各页备注中保留。

@@ -1,0 +1,442 @@
+{
+  "catalog_version": "6eb66a1994726070",
+  "ranking_version": "75d59020478318df",
+  "configurations": [
+    {
+      "configuration_id": "000a826b5db7e3a727824a7a",
+      "model_id": "anthropic.claude-haiku-5-5",
+      "invoke_id": "us.anthropic.claude-haiku-5-5",
+      "benchmark_configuration": "claude-haiku-5-5-max-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "5efaa8e81e19e7c1df7828a4",
+      "model_id": "anthropic.claude-opus-4-6-v1",
+      "invoke_id": "us.anthropic.claude-opus-4-6-v1",
+      "benchmark_configuration": "claude-opus-4-6-thinking-auto-high-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "high"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "ad7246095dfc9a4ce854633e",
+      "model_id": "anthropic.claude-opus-4-7",
+      "invoke_id": "us.anthropic.claude-opus-4-7",
+      "benchmark_configuration": "claude-opus-4-7-xhigh-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "xhigh"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "3b557b43b6783d1ea07e96f7",
+      "model_id": "anthropic.claude-opus-4-8",
+      "invoke_id": "us.anthropic.claude-opus-4-8",
+      "benchmark_configuration": "claude-opus-4-8-max-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "cf64708bc18030147bcb3e05",
+      "model_id": "anthropic.claude-opus-5",
+      "invoke_id": "us.anthropic.claude-opus-5",
+      "benchmark_configuration": "claude-opus-5-max-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "e091f484662b4d934c073f53",
+      "model_id": "anthropic.claude-opus-5-5",
+      "invoke_id": "us.anthropic.claude-opus-5-5",
+      "benchmark_configuration": "claude-opus-5-5-max-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "53a137c52c56e1a5601804bb",
+      "model_id": "anthropic.claude-sonnet-4-6",
+      "invoke_id": "us.anthropic.claude-sonnet-4-6",
+      "benchmark_configuration": "claude-sonnet-4-6-thinking-auto-medium-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "medium"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "ce605c12eae406f0fda8b467",
+      "model_id": "anthropic.claude-sonnet-5",
+      "invoke_id": "us.anthropic.claude-sonnet-5",
+      "benchmark_configuration": "claude-sonnet-5-xhigh-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "xhigh"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "339073e52c7730b2fbad22bf",
+      "model_id": "anthropic.claude-sonnet-5-5",
+      "invoke_id": "us.anthropic.claude-sonnet-5-5",
+      "benchmark_configuration": "claude-sonnet-5-5-max-effort",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "200b43cdcee6556c9ffd6c95",
+      "model_id": "moonshotai.kimi-k3",
+      "invoke_id": "us.moonshotai.kimi-k3",
+      "benchmark_configuration": "kimi-k3",
+      "request_fields": {},
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "1c2354e6072ac9e1e72ae362",
+      "model_id": "openai.gpt-5.4",
+      "invoke_id": "us.openai.gpt-5.4",
+      "benchmark_configuration": "gpt-5.4-xhigh",
+      "request_fields": {
+        "reasoning": {
+          "effort": "xhigh"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "0861ceae8d35ffa18cde7357",
+      "model_id": "openai.gpt-5.5",
+      "invoke_id": "us.openai.gpt-5.5",
+      "benchmark_configuration": "gpt-5.5-xhigh",
+      "request_fields": {
+        "reasoning": {
+          "effort": "xhigh"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "a0c448ca3d7b268b9e27f2d0",
+      "model_id": "openai.gpt-5.6-luna",
+      "invoke_id": "us.openai.gpt-5.6-luna",
+      "benchmark_configuration": "gpt-5.6-luna-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "5465462a30f60d294100d47f",
+      "model_id": "openai.gpt-5.6-sol",
+      "invoke_id": "us.openai.gpt-5.6-sol",
+      "benchmark_configuration": "gpt-5.6-sol-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "e3bf6adeadf90560735b6790",
+      "model_id": "openai.gpt-5.6-terra",
+      "invoke_id": "us.openai.gpt-5.6-terra",
+      "benchmark_configuration": "gpt-5.6-terra-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "d08de4308712cb9bdc238b48",
+      "model_id": "openai.gpt-6-astra",
+      "invoke_id": "us.openai.gpt-6-astra",
+      "benchmark_configuration": "gpt-6-astra-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "2307cc342b6401b85cd88b8a",
+      "model_id": "openai.gpt-6-luna",
+      "invoke_id": "us.openai.gpt-6-luna",
+      "benchmark_configuration": "gpt-6-luna-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "c4775e97c495a4883752a02d",
+      "model_id": "openai.gpt-6-sol",
+      "invoke_id": "us.openai.gpt-6-sol",
+      "benchmark_configuration": "gpt-6-sol-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "0cc266fb07942d0afac46d93",
+      "model_id": "openai.gpt-6.1-sol",
+      "invoke_id": "us.openai.gpt-6.1-sol",
+      "benchmark_configuration": "gpt-6.1-sol-max",
+      "request_fields": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "cd17c1fd70d92a3191a0f3dd",
+      "model_id": "xai.grok-4.6",
+      "invoke_id": "us.xai.grok-4.6",
+      "benchmark_configuration": "grok-4.6",
+      "request_fields": {},
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "cf2cb3f27b18440d744eabe6",
+      "model_id": "xai.grok-4.7",
+      "invoke_id": "us.xai.grok-4.7",
+      "benchmark_configuration": "grok-4.7-xhigh",
+      "request_fields": {},
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text",
+        "vision"
+      ]
+    },
+    {
+      "configuration_id": "20e1c69860943d34f2046c0a",
+      "model_id": "zai.glm-5.3",
+      "invoke_id": "us.zai.glm-5.3",
+      "benchmark_configuration": "glm-5.3",
+      "request_fields": {},
+      "workflows": [
+        "customer_support",
+        "coding",
+        "reasoning",
+        "general_text"
+      ]
+    },
+    {
+      "configuration_id": "7c869d93b8cc4d1fdfde44e1",
+      "model_id": "cohere.embed-english-v3",
+      "invoke_id": "cohere.embed-english-v3",
+      "benchmark_configuration": "MIRACLRetrievalHardNegatives · dev · en/zh · float",
+      "request_fields": {},
+      "workflows": [
+        "embedding"
+      ]
+    },
+    {
+      "configuration_id": "8c86f569704d9aa09adf9fb0",
+      "model_id": "cohere.embed-multilingual-v3",
+      "invoke_id": "cohere.embed-multilingual-v3",
+      "benchmark_configuration": "MIRACLRetrievalHardNegatives · dev · en/zh · float",
+      "request_fields": {},
+      "workflows": [
+        "embedding"
+      ]
+    },
+    {
+      "configuration_id": "fcd64b162ccf2b4b93ba3118",
+      "model_id": "cohere.embed-v4:0",
+      "invoke_id": "cohere.embed-v4:0",
+      "benchmark_configuration": "MIRACLRetrievalHardNegatives · dev · en/zh · float",
+      "request_fields": {},
+      "workflows": [
+        "embedding"
+      ]
+    }
+  ]
+}

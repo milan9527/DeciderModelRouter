@@ -260,7 +260,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "amazon.nova-lite-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-70423BF8",
+            "name": "On-demand model inference tokens per minute for Amazon Nova Lite",
+            "value": 4000000.0
+          },
+          {
+            "code": "L-E386A278",
+            "name": "On-demand model inference requests per minute for Amazon Nova Lite",
+            "value": 2000.0
+          }
+        ]
+      }
     },
     {
       "id": "amazon.nova-lite-v1:0:24k",
@@ -354,7 +372,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "amazon.nova-micro-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-CFA4FA0D",
+            "name": "On-demand model inference tokens per minute for Amazon Nova Micro",
+            "value": 4000000.0
+          },
+          {
+            "code": "L-E118F160",
+            "name": "On-demand model inference requests per minute for Amazon Nova Micro",
+            "value": 2000.0
+          }
+        ]
+      }
     },
     {
       "id": "amazon.nova-micro-v1:0:128k",
@@ -446,7 +482,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "amazon.nova-pro-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-CE33604C",
+            "name": "On-demand model inference tokens per minute for Amazon Nova Pro",
+            "value": 1000000.0
+          },
+          {
+            "code": "L-F2717A44",
+            "name": "On-demand model inference requests per minute for Amazon Nova Pro",
+            "value": 250.0
+          }
+        ]
+      }
     },
     {
       "id": "amazon.nova-pro-v1:0:24k",
@@ -787,7 +841,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-fable-5-1",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-E8940935",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Fable 5.1",
+            "value": 20000000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-haiku-4-5-20251001-v1:0",
@@ -821,7 +888,25 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-58BE175A",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Haiku 4.5",
+            "value": 5000000.0
+          },
+          {
+            "code": "L-CCA5DF70",
+            "name": "Cross-region model inference requests per minute for Anthropic Claude Haiku 4.5",
+            "value": 10000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-haiku-5-5",
@@ -855,7 +940,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-haiku-5-5",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-47520EB7",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Haiku 5.5",
+            "value": 10000000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-opus-4-1-20250805-v1:0",
@@ -923,7 +1021,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-opus-4-5-20251101-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-7007E9C9",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Opus 4.5",
+            "value": 2000000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-opus-4-6-v1",
@@ -957,7 +1068,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-opus-4-6-v1",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-0AD9BBE8",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Opus 4.6 V1",
+            "value": 3000000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-opus-4-7",
@@ -991,7 +1115,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-opus-4-7",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-5DB28B7B",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Opus 4.7",
+            "value": 30000000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-opus-4-8",
@@ -1025,7 +1162,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-opus-4-8",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-DB99DCDB",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Opus 4.8",
+            "value": 30000000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-opus-5",
@@ -1059,7 +1209,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-opus-5",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-99296DCD",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Opus 5",
+            "value": 30000000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-opus-5-5",
@@ -1093,7 +1256,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-opus-5-5",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-A4430697",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Opus 5.5",
+            "value": 30000000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-sonnet-4-5-20250929-v1:0",
@@ -1127,7 +1303,25 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-F4DDD3EB",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Sonnet 4.5 V1",
+            "value": 5000000.0
+          },
+          {
+            "code": "L-4A6BFAB1",
+            "name": "Cross-region model inference requests per minute for Anthropic Claude Sonnet 4.5 V1",
+            "value": 10000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-sonnet-4-6",
@@ -1161,7 +1355,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-sonnet-4-6",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-15B8E632",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Sonnet 4.6",
+            "value": 6000000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-sonnet-5",
@@ -1195,7 +1402,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-sonnet-5",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-D4FBCF4E",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Sonnet 5",
+            "value": 6000000.0
+          }
+        ]
+      }
     },
     {
       "id": "anthropic.claude-sonnet-5-5",
@@ -1229,7 +1449,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.anthropic.claude-sonnet-5-5",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-94A31E46",
+            "name": "Cross-region model inference tokens per minute for Anthropic Claude Sonnet 5.5",
+            "value": 6000000.0
+          }
+        ]
+      }
     },
     {
       "id": "cohere.embed-english-v3",
@@ -1260,7 +1493,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "cohere.embed-english-v3",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-A2BE277A",
+            "name": "On-demand model inference tokens per minute for Cohere Embed English",
+            "value": 300000.0
+          },
+          {
+            "code": "L-FF8E7864",
+            "name": "On-demand model inference requests per minute for Cohere Embed English",
+            "value": 2000.0
+          }
+        ]
+      }
     },
     {
       "id": "cohere.embed-english-v3:0:512",
@@ -1320,7 +1571,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "cohere.embed-multilingual-v3",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-C2F86908",
+            "name": "On-demand model inference tokens per minute for Cohere Embed Multilingual",
+            "value": 300000.0
+          },
+          {
+            "code": "L-9E5BD0C6",
+            "name": "On-demand model inference requests per minute for Cohere Embed Multilingual",
+            "value": 2000.0
+          }
+        ]
+      }
     },
     {
       "id": "cohere.embed-multilingual-v3:0:512",
@@ -1382,7 +1651,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "cohere.embed-v4:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-C47B85D5",
+            "name": "On-demand model inference tokens per minute for Cohere Embed V4",
+            "value": 150000.0
+          },
+          {
+            "code": "L-BE5FD99B",
+            "name": "On-demand model inference requests per minute for Cohere Embed V4",
+            "value": 1000.0
+          }
+        ]
+      }
     },
     {
       "id": "cohere.rerank-v3-5:0",
@@ -1446,7 +1733,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.deepseek.r1-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-06B03968",
+            "name": "Cross-region model inference tokens per minute for DeepSeek R1 V1",
+            "value": 200000.0
+          }
+        ]
+      }
     },
     {
       "id": "deepseek.v3.2",
@@ -1509,7 +1809,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "google.gemma-3-12b-it",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-3FD4A73E",
+            "name": "On-demand model inference tokens per minute for Gemma 3 12B",
+            "value": 100000000.0
+          },
+          {
+            "code": "L-999037CA",
+            "name": "On-demand model inference requests per minute for Gemma 3 12B",
+            "value": 10000.0
+          }
+        ]
+      }
     },
     {
       "id": "google.gemma-3-27b-it",
@@ -1541,7 +1859,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "google.gemma-3-27b-it",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-F8729E94",
+            "name": "On-demand model inference tokens per minute for Gemma 3 27B",
+            "value": 100000000.0
+          },
+          {
+            "code": "L-5D46C7AF",
+            "name": "On-demand model inference requests per minute for Gemma 3 27B",
+            "value": 10000.0
+          }
+        ]
+      }
     },
     {
       "id": "google.gemma-3-4b-it",
@@ -1573,7 +1909,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "google.gemma-3-4b-it",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-73FB8466",
+            "name": "On-demand model inference tokens per minute for Gemma 3 4B",
+            "value": 100000000.0
+          },
+          {
+            "code": "L-3056DF33",
+            "name": "On-demand model inference requests per minute for Gemma 3 4B",
+            "value": 10000.0
+          }
+        ]
+      }
     },
     {
       "id": "meta.llama3-1-70b-instruct-v1:0",
@@ -1606,7 +1960,25 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.meta.llama3-1-70b-instruct-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-92E68994",
+            "name": "Cross-region model inference tokens per minute for Meta Llama 3.1 70B Instruct",
+            "value": 600000.0
+          },
+          {
+            "code": "L-29644EB3",
+            "name": "Cross-region model inference requests per minute for Meta Llama 3.1 70B Instruct",
+            "value": 800.0
+          }
+        ]
+      }
     },
     {
       "id": "meta.llama3-1-8b-instruct-v1:0",
@@ -1639,7 +2011,25 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.meta.llama3-1-8b-instruct-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-9782749C",
+            "name": "Cross-region model inference tokens per minute for Meta Llama 3.1 8B Instruct",
+            "value": 600000.0
+          },
+          {
+            "code": "L-396C5302",
+            "name": "Cross-region model inference requests per minute for Meta Llama 3.1 8B Instruct",
+            "value": 1600.0
+          }
+        ]
+      }
     },
     {
       "id": "meta.llama3-3-70b-instruct-v1:0",
@@ -1672,7 +2062,25 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.meta.llama3-3-70b-instruct-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-0E7AA8B7",
+            "name": "Cross-region model inference tokens per minute for Meta Llama 3.3 70B Instruct",
+            "value": 600000.0
+          },
+          {
+            "code": "L-DEDE703C",
+            "name": "Cross-region model inference requests per minute for Meta Llama 3.3 70B Instruct",
+            "value": 800.0
+          }
+        ]
+      }
     },
     {
       "id": "meta.llama3-70b-instruct-v1:0",
@@ -1703,7 +2111,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "meta.llama3-70b-instruct-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-609E24B0",
+            "name": "On-demand model inference tokens per minute for Meta Llama 3 70B Instruct",
+            "value": 300000.0
+          },
+          {
+            "code": "L-46D383AF",
+            "name": "On-demand model inference requests per minute for Meta Llama 3 70B Instruct",
+            "value": 400.0
+          }
+        ]
+      }
     },
     {
       "id": "meta.llama3-8b-instruct-v1:0",
@@ -1734,7 +2160,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "meta.llama3-8b-instruct-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-03A9B835",
+            "name": "On-demand model inference tokens per minute for Meta Llama 3 8B Instruct",
+            "value": 300000.0
+          },
+          {
+            "code": "L-320BEFEB",
+            "name": "On-demand model inference requests per minute for Meta Llama 3 8B Instruct",
+            "value": 800.0
+          }
+        ]
+      }
     },
     {
       "id": "meta.llama4-maverick-17b-instruct-v1:0",
@@ -1768,7 +2212,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.meta.llama4-maverick-17b-instruct-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-DE3FBBF4",
+            "name": "Cross-region model inference tokens per minute for Meta Llama 4 Maverick V1",
+            "value": 600000.0
+          }
+        ]
+      }
     },
     {
       "id": "meta.llama4-scout-17b-instruct-v1:0",
@@ -1833,7 +2290,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "minimax.minimax-m2",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-A81B7C40",
+            "name": "On-demand model inference tokens per minute for Minimax M2",
+            "value": 100000000.0
+          },
+          {
+            "code": "L-828C986E",
+            "name": "On-demand model inference requests per minute for Minimax M2",
+            "value": 10000.0
+          }
+        ]
+      }
     },
     {
       "id": "minimax.minimax-m2.1",
@@ -1895,7 +2370,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "minimax.minimax-m2.5",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-359D5670",
+            "name": "On-demand model inference tokens per minute for MiniMax M2.5",
+            "value": 100000000.0
+          },
+          {
+            "code": "L-6185F03F",
+            "name": "On-demand model inference requests per minute for MiniMax M2.5",
+            "value": 10000.0
+          }
+        ]
+      }
     },
     {
       "id": "mistral.devstral-2-123b",
@@ -1926,7 +2419,25 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "mistral.devstral-2-123b",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-904A6762",
+            "name": "On-demand model inference tokens per minute for Mistral Devstral 2 123b",
+            "value": 100000000.0
+          },
+          {
+            "code": "L-0197660A",
+            "name": "On-demand model inference requests per minute for Mistral Devstral 2 123b",
+            "value": 10000.0
+          }
+        ]
+      }
     },
     {
       "id": "mistral.magistral-small-2509",
@@ -2085,7 +2596,20 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "mistral.mistral-7b-instruct-v0:2",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-02D831F1",
+            "name": "On-demand model inference tokens per minute for Mistral AI Mistral 7B Instruct",
+            "value": 300000.0
+          }
+        ]
+      }
     },
     {
       "id": "mistral.mistral-large-2402-v1:0",
@@ -2116,7 +2640,20 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "mistral.mistral-large-2402-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-01447289",
+            "name": "On-demand model inference tokens per minute for Mistral AI Mistral Large",
+            "value": 300000.0
+          }
+        ]
+      }
     },
     {
       "id": "mistral.mistral-large-3-675b-instruct",
@@ -2179,7 +2716,20 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "mistral.mistral-small-2402-v1:0",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-82C15FA8",
+            "name": "On-demand model inference tokens per minute for Mistral AI Mistral Small",
+            "value": 300000.0
+          }
+        ]
+      }
     },
     {
       "id": "mistral.mixtral-8x7b-instruct-v0:1",
@@ -2210,7 +2760,20 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "mistral.mixtral-8x7b-instruct-v0:1",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-490F4D1F",
+            "name": "On-demand model inference tokens per minute for Mistral AI Mixtral 8X7BB Instruct",
+            "value": 300000.0
+          }
+        ]
+      }
     },
     {
       "id": "mistral.pixtral-large-2502-v1:0",
@@ -2405,7 +2968,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.moonshotai.kimi-k3",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-51FF35D5",
+            "name": "Cross-region model inference tokens per minute for Moonshot AI Kimi K3",
+            "value": 0.0
+          }
+        ]
+      }
     },
     {
       "id": "nvidia.nemotron-nano-12b-v2",
@@ -2632,7 +3208,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.openai.gpt-5.6-luna",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-E3C70889",
+            "name": "Cross-region model inference tokens per minute for GPT-5.6 Luna",
+            "value": 4000000.0
+          }
+        ]
+      }
     },
     {
       "id": "openai.gpt-5.6-sol",
@@ -2666,7 +3255,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.openai.gpt-5.6-sol",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-D94ECE3B",
+            "name": "Cross-region model inference tokens per minute for GPT-5.6 Sol",
+            "value": 2000000.0
+          }
+        ]
+      }
     },
     {
       "id": "openai.gpt-5.6-terra",
@@ -2700,7 +3302,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.openai.gpt-5.6-terra",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-99936FBF",
+            "name": "Cross-region model inference tokens per minute for GPT-5.6 Terra",
+            "value": 20000000.0
+          }
+        ]
+      }
     },
     {
       "id": "openai.gpt-6-astra",
@@ -2734,7 +3349,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.openai.gpt-6-astra",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-53A144CD",
+            "name": "Cross-region model inference tokens per minute for GPT-6 Astra",
+            "value": 4000000.0
+          }
+        ]
+      }
     },
     {
       "id": "openai.gpt-6-luna",
@@ -2768,7 +3396,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.openai.gpt-6-luna",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-AB39D760",
+            "name": "Cross-region model inference tokens per minute for GPT-6 Luna",
+            "value": 4000000.0
+          }
+        ]
+      }
     },
     {
       "id": "openai.gpt-6-sol",
@@ -2802,7 +3443,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.openai.gpt-6-sol",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-8FD128CF",
+            "name": "Cross-region model inference tokens per minute for GPT-6 Sol",
+            "value": 2000000.0
+          }
+        ]
+      }
     },
     {
       "id": "openai.gpt-6.1-sol",
@@ -2831,6 +3485,53 @@
       },
       "account_available": true,
       "invoke_id": "us.openai.gpt-6.1-sol",
+      "invocation": "inference_profile",
+      "destination_regions": [
+        "us-east-1",
+        "us-east-2",
+        "us-west-2"
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.openai.gpt-6.1-sol",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-8C5F762B",
+            "name": "Cross-region model inference tokens per minute for GPT-6.1 Sol",
+            "value": 2000000.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "openai.gpt-6.1-terra",
+      "name": "GPT-6.1 Terra",
+      "provider": "OpenAI",
+      "input_modalities": [
+        "TEXT",
+        "IMAGE"
+      ],
+      "output_modalities": [
+        "TEXT"
+      ],
+      "inference_types": [
+        "INFERENCE_PROFILE"
+      ],
+      "lifecycle": "ACTIVE",
+      "streaming": true,
+      "availability": {
+        "modelId": "openai.gpt-6.1-terra",
+        "agreementAvailability": {
+          "status": "AVAILABLE"
+        },
+        "authorizationStatus": "AUTHORIZED",
+        "entitlementAvailability": "AVAILABLE",
+        "regionAvailability": "AVAILABLE"
+      },
+      "account_available": true,
+      "invoke_id": "us.openai.gpt-6.1-terra",
       "invocation": "inference_profile",
       "destination_regions": [
         "us-east-1",
@@ -3084,7 +3785,20 @@
       "invocation": "regional",
       "destination_regions": [
         "us-east-1"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "qwen.qwen3-next-80b-a3b",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-37AB702E",
+            "name": "On-demand model inference tokens per minute for Qwen3 Next 80B A3B",
+            "value": 100000000.0
+          }
+        ]
+      }
     },
     {
       "id": "qwen.qwen3-vl-235b-a22b",
@@ -3647,7 +4361,7 @@
         "INFERENCE_PROFILE",
         "ON_DEMAND"
       ],
-      "lifecycle": "ACTIVE",
+      "lifecycle": "LEGACY",
       "streaming": true,
       "availability": {
         "modelId": "twelvelabs.pegasus-1-2-v1",
@@ -3921,7 +4635,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.zai.glm-5.3",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-4A544964",
+            "name": "Cross-region model inference tokens per minute for Z.ai GLM 5.3",
+            "value": 0.0
+          }
+        ]
+      }
     },
     {
       "id": "xai.grok-4.6",
@@ -3955,7 +4682,20 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.xai.grok-4.6",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-0F2ECB41",
+            "name": "Cross-region model inference tokens per minute for Grok 4.6",
+            "value": 10000000.0
+          }
+        ]
+      }
     },
     {
       "id": "xai.grok-4.7",
@@ -3989,11 +4729,30 @@
         "us-east-1",
         "us-east-2",
         "us-west-2"
-      ]
+      ],
+      "inference_quotas": {
+        "region": "us-east-1",
+        "invoke_id": "us.xai.grok-4.7",
+        "checked_at": "2026-11-24T13:13:20.603201+00:00",
+        "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+        "checks": [
+          {
+            "code": "L-5DAEA81C",
+            "name": "Cross-region model inference tokens per minute for Grok 4.7",
+            "value": 10000000.0
+          }
+        ]
+      }
     }
   ],
-  "captured_at": "2026-10-16T01:34:06.468534+00:00",
-  "version": "e9802ca5213e5f0e",
+  "captured_at": "2026-10-29T05:37:14.178006+00:00",
+  "version": "9c9167c3f9c97193",
   "source": "Bedrock ListFoundationModels + ListInferenceProfiles + GetFoundationModelAvailability",
-  "note": "Availability is a dated account/region snapshot, not a runtime IAM or quota guarantee."
+  "note": "Availability is a dated account/region snapshot, not a runtime IAM or quota guarantee.",
+  "quota_snapshot": {
+    "checked_at": "2026-11-24T13:13:20.603201+00:00",
+    "checked_models": 48,
+    "unmapped_models": 76,
+    "note": "Exact invocation-endpoint quota snapshot, not live remaining capacity. Zero quotas stay excluded until refreshed; positive/unknown quotas do not guarantee runtime capacity. No Mantle quota is used for Converse."
+  }
 }

@@ -1,0 +1,5 @@
+本页是下一阶段目标，不是本轮已经完成的A2A验证。AWS官方支持在AgentCore Runtime托管A2A server：通过Agent Card发布技能、标准JSON-RPC提交任务并返回消息、任务状态或产物，使用SigV4或OAuth2.0认证。AWS SDK的serve_a2a可处理健康检查、Agent Card和协议入口；需要实现Decider对应的executor并配置A2A Runtime，普通HTTP handler不会自动变成A2A。本项目延续IAM签名接入，不要求采用Cognito。
+目标流程：客服/编排Agent发现决策Agent技能，提交事实与候选；Decider返回结构化选择；执行Agent或应用工具完成动作，再将实际结果关联到trace。有限choice/noul/score作为A2A消息或artifact内容，不声称Decider成为生成式规划器。
+AgentCore服务按需组合：Runtime承载Agent与GPU；Identity对接出入站身份；Gateway接入工具，Browser/Code Interpreter按业务需要调用；Memory提供跨轮持久记忆；Observability关联traces；Evaluations评价选择与执行效果。当前仅GPU Runtime、IAM调用、Observability和按需Evaluations验证，A2A、Identity服务、Gateway、Memory及工具执行尚未接入。
+另一个官方能力：多个互信Runtime可共享CapacityProvider+runtimeSessionId，部署到同一EC2并共享文件系统/GPU；本轮仅一个Runtime进程，8个应用业务会话不能当成8个Agent共同部署的证据。
+依据：https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.html；https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html。

@@ -1,0 +1,4 @@
+2026-10-21 真实浏览器截图，裁剪第 7–9 名，不修改页面数据。完整原图和截图时间、SHA-256 保存在 sources/web/screenshot.json 与 screenshots。Jev1.13 综合分 71.491186，Intelligence=63.620758，Calibration=90.632202，能力分=(I+C)/2=77.12648；63.6 是 Intelligence 轴，不是能力分。综合分还考虑速度与成本，网站公式带低分轴惩罚，不能读成正确率。中位延迟为 API 榜单口径，与本项目 ECS/Lambda 后端计时不同。本页仅引用第三方公开榜单；后续 Decider 231 题是项目自测，不能并入正式排名。
+来源：https://benchmarkheaven.com/jev-models/api
+公式：https://benchmarkheaven.com/jev-models/methodology
+新增页中的能力分按官网 Capability=(Intelligence+Calibration)/2 解释。后续 v19 原表按用户要求原样保留，其中 Jev 63.6 是 Intelligence 单轴值；不应将该单轴与本页的能力分77.1混同。

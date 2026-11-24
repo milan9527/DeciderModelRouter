@@ -1,0 +1,8435 @@
+Decision API Benchmark & Leaderboard — JevBench | Benchmark Heaven
+Skip to main content
+Benchmark
+Heaven
+BETA
+— Work in progress
+Overview
+Benchmaxxing
+Benchmarks
+Compare
+Charts
+More ▾
+Cost vs Capability
+Providers per Model
+Provider explorer
+Gateways
+EU & Sovereign
+Jev-class models
+Image JevBench
+AudioJevBench
+Submit a model
+About
+Options
+Benchmaxxing
+Benchmarks
+More
+Overview
+Benchmaxxing
+Compare
+Charts
+Cost vs Capability
+Providers per Model
+Provider explorer
+Gateways
+EU & Sovereign
+Jev-class models
+Image JevBench
+AudioJevBench
+Submit a model
+About
+Ranking
+Score
+Composite
+AA Coding Agent v1.4
+DesignArena Full-Stack Elo
+DesignArena Web Apps (agentic) Elo
+AA Coding
+AA Intelligence
+Epoch Software ECI
+Epoch ECI
+Min score
+✓
+Featured
+i
+✓
+Include Benchmaxxing signal in the score
+i
+Price basis
+✓
+Adjusted costs
+Fixed I/O blend
+Output only (0:1)
+1:1 input/output
+3:1 input/output
+10:1 input/output
+20:1 input/output
+30:1 input/output
+100:1 input/output
+Input only (1:0)
+Task workload
+Same for every model
+As used on OpenRouter
+i
+I'm buying for a company
+i
+Models, providers and labs
+Models
+:
+All
+▾
+Providers
+:
+All
+▾
+Labs
+:
+All
+▾
+Regional
+Hosted in
+✓
+China
+✓
+EU
+✓
+US
+✓
+Other
+Provider company based in
+✓
+China
+✓
+EU
+✓
+US
+✓
+Other
+Model lab based in
+✓
+China
+✓
+EU
+✓
+US
+✓
+Other
+Hosting = where inference runs; company = where the provider or lab is registered.
+EU hosting means the route's inference runs inside the EU: an EU region, AWS Bedrock's EU cross-region (geo) profiles, Azure's Europe Data Zone, or a provider whose entire public fleet is documented as EU-hosted, each checked per model against the provider's documentation. Global deployments do not count, and neither does an EU billing region, an EU company or an EU control plane on its own. One disclosed company-policy exception stays in, marked “EU equivalent”.
+Data confidentiality
+what the provider may do with your prompts
+Trains or keeps your data
+i
+More settings
+✓
+One variant for Reasoning models
+✓
+Hide deprecated
+Open-weights only
+Evidence requirements (benchmark evidence, priced provider, measured task tokens) sit above the table they apply to.
+“Hide deprecated” removes retired models (every Artificial Analysis configuration retired, on no current DesignArena board) and older retired configurations of current models. Applies to model tables, charts, price views & model offers; benchmark evidence stays unfiltered.
+Show results
+Presets
+:
+None
+JevBench · board
+v1.7.46
+· updated
+2026-10-16
+JevBench — hosted decision API benchmark
+A
+benchmark for AI decision models
+: state and rubric in, typed answer out. We compare accuracy, calibration, latency and cost, independently of TypeSafe AI.
+39 ranked API offerings
+·
+1,500
+decisions each
+(600 for 19 equated API re-runs)
+·
+12
+newer ranked rows tagged with their draw
+·
+1
+older rows dated separately
+·
+How it works
+·
+Release history
+·
+Methodology
+·
+Data & JSON/CSV
+·
+aggregate JSON
+·
+Share
+·
+Other decision benchmarks
+·
+Explore ImageJevBench v0.3.0
+Open weights
+API-hosted
+Show all mixed
+Speed and cost are compared within a group: open weights on the same GPU, APIs as sold by each provider.
+JevBench
+board
+· headline
+JevBench Composite Score (API offerings)
+:
+39
+ranked systems
+Official
+· four axes 0–100,
+equal-weight
+harmonic mean ·
+Method notes ↓
+Weights:
+Official 25:25:25:25
+Option B 40:20:20:20
+Balanced 33:33:33
+Accuracy 60:20:20
+Cost 20:20:60
+Speed 20:60:20
+Intelligence only
+Capability only
+Adjust weights ↓
+Intelligence
+25
+%
+Calibration
+25
+%
+Speed
+25
+%
+Cost
+25
+%
+View by:
+Overall
+Intelligence
+Calibration
+Speed
+Cost
+Capability ↓
+The official order weighs Intelligence, Calibration, Speed and Cost equally. Each button re-sorts the same systems by one axis
+, and the column headings sort too
+.
+Search systems by name or author
+Filters
+▼
+System type
+All types
+Jev — reference (TypeSafe, closed)
+Closed API (weights not public)
+Open weights · LLM decoder
+Open weights · encoder / classifier
+System (router / cascade / ensemble)
+Open code or weights
+Open and closed
+Open code or weights
+Closed only
+API flag
+With and without API flag
+API-flagged only
+Without API flag
+All 40 systems
+Greener = stronger within its column
+.
+#
+, sort by
+official rank
+, currently #1 first
+▲
+System
+, sort by
+name
+↕
+Score
+, sort by
+JevBench Score
+↕
+Intel.
+, sort by
+Intelligence
+↕
+Calib.
+, sort by
+Calibration
+↕
+Speed
+, sort by
+Speed
+↕
+Cost
+, sort by
+Cost axis
+↕
+$/1k decisions
+, sort by
+$ per 1,000 decisions
+↕
+40 of 40 systems, sorted by official rank, #1 first.
+1
+kettei-fat
+API
+new
+Closed API
+Base model
+:
+undisclosed
+77.7
+I
+80
+C
+93
+S
+93
+K
+57
+est.
+$0.026
+2
+d1-ultra
+API
+new
+Closed API
+Base model
+:
+undisclosed
+76.1
+I
+70
+C
+91
+S
+89
+K
+62
+est.
+$0.018
+3
+Bespoke Nimble-v4-max
+API
+new
+Closed API
+Base model
+:
+undisclosed
+75.4
+I
+68
+C
+91
+S
+91
+K
+61
+est.
+$0.020
+4
+SubQ Snap
+API
+new
+Closed API
+Base model
+:
+undisclosed
+74.4
+I
+72
+C
+91
+S
+86
+K
+58
+est.
+$0.026
+5
+Sage 1.3.0
+API
+new
+Closed API
+Base model
+:
+undisclosed
+74.0
+I
+66
+C
+92
+S
+94
+K
+58
+est.
+$0.025
+6
+kettei-chub
+API
+new
+Closed API
+Base model
+:
+undisclosed
+73.5
+I
+62
+C
+84
+S
+95
+K
+63
+est.
+$0.018
+7
+d1
+API
+new
+Closed API
+Base model
+:
+undisclosed
+73.0
+I
+62
+C
+87
+S
+89
+K
+63
+$0.017
+8
+Mercury Decide
+API
+new
+System
+Base model
+:
+undisclosed
+source
+72.4
+I
+66
+C
+81
+S
+85
+K
+62
+est.
+$0.018
+9
+Jev 1.13.0
+API
+Jev reference
+Base model
+:
+undisclosed
+71.5
+I
+64
+C
+91
+S
+91
+K
+55
+$0.032
+Microsoft-Decision-1 (Azure Foundry) — A2 re-run
+(
+preliminary
+)
+API
+new
+PRELIMINARY — API supplement A2 (300 sealed + 300 public), not the S1200 full set; equating pool 4 of 6
+Closed API
+Base model
+:
+Qwen3.5-9B
+source
+·
+Base model disclosed by Microsoft; the Decision-1 endpoint is evaluated as a hosted API offering.
+71.5
+I
+59
+C
+85
+S
+89
+K
+62
+$0.018
+10
+Celeris-1 Decision
+API
+new
+Closed API
+Base model
+:
+undisclosed
+71.0
+I
+59
+C
+88
+S
+87
+K
+60
+est.
+$0.021
+11
+wity-1
+API
+new
+Closed API
+Base model
+:
+undisclosed
+70.8
+I
+70
+C
+88
+S
+72
+K
+59
+$0.024
+12
+Jev 1.14.0
+API
+new
+Jev reference
+Base model
+:
+undisclosed
+70.2
+I
+60
+C
+90
+S
+91
+K
+55
+est.
+$0.032
+13
+Microsoft-Decision-1 (Azure Foundry)
+API
+new
+Closed API
+Base model
+:
+Qwen3.5-9B
+source
+*
+1
+69.1
+I
+57
+C
+84
+S
+82
+K
+61
+$0.019
+14
+Sage 1.4
+API
+new
+Closed API
+Base model
+:
+undisclosed
+68.4
+I
+66
+C
+84
+S
+69
+K
+59
+est.
+$0.022
+15
+attest-31B-v1.0
+API
+new
+base · 31B
+Base model
+:
+undisclosed
+67.9
+I
+65
+C
+74
+S
+97
+K
+51
+est.
+$0.044
+16
+SPX-CD Flash
+API
+new
+System
+Base model
+:
+undisclosed
+source
+66.7
+I
+58
+C
+90
+S
+79
+K
+52
+est.
+$0.039
+17
+OpenAI Decisions
+API
+new
+Closed API
+Base model
+:
+undisclosed
+62.5
+I
+57
+C
+90
+S
+89
+K
+49
+$0.052
+18
+Instinct
+API
+Closed API
+Base model
+:
+Qwen3.8-27B
+source
+*
+2
+62.2
+I
+48
+C
+93
+S
+87
+K
+64
+$0.015
+19
+SPX-CD Pro
+API
+new
+System
+Base model
+:
+undisclosed
+source
+47.7
+I
+65
+C
+92
+S
+78
+K
+43
+est.
+$0.079
+Show all 40 systems (20 more ranked)
+20
+Bespoke Nimble-v4
+API
+new
+Closed API
+Base model
+:
+undisclosed
+43.2
+I
+41
+C
+87
+S
+88
+K
+61
+est.
+$0.020
+21
+Vansa-3.4
+API
+Closed API
+Base model
+:
+Qwen3.5-4B (self-reported)
+*
+3
+42.6
+I
+41
+C
+87
+S
+95
+K
+62
+$0.019
+22
+GPT-6 Luna (low reasoning effort)
+API
+Closed API
+Base model
+:
+undisclosed
+40.5
+I
+97
+C
+99
+S
+72
+K
+39
+$0.108
+23
+Autoloops – Gemma 4 31B IT
+API
+Closed API
+Base model
+:
+undisclosed
+40.2
+I
+58
+C
+87
+S
+85
+K
+40
+$0.096
+24
+GPT-6 Luna (default medium reasoning effort)
+API
+Closed API
+Base model
+:
+undisclosed
+39.2
+I
+97
+C
+100
+S
+72
+K
+38
+$0.113
+25
+Amos 1 medium
+API
+new
+9B
+Base model
+:
+undisclosed
+32.2
+I
+38
+C
+88
+S
+86
+K
+49
+est.
+$0.051
+26
+Fastino GLiDE
+API
+new
+Closed API
+Base model
+:
+undisclosed
+30.6
+I
+66
+C
+88
+S
+77
+K
+36
+$0.137
+27
+SimpleJev Qwen3.6-35B-A3B
+API
+35B-A3B
+Base model
+:
+undisclosed
+source
+27.6
+I
+56
+C
+80
+S
+77
+K
+35
+est.
+$0.145
+28
+GPT-5.6 Luna
+API
+Closed API
+Base model
+:
+undisclosed
+21.4
+I
+94
+C
+95
+S
+73
+K
+30
+$0.213
+29
+Amos 1 large
+API
+new
+27B
+Base model
+:
+undisclosed
+20.4
+I
+70
+C
+89
+S
+84
+K
+30
+est.
+$0.215
+30
+Instinct Dual 4B
+API
+Closed API
+Base model
+:
+Qwen3.5-4B
+source
+*
+4
+18.0
+I
+28
+C
+86
+S
+89
+K
+75
+$0.0068
+31
+Gemini 3.1 Flash-Lite
+API
+Closed API
+Base model
+:
+undisclosed
+16.9
+I
+59
+C
+61
+S
+79
+K
+29
+$0.230
+32
+system-one-open
+API
+adapter · 2B
+Base model
+:
+Gemma 4 E2B
+source
+16.4
+I
+28
+C
+76
+S
+79
+K
+68
+est.
+$0.011
+33
+openjev-sglang
+API
+35B-A3B
+Base model
+:
+Qwen/Qwen3.6-35B-A3B
+source
+15.4
+I
+39
+C
+79
+S
+78
+K
+36
+est.
+$0.140
+34
+DeepSeek V4.1 Flash
+API
+LLM decoder
+Base model
+:
+undisclosed
+7.1
+I
+95
+C
+100
+S
+68
+K
+20
+$0.480
+35
+SimpleJev Qwen3.8-27B
+API
+27B
+Base model
+:
+Qwen/Qwen3.8-27B
+source
+3.2
+I
+53
+C
+90
+S
+77
+K
+15
+est.
+$0.687
+36
+decision-machine-1
+API
+Closed API
+Base model
+:
+undisclosed
+2.4
+I
+13
+C
+79
+S
+93
+K
+58
+$0.024
+37
+JevAct
+API
+Closed API
+Base model
+:
+undisclosed
+source
+1.1
+I
+10
+C
+47
+S
+76
+K
+69
+est.
+$0.011
+38
+Fastino GLiNER-2.5-Decide
+API
+new
+fine-tune · 340M
+Base model
+:
+fastino/gliner2-large-v1
+source 1
+source 2
+*
+5
+0.3
+I
+7
+C
+62
+S
+85
+K
+46
+$0.064
+39
+Qwen3.8 27B
+API
+27B
+Base model
+:
+undisclosed
+0.0
+I
+96
+C
+100
+S
+57
+K
+0
+est.
+$2.178
+Base-model notes
+*
+1
+Microsoft-Decision-1
+(base model:
+Qwen3.5-9B
+):
+Base model disclosed by Microsoft; the Decision-1 endpoint is evaluated as a hosted API offering.
+*
+2
+Instinct
+(base model:
+Qwen3.8-27B
+):
+Operator-reported; weights not publicly verifiable.
+*
+3
+Vansa-3.4
+(base model:
+Qwen3.5-4B (self-reported)
+):
+Developer-reported to Benchmark Heaven (private correspondence, 1 Oct 2026): built on Qwen3.5-4B via an open decision fine-tune, with Vansa's own adapters; the intermediate fine-tune is not named. Not publicly documented or independently verified.
+*
+4
+Instinct Dual 4B
+(base model:
+Qwen3.5-4B
+):
+Operator-reported; weights not publicly verifiable.
+*
+5
+Fastino GLiNER-2.5-Decide
+(base model:
+fastino/gliner2-large-v1
+):
+Measured via Fastino's hosted API. A 340M English classifier (8k context), not built for multi-step reasoning: near chance on Noul and Score items; 23 very long items exceed its context. Our request follows Fastino's documented format. The open checkpoint scores 11.2 on the community Decision Index (rank 53 of 70; Jev 57.9). Fastino's larger GLiDE is a separate model, ranked separately on the API board.
+0
+20
+40
+60
+80
+100
+Weights:
+Official 25:25:25:25
+Option B 40:20:20:20
+Balanced 33:33:33
+Accuracy 60:20:20
+Cost 20:20:60
+Speed 20:60:20
+Intelligence only
+Capability only
+Adjust weights ↓
+Intelligence
+25
+%
+Calibration
+25
+%
+Speed
+25
+%
+Cost
+25
+%
+Weights are relative: each axis counts in proportion to its slider. The score stays a weighted harmonic mean with the low-axis gates;
+the gates still apply when an axis sits at 0
+. Only equal weights give the official
+JevBench
+Score and rank.
+Score = 4 / (1/I + 1/C + 1/S + 1/K)
+(each 0–100; × (axis / 50)² for Intelligence, Speed or Cost below 50)
+Jev — reference (TypeSafe, closed)
+(
+2
+)
+Closed API (weights not public)
+(
+25
+)
+Open weights · LLM decoder
+(
+9
+)
+Open weights · encoder / classifier
+(
+1
+)
+System (router / cascade / ensemble)
+(
+3
+)
+Shown, not ranked
+I, C, S, K = Intelligence, Calibration, Speed, Cost; the est. pill =
+estimated cost
+; ann. = announced price; API = the operator's endpoint saw held-out benchmark inputs, without answers
+; $/1k decisions = US dollars per 1,000 decisions (not heat-shaded).
+Click a column heading to sort.
+Names link to each project.
+JevBench
+board
+JevBench
+Capability Score
+(API offerings)
+Capability ranking of
+Jev-class
+systems
+Capability Score averages
+Intelligence
+and
+Calibration
+.
+kettei-fat
+leads the
+Jev-class
+systems with
+86.3
+.
+Jev-class
+means at most
+2
+× the cost and median latency of
+Jev (v1.5 reference)
+.
+How we choose ↘
+Adjust cost / latency caps ·
+2× official
+Max cost
+vs
+Jev (v1.5 reference)
+2×
+· official
+1×
+10× · then no cap
+Max median latency
+vs
+Jev (v1.5 reference)
+2×
+· official
+1×
+10× · then no cap
+Official
+Reset to official caps
+Copy link to this view
+#
+System
+0
+20
+40
+60
+80
+100
+I
+Intelligence
+Score
+C
+Cost
+Score
+Cap.
+Capability
+Score
+$/1k
+$/1k decisions
+1
+kettei-fat
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+79.8
+57.4
+86.3
+$0.026
+*
+kettei-fat (Sqwish) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+86.3
+Intelligence
+79.8
+Calibration
+92.8
+Cost Score
+57.4
+Cost vs cap
+$0.026 per 1,000 decisions
+=
+0.81
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.20 s
+=
+0.32
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+1
+· official
+#1
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+2
+SubQ Snap
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+72.3
+57.7
+81.5
+$0.026
+*
+SubQ Snap (preview, SubQ) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+81.5
+Intelligence
+72.3
+Calibration
+90.7
+Cost Score
+57.7
+Cost vs cap
+$0.026 per 1,000 decisions
+=
+0.80
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.47 s
+=
+0.76
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+2
+· official
+#4
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+3
+d1-ultra
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+69.7
+62.3
+80.5
+$0.018
+*
+d1-ultra (Liquid AI) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+80.5
+Intelligence
+69.7
+Calibration
+91.3
+Cost Score
+62.3
+Cost vs cap
+$0.018 per 1,000 decisions
+=
+0.56
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.23 s
+=
+0.38
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+3
+· official
+#2
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+4
+Bespoke Nimble-v4-max
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+68.2
+60.7
+79.7
+$0.020
+*
+Bespoke Nimble-v4-max (Bespoke Labs) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+79.7
+Intelligence
+68.2
+Calibration
+91.2
+Cost Score
+60.7
+Cost vs cap
+$0.020 per 1,000 decisions
+=
+0.63
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.25 s
+=
+0.41
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+4
+· official
+#3
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+5
+Sage 1.3.0
+ⓘ
+API
+$
+⏱
+65.6
+58.2
+78.6
+$0.025
+*
+Sage 1.3.0 (Levanto Labs) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+78.6
+Intelligence
+65.6
+Calibration
+91.6
+Cost Score
+58.2
+Cost vs cap
+$0.025 per 1,000 decisions
+=
+0.76
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.15 s
+=
+0.25
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+5
+· official
+#5
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+6
+Jev 1.13.0
+ⓘ
+API
+$
+⏱
+63.6
+54.7
+77.1
+$0.032
+Jev 1.13.0 (TypeSafe AI) · Jev — reference (TypeSafe, closed)
+Base model
+undisclosed
+Capability Score
+77.1
+Intelligence
+63.6
+Calibration
+90.6
+Cost Score
+54.7
+Cost vs cap
+$0.032 per 1,000 decisions
+=
+1.00
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.24 s
+=
+0.39
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+6
+· official
+#9
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+7
+Jev 1.14.0
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+59.9
+54.8
+75.0
+$0.032
+*
+Jev 1.14.0 (TypeSafe AI) · Jev — reference (TypeSafe, closed)
+Base model
+undisclosed
+Capability Score
+75.0
+Intelligence
+59.9
+Calibration
+90.1
+Cost Score
+54.8
+Cost vs cap
+$0.032 per 1,000 decisions
+=
+0.99
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.22 s
+=
+0.36
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+7
+· official
+#12
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+8
+d1
+ⓘ
+API
+$
+⏱
+62.1
+62.8
+74.4
+$0.017
+d1 (Liquid AI) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+74.4
+Intelligence
+62.1
+Calibration
+86.8
+Cost Score
+62.8
+Cost vs cap
+$0.017 per 1,000 decisions
+=
+0.54
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.27 s
+=
+0.44
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+8
+· official
+#7
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+9
+SPX-CD Flash
+ⓘ
+API
+$
+⏱
+58.4
+52.1
+74.3
+$0.039
+*
+SPX-CD Flash (SurdAI, hosted /v1/systemone, Oct-4 checkpoint) · System (router / cascade / ensemble)
+Base model
+undisclosed
+source
+Capability Score
+74.3
+Intelligence
+58.4
+Calibration
+90.2
+Cost Score
+52.1
+Cost vs cap
+$0.039 per 1,000 decisions
+=
+1.22
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but costlier than Jev (v1.5 reference)
+Latency vs cap
+0.98 s
+=
+1.59
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but slower than Jev (v1.5 reference)
+Rank
+Capability Score
+9
+· official
+#16
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+10
+Mercury Decide
+ⓘ
+API
+$
+⏱
+65.9
+62.1
+73.6
+$0.018
+*
+Mercury Decide (Inception; System One decisions API, served free on OpenRouter as inception/mercury-decide:free) · System (router / cascade / ensemble)
+Base model
+undisclosed
+source
+Capability Score
+73.6
+Intelligence
+65.9
+Calibration
+81.3
+Cost Score
+62.1
+Cost vs cap
+$0.018 per 1,000 decisions
+=
+0.57
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.33 s
+=
+0.54
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+10
+· official
+#8
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+Show all
+25
+Jev-class
+systems (
+15
+more)
+11
+Celeris-1 Decision
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+58.9
+60.4
+73.6
+$0.021
+*
+Celeris-1 Decision (Celeris) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+73.6
+Intelligence
+58.9
+Calibration
+88.4
+Cost Score
+60.4
+Cost vs cap
+$0.021 per 1,000 decisions
+=
+0.65
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.43 s
+=
+0.70
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+11
+· official
+#10
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+12
+OpenAI Decisions
+ⓘ
+API
+$
+⏱
+56.9
+48.6
+73.5
+$0.052
+OpenAI Decisions (gpt-6-luna) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+73.5
+Intelligence
+56.9
+Calibration
+90.1
+Cost Score
+48.6
+Cost vs cap
+$0.052 per 1,000 decisions
+=
+1.60
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but costlier than Jev (v1.5 reference)
+Latency vs cap
+0.30 s
+=
+0.48
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+12
+· official
+#17
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+13
+kettei-chub
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+62.2
+62.7
+73.1
+$0.018
+*
+kettei-chub (Sqwish) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+73.1
+Intelligence
+62.2
+Calibration
+84.1
+Cost Score
+62.7
+Cost vs cap
+$0.018 per 1,000 decisions
+=
+0.54
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.17 s
+=
+0.27
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+13
+· official
+#6
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+Microsoft-Decision-1
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+59.2
+62.2
+72.2
+$0.018
+PRELIMINARY — API supplement A2 (300 sealed + 300 public), not the S1200 full set; equating pool 4 of 6
+Microsoft-Decision-1 (Azure Foundry) — A2 re-run · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+72.2
+Intelligence
+59.2
+Calibration
+85.2
+Cost Score
+62.2
+Cost vs cap
+$0.018 per 1,000 decisions
+=
+0.56
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.34 s
+=
+0.55
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+–
+· official
+unranked
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+14
+Microsoft-Decision-1
+ⓘ
+API
+$
+⏱
+57.2
+61.5
+70.8
+$0.019
+Microsoft-Decision-1 (Azure Foundry) · Closed API (weights not public)
+Base model
+Qwen3.5-9B
+source
+·
+Base model disclosed by Microsoft; the Decision-1 endpoint is evaluated as a hosted API offering.
+Capability Score
+70.8
+Intelligence
+57.2
+Calibration
+84.4
+Cost Score
+61.5
+Cost vs cap
+$0.019 per 1,000 decisions
+=
+0.60
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.46 s
+=
+0.74
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+14
+· official
+#13
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+15
+Instinct
+ⓘ
+API
+$
+⏱
+47.8
+64.4
+70.5
+$0.015
+Instinct (ZooWork, Qwen3.8-27B) · Closed API (weights not public)
+Base model
+Qwen3.8-27B
+source
+·
+Operator-reported; weights not publicly verifiable.
+Capability Score
+70.5
+Intelligence
+47.8
+Calibration
+93.2
+Cost Score
+64.4
+Cost vs cap
+$0.015 per 1,000 decisions
+=
+0.48
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.29 s
+=
+0.47
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+15
+· official
+#18
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+16
+attest-31B-v1.0
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+65.2
+50.7
+69.5
+$0.044
+*
+attest-31B-v1.0 · Open weights · LLM decoder
+Base model
+undisclosed
+Capability Score
+69.5
+Intelligence
+65.2
+Calibration
+73.8
+Cost Score
+50.7
+Cost vs cap
+$0.044 per 1,000 decisions
+=
+1.36
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but costlier than Jev (v1.5 reference)
+Latency vs cap
+0.11 s
+=
+0.17
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+16
+· official
+#15
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+17
+Bespoke Nimble-v4
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+41.4
+60.7
+64.0
+$0.020
+*
+Bespoke Nimble-v4 (Bespoke Labs) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+64.0
+Intelligence
+41.4
+Calibration
+86.6
+Cost Score
+60.7
+Cost vs cap
+$0.020 per 1,000 decisions
+=
+0.63
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.23 s
+=
+0.38
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+17
+· official
+#20
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+18
+Vansa-3.4
+ⓘ
+API
+$
+⏱
+40.9
+61.9
+63.7
+$0.019
+Vansa-3.4 (Vansa, hosted System One API) · Closed API (weights not public)
+Base model
+Qwen3.5-4B (self-reported)
+·
+Developer-reported to Benchmark Heaven (private correspondence, 1 Oct 2026): built on Qwen3.5-4B via an open decision fine-tune, with Vansa's own adapters; the intermediate fine-tune is not named. Not publicly documented or independently verified.
+Capability Score
+63.7
+Intelligence
+40.9
+Calibration
+86.5
+Cost Score
+61.9
+Cost vs cap
+$0.019 per 1,000 decisions
+=
+0.58
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.15 s
+=
+0.24
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+18
+· official
+#21
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+19
+Amos 1 medium
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+38.4
+48.7
+63.2
+$0.051
+*
+Amos 1 medium (Scira) · Open weights · LLM decoder
+Base model
+undisclosed
+Capability Score
+63.2
+Intelligence
+38.4
+Calibration
+88.0
+Cost Score
+48.7
+Cost vs cap
+$0.051 per 1,000 decisions
+=
+1.58
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but costlier than Jev (v1.5 reference)
+Latency vs cap
+0.44 s
+=
+0.72
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+19
+· official
+#25
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+20
+Instinct Dual 4B
+ⓘ
+API
+$
+⏱
+28.3
+75.0
+57.2
+$0.0068
+Instinct Dual 4B · Closed API (weights not public)
+Base model
+Qwen3.5-4B
+source
+·
+Operator-reported; weights not publicly verifiable.
+Capability Score
+57.2
+Intelligence
+28.3
+Calibration
+86.1
+Cost Score
+75.0
+Cost vs cap
+$0.0068 per 1,000 decisions
+=
+0.21
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.23 s
+=
+0.37
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+20
+· official
+#30
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+21
+system-one-open
+ⓘ
+API
+$
+⏱
+27.9
+68.3
+51.9
+$0.011
+*
+system-one-open (Gemma 4 E2B LoRA on an L4) · Open weights · LLM decoder
+Base model
+Gemma 4 E2B
+source
+Capability Score
+51.9
+Intelligence
+27.9
+Calibration
+75.9
+Cost Score
+68.3
+Cost vs cap
+$0.011 per 1,000 decisions
+=
+0.35
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+1.02 s
+=
+1.65
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but slower than Jev (v1.5 reference)
+Rank
+Capability Score
+21
+· official
+#32
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+22
+decision-machine-1
+ⓘ
+API
+$
+⏱
+13.1
+58.3
+46.1
+$0.024
+decision-machine-1 (milliseconds.ai) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+46.1
+Intelligence
+13.1
+Calibration
+79.2
+Cost Score
+58.3
+Cost vs cap
+$0.024 per 1,000 decisions
+=
+0.76
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.17 s
+=
+0.27
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+22
+· official
+#36
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+23
+Fastino GLiNER-2.5-Decide
+ⓘ
+API
+$
+⏱
+7.0
+45.8
+34.6
+$0.064
+Fastino GLiNER-2.5-Decide (hosted API) · Open weights · encoder / classifier
+Base model
+fastino/gliner2-large-v1
+source 1
+source 2
+·
+Measured via Fastino's hosted API. A 340M English classifier (8k context), not built for multi-step reasoning: near chance on Noul and Score items; 23 very long items exceed its context. Our request follows Fastino's documented format. The open checkpoint scores 11.2 on the community Decision Index (rank 53 of 70; Jev 57.9). Fastino's larger GLiDE is a separate model, ranked separately on the API board.
+Capability Score
+34.6
+Intelligence
+7.0
+Calibration
+62.1
+Cost Score
+45.8
+Cost vs cap
+$0.064 per 1,000 decisions
+=
+1.98
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but costlier than Jev (v1.5 reference)
+Latency vs cap
+0.44 s
+=
+0.72
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+23
+· official
+#38
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+24
+JevAct
+ⓘ
+API
+$
+⏱
+10.1
+68.6
+28.8
+$0.011
+*
+JevAct (einptein, jev1-2b-v2) · Closed API (weights not public)
+Base model
+undisclosed
+source
+Capability Score
+28.8
+Intelligence
+10.1
+Calibration
+47.4
+Cost Score
+68.6
+Cost vs cap
+$0.011 per 1,000 decisions
+=
+0.35
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+0.80 s
+=
+1.30
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but slower than Jev (v1.5 reference)
+Rank
+Capability Score
+24
+· official
+#37
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+Wide coloured bar = Capability Score (0–100). Thin bars: cost above, median latency below; shared log ratio scale 0.25× … 64×
+Jev (v1.5 reference)
+,
+ticks at 1× and
+2
+× (cap).
+Shorter is cheaper or faster. * = est. (estimated cost). # counts ranked
+Jev-class
+systems; “–” marks unranked or outside systems. Tap ⓘ or hover a row or thin bar for details.
+Cost and latency correlate here
+(Spearman ρ =
+0.56
+, n =
+40
+)
+.
+Jev — reference (TypeSafe, closed)
+(
+2
+)
+Closed API (weights not public)
+(
+25
+)
+Open weights · LLM decoder
+(
+9
+)
+Open weights · encoder / classifier
+(
+1
+)
+System (router / cascade / ensemble)
+(
+3
+)
+green
+:
+≤ reference
+amber
+:
+≤ cap (2× reference)
+red
+:
+> cap
+Outside the
+Jev-class
+limits ·
+15
+systems
+Show general-purpose LLMs and other systems outside the limits
+Sorted by Capability Score, not numbered. Each row says which limit it misses, measured against
+Jev
+(
+$0.032
+per 1,000 decisions, median
+0.62 s
+).
+–
+GPT-6 Luna (medium)
+ⓘ
+API
+$
+⏱
+96.9
+38.4
+98.4
+$0.11
+Outside: cost 3.5× Jev (v1.5 reference), latency 3.0× Jev (v1.5 reference)
+GPT-6 Luna (default medium reasoning effort) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+98.4
+Intelligence
+96.9
+Calibration
+100.0
+Cost Score
+38.4
+Cost vs cap
+$0.11 per 1,000 decisions
+=
+3.50
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+1.82 s
+=
+2.96
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Rank
+Capability Score
+outside Jev-class
+· official
+#24
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+Qwen3.8 27B
+ⓘ
+API
+$
+⏱
+96.4
+0.0
+98.2
+$2.18
+*
+Outside: cost 67.4× Jev (v1.5 reference), latency 11.5× Jev (v1.5 reference)
+Qwen3.8 27B (Chutes TEE) · Open weights · LLM decoder
+Base model
+undisclosed
+Capability Score
+98.2
+Intelligence
+96.4
+Calibration
+100.0
+Cost Score
+0.0
+Cost vs cap
+$2.18 per 1,000 decisions
+=
+67.45
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+7.09 s
+=
+11.51
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Rank
+Capability Score
+outside Jev-class
+· official
+#39
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+GPT-6 Luna (low)
+ⓘ
+API
+$
+⏱
+96.6
+39.0
+97.8
+$0.11
+Outside: cost 3.3× Jev (v1.5 reference), latency 3.0× Jev (v1.5 reference)
+GPT-6 Luna (low reasoning effort) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+97.8
+Intelligence
+96.6
+Calibration
+99.0
+Cost Score
+39.0
+Cost vs cap
+$0.11 per 1,000 decisions
+=
+3.35
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+1.85 s
+=
+3.01
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Rank
+Capability Score
+outside Jev-class
+· official
+#22
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+DeepSeek V4.1 Flash
+ⓘ
+API
+$
+⏱
+94.7
+19.6
+97.4
+$0.48
+Outside: cost 14.9× Jev (v1.5 reference), latency 3.3× Jev (v1.5 reference)
+DeepSeek V4.1 Flash (thinking default) · Open weights · LLM decoder
+Base model
+undisclosed
+Capability Score
+97.4
+Intelligence
+94.7
+Calibration
+100.0
+Cost Score
+19.6
+Cost vs cap
+$0.48 per 1,000 decisions
+=
+14.87
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+2.04 s
+=
+3.31
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Rank
+Capability Score
+outside Jev-class
+· official
+#34
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+GPT-5.6 Luna
+ⓘ
+API
+$
+⏱
+94.1
+30.2
+94.5
+$0.21
+Outside: cost 6.6× Jev (v1.5 reference), latency 2.6× Jev (v1.5 reference)
+GPT-5.6 Luna (low reasoning effort) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+94.5
+Intelligence
+94.1
+Calibration
+94.9
+Cost Score
+30.2
+Cost vs cap
+$0.21 per 1,000 decisions
+=
+6.59
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+1.59 s
+=
+2.58
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Rank
+Capability Score
+outside Jev-class
+· official
+#28
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+Amos 1 large
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+69.7
+30.0
+79.4
+$0.21
+*
+Outside: cost 6.6× Jev (v1.5 reference)
+Amos 1 large (Scira) · Open weights · LLM decoder
+Base model
+undisclosed
+Capability Score
+79.4
+Intelligence
+69.7
+Calibration
+89.0
+Cost Score
+30.0
+Cost vs cap
+$0.21 per 1,000 decisions
+=
+6.65
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+0.51 s
+=
+0.83
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+outside Jev-class
+· official
+#29
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+wity-1
+ⓘ
+API
+$
+⏱
+70.3
+58.8
+79.1
+$0.024
+Outside: latency 2.6× Jev (v1.5 reference)
+wity-1 (Wity, reasoning auto) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+79.1
+Intelligence
+70.3
+Calibration
+87.9
+Cost Score
+58.8
+Cost vs cap
+$0.024 per 1,000 decisions
+=
+0.73
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+1.57 s
+=
+2.55
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Rank
+Capability Score
+outside Jev-class
+· official
+#11
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+SPX-CD Pro
+ⓘ
+API
+$
+⏱
+64.9
+43.1
+78.6
+$0.079
+*
+Outside: cost 2.4× Jev (v1.5 reference)
+SPX-CD Pro (SurdAI, hosted /v1/systemone, Oct-4 checkpoint) · System (router / cascade / ensemble)
+Base model
+undisclosed
+source
+Capability Score
+78.6
+Intelligence
+64.9
+Calibration
+92.4
+Cost Score
+43.1
+Cost vs cap
+$0.079 per 1,000 decisions
+=
+2.45
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+1.13 s
+=
+1.83
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but slower than Jev (v1.5 reference)
+Rank
+Capability Score
+outside Jev-class
+· official
+#19
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+Fastino GLiDE
+ⓘ
+API
+$
+⏱
+66.1
+35.9
+77.0
+$0.14
+Outside: cost 4.3× Jev (v1.5 reference)
+Fastino GLiDE · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+77.0
+Intelligence
+66.1
+Calibration
+88.0
+Cost Score
+35.9
+Cost vs cap
+$0.14 per 1,000 decisions
+=
+4.25
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+0.74 s
+=
+1.21
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but slower than Jev (v1.5 reference)
+Rank
+Capability Score
+outside Jev-class
+· official
+#26
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+Sage 1.4
+ⓘ
+API
+v1.6.35
+draw
+$
+⏱
+65.9
+59.5
+74.8
+$0.022
+*
+Outside: latency 2.8× Jev (v1.5 reference)
+Sage 1.4 (Levanto Labs) · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+74.8
+Intelligence
+65.9
+Calibration
+83.7
+Cost Score
+59.5
+Cost vs cap
+$0.022 per 1,000 decisions
+=
+0.69
+×
+Jev (v1.5 reference)
+→
+green
+:
+as cheap as Jev (v1.5 reference) or better
+Latency vs cap
+1.74 s
+=
+2.82
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Rank
+Capability Score
+outside Jev-class
+· official
+#14
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+Autoloops – Gemma 4 31B IT
+ⓘ
+API
+$
+⏱
+58.1
+40.5
+72.7
+$0.096
+Outside: cost 3.0× Jev (v1.5 reference)
+Autoloops – Gemma 4 31B IT · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+72.7
+Intelligence
+58.1
+Calibration
+87.3
+Cost Score
+40.5
+Cost vs cap
+$0.096 per 1,000 decisions
+=
+2.99
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+0.58 s
+=
+0.95
+×
+Jev (v1.5 reference)
+→
+green
+:
+as fast as Jev (v1.5 reference) or better
+Rank
+Capability Score
+outside Jev-class
+· official
+#23
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+SimpleJev Qwen3.8-27B
+ⓘ
+API
+$
+⏱
+52.9
+14.9
+71.6
+$0.69
+*
+Outside: cost 21.3× Jev (v1.5 reference)
+SimpleJev Qwen3.8-27B · Open weights · LLM decoder
+Base model
+Qwen/Qwen3.8-27B
+source
+Capability Score
+71.6
+Intelligence
+52.9
+Calibration
+90.3
+Cost Score
+14.9
+Cost vs cap
+$0.69 per 1,000 decisions
+=
+21.27
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+1.21 s
+=
+1.97
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but slower than Jev (v1.5 reference)
+Rank
+Capability Score
+outside Jev-class
+· official
+#35
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+SimpleJev Qwen3.6-35B-A3B
+ⓘ
+API
+$
+⏱
+56.3
+35.1
+68.3
+$0.15
+*
+Outside: cost 4.5× Jev (v1.5 reference), latency 2.03× Jev (v1.5 reference)
+SimpleJev Qwen3.6-35B-A3B · Open weights · LLM decoder
+Base model
+undisclosed
+source
+Capability Score
+68.3
+Intelligence
+56.3
+Calibration
+80.3
+Cost Score
+35.1
+Cost vs cap
+$0.15 per 1,000 decisions
+=
+4.49
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+1.25 s
+=
+2.03
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Rank
+Capability Score
+outside Jev-class
+· official
+#27
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+Gemini 3.1 Flash-Lite
+ⓘ
+API
+$
+⏱
+58.6
+29.2
+59.8
+$0.23
+Outside: cost 7.1× Jev (v1.5 reference)
+Gemini 3.1 Flash-Lite · Closed API (weights not public)
+Base model
+undisclosed
+Capability Score
+59.8
+Intelligence
+58.6
+Calibration
+60.9
+Cost Score
+29.2
+Cost vs cap
+$0.23 per 1,000 decisions
+=
+7.11
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+0.96 s
+=
+1.55
+×
+Jev (v1.5 reference)
+→
+amber
+:
+inside the 2× cap, but slower than Jev (v1.5 reference)
+Rank
+Capability Score
+outside Jev-class
+· official
+#31
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+–
+openjev-sglang
+ⓘ
+API
+$
+⏱
+38.8
+35.6
+58.7
+$0.14
+*
+Outside: cost 4.3× Jev (v1.5 reference), latency 2.1× Jev (v1.5 reference)
+openjev-sglang (Qwen3.6-35B-A3B on SGLang) · Open weights · LLM decoder
+Base model
+Qwen/Qwen3.6-35B-A3B
+source
+Capability Score
+58.7
+Intelligence
+38.8
+Calibration
+78.6
+Cost Score
+35.6
+Cost vs cap
+$0.14 per 1,000 decisions
+=
+4.33
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Latency vs cap
+1.26 s
+=
+2.05
+×
+Jev (v1.5 reference)
+→
+red
+:
+outside the 2× cap
+Rank
+Capability Score
+outside Jev-class
+· official
+#33
+Colours
+Green ≤ reference; amber ≤ cap; red > cap. Shorter is cheaper or faster.
+Jev-class
+= cost per decision
+at most
+2×
+Jev
+'s
+(≤
+$0.065
+per 1,000 decisions)
+and
+median latency
+at most
+2×
+Jev
+'s
+(≤
+1.23 s
+)
+, the adjusted p50 — the same median the speed chart plots, not the four-axis Speed score.
+25
+of
+40
+systems qualify;
+the other
+15
+, including the general-purpose LLMs, are listed below the divider in the ranking.
+The
+charts below
+show speed and cost beside Capability Score; the
+official
+JevBench
+Score
+weighs all four axes.
+Capability against cost and speed
+(API offerings)
+Jev-class systems are shown by default.
+Bubble size follows
+the official JevBench Score
+; official rank stays unchanged. The five most capable Jev-class systems are labelled.
+Show models that don't qualify as Jev-class
+Capability vs cost
+Expand / Show fullscreen
+Upper right is best: more capable and cheaper.
+Cost is USD per 1,000 decisions on a log scale. The dashed line is 2× Jev’s cost.
+Capability vs cost: 24 systems. Upper right is best: more capable and cheaper.
+Most attractive quadrant
+20
+30
+40
+50
+60
+70
+80
+90
+100
+$0.010
+$0.10
+$ per 1,000 decisions (log)
+Capability
+↑
+2× Jev (v1.5 reference)
+← pricier
+cheaper →
+1. kettei-fat
+2. SubQ Snap
+3. d1-ultra
+4. Bespoke Nimble-v4-max
+5. Sage 1.3.0
+24
+systems
+.
+Hover or focus a bubble
+Tap a bubble
+for its values.
+Capability vs speed
+Expand / Show fullscreen
+Upper right is best: more capable and faster.
+Speed here is the median-latency speed — the same adjusted median (p50) latency the Jev-class limit uses — a log scale, so each 20 points is 10× faster (median under the numbers). Self-hosted systems are plotted at the est. incl. network latency (2x measured + 150 ms); their measured loopback p50 (on-GPU, no network; not directly comparable with API latency) is in the tooltip. The dashed line is 2× Jev’s median latency.
+Capability vs speed: 24 systems. Upper right is best: more capable and faster.
+Most attractive quadrant
+20
+30
+40
+50
+60
+70
+80
+90
+100
+70
+≈3.2 s
+80
+≈1.0 s
+90
+≈316 ms
+100
+≈100 ms
+Median-latency speed
+Capability
+↑
+2× Jev (v1.5 reference)
+← slower
+faster →
+1. kettei-fat
+2. SubQ Snap
+3. d1-ultra
+4. Bespoke Nimble-v4-max
+5. Sage 1.3.0
+24
+systems
+.
+Hover or focus a bubble
+Tap a bubble
+for its values.
+Jev — reference (TypeSafe, closed)
+(
+2
+)
+Closed API (weights not public)
+(
+24
+)
+Open weights · LLM decoder
+(
+9
+)
+Open weights · encoder / classifier
+(
+1
+)
+System (router / cascade / ensemble)
+(
+3
+)
+faint = outside Jev-class
+Pareto frontier: capability against cost and speed
+(API offerings)
+The red line joins the systems nobody beats on both axes at once
+(provider list price, measured endpoint latency)
+; hover or tap a point for the system that beats it. Shaded: beyond the Jev-class cap.
+Show models that don't qualify as Jev-class
+Capability vs cost ($ per 1,000 decisions)
+Expand / Show fullscreen
+Over 2× Jev
+20
+30
+40
+50
+60
+70
+80
+90
+100
+$0.001
+$0.002
+$0.005
+$0.01
+$0.02
+$0.05
+$0.1
+$ per 1,000 decisions (list price)
+(log scale) — further left is better
+Capability Score
+kettei-fat
+SubQ Snap
+d1-ultra
+d1
+Instinct
+Instinct Dual 4B
+6
+of
+24
+systems on the frontier: no other system is both
+cheaper
+and more capable.
+Capability vs speed (median latency)
+Expand / Show fullscreen
+Over 2× Jev
+20
+30
+40
+50
+60
+70
+80
+90
+100
+10 ms
+20 ms
+50 ms
+100 ms
+200 ms
+500 ms
+1.0 s
+2.0 s
+5.0 s
+10 s
+Median endpoint latency
+(log scale) — further left is better
+Capability Score
+kettei-fat
+Sage 1.3.0
+attest-31B-v1.0
+3
+of
+24
+systems on the frontier: no other system is both
+faster
+and more capable.
+Hide 3D view
+Every API offering we have measured (
+46
+)
+No API offering is left out. “API offering” means an endpoint we do not run ourselves: vendor APIs and author-hosted demos (tagged). Ranked rows outside the Jev-class cost or latency caps (2× Jev) keep their Composite rank and appear below the divider of the Capability ranking. Only rows measured on
+v1.6.1
+are ranked;
+APIs not yet re-measured keep their dated v1.5.x score, which is on the v1.5 scale and not comparable with
+v1.6.1
+scores (a v1.5 Composite near 0 means a low-axis gate applied).
+All hosted API offerings measured on JevBench, by status
+System
+Status
+Composite
+Capability
+Cost / 1,000
+Median latency
+Ranked on the v1.6.1 scale (full set, or A4 ∪ P re-run equated)
+(
+39
+)
+kettei-fat (Sqwish)
+hosted API
+Composite #
+1
+full set (1,500 items)
+77.7
+86.3
+est.
+$0.0263
+0.20 s
+d1-ultra (Liquid AI)
+hosted API
+Composite #
+2
+full set (1,500 items)
+76.1
+80.5
+est.
+$0.0181
+0.23 s
+Bespoke Nimble-v4-max (Bespoke Labs)
+hosted API
+Composite #
+3
+full set (1,500 items)
+75.4
+79.7
+est.
+$0.0204
+0.25 s
+SubQ Snap (preview, SubQ)
+hosted API
+Composite #
+4
+full set (1,500 items)
+74.4
+81.5
+est.
+$0.0257
+0.47 s
+Sage 1.3.0 (Levanto Labs)
+hosted API
+Composite #
+5
+full set (1,500 items)
+74.0
+78.6
+est.
+$0.0247
+0.15 s
+kettei-chub (Sqwish)
+hosted API
+Composite #
+6
+full set (1,500 items)
+73.5
+73.1
+est.
+$0.0175
+0.17 s
+d1 (Liquid AI)
+hosted API
+Composite #
+7
+full set (1,500 items)
+73.0
+74.4
+$0.0173
+0.27 s
+Mercury Decide (Inception; System One decisions API, served free on OpenRouter as inception/mercury-decide:free)
+hosted API
+Composite #
+8
+full set (1,500 items)
+72.4
+73.6
+est.
+$0.0184
+0.33 s
+Jev 1.13.0 (TypeSafe AI)
+hosted API
+Composite #
+9
+full set (1,500 items)
+71.5
+77.1
+$0.0323
+0.24 s
+Celeris-1 Decision (Celeris)
+hosted API
+Composite #
+10
+full set (1,500 items)
+71.0
+73.6
+est.
+$0.0209
+0.43 s
+wity-1 (Wity, reasoning auto)
+hosted API
+Composite #
+11
+full set (1,500 items)
+outside Jev-class caps:
+latency 2.6× Jev (v1.5 reference)
+70.8
+79.1
+$0.0236
+1.57 s
+Jev 1.14.0 (TypeSafe AI)
+hosted API
+Composite #
+12
+full set (1,500 items)
+70.2
+75.0
+est.
+$0.0321
+0.22 s
+Microsoft-Decision-1 (Azure Foundry)
+hosted API
+Composite #
+13
+full set (1,500 items)
+69.1
+70.8
+$0.0193
+0.46 s
+Sage 1.4 (Levanto Labs)
+hosted API
+Composite #
+14
+full set (1,500 items)
+outside Jev-class caps:
+latency 2.8× Jev (v1.5 reference)
+68.4
+74.8
+est.
+$0.0224
+1.74 s
+attest-31B-v1.0
+hosted API
+Composite #
+15
+full set (1,500 items)
+67.9
+69.5
+est.
+$0.0439
+0.11 s
+SPX-CD Flash (SurdAI, hosted /v1/systemone, Oct-4 checkpoint)
+hosted API
+Composite #
+16
+full set (1,500 items)
+66.7
+74.3
+est.
+$0.0395
+0.98 s
+OpenAI Decisions (gpt-6-luna)
+hosted API
+Composite #
+17
+A5 ∪ P (600 items, equated)
+62.5
+73.5
+$0.0517
+0.30 s
+Instinct (ZooWork, Qwen3.8-27B)
+hosted API
+Composite #
+18
+A4 ∪ P (600 items, equated)
+62.2
+70.5
+$0.0154
+0.29 s
+SPX-CD Pro (SurdAI, hosted /v1/systemone, Oct-4 checkpoint)
+hosted API
+Composite #
+19
+full set (1,500 items)
+outside Jev-class caps:
+cost 2.4× Jev (v1.5 reference)
+47.7
+78.6
+est.
+$0.0790
+1.13 s
+Bespoke Nimble-v4 (Bespoke Labs)
+hosted API
+Composite #
+20
+full set (1,500 items)
+43.2
+64.0
+est.
+$0.0204
+0.23 s
+Vansa-3.4 (Vansa, hosted System One API)
+hosted API
+Composite #
+21
+A4 ∪ P (600 items, equated)
+42.6
+63.7
+$0.0186
+0.15 s
+GPT-6 Luna (low reasoning effort)
+hosted API
+Composite #
+22
+A4 ∪ P (600 items, equated)
+outside Jev-class caps:
+cost 3.3× Jev (v1.5 reference); latency 3.0× Jev (v1.5 reference)
+40.5
+97.8
+$0.1081
+1.85 s
+Autoloops – Gemma 4 31B IT
+hosted API
+Composite #
+23
+A4 ∪ P (600 items, equated)
+outside Jev-class caps:
+cost 3.0× Jev (v1.5 reference)
+40.2
+72.7
+$0.0965
+0.58 s
+GPT-6 Luna (default medium reasoning effort)
+hosted API
+Composite #
+24
+A4 ∪ P (600 items, equated)
+outside Jev-class caps:
+cost 3.5× Jev (v1.5 reference); latency 3.0× Jev (v1.5 reference)
+39.2
+98.4
+$0.1130
+1.82 s
+Amos 1 medium (Scira)
+hosted API
+Composite #
+25
+full set (1,500 items)
+32.2
+63.2
+est.
+$0.0511
+0.44 s
+Fastino GLiDE
+hosted API
+Composite #
+26
+A4 ∪ P (600 items, equated)
+outside Jev-class caps:
+cost 4.3× Jev (v1.5 reference)
+30.6
+77.0
+$0.1374
+0.74 s
+SimpleJev Qwen3.6-35B-A3B
+author-hosted demo
+Composite #
+27
+A4 ∪ P (600 items, equated)
+outside Jev-class caps:
+cost 4.5× Jev (v1.5 reference); latency 2.03× Jev (v1.5 reference)
+27.6
+68.3
+est.
+$0.1451
+1.25 s
+GPT-5.6 Luna (low reasoning effort)
+hosted API
+Composite #
+28
+A4 ∪ P (600 items, equated)
+outside Jev-class caps:
+cost 6.6× Jev (v1.5 reference); latency 2.6× Jev (v1.5 reference)
+21.4
+94.5
+$0.2127
+1.59 s
+Amos 1 large (Scira)
+hosted API
+Composite #
+29
+full set (1,500 items)
+outside Jev-class caps:
+cost 6.6× Jev (v1.5 reference)
+20.4
+79.4
+est.
+$0.2146
+0.51 s
+Instinct Dual 4B
+hosted API
+Composite #
+30
+A4 ∪ P (600 items, equated)
+18.0
+57.2
+$0.0068
+0.23 s
+Gemini 3.1 Flash-Lite
+hosted API
+Composite #
+31
+A4 ∪ P (600 items, equated)
+outside Jev-class caps:
+cost 7.1× Jev (v1.5 reference)
+16.9
+59.8
+$0.2295
+0.96 s
+system-one-open (Gemma 4 E2B LoRA on an L4)
+author-hosted demo
+Composite #
+32
+A4 ∪ P (600 items, equated)
+16.4
+51.9
+est.
+$0.0114
+1.02 s
+openjev-sglang (Qwen3.6-35B-A3B on SGLang)
+author-hosted demo
+Composite #
+33
+A4 ∪ P (600 items, equated)
+outside Jev-class caps:
+cost 4.3× Jev (v1.5 reference); latency 2.1× Jev (v1.5 reference)
+15.4
+58.7
+est.
+$0.1398
+1.26 s
+DeepSeek V4.1 Flash (thinking default)
+hosted API
+Composite #
+34
+A4 ∪ P (600 items, equated)
+outside Jev-class caps:
+cost 14.9× Jev (v1.5 reference); latency 3.3× Jev (v1.5 reference)
+7.1
+97.4
+$0.4801
+2.04 s
+SimpleJev Qwen3.8-27B
+author-hosted demo
+Composite #
+35
+A4 ∪ P (600 items, equated)
+outside Jev-class caps:
+cost 21.3× Jev (v1.5 reference)
+3.2
+71.6
+est.
+$0.6868
+1.21 s
+decision-machine-1 (milliseconds.ai)
+hosted API
+Composite #
+36
+A4 ∪ P (600 items, equated)
+2.4
+46.1
+$0.0245
+0.17 s
+JevAct (einptein, jev1-2b-v2)
+author-hosted demo
+Composite #
+37
+A4 ∪ P (600 items, equated)
+1.1
+28.8
+est.
+$0.0112
+0.80 s
+Fastino GLiNER-2.5-Decide (hosted API)
+hosted API
+Composite #
+38
+full set (1,500 items)
+0.3
+34.6
+$0.0640
+0.44 s
+Qwen3.8 27B (Chutes TEE)
+hosted API
+Composite #
+39
+A4 ∪ P (600 items, equated)
+outside Jev-class caps:
+cost 67.4× Jev (v1.5 reference); latency 11.5× Jev (v1.5 reference)
+0.0
+98.2
+est.
+$2.1784
+7.09 s
+Also measured on v1.6.1, listed, not ranked
+(
+5
+)
+BB-Qwen3.5-4B-LoRA (Babak Barazandeh, LoRA on Qwen3.5-4B-Base, hosted /v1/systemone)
+hosted API
+configuration variant · not ranked
+full set (1,500 items)
+—
+60.4
+—
+0.70 s
+wity-1 (Wity, reasoning always)
+hosted API
+configuration variant · not ranked
+full set (1,500 items)
+70.6
+79.3
+$0.0236
+1.69 s
+wity-1 (Wity, reasoning off)
+hosted API
+configuration variant · not ranked
+full set (1,500 items)
+49.4
+63.0
+$0.0236
+0.28 s
+Microsoft-Decision-1 (Azure Foundry) — A2 re-run
+hosted API
+preliminary · not ranked
+full set (1,500 items)
+71.5
+72.2
+$0.0182
+0.34 s
+Trio-Spark v1.3 (MachineFi)
+hosted API
+configuration variant · not ranked
+full set (1,500 items)
+—
+57.0
+—
+1.28 s
+Wrappers that serve Jev (listed, never ranked, not class-assessed)
+(
+1
+)
+classifier.dev (fast tier)
+hosted API
+wrapper (serves Jev) · not ranked
+A4 ∪ P (600 items, equated)
+71.6
+78.2
+est.
+$0.0235
+0.81 s
+Carried from v1.5.x, not yet re-measured (v1.5 scale)
+(
+1
+)
+Why not re-run yet: hosted APIs are re-measured at most once every three refresh releases (API-exposure rule), and the v1.6.0 sealed set is now retired, so a new run needs a fresh sealed draw. Re-runs are being arranged with each provider; some first need a new key or confirmation from the provider. There is no validated conversion from the v1.5 to the v1.6 scale, so these scores are shown as measured, with their date.
+Drex v1.5
+hosted API
+measured on 2026-10-02 (v1.5.4 method)
+72.2
+(v1.5)
+74.2
+(v1.5)
+$0.0234
+0.25 s
+* Self-hosted rows: the first value is the p50 we measured on our own hardware over loopback (on-GPU, or on-CPU where marked, no network). It is not directly comparable with API latency, which we time end to end from our measuring host, network included. “est.” is the
+est. incl. network (2x + 150 ms)
+that the ranking and the latency cap use for every self-hosted row. Model authors can ask us to time a hosted endpoint instead (on request).
+Search systems
+45
+of
+45
+systems
+Clear filters
+Model kind
+Open weights
+Open code
+Closed
+API
+Jev-class
+Eligible
+Outside
+Unknown
+Release
+New in this version
+Provider
+:
+All
+▾
+Family
+:
+All
+▾
+Licence
+:
+All
+▾
+Parameters
+–
+No system in this release reports an exact parameter count.
+Developer/API price $/1k
+–
+Base-model price $/1k
+–
+No system in this release reports a base-model reference price.
+Scored cost $/1k
+–
+Alternative price $/1k
+–
+No system in this release reports an alternative pricing scenario.
+p50 latency (s)
+–
+p95 latency (s)
+–
+Compare two systems
+Pick any two.
+Radars for the score axes
+, capability by subject topic and use cases
+, chance-corrected competence per request type on the open and sealed sets, and competence per tier on each set.
+Further out is better on every spoke; the link keeps the pair.
+System A
+⌄
+⇄ Swap
+System B
+⌄
+Compare with Jev
+REFERENCE
+A
+:
+Jev 1.13.0
+REFERENCE · TypeSafe
+—
+Jev — reference (TypeSafe, closed)
+·
+Score
+71.5
+(
+#9
+)
+B
+:
+kettei-fat
+—
+Closed API (weights not public)
+·
+Score
+77.7
+(
+#1
+)
+Copy link to this pair
+The four score axes
+Radar: the four score axes, two systems
+The four score axes, Jev 1.13.0 vs kettei-fat. Intelligence: 63.6 vs 79.8; Calibration: 90.6 vs 92.8; Speed: 91.5 vs 93.2; Cost: 54.7 vs 57.4.
+50
+100
+Intelligence: Jev 1.13.0: 63.6; kettei-fat: 79.8
+Intelligence
+63.6
+·
+79.8
+Calibration: Jev 1.13.0: 90.6; kettei-fat: 92.8
+Calibration
+90.6
+·
+92.8
+Speed: Jev 1.13.0: 91.5; kettei-fat: 93.2
+Speed
+91.5
+·
+93.2
+Cost: Jev 1.13.0: 54.7; kettei-fat: 57.4
+Cost
+54.7
+·
+57.4
+0–100, the values in the table. An axis a system has no published value for is left as a gap (it counts as 0 in the composite).
+Capability by subject topic
+kettei-fat: Subject topics and use cases come from this draw's own item labels, added after its release with the same labelling recipe as the earlier draws (hand check 71/75).
+Radar: capability by subject topic, two systems
+Capability by subject topic, Jev 1.13.0 vs kettei-fat. Rules, policy & law: 49.4 vs 88.6; Coding & software: 64.3 vs 86.5; Math & numbers: 10.4 vs 68.7; Finance & commerce: 40.9 vs 85.1; Support & operations: 48.8 vs 64.2; Everyday language: 77.5 vs 35.0; Safety & security: 52.2 vs 83.7. Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+−100
+0
+100
+Rules, policy & law: Jev 1.13.0: 49.4; kettei-fat: 88.6 — Rules, policy & law: applying written rules: company policies, contracts, regulations, eligibility. 1616 items (151 open, 1465 sealed).
+Rules, policy
+& law
+49.4
+·
+88.6
+Coding & software: Jev 1.13.0: 64.3; kettei-fat: 86.5 — Coding & software: code, SQL, repositories, developer tools and IT systems. 382 items (62 open, 320 sealed).
+Coding &
+software
+64.3
+·
+86.5
+Math & numbers: Jev 1.13.0: 10.4; kettei-fat: 68.7 — Math & numbers: a calculation decides the answer: arithmetic, word problems, probability, dates, units. 370 items (37 open, 333 sealed).
+Math &
+numbers
+10.4
+·
+68.7
+Finance & commerce: Jev 1.13.0: 40.9; kettei-fat: 85.1 — Finance & commerce: money: payments, refunds, invoices, orders, expenses, insurance payouts. 223 items (12 open, 211 sealed).
+Finance &
+commerce
+40.9
+·
+85.1
+Support & operations: Jev 1.13.0: 48.8; kettei-fat: 64.2 — Support & operations: support tickets, incidents, logistics, scheduling desks and routing work to a team. 160 items (21 open, 139 sealed).
+Support &
+operations
+48.8
+·
+64.2
+Everyday language: Jev 1.13.0: 77.5; kettei-fat: 35.0 — Everyday language: short everyday messages: intents, assistant requests, reading a detail out of a text. 145 items (11 open, 134 sealed).
+Everyday
+language
+77.5
+·
+35.0
+Safety & security: Jev 1.13.0: 52.2; kettei-fat: 83.7 — Safety & security: untrusted or injected instructions, fraud, moderation, access and security triage. 109 items (6 open, 103 sealed).
+Safety &
+security
+52.2
+·
+83.7
+Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+Measured subject-topic competence on this release’s item set. Chance-corrected competence per category (0 = at or below chance; negative averages are reported as 0, 100 = perfect), Jev 1.13.0: S+P+L1+L2+L3; kettei-fat: S+P (draw v1.6-regular-20261012) items pooled; only categories with at least 30 items are spokes, smaller ones are listed below. Hover a category for its definition and item count.
+What each category means · items per category
+Rules, policy & law
+—
+applying written rules: company policies, contracts, regulations, eligibility
+.
+1616
+items (
+151
+open
+/
+1465
+sealed
+)
+Coding & software
+—
+code, SQL, repositories, developer tools and IT systems
+.
+382
+items (
+62
+open
+/
+320
+sealed
+)
+Math & numbers
+—
+a calculation decides the answer: arithmetic, word problems, probability, dates, units
+.
+370
+items (
+37
+open
+/
+333
+sealed
+)
+Finance & commerce
+—
+money: payments, refunds, invoices, orders, expenses, insurance payouts
+.
+223
+items (
+12
+open
+/
+211
+sealed
+)
+Support & operations
+—
+support tickets, incidents, logistics, scheduling desks and routing work to a team
+.
+160
+items (
+21
+open
+/
+139
+sealed
+)
+Everyday language
+—
+short everyday messages: intents, assistant requests, reading a detail out of a text
+.
+145
+items (
+11
+open
+/
+134
+sealed
+)
+Safety & security
+—
+untrusted or injected instructions, fraud, moderation, access and security triage
+.
+109
+items (
+6
+open
+/
+103
+sealed
+)
+Use cases (TypeSafe categories)
+kettei-fat: Subject topics and use cases come from this draw's own item labels, added after its release with the same labelling recipe as the earlier draws (hand check 71/75).
+Radar: use cases (typesafe categories), two systems
+Use cases (TypeSafe categories), Jev 1.13.0 vs kettei-fat. Model routing: 73.0 vs 86.9; Legal & compliance: 68.6 vs 90.7; Customer support: 49.6 vs 61.8; Other: 40.1 vs 58.5; E-commerce: 40.5 vs 84.0; Insurance claims: 46.1 vs n=27; Risk assessment: 32.8 vs 80.7; Financial crime: 35.8 vs 79.4; Feature extraction: 28.3 vs n=19; Lead generation: 49.2 vs 88.2; Recruiting: 0.0 vs n=19; Knowledge graphs: 28.8 vs n=22; LLM guardrails: 68.0 vs n=27; Moderation: 51.6 vs 80.9; Code linting: 29.1 vs n=24; Search & retrieval: 80.9 vs n=24; Science: 21.2 vs n=23; Advertising: 16.4 vs n=22; Gaming: 5.1 vs n=23; Demand forecasting: 0.0 vs n=17. Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+−100
+0
+100
+Model routing: Jev 1.13.0: 73.0; kettei-fat: 86.9 — Model routing: deciding which LLM or model tier should handle a prompt; classifying a request's intent, domain, difficulty or risk to pick a model. 524 items (86 open, 438 sealed).
+Model routing
+73.0
+·
+86.9
+Legal & compliance: Jev 1.13.0: 68.6; kettei-fat: 90.7 — Legal and compliance: contracts, policies, regulations, eligibility rules, checking documents against written requirements. 515 items (74 open, 441 sealed).
+Legal & compliance
+68.6
+·
+90.7
+Customer support: Jev 1.13.0: 49.6; kettei-fat: 61.8 — Customer support: classifying tickets and customer intents, urgency, refunds, routing cases to a team, checking support replies. 240 items (37 open, 203 sealed).
+Customer support
+49.6
+·
+61.8
+Other: Jev 1.13.0: 40.1; kettei-fat: 58.5 — Other: none of the above: general reasoning, arithmetic or date puzzles, everyday assistant requests without a business workflow. 174 items (24 open, 150 sealed).
+Other
+40.1
+·
+58.5
+E-commerce: Jev 1.13.0: 40.5; kettei-fat: 84.0 — E-commerce marketplaces: product listings, product attributes, orders and deliveries, seller catalog policy. 119 items (9 open, 110 sealed).
+E-commerce
+40.5
+·
+84.0
+Insurance claims: Jev 1.13.0: 46.1; kettei-fat: n=27 — too few completed items to plot — Insurance claims: first-notice-of-loss reports, claim complexity, missing information, claim triage. 119 items (9 open, 110 sealed).
+Insurance claims
+46.1
+·
+n=27
+Risk assessment: Jev 1.13.0: 32.8; kettei-fat: 80.7 — Risk assessment: estimating probabilities and severity of risks, incidents, vendor or underwriting risk. 118 items (8 open, 110 sealed).
+Risk assessment
+32.8
+·
+80.7
+Financial crime: Jev 1.13.0: 35.8; kettei-fat: 79.4 — Financial crime: suspicious transactions, KYC, fraud alerts, entity matching for investigations. 101 items (9 open, 92 sealed).
+Financial crime
+35.8
+·
+79.4
+Feature extraction: Jev 1.13.0: 28.3; kettei-fat: n=19 — too few completed items to plot — Feature extraction for predictive modeling: turning natural-language data into probabilistic features or estimates for a downstream prediction. 99 items (5 open, 94 sealed).
+Feature extraction
+28.3
+·
+n=19
+Lead generation: Jev 1.13.0: 49.2; kettei-fat: 88.2 — Lead generation: matching companies or inbound messages to an ideal customer profile, buyer intent, prioritising and routing sales leads. 95 items (4 open, 91 sealed).
+Lead generation
+49.2
+·
+88.2
+Recruiting: Jev 1.13.0: 0.0; kettei-fat: n=19 — too few completed items to plot — Recruiting: resumes, applications, interview feedback, matching candidates to roles. 94 items (1 open, 93 sealed).
+Recruiting
+0.0
+·
+n=19
+Knowledge graphs: Jev 1.13.0: 28.8; kettei-fat: n=22 — too few completed items to plot — Graphs and knowledge graphs: entity types, relationships between records, contradictions between facts, multi-step lookups across linked facts. 94 items (3 open, 91 sealed).
+Knowledge graphs
+28.8
+·
+n=22
+LLM guardrails: Jev 1.13.0: 68.0; kettei-fat: n=27 — too few completed items to plot — LLM guardrails: checking LLM inputs, outputs and tool calls: prompt injection, jailbreaks, policy violations, tool-call errors, answer quality. 93 items (5 open, 88 sealed).
+LLM guardrails
+68.0
+·
+n=27
+Moderation: Jev 1.13.0: 51.6; kettei-fat: 80.9 — Moderation and trust and safety: user content moderation: toxicity, harassment, spam, unsafe advice, personal data exposure. 93 items (7 open, 86 sealed).
+Moderation
+51.6
+·
+80.9
+Code linting: Jev 1.13.0: 29.1; kettei-fat: n=24 — too few completed items to plot — Semantic code linting: checking code or writing against conventions and guidelines, as in CI review of code. 90 items (3 open, 87 sealed).
+Code linting
+29.1
+·
+n=24
+Search & retrieval: Jev 1.13.0: 80.9; kettei-fat: n=24 — too few completed items to plot — Search and retrieval: scoring query-to-candidate relevance, reranking results, selecting useful context for RAG. 90 items (5 open, 85 sealed).
+Search & retrieval
+80.9
+·
+n=24
+Science: Jev 1.13.0: 21.2; kettei-fat: n=23 — too few completed items to plot — Scientific discovery: screening papers, labelling research passages or survey answers, checking that citations support claims, methodology checks. 90 items (2 open, 88 sealed).
+Science
+21.2
+·
+n=23
+Advertising: Jev 1.13.0: 16.4; kettei-fat: n=22 — too few completed items to plot — Advertising: ad creatives, campaign copy, brand safety, prohibited claims in ads. 88 items (3 open, 85 sealed).
+Advertising
+16.4
+·
+n=22
+Gaming: Jev 1.13.0: 5.1; kettei-fat: n=23 — too few completed items to plot — Gaming: player reports, in-game chat, game support. 86 items (3 open, 83 sealed).
+Gaming
+5.1
+·
+n=23
+Demand forecasting: Jev 1.13.0: 0.0; kettei-fat: n=17 — too few completed items to plot — Demand forecasting: purchase intent, product interest, demand and supply signals for forecasting. 83 items (3 open, 80 sealed).
+Demand forecasting
+0.0
+·
+n=17
+Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+Radar: use cases (typesafe categories), two systems
+Use cases (TypeSafe categories), Jev 1.13.0 vs kettei-fat. Model routing: 73.0 vs 86.9; Legal & compliance: 68.6 vs 90.7; Customer support: 49.6 vs 61.8; Other: 40.1 vs 58.5; E-commerce: 40.5 vs 84.0; Insurance claims: 46.1 vs n=27; Risk assessment: 32.8 vs 80.7; Financial crime: 35.8 vs 79.4; Feature extraction: 28.3 vs n=19; Lead generation: 49.2 vs 88.2; Recruiting: 0.0 vs n=19; Knowledge graphs: 28.8 vs n=22; LLM guardrails: 68.0 vs n=27; Moderation: 51.6 vs 80.9; Code linting: 29.1 vs n=24; Search & retrieval: 80.9 vs n=24; Science: 21.2 vs n=23; Advertising: 16.4 vs n=22; Gaming: 5.1 vs n=23; Demand forecasting: 0.0 vs n=17. Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+−100
+0
+100
+Model routing: Jev 1.13.0: 73.0; kettei-fat: 86.9 — Model routing: deciding which LLM or model tier should handle a prompt; classifying a request's intent, domain, difficulty or risk to pick a model. 524 items (86 open, 438 sealed).
+Model
+routing
+73.0
+·
+86.9
+Legal & compliance: Jev 1.13.0: 68.6; kettei-fat: 90.7 — Legal and compliance: contracts, policies, regulations, eligibility rules, checking documents against written requirements. 515 items (74 open, 441 sealed).
+Legal &
+compliance
+68.6
+·
+90.7
+Customer support: Jev 1.13.0: 49.6; kettei-fat: 61.8 — Customer support: classifying tickets and customer intents, urgency, refunds, routing cases to a team, checking support replies. 240 items (37 open, 203 sealed).
+Customer
+support
+49.6
+·
+61.8
+Other: Jev 1.13.0: 40.1; kettei-fat: 58.5 — Other: none of the above: general reasoning, arithmetic or date puzzles, everyday assistant requests without a business workflow. 174 items (24 open, 150 sealed).
+Other
+40.1
+·
+58.5
+E-commerce: Jev 1.13.0: 40.5; kettei-fat: 84.0 — E-commerce marketplaces: product listings, product attributes, orders and deliveries, seller catalog policy. 119 items (9 open, 110 sealed).
+E-commerce
+40.5
+·
+84.0
+Insurance claims: Jev 1.13.0: 46.1; kettei-fat: n=27 — too few completed items to plot — Insurance claims: first-notice-of-loss reports, claim complexity, missing information, claim triage. 119 items (9 open, 110 sealed).
+Insurance
+claims
+46.1
+·
+n=27
+Risk assessment: Jev 1.13.0: 32.8; kettei-fat: 80.7 — Risk assessment: estimating probabilities and severity of risks, incidents, vendor or underwriting risk. 118 items (8 open, 110 sealed).
+Risk
+assessment
+32.8
+·
+80.7
+Financial crime: Jev 1.13.0: 35.8; kettei-fat: 79.4 — Financial crime: suspicious transactions, KYC, fraud alerts, entity matching for investigations. 101 items (9 open, 92 sealed).
+Financial
+crime
+35.8
+·
+79.4
+Feature extraction: Jev 1.13.0: 28.3; kettei-fat: n=19 — too few completed items to plot — Feature extraction for predictive modeling: turning natural-language data into probabilistic features or estimates for a downstream prediction. 99 items (5 open, 94 sealed).
+Feature
+extraction
+28.3
+·
+n=19
+Lead generation: Jev 1.13.0: 49.2; kettei-fat: 88.2 — Lead generation: matching companies or inbound messages to an ideal customer profile, buyer intent, prioritising and routing sales leads. 95 items (4 open, 91 sealed).
+Lead
+generation
+49.2
+·
+88.2
+Recruiting: Jev 1.13.0: 0.0; kettei-fat: n=19 — too few completed items to plot — Recruiting: resumes, applications, interview feedback, matching candidates to roles. 94 items (1 open, 93 sealed).
+Recruiting
+0.0
+·
+n=19
+Knowledge graphs: Jev 1.13.0: 28.8; kettei-fat: n=22 — too few completed items to plot — Graphs and knowledge graphs: entity types, relationships between records, contradictions between facts, multi-step lookups across linked facts. 94 items (3 open, 91 sealed).
+Knowledge
+graphs
+28.8
+·
+n=22
+LLM guardrails: Jev 1.13.0: 68.0; kettei-fat: n=27 — too few completed items to plot — LLM guardrails: checking LLM inputs, outputs and tool calls: prompt injection, jailbreaks, policy violations, tool-call errors, answer quality. 93 items (5 open, 88 sealed).
+LLM
+guardrails
+68.0
+·
+n=27
+Moderation: Jev 1.13.0: 51.6; kettei-fat: 80.9 — Moderation and trust and safety: user content moderation: toxicity, harassment, spam, unsafe advice, personal data exposure. 93 items (7 open, 86 sealed).
+Moderation
+51.6
+·
+80.9
+Code linting: Jev 1.13.0: 29.1; kettei-fat: n=24 — too few completed items to plot — Semantic code linting: checking code or writing against conventions and guidelines, as in CI review of code. 90 items (3 open, 87 sealed).
+Code linting
+29.1
+·
+n=24
+Search & retrieval: Jev 1.13.0: 80.9; kettei-fat: n=24 — too few completed items to plot — Search and retrieval: scoring query-to-candidate relevance, reranking results, selecting useful context for RAG. 90 items (5 open, 85 sealed).
+Search &
+retrieval
+80.9
+·
+n=24
+Science: Jev 1.13.0: 21.2; kettei-fat: n=23 — too few completed items to plot — Scientific discovery: screening papers, labelling research passages or survey answers, checking that citations support claims, methodology checks. 90 items (2 open, 88 sealed).
+Science
+21.2
+·
+n=23
+Advertising: Jev 1.13.0: 16.4; kettei-fat: n=22 — too few completed items to plot — Advertising: ad creatives, campaign copy, brand safety, prohibited claims in ads. 88 items (3 open, 85 sealed).
+Advertising
+16.4
+·
+n=22
+Gaming: Jev 1.13.0: 5.1; kettei-fat: n=23 — too few completed items to plot — Gaming: player reports, in-game chat, game support. 86 items (3 open, 83 sealed).
+Gaming
+5.1
+·
+n=23
+Demand forecasting: Jev 1.13.0: 0.0; kettei-fat: n=17 — too few completed items to plot — Demand forecasting: purchase intent, product interest, demand and supply signals for forecasting. 83 items (3 open, 80 sealed).
+Demand
+forecasting
+0.0
+·
+n=17
+Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+Measured application-category competence on this release’s item set. Chance-corrected competence per category (0 = at or below chance; negative averages are reported as 0, 100 = perfect), Jev 1.13.0: S+P+L1+L2+L3; kettei-fat: S+P (draw v1.6-regular-20261012) items pooled; only categories with at least 30 items are spokes, smaller ones are listed below. Hover a category for its definition and item count.
+B (kettei-fat) is measured on 9 of 20 spokes only, so it is drawn as points, not a shape — measured on fewer items; full radar after the next re-measure
+.
+Gaps, not zeros:
+Open spokes (n/a or n=…) have fewer than 30 answered items for that system or no published value; hosted APIs answer a smaller item set, so more of their category cells stay under that.
+A point on the bold 0 ring printed 0.0 is a measured value, not a gap: these published cells clip below-chance results to 0, so 0 means at or below chance. Their score markers cannot fall inside that ring.
+Low sample, n <
+30
+— indicative only
+Category (items)
+A:
+Jev 1.13.0
+B:
+kettei-fat
+Insurance claims
+(
+119
+; a system answered fewer than 30
+)
+46.1
+n=
+119
+81.7
+n=
+27
+Feature extraction for predictive modeling
+(
+99
+; a system answered fewer than 30
+)
+28.3
+n=
+99
+47.9
+n=
+19
+Recruiting
+(
+94
+; a system answered fewer than 30
+)
+0.0
+n=
+94
+90.5
+n=
+19
+Graphs and knowledge graphs
+(
+94
+; a system answered fewer than 30
+)
+28.8
+n=
+94
+75.6
+n=
+22
+LLM guardrails
+(
+93
+; a system answered fewer than 30
+)
+68.0
+n=
+93
+82.9
+n=
+27
+Semantic code linting
+(
+90
+; a system answered fewer than 30
+)
+29.1
+n=
+90
+91.9
+n=
+24
+Search and retrieval
+(
+90
+; a system answered fewer than 30
+)
+80.9
+n=
+90
+98.4
+n=
+24
+Scientific discovery
+(
+90
+; a system answered fewer than 30
+)
+21.2
+n=
+90
+84.8
+n=
+23
+Advertising
+(
+88
+; a system answered fewer than 30
+)
+16.4
+n=
+88
+49.7
+n=
+22
+Gaming
+(
+86
+; a system answered fewer than 30
+)
+5.1
+n=
+86
+67.2
+n=
+23
+Demand forecasting
+(
+83
+; a system answered fewer than 30
+)
+0.0
+n=
+83
+14.7
+n=
+17
+Not drawn on the radar: with so few items a single answer moves a category score by several points, so these values are noise-prone. These values become spokes once the item pool reaches
+30
+items per category.
+What each category means · items per category
+Model routing
+—
+deciding which LLM or model tier should handle a prompt; classifying a request's intent, domain, difficulty or risk to pick a model
+.
+524
+items (
+86
+open
+/
+438
+sealed
+)
+Legal and compliance
+—
+contracts, policies, regulations, eligibility rules, checking documents against written requirements
+.
+515
+items (
+74
+open
+/
+441
+sealed
+)
+Customer support
+—
+classifying tickets and customer intents, urgency, refunds, routing cases to a team, checking support replies
+.
+240
+items (
+37
+open
+/
+203
+sealed
+)
+Other
+—
+none of the above: general reasoning, arithmetic or date puzzles, everyday assistant requests without a business workflow
+.
+174
+items (
+24
+open
+/
+150
+sealed
+)
+E-commerce marketplaces
+—
+product listings, product attributes, orders and deliveries, seller catalog policy
+.
+119
+items (
+9
+open
+/
+110
+sealed
+)
+Insurance claims
+—
+first-notice-of-loss reports, claim complexity, missing information, claim triage
+.
+119
+items (
+9
+open
+/
+110
+sealed
+)
+Risk assessment
+—
+estimating probabilities and severity of risks, incidents, vendor or underwriting risk
+.
+118
+items (
+8
+open
+/
+110
+sealed
+)
+Financial crime
+—
+suspicious transactions, KYC, fraud alerts, entity matching for investigations
+.
+101
+items (
+9
+open
+/
+92
+sealed
+)
+Feature extraction for predictive modeling
+—
+turning natural-language data into probabilistic features or estimates for a downstream prediction
+.
+99
+items (
+5
+open
+/
+94
+sealed
+)
+Lead generation
+—
+matching companies or inbound messages to an ideal customer profile, buyer intent, prioritising and routing sales leads
+.
+95
+items (
+4
+open
+/
+91
+sealed
+)
+Recruiting
+—
+resumes, applications, interview feedback, matching candidates to roles
+.
+94
+items (
+1
+open
+/
+93
+sealed
+)
+Graphs and knowledge graphs
+—
+entity types, relationships between records, contradictions between facts, multi-step lookups across linked facts
+.
+94
+items (
+3
+open
+/
+91
+sealed
+)
+LLM guardrails
+—
+checking LLM inputs, outputs and tool calls: prompt injection, jailbreaks, policy violations, tool-call errors, answer quality
+.
+93
+items (
+5
+open
+/
+88
+sealed
+)
+Moderation and trust and safety
+—
+user content moderation: toxicity, harassment, spam, unsafe advice, personal data exposure
+.
+93
+items (
+7
+open
+/
+86
+sealed
+)
+Semantic code linting
+—
+checking code or writing against conventions and guidelines, as in CI review of code
+.
+90
+items (
+3
+open
+/
+87
+sealed
+)
+Search and retrieval
+—
+scoring query-to-candidate relevance, reranking results, selecting useful context for RAG
+.
+90
+items (
+5
+open
+/
+85
+sealed
+)
+Scientific discovery
+—
+screening papers, labelling research passages or survey answers, checking that citations support claims, methodology checks
+.
+90
+items (
+2
+open
+/
+88
+sealed
+)
+Advertising
+—
+ad creatives, campaign copy, brand safety, prohibited claims in ads
+.
+88
+items (
+3
+open
+/
+85
+sealed
+)
+Gaming
+—
+player reports, in-game chat, game support
+.
+86
+items (
+3
+open
+/
+83
+sealed
+)
+Demand forecasting
+—
+purchase intent, product interest, demand and supply signals for forecasting
+.
+83
+items (
+3
+open
+/
+80
+sealed
+)
+Competence per request type, open / sealed
+Radar: competence per request type, open / sealed, two systems
+Competence per request type, open / sealed, Jev 1.13.0 vs kettei-fat. Choice · open: 79.0 vs 87.4; Choice · sealed: 75.8 vs 87.6; Noul · open: 54.5 vs 80.1; Noul · sealed: 46.1 vs 83.1; Score · open: 63.3 vs 71.1; Score · sealed: 63.0 vs 69.7. Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+−100
+0
+100
+Choice · open: Jev 1.13.0: 79.0; kettei-fat: 87.4
+Choice · open
+79.0
+·
+87.4
+Choice · sealed: Jev 1.13.0: 75.8; kettei-fat: 87.6
+Choice ·
+sealed
+75.8
+·
+87.6
+Noul · open: Jev 1.13.0: 54.5; kettei-fat: 80.1
+Noul · open
+54.5
+·
+80.1
+Noul · sealed: Jev 1.13.0: 46.1; kettei-fat: 83.1
+Noul · sealed
+46.1
+·
+83.1
+Score · open: Jev 1.13.0: 63.3; kettei-fat: 71.1
+Score · open
+63.3
+·
+71.1
+Score · sealed: Jev 1.13.0: 63.0; kettei-fat: 69.7
+Score ·
+sealed
+63.0
+·
+69.7
+Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+Chance-corrected competence for Choice, Noul and Score on the 300 open and 1200 sealed decisions.
+Competence per tier — open set
+Radar: competence per tier — open set, two systems
+Competence per tier — open set, Jev 1.13.0 vs kettei-fat. Easy: 93.9 vs 92.5; Standard: 63.2 vs 74.4; Judge: 67.7 vs 76.0; Hard: 65.6 vs 84.3. Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+−100
+0
+100
+Easy: Jev 1.13.0: 93.9; kettei-fat: 92.5
+Easy
+93.9
+·
+92.5
+Standard: Jev 1.13.0: 63.2; kettei-fat: 74.4
+Standard
+63.2
+·
+74.4
+Judge: Jev 1.13.0: 67.7; kettei-fat: 76.0
+Judge
+67.7
+·
+76.0
+Hard: Jev 1.13.0: 65.6; kettei-fat: 84.3
+Hard
+65.6
+·
+84.3
+Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+Per-tier competence, the three request types pooled by their published decision counts.
+Competence per tier — sealed set
+Radar: competence per tier — sealed set, two systems
+Competence per tier — sealed set, Jev 1.13.0 vs kettei-fat. Easy: 78.4 vs 95.3; Standard: 68.7 vs 83.3; Judge: 66.9 vs 85.7; Hard: 58.9 vs 75.3. Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+−100
+0
+100
+Easy: Jev 1.13.0: 78.4; kettei-fat: 95.3
+Easy
+78.4
+·
+95.3
+Standard: Jev 1.13.0: 68.7; kettei-fat: 83.3
+Standard
+68.7
+·
+83.3
+Judge: Jev 1.13.0: 66.9; kettei-fat: 85.7
+Judge
+66.9
+·
+85.7
+Hard: Jev 1.13.0: 58.9; kettei-fat: 75.3
+Hard
+58.9
+·
+75.3
+Linear signed scale: −100 at the centre, 0 on the bold middle ring, 100 at the rim.
+Per-tier competence on the sealed decisions, types pooled the same way; item text stays private.
+How the categories were made
+O1S chance-corrected competence: equal mean across the request types present, clipped to 0–100. Zero means the equal-weight mean across present request types was at or below baseline; negative means are clipped. It does not mean every type scored zero. Choice uses a random-option baseline; Noul uses a fixed 50% accuracy baseline (abstentions count as wrong); Score uses the midpoint-guess error (random-guess fallback when every gold is at the midpoint). Compare models within a category; row pools and supported types can differ.
+Categories use ruled subject-topic labels and authoring use-case precedence across the answered pool union, with stable item identities counted once.
+Official O1S; recorded failures count where supported; no missing response is imputed; stable identity dedupe parent first.
+S-based category cells pool recorded supported responses from S+P and the answered L1/L2/L3 supplements. API overlay category cells keep their separately recorded A4/A5+P union. Headline and per-type/tier scores are unchanged.
+All values as a table
+Spoke
+A:
+Jev 1.13.0
+B:
+kettei-fat
+The four score axes
+Intelligence
+63.6
+79.8
+Calibration
+90.6
+92.8
+Speed
+91.5
+93.2
+Cost
+54.7
+57.4
+Capability by subject topic
+Rules, policy & law
+49.4
+88.6
+Coding & software
+64.3
+86.5
+Math & numbers
+10.4
+68.7
+Finance & commerce
+40.9
+85.1
+Support & operations
+48.8
+64.2
+Everyday language
+77.5
+35.0
+Safety & security
+52.2
+83.7
+Use cases (TypeSafe categories)
+Model routing
+73.0
+86.9
+Legal & compliance
+68.6
+90.7
+Customer support
+49.6
+61.8
+Other
+40.1
+58.5
+E-commerce
+40.5
+84.0
+Insurance claims
+46.1
+n=27
+Risk assessment
+32.8
+80.7
+Financial crime
+35.8
+79.4
+Feature extraction
+28.3
+n=19
+Lead generation
+49.2
+88.2
+Recruiting
+0.0
+n=19
+Knowledge graphs
+28.8
+n=22
+LLM guardrails
+68.0
+n=27
+Moderation
+51.6
+80.9
+Code linting
+29.1
+n=24
+Search & retrieval
+80.9
+n=24
+Science
+21.2
+n=23
+Advertising
+16.4
+n=22
+Gaming
+5.1
+n=23
+Demand forecasting
+0.0
+n=17
+Competence per request type, open / sealed
+Choice · open
+79.0
+87.4
+Choice · sealed
+75.8
+87.6
+Noul · open
+54.5
+80.1
+Noul · sealed
+46.1
+83.1
+Score · open
+63.3
+71.1
+Score · sealed
+63.0
+69.7
+Competence per tier — open set
+Easy
+93.9
+92.5
+Standard
+63.2
+74.4
+Judge
+67.7
+76.0
+Hard
+65.6
+84.3
+Competence per tier — sealed set
+Easy
+78.4
+95.3
+Standard
+68.7
+83.3
+Judge
+66.9
+85.7
+Hard
+58.9
+75.3
+Category radars count each answered item once from the pools named under each radar. API overlay rows use
+A4+P+L1+L2+L3; A5+P+L1+L2+L3; S+P+L1+L2+L3
+. Raw and unequated; cells under
+15
+answered items are omitted. Per-type and tier radars retain each row's original measurement pools: A4/A5 rows have 300 open plus 300 sealed items; full-set rows have S
+1,200
+plus P
+300
+.
+Languages
+Raw chance-corrected competence per item language (0 = chance, 100 = perfect; can be negative), from each system's own measured items:
+Self-hosted rows use S 1,200 + P 300 + L1 (354 items) + L2 (33 items) + L3 (1,118 items), where answered. API rows re-run on A4/A5 use their 300/300-item sealed subset instead of S. Every row’s tag lists the pools it actually answered. L3 is a sealed language supplement (1,118 items), drawn 2026-10-07. Every language has at least 60 items in P ∪ L1 ∪ L2 ∪ L3. Header counts show the full S + P + L1 + L2 + L3 pool. Headline scores are unchanged; these raw cells are unequated, scored for language/category views only and outside the Composite. L3 items were written natively by Claude Sonnet 5.5, each solved blind and language-checked by GPT-6.1 Sol, with gold kept only when both agree or a second review confirms; no gold comes from Jev or any measured API. L3 is API-facing by design and is excluded from future headline draws. Rows with unfinished runs retain their actual coverage tags. L3 items were reviewed by an OpenAI model, so the L3-based language and category cells of OpenAI rows (OpenAI Decisions, GPT-6 Luna, GPT-5.6 Luna) carry that exposure; headline scores do not use L3. C1 adds English items for thin radar categories (everyday language, safety and the other use case). L4 adds 20 new Hindi items for Fastino GLiNER 2.5 Decide only. They were authored with OpenAI and independently solved and language-reviewed with Anthropic before sealing. Seventeen L4 requests succeeded; three HTTP 400 failures remain in the scored observations and do not count as completed coverage. L4 is outside headline and category scores and the common header counts. L5 adds 60 new items for OpenJev DeBERTa v3 Large only: 20 each in Arabic, Hindi and Greek. They were authored with OpenAI and independently solved and language-reviewed with Anthropic before sealing, then checked against the original 512-token native context before keeper selection. All 60 native requests succeeded. Previous failures remain scored and do not count as completed coverage. L5 is outside headline and category scores and the common header counts.
+Cells under
+15
+completed supported responses are left empty; recorded input refusals count toward coverage. A dagger (†) marks fewer than 30 completed responses. Competence retains all supported scored observations, including failures and refusals.
+The mixed-language group is listed first, then English (1,306 items); the other 21 languages and the mixed-language group share 1699 items.
+Filter systems
+Group
+All
+Open weights
+API
+Sort by
+Board order
+Name
+Average
+Mixed
+English
+Spanish
+Portuguese
+Polish
+German
+Danish
+Italian
+French
+Japanese
+Korean
+Swedish
+Turkish
+Czech
+Finnish
+Ukrainian
+Dutch
+Hindi
+Arabic
+Indonesian
+Chinese
+Norwegian
+Greek
+▼
+46
+systems
+JevBench v1.6.1 competence by item language and system
+System
+mixed
+78
+en
+1306
+es
+95
+pt
+90
+pl
+88
+de
+84
+da
+83
+it
+83
+fr
+80
+ja
+80
+ko
+77
+sv
+75
+tr
+75
+cs
+75
+fi
+73
+uk
+73
+nl
+72
+hi
+72
+ar
+71
+id
+71
+zh
+70
+no
+69
+el
+65
+kettei-fat
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+80
+90
+76
+†
+86
+87
+—
+81
+†
+—
+81
+†
+—
+—
+—
+—
+—
+—
+—
+79
+†
+86
+†
+—
+—
+—
+78
+†
+d1-ultra
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+70
+66
+86
+†
+67
+89
+—
+63
+†
+—
+24
+†
+—
+—
+—
+—
+—
+—
+—
+69
+†
+28
+†
+—
+—
+—
+44
+†
+Bespoke Nimble-v4-max
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+71
+70
+65
+†
+73
+82
+—
+71
+†
+—
+27
+†
+—
+—
+—
+—
+—
+—
+—
+34
+†
+59
+†
+—
+—
+—
+61
+†
+SubQ Snap
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+74
+68
+62
+†
+72
+84
+—
+67
+†
+—
+39
+†
+—
+—
+—
+—
+—
+—
+—
+51
+†
+61
+†
+—
+—
+—
+66
+†
+Sage 1.3.0
+API
+·
+S+P+L1+L2+L3
+80
+71
+48
+55
+42
+49
+44
+45
+57
+51
+36
+44
+43
+32
+26
+44
+51
+65
+62
+50
+59
+37
+43
+kettei-chub
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+62
+77
+63
+†
+61
+83
+—
+77
+†
+—
+49
+†
+—
+—
+—
+—
+—
+—
+—
+24
+†
+28
+†
+—
+—
+—
+72
+†
+d1
+API
+·
+S+P+L1+L2+L3
+80
+66
+32
+55
+34
+44
+33
+36
+64
+40
+28
+30
+41
+28
+14
+33
+27
+48
+51
+41
+47
+12
+32
+Mercury Decide
+API
+·
+S+P+L1+L2+L3
+· ⓘ
+Cells use S+P, L1, L2 and L3. L3 has 1,416 recorded observations on its 1,418 items: 1,412 answers, three input refusals and one rate-limit (429) error, an operational non-answer rather than an answer. The two missing records (a second spent 429 kept only as a transport failure, and one request stopped before sending) are not imputed; the normal 98% recorded-completeness gate applies without exception. Besides 868 original free-route records, L3 uses 447 retained and 101 newly issued paid decisions on the currently declared Inception Mercury Decide 2026-09-30 route. That route qualified on public items only: top labels agreed on 287 of 297 (96.63%), but probabilities differ (one bit-exact vector, maximum absolute difference 0.977543). Equality with the historically measured weights and calibrator, and with the original free responses, is unproven. Headline, rank and original row price are unchanged. L3 items were reviewed by an OpenAI model, so cells based on L3 carry that exposure.
+72
+69
+49
+50
+39
+65
+46
+44
+67
+52
+43
+42
+44
+34
+42
+58
+43
+60
+56
+40
+46
+38
+44
+Jev 1.13.0
+API
+·
+S+P+L1+L2+L3
+76
+68
+38
+44
+22
+48
+35
+34
+36
+36
+30
+15
+43
+11
+7
+34
+20
+36
+43
+23
+47
+19
+21
+Celeris-1 Decision
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+59
+59
+51
+†
+56
+88
+—
+72
+†
+—
+43
+†
+—
+—
+—
+—
+—
+—
+—
+52
+†
+11
+†
+—
+—
+—
+55
+†
+wity-1 (Wity, reasoning auto)
+API
+·
+S+P+L1+L2+L3
+83
+76
+59
+66
+31
+60
+36
+47
+38
+42
+49
+41
+47
+57
+37
+27
+55
+59
+59
+49
+49
+40
+32
+Jev 1.14.0
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+63
+73
+73
+†
+42
+75
+—
+51
+†
+—
+0
+†
+—
+—
+—
+—
+—
+—
+—
+39
+†
+0
+†
+—
+—
+—
+44
+†
+Microsoft-Decision-1
+API
+·
+S1200+P300+L1+L2+L3; full native Foundry union
+88
+57
+46
+59
+37
+51
+49
+45
+50
+55
+33
+42
+43
+39
+24
+38
+46
+34
+44
+57
+54
+33
+33
+Sage 1.4
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+67
+65
+73
+†
+65
+83
+—
+67
+†
+—
+39
+†
+—
+—
+—
+—
+—
+—
+—
+34
+†
+52
+†
+—
+—
+—
+61
+†
+attest-31B-v1.0
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+67
+67
+74
+†
+58
+89
+—
+53
+†
+—
+45
+†
+—
+—
+—
+—
+—
+—
+—
+82
+†
+26
+†
+—
+—
+—
+67
+†
+SPX-CD Flash
+API
+·
+S+P+L1+L2+L3
+78
+63
+38
+43
+36
+40
+27
+34
+49
+48
+31
+22
+30
+17
+8
+38
+24
+37
+51
+46
+50
+12
+29
+OpenAI Decisions
+API
+·
+A5+P+L1+L2+L3
+· ⓘ
+L3 items were reviewed by an OpenAI model, so the L3-based language and category cells of this row carry that exposure; headline scores do not use L3.
+76
+59
+36
+48
+41
+55
+27
+37
+43
+37
+24
+23
+46
+37
+30
+33
+27
+40
+33
+39
+37
+40
+25
+Instinct
+API
+·
+A4+P+L1+L2+L3
+67
+58
+22
+35
+32
+28
+27
+31
+52
+48
+20
+18
+34
+19
+23
+22
+39
+39
+39
+42
+43
+13
+7
+SPX-CD Pro
+API
+·
+S+P+L1+L2+L3
+82
+70
+44
+55
+37
+44
+53
+43
+62
+50
+35
+47
+41
+19
+22
+47
+37
+48
+54
+29
+52
+29
+47
+Bespoke Nimble-v4
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+42
+67
+51
+†
+39
+73
+—
+72
+†
+—
+15
+†
+—
+—
+—
+—
+—
+—
+—
+22
+†
+0
+†
+—
+—
+—
+33
+†
+Vansa-3.4
+API
+·
+A4+P+L1+L2+L3
+54
+47
+12
+42
+28
+17
+12
+10
+24
+43
+11
+0
+13
+19
+12
+9
+17
+26
+15
+33
+35
+0
+11
+GPT-6 Luna (low reasoning effort)
+API
+·
+A4+P+L1+L2+L3
+· ⓘ
+L3 items were reviewed by an OpenAI model, so the L3-based language and category cells of this row carry that exposure; headline scores do not use L3.
+97
+97
+91
+93
+91
+94
+100
+94
+100
+99
+98
+96
+96
+93
+96
+94
+97
+97
+100
+98
+98
+99
+97
+Autoloops – Gemma 4 31B IT
+API
+·
+A4+P+L1+L2+L3
+73
+67
+44
+50
+44
+56
+61
+42
+61
+60
+43
+48
+48
+48
+47
+60
+50
+55
+49
+45
+53
+41
+51
+GPT-6 Luna (default medium reasoning effort)
+API
+·
+A4+P+L1+L2+L3
+· ⓘ
+L3 items were reviewed by an OpenAI model, so the L3-based language and category cells of this row carry that exposure; headline scores do not use L3.
+97
+97
+98
+96
+91
+98
+100
+99
+99
+97
+98
+100
+96
+95
+98
+96
+97
+99
+95
+97
+100
+99
+96
+Amos 1 medium
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+35
+62
+71
+†
+46
+86
+—
+59
+†
+—
+40
+†
+—
+—
+—
+—
+—
+—
+—
+15
+†
+0
+†
+—
+—
+—
+15
+†
+Fastino GLiDE
+API
+·
+A4+P+L1+L2+L3
+69
+73
+40
+53
+29
+42
+43
+37
+71
+52
+43
+33
+43
+22
+33
+37
+56
+53
+47
+50
+47
+35
+40
+SimpleJev Qwen3.6-35B-A3B
+API
+·
+A4+P+L1+L2+L3
+65
+63
+37
+42
+26
+43
+30
+41
+53
+54
+24
+34
+44
+17
+22
+21
+34
+30
+20
+34
+42
+25
+20
+GPT-5.6 Luna
+API
+·
+A4+P+L1+L2+L3
+· ⓘ
+L3 items were reviewed by an OpenAI model, so the L3-based language and category cells of this row carry that exposure; headline scores do not use L3.
+96
+93
+86
+92
+84
+86
+92
+90
+87
+94
+90
+79
+93
+97
+94
+89
+87
+84
+85
+91
+89
+82
+91
+Amos 1 large
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+72
+71
+64
+†
+77
+84
+—
+68
+†
+—
+44
+†
+—
+—
+—
+—
+—
+—
+—
+62
+†
+62
+†
+—
+—
+—
+53
+†
+Instinct Dual 4B
+API
+·
+A4+P+L1+L2+L3
+36
+32
+12
+5
+0
+0
+0
+2
+7
+13
+2
+0
+0
+0
+0
+0
+11
+6
+12
+0
+15
+0
+0
+Gemini 3.1 Flash-Lite
+API
+·
+A4+P+L1+L2+L3
+84
+68
+42
+64
+57
+53
+58
+46
+63
+58
+42
+45
+55
+51
+27
+43
+40
+49
+35
+54
+54
+49
+44
+system-one-open
+API
+·
+A4+P+L1+L2+L3
+23
+31
+8
+14
+9
+11
+13
+16
+7
+16
+6
+0
+0
+0
+0
+0
+19
+10
+0
+2
+25
+0
+2
+openjev-sglang
+API
+·
+A4+P+L1+L2+L3
+60
+47
+20
+29
+19
+28
+0
+19
+24
+42
+19
+12
+12
+13
+9
+13
+32
+24
+14
+37
+28
+20
+0
+DeepSeek V4.1 Flash
+API
+·
+A4+P+L1+L2+L3
+97
+95
+94
+99
+92
+98
+99
+100
+100
+99
+98
+96
+100
+98
+100
+96
+98
+100
+100
+99
+100
+98
+100
+SimpleJev Qwen3.8-27B
+API
+·
+A4+P+L1+L2+L3
+70
+63
+28
+40
+38
+43
+33
+22
+54
+43
+23
+25
+34
+17
+31
+21
+44
+43
+37
+31
+55
+29
+27
+decision-machine-1
+API
+·
+A4+P+L1+L2+L3
+1
+0
+4
+0
+0
+0
+0
+0
+10
+0
+0
+0
+5
+0
+0
+0
+0
+0
+0
+4
+0
+0
+8
+JevAct
+API
+·
+A4+P+L1+L2+L3
+12
+0
+0
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+10
+0
+14
+0
+0
+Fastino GLiNER-2.5-Decide
+API
+·
+S+P+L1+L2+L3+L4
+11
+0
+0
+0
+0
+0
+0
+0
+0
+0
+8
+0
+0
+0
+0
+1
+0
+0
+0
+0
+0
+0
+0
+Qwen3.8 27B
+API
+·
+A4+P+L1+L2+L3
+100
+95
+95
+92
+93
+96
+99
+97
+100
+98
+98
+99
+100
+100
+100
+96
+96
+100
+99
+93
+100
+97
+100
+BB-Qwen3.5-4B-LoRA
+API
+·
+S+P+L1+L2+L3
+53
+41
+27
+19
+20
+15
+15
+16
+20
+13
+19
+0
+17
+0
+1
+0
+18
+15
+10
+22
+24
+1
+0
+wity-1 (Wity, reasoning always)
+API
+·
+S+P+L1+L2+L3
+75
+76
+57
+68
+32
+53
+41
+51
+52
+44
+34
+46
+27
+45
+43
+37
+50
+52
+64
+58
+46
+38
+23
+wity-1 (Wity, reasoning off)
+API
+·
+S+P+L1+L2+L3
+67
+52
+38
+48
+29
+36
+21
+26
+10
+13
+17
+14
+17
+17
+6
+11
+24
+30
+31
+33
+33
+26
+1
+Microsoft-Decision-1 (Azure Foundry) — A2 re-run
+API
+·
+A2+P (draw v1.6-regular-20261012)
+—
+59
+—
+—
+53
+†
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+Trio-Spark v1.3
+API
+·
+S+P (draw v1.6-regular-20261012)
+—
+29
+45
+60
+†
+13
+57
+—
+44
+†
+—
+0
+†
+—
+—
+—
+—
+—
+—
+—
+0
+†
+0
+†
+—
+—
+—
+22
+†
+Drex v1.5
+API
+·
+not measured
+· ⓘ
+Historical headline · language measurement pending
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+Wrappers (listed, never ranked)
+classifier.dev
+API
+·
+A4+P+L1+L2+L3
+73
+72
+23
+35
+36
+43
+34
+28
+33
+41
+23
+15
+35
+9
+18
+32
+25
+44
+44
+17
+51
+14
+34
+Intelligence gate and Noul decisiveness
+The Composite applies a soft gate below Intelligence 50 (× (I/50)²). Rows under it show their value with a "below gate" label. The decisive rate is the share of valid Noul answers with P(yes) ≥ 0.80 or ≤ 0.20 (for systems that return only a label, every valid label counts as decisive); only decisive answers count as answers. Accuracy among decisive answers is a diagnostic and does not enter any score.
+System
+Intelligence
+Choice
+Noul
+Score
+Noul decisive rate
+Accuracy among decisive
+kettei-fat
+79.8
+native
+native
+native
+95 %
+96 %
+d1-ultra
+69.7
+native
+native
+native
+86 %
+94 %
+Bespoke Nimble-v4-max
+68.2
+native
+native
+native
+78 %
+98 %
+SubQ Snap
+72.3
+native
+native
+native
+86 %
+95 %
+Sage 1.3.0
+65.6
+native
+native
+native
+83 %
+95 %
+kettei-chub
+62.2
+native
+native
+native
+87 %
+94 %
+d1
+62.1
+native
+native
+native
+83 %
+93 %
+Mercury Decide
+65.9
+native
+native
+native
+90 %
+90 %
+Jev 1.13.0
+63.6
+native
+native
+native
+79 %
+98 %
+Celeris-1 Decision
+58.9
+native
+native
+native
+79 %
+93 %
+wity-1
+70.3
+native
+native
+native
+91 %
+94 %
+Jev 1.14.0
+59.9
+native
+native
+native
+76 %
+95 %
+Microsoft-Decision-1
+57.2
+native
+native
+native
+77 %
+93 %
+Sage 1.4
+65.9
+native
+native
+native
+91 %
+91 %
+attest-31B-v1.0
+65.2
+native
+native
+native
+97 %
+88 %
+SPX-CD Flash
+58.4
+native
+native
+native
+81 %
+94 %
+OpenAI Decisions
+56.9
+—
+—
+—
+—
+—
+Instinct
+47.8
+below gate
+—
+—
+—
+—
+—
+SPX-CD Pro
+64.9
+native
+native
+native
+84 %
+95 %
+Bespoke Nimble-v4
+41.4
+below gate
+native
+native
+native
+57 %
+96 %
+Vansa-3.4
+40.9
+below gate
+—
+—
+—
+—
+—
+GPT-6 Luna
+96.6
+—
+—
+—
+—
+—
+Autoloops – Gemma 4 31B IT
+58.1
+—
+—
+—
+—
+—
+GPT-6 Luna
+96.9
+—
+—
+—
+—
+—
+Amos 1 medium
+38.4
+below gate
+native
+native
+native
+56 %
+97 %
+Fastino GLiDE
+66.1
+—
+—
+—
+—
+—
+SimpleJev Qwen3.6-35B-A3B
+56.3
+—
+—
+—
+—
+—
+GPT-5.6 Luna
+94.1
+—
+—
+—
+—
+—
+Amos 1 large
+69.7
+native
+native
+native
+85 %
+97 %
+Instinct Dual 4B
+28.3
+below gate
+—
+—
+—
+—
+—
+Gemini 3.1 Flash-Lite
+58.6
+—
+—
+—
+—
+—
+system-one-open
+27.9
+below gate
+—
+—
+—
+—
+—
+openjev-sglang
+38.8
+below gate
+—
+—
+—
+—
+—
+DeepSeek V4.1 Flash
+94.7
+—
+—
+—
+—
+—
+SimpleJev Qwen3.8-27B
+52.9
+—
+—
+—
+—
+—
+decision-machine-1
+13.1
+below gate
+—
+—
+—
+—
+—
+JevAct
+10.1
+below gate
+—
+—
+—
+—
+—
+Fastino GLiNER-2.5-Decide
+7.0
+below gate
+confidence
+confidence
+confidence
+100 %
+54 %
+Qwen3.8 27B
+96.4
+—
+—
+—
+—
+—
+Microsoft-Decision-1 (Azure Foundry) — A2 re-run
+59.2
+native
+native
+native
+not supported
+—
+All data (
+45
+systems)
+What a decision costs
+Every price here is US dollars per 1,000 decisions, not per 1,000 tokens.
+One decision is a whole typed request (state, rubric and options), not a single token.
+How costs are estimated
+Rows with a public tariff (per token or per request) are priced at that tariff times the tokens they used;
+16
+rows on this board carry
+one.
+Most rows keep their documented v1.5 cost per 1,000 decisions; each row's basis below and in its cost cell says how it was priced. We do not use per-minute GPU rental or our own CPU time
+; the GPU cost calculator on the main board shows that view separately
+.
+Price rules.
+Only public, bookable list prices that have been in effect for at least 30 days count; a manufacturer's standard, non-promotional launch list price counts from day one, and promotions, subsidies, credits and free tiers never do. A self-hosted open-weights row is never priced below its base model's market reference price; API offerings are ranked at their own list price. A system without any eligible price is listed as unpriced. A later price change triggers a re-score with a visible note on the row.
+kettei-fat
+:
+~
+$0.0263
+est.
+per 1,000 decisions.
+Sqwish public price list, USD 0.06/M input, output not billed (docs.sqwish.ai/guides/pricing, fetched 16 Oct 2026 16:17Z, saved copy sha256 698a29e5...): kettei fat at USD 0.06 per million input tokens for decisions.
+d1-ultra
+:
+~
+$0.0181
+est.
+per 1,000 decisions.
+Liquid AI public price list, USD 0.042/M input, output free (fetched 16 Oct 2026): the models table of Liquid's public pricing page lists d1-ultra at USD 0.042 per 1M input tokens and USD 0.00 per 1M output tokens (sa…
+Bespoke Nimble-v4-max
+:
+~
+$0.0204
+est.
+per 1,000 decisions.
+Bespoke Labs public list price, USD 0.04/M input, output free: Bespoke's Nimble pricing page (docs.bespokelabs.ai/nimble/pricing) says "Nimble charges for input tokens only.
+SubQ Snap
+:
+~
+$0.0257
+est.
+per 1,000 decisions.
+Operator's own published standard usage tariff: USD 0.05 per 1M INPUT tokens with no output billing.
+Sage 1.3.0
+:
+~
+$0.0247
+est.
+per 1,000 decisions.
+Levanto list tariff, top tier: USD 0.05 per 1M input tokens, USD 10 per 1M output tokens
+kettei-chub
+:
+~
+$0.0175
+est.
+per 1,000 decisions.
+Sqwish public price list, USD 0.04/M input, output not billed (docs.sqwish.ai/guides/pricing, fetched 16 Oct 2026 16:17Z, saved copy sha256 698a29e5...): kettei chub at USD 0.04 per million input tokens for decisions.
+Mercury Decide
+:
+~
+$0.0184
+est.
+per 1,000 decisions.
+LABELLED ESTIMATE, not charged - and nothing WAS charged: usage.cost is 0 on every one of the 1,500 calls.
+Celeris-1 Decision
+:
+~
+$0.0209
+est.
+per 1,000 decisions.
+Celeris public price, USD 0.04/M input, output free (celeris.ai/pricing, fetched 16 Oct 2026 19:27Z, saved copy sha256 c3ed0fdc....
+Jev 1.14.0
+:
+~
+$0.0321
+est.
+per 1,000 decisions.
+TypeSafe AI public list price, USD 0.042/M input, output free: the "Current models" table of TypeSafe's models page (docs.typesafe.ai/models, fetched 16 Oct 2026 22:37:44Z, saved copy sha256 936da179...) lists jev-1.1…
+Sage 1.4
+:
+~
+$0.0224
+est.
+per 1,000 decisions.
+Levanto Labs public list price, USD 0.05/M input, USD 10/M output (fetched 16 Oct 2026): Levanto's public pricing page lists Input USD 0.05 per 1M tokens on its Free and Developer plans (USD 0.046, 0.042 and 0.038 onl…
+attest-31B-v1.0
+:
+~
+$0.0439
+est.
+per 1,000 decisions.
+ESTIMATE, v1.5-M2 base-model reference rule: vendor-hosted API, customer list price USD 0.048/M input and USD 0.00/M output effective 2026-10-11 has been in force fewer than 30 days.
+SPX-CD Flash
+:
+~
+$0.0395
+est.
+per 1,000 decisions.
+Operator's own public-beta overage tariff, conservative reading USD 0.04 per 1M input tokens, output USD 0 (the provider's /v1/models payload reports output_price "0"): three dated primary readings of the operator's o…
+SPX-CD Pro
+:
+~
+$0.0790
+est.
+per 1,000 decisions.
+Operator's own public-beta overage tariff, conservative reading USD 0.08 per 1M input tokens, output USD 0: three dated primary readings of the operator's own published overage tariff: 24 Sep 2026 provider console (fl…
+Bespoke Nimble-v4
+:
+~
+$0.0204
+est.
+per 1,000 decisions.
+Bespoke Labs public list price, USD 0.04/M input, output free (fetched 16 Oct 2026): Bespoke's Nimble pricing page (docs.bespokelabs.ai/nimble/pricing, saved copy sha256 03b06261...) says "Nimble charges for input tok…
+Amos 1 medium
+:
+~
+$0.0511
+est.
+per 1,000 decisions.
+ESTIMATE (*est.), exact base-model market reference from the frozen 25 Sep 2026 snapshot (pricing_v15 sha256 dae86740...): qwen/qwen3.5-9b USD 0.09999999999999999/M input, USD 0.15/M output, x the provider-reported in…
+SimpleJev Qwen3.6-35B-A3B
+:
+~
+$0.1451
+est.
+per 1,000 decisions.
+v1.5.4 published cost per 1,000 decisions carried (pricing rules unchanged.
+Amos 1 large
+:
+~
+$0.2146
+est.
+per 1,000 decisions.
+ESTIMATE (*est.), exact base-model market reference from the frozen 25 Sep 2026 snapshot (pricing_v15 sha256 dae86740...): qwen/qwen3.8-27b USD 0.42/M input, USD 3.0/M output, x the provider-reported input tokens.
+system-one-open
+:
+~
+$0.0114
+est.
+per 1,000 decisions.
+v1.5.4 published cost per 1,000 decisions carried (pricing rules unchanged.
+openjev-sglang
+:
+~
+$0.1398
+est.
+per 1,000 decisions.
+v1.5.4 published cost per 1,000 decisions carried (pricing rules unchanged.
+SimpleJev Qwen3.8-27B
+:
+~
+$0.6868
+est.
+per 1,000 decisions.
+v1.5.4 published cost per 1,000 decisions carried (pricing rules unchanged.
+JevAct
+:
+~
+$0.0112
+est.
+per 1,000 decisions.
+v1.5.4 published cost per 1,000 decisions carried (pricing rules unchanged.
+Fastino GLiNER-2.5-Decide
+:
+~
+$0.0640
+est.
+per 1,000 decisions.
+ESTIMATE: published Fastino sources conflict (USD 0.03/M vs 0.15/M input).
+Qwen3.8 27B
+:
+~
+$2.1784
+est.
+per 1,000 decisions.
+v1.5.4 published cost per 1,000 decisions carried (pricing rules unchanged.
+Loading context-length views…
+Not yet measured on v1.6 ·
+1 systems
+with a dated carried score
+Every ranked system of the live v1.5.7 board that is not measured on the v1.6.0 pool keeps its last published score, marked with the release that first published that measurement and that release's publication day. Carried rows are listed separately and never ranked together with v1.6-measured rows.
+v1.5 protocol (1,624 decisions: 904 open + 720 sealed); scores are on the v1.5 scale and are not comparable with v1.6-measured rows.
+Dates:
+v1.5.4 published 2026-09-29 (1)
+. The date is the publication day of the release that first published the measurement, not a per-model measurement timestamp.
+Carried JevBench v1.5.x results, not ranked with v1.6 measurements
+System
+Measured on
+Capability (v1.5 scale)
+v1.5 Composite
+Cost / 1,000
+Median latency
+Drex v1.5
+Hosted API (Nace.ai). Measured 2 Oct 2026 on the v1.5.4 method, 1,624 of 1,624 decisions answered; no public weights or repository are listed, so no source link is shown. Dated v1.5-scale score, not comparable with v1.6-measured rows and never ranked with them.
+measured on 2026-10-02 (v1.5.4 method)
+74.2
+72.2
+$0.0234
+public
+0.25 s
+* Self-hosted rows: the first value is the p50 we measured on our own hardware over loopback (on-GPU, or on-CPU where marked, no network). It is not directly comparable with API latency, which we time end to end from our measuring host, network included. “est.” is the
+est. incl. network (2x + 150 ms)
+that the ranking and the latency cap use for every self-hosted row. Model authors can ask us to time a hosted endpoint instead (on request).
+How it works
+One merged board: how newer draws join it
+Each system appears once, with its latest valid measurement; earlier systems are not re-measured. The reference scale is
+v1.6.1
+(draw
+v1.6.0
+).
+Every draw shares the same 300 public items (P, manifest 6b2321f8...). A fresh draw is equated to the reference draw with fixed anchor systems measured on both draws: offset = median over anchors of (metric on the reference S u P) - (metric on the new draw S u P), for Intelligence and Calibration, with a bootstrap 95% interval over anchors and items. A row from that draw is shown as published plus the offset; Capability and Composite follow from the equated axes. Until the anchor runs of a draw are complete its offset is 0 and the draw is marked 'anchor runs pending'.
+Draw
+Drawn
+Releases
+Anchor offset (Intelligence / Calibration)
+Status
+v1.6.0
+(reference)
+2026-10-01
+v1.6.0, v1.6.1
+0 / 0
+reference scale · G_med
+2.57
+Fast-lane draw
+·
+v1.6-fastlane-20261009
+2026-10-09
+v1.6.2, v1.6.3, v1.6.4
++0.00
+/
++0.00
+anchor runs pending: shown as published
+Regular draw
+·
+v1.6-regular-20261010-a2
+2026-10-10
+v1.6.5, v1.6.6, v1.6.7, v1.6.8, v1.6.9
++0.00
+/
++0.00
+anchor runs pending: shown as published
+Second regular draw
+·
+v1.6-regular-20261012
+2026-10-12
+v1.6.10, v1.6.11, v1.6.12, v1.6.13, v1.6.14, v1.6.15, v1.6.16, v1.6.17, v1.6.18, v1.6.20, v1.6.21, v1.6.22, v1.6.23, v1.6.24, v1.6.25, v1.6.26, v1.6.27, v1.6.28, v1.6.29, v1.6.30, v1.6.31, v1.6.32, v1.6.33, v1.6.34, v1.6.35
++0.00
+/
++0.00
+anchor runs pending: shown as published
+Anchor pool:
+hopper, kev-0.6b, kev-4b, kev-8b, localjev-qwen3.5-4b, malkuth-4b, metask-jev-4b, raw-phi-4-mini, raw-qwen3-1.7b, raw-qwen3-4b-instruct-2507, raw-qwen3-8b, typecastlm
+.
+The same 12 anchors answered two sealed draws of v1.6.0 (S and the A2 supplement): median difference -0.29 Intelligence and +1.56 Calibration points (v1.6.1 results, v16.equating_A2).
+On the shared public items, systems on both new draws score 6 to 13 sealed points below the reference field's sealed-vs-public line (reference residual SD 3.8). Either the new sealed draws are harder or their cohorts are tuned on the public items; only anchor runs can separate the two. Until then their rows are, if anything, understated.
+Rows from a newer draw keep the gap-penalty reference (G_med) their release was scored with; the row tooltip and tag name the draw and date. Their topic, use-case and language cells use their own draw’s item set and labels, so they are shown on their release page (linked from the draw tag in Release history), not in the radars and language table here.
+Open weights and API offerings (board
+v1.7.46
+)
+Why open weights and APIs are compared in separate groups
+Fair cost and speed.
+We run every open-weights model on hardware we rent and operate, so cost and latency compare on the same terms. The GPU cost calculator prices your own setup: own hardware, on-demand or long-term rental.
+API prices can change.
+An API price is the vendor's decision. It can be subsidised (for example on top-end GPUs) and raised later, and readers cannot reproduce it.
+Different fairness needs.
+A hosted endpoint chooses its own hardware and sees the benchmark inputs, so API offerings are compared with each other.
+Open-source focus.
+JevBench exists to make open decision models comparable and reproducible. Every score and the method are identical in every view; the All view ranks both groups together by Capability.
+The main board at /jev-models
+ranks
+open-weights systems
+: published weights that we ran ourselves, on GPU or CPU machines we rent and operate. A system we measured through an endpoint we do not run (vendor API, author-hosted or third-party-hosted endpoint, for example Qwen3.8 27B via Chutes) is an
+API offering
+, even when its base weights are open; API offerings are ranked on
+this board
+.
+Why separate boards: open weights can be compared on equal hosting terms, while an API price is a vendor decision that can be subsidised or raised later and is not reproducible by readers. Every score and measurement is the same on both boards; only the set of ranked rows differs, and ranks are the published order filtered to that set.
+Jev 1.13.0 is a hosted API. It stays on the open-weights board as the
+reference row
+(it defines the Jev-class cost and latency caps) and is not ranked there; it is ranked on the API leaderboard. Since v1.6.30 the board also shows Jev 1.14.0, TypeSafe's current version, as a second unranked reference row for comparison (display only; it is ranked on the API leaderboard and does not define any cap).
+Official cost basis is unchanged: the Cost axis keeps each row's documented reference price (see the cost notes below; APIs with a known base model are priced at the developer's own list price). The base-model reference price only applies to open-weights rows; API offerings are ranked at their own list price
+on this board
+.
+The GPU cost calculator on the main board
+is a What-If for your own hosting and never changes a score or rank.
+Full API re-run (A4, v1.7.7).
+Most offerings on this board
+were measured on 6 Oct 2026 on a fresh sealed API set A4 (300 never-used sealed items) plus the same 300 public items every system answers, and equated to the v1.6.1 S ∪ P scale with the published A2/A3 supplement method (offset
++
+2.57
+Intelligence, +
+3.35
+Calibration; pool of
+8
+ranked self-hosted systems re-run on A4 ∪ P). Jev, Sage, wity-1 and Fastino GLiNER-2.5-Decide keep their full-set S ∪ P scores; Liquid AI d1 answered the full S ∪ P set on 6 Oct 2026 (v1.7.8) and is scored like them, without equating. The pool is mid-strength, so for the strongest LLM rows the offset is an extrapolation (likely within ±2 Intelligence points; the 95% intervals include it). Cost rule (v1.6.1, generalised in v1.6.30):
+On every draw, very long items that a ranked row refuses because they exceed its context length are left out of cost for all rows: cost per 1,000 decisions is computed on the same remaining items for every row. A refused item still counts as a wrong answer for Intelligence.
+On A4 ∪ P this left out nine items of about 77,000–82,000 input tokens.
+First published as the v1.6.1 cost rule (5 Oct 2026; 23 items on that draw). From v1.6.30 it applies to draw v1.6-regular-20261012: the 15 items the Jev reference refused with max_tokens_exceeded are left out and 1,485 remain. Rows of draw v1.6-regular-20261010-a2 still show the all-items cost they were published with until a following release re-costs them under this rule.
+Rows without a public tariff keep their documented v1.5 cost estimate. A4 is now retired for everyone.
+OpenAI Decisions (gpt-6-luna) ran later on the fresh sealed API set A5 ∪ P (600 items; A4 had already been sent to that provider) and is equated the same way with A5's own offsets (+5.78 Intelligence, +6.15 Calibration, same pool).
+Language and use-case cells (v1.7.12).
+These breakdowns add two sealed supplements (354 language items, 33 use-case items, drawn and reviewed on 6 Oct 2026), so every language and use case has at least 30 items. Headline scores are unchanged; rows not yet run on the supplements are tagged S+P in the language table.
+Every API offering we reached is measured on v1.6.1: either on the full 1,500-item set or on A4 ∪ P (600 items, equated). No preliminary public-set rows remain.
+Revision history
+v1.7.46
+(
+2026-10-11
+):
+Display: the measured value of self-hosted rows is now tagged “on-GPU, no network” (or CPU) and marked as not directly comparable with API latency, which is timed end to end from our measuring host. The method notes describe a planned calibration of the 2× + 150 ms assumption against real end-to-end timings. No score or rank changed.
+v1.7.45
+(
+2026-10-11
+):
+Display: self-hosted rows now show the measured p50 next to the network-including estimate (2× measured + 150 ms), which the ranking continues to use. No score or rank changed.
+v1.7.44
+(
+2026-10-10
+):
+Display only: the Pareto charts get the same “Show models that don’t qualify as Jev-class” switch as the scatter charts (off by default, so the frontier is drawn over Jev-class systems), expand to fullscreen, and share the highlighted system with the scatter charts (hover or tap one system and it is marked in all four charts). No score or rank changed.
+v1.7.43
+(
+2026-10-10
+):
+Display only: a Pareto frontier section after the two scatter charts on both boards — Capability against cost per 1,000 decisions and against median latency (log axes; list price and measured endpoint latency on the API board). The red line joins the systems no other system beats on both axes. No score or rank changed.
+v1.7.42
+(
+2026-10-10
+):
+One merged board. The version tabs are gone: /jev-models is always the current board with every system’s latest measurement, and releases are listed under Release history (old version pages keep their URLs). The 16 systems measured on the two fresh draws after v1.6.1 (fast-lane draw v1.6.2–v1.6.4, regular draw v1.6.5–v1.6.7) join the boards with their published scores and a draw tag; each draw is put on the v1.6.1 scale by an anchor offset that stays 0 until the anchor systems have run on it (see How it works). A filter on top switches between Open weights, API and All (both groups, ranked by Capability). Header text is shortened; the details moved into How it works. Jeff 1.0 Large (fast-lane draw) enters the open-weights Capability top 5 at #2.
+v1.7.41
+(
+2026-10-10
+):
+Needle 3 now has language and category cells on the current pools. It keeps its published v1.5 headline. With the benchmark owner's approval its closed engine was sent all supplement items (L1, L2, L3) once more on an isolated machine, plus 128 never-asked S+P items chosen by their use-case label to complete the last radar spoke (these also count in the other cells, so its S+P part is not a random sample); together with an earlier partial run both radars reach at least 30 answered items per spoke (52 per subject topic, 43 per use case). The engine abstains on about 30 % of items and returns invalid UTF-8 on about 7 %; both count as unanswered, so 22 languages stay below the 60-item target (19 to 59 answered items). Its answers to the same public items differ between machines on about 10 %. Its chance-corrected competence is below zero in every cell, shown as 0. The v1.7.40 note for Needle 3 (options as tools) is corrected the same way. L3 items were reviewed by an OpenAI model, so cells based on L3 carry that exposure; headline scores do not use L3. Headline scores, Capability, Composite, ranks and pricing are unchanged.
+v1.7.40
+(
+2026-10-10
+):
+Needle 3, options as tools, now has language and category cells on the current pools. It keeps its published v1.5 headline. With the benchmark owner's approval its closed engine ran once more on an isolated machine; the run covered most of L3 and half of L1 before the machine's time limit and is combined with an earlier partial run. Both radars are complete (at least 58 per subject topic and 43 per use case). The engine abstains on about 9 % of items and returns invalid UTF-8 on about 7 % (mostly non-Latin scripts); both count as unanswered, so 18 languages stay below the 60-item target (24 to 59 answered items; columns under 30 carry the low-n mark). Its chance-corrected competence is below zero in every cell, shown as 0. ClassOne Gemma 4 E2B keeps its exception with a corrected reason: its weights were identical, but its server gives different answers after each restart. L3 items were reviewed by an OpenAI model, so cells based on L3 carry that exposure; headline scores do not use L3. Headline scores, Capability, Composite, ranks and pricing are unchanged.
+v1.7.39
+(
+2026-10-10
+):
+GLiNER2 large now has language and category cells on the current pools: at least 62 completed responses in every language, 98 in every subject topic and 80 in every use case. It keeps its published v1.5 headline; the cells come from a new run with the original pinned model on an isolated machine. GLiNER2 gained 180 more answered items that had been reserved earlier but never sent: its languages now rest on 50 to 59 answered items where they are below the 60-item target (17 of 23), and its radars on at least 69 per topic and 56 per use case. L3 items were reviewed by an OpenAI model, so cells based on L3 carry that exposure; headline scores do not use L3. Headline scores, Capability, Composite, ranks and pricing are unchanged.
+v1.7.38
+(
+2026-10-10
+):
+Three more historical rows now have language and category cells on the current pools: reflex-27b, Surogate Rune 26B-A4B v3 (RTX PRO 6000) and jeff. They keep their published v1.5 headlines. reflex-27b completed its partly answered S+P set and the supplements; Surogate Rune adds the supplements to its 6 October S+P run; jeff (CPU) answered all pools. Their repeated answers to the 300 public items agree 100 %. Each row has at least 65 completed responses in every language, 109 in every subject topic and 83 in every use case. L3 items were reviewed by an OpenAI model, so cells based on L3 carry that exposure; headline scores do not use L3. Headline scores, Capability, Composite, ranks and pricing are unchanged.
+v1.7.37
+(
+2026-10-10
+):
+Three more historical rows now have language and category cells on the current pools: Von, GLiNER2 and GLiNER2.5 multi. They keep their published v1.5 headlines; the cells come from new runs with the original pinned model and setup on isolated machines. Von and GLiNER2.5 multi reach at least 61 completed responses in every language, 100 in every subject topic and 80 in every use case. GLiNER2 fills both radars (at least 57 per topic, 45 per use case) and every language column, but about 1,000 of its issued items were lost to out-of-memory kills and a machine shutdown; they stay counted as spent, so 22 languages rest on 42 to 59 answered items, below the 60-item target. Three rows that cannot be measured now give the concrete reason: Aplomb 1 (pinned revision deleted upstream), ClassOne Gemma 4 E2B (re-run did not reproduce its original answers) and swanOne (weights return HTTP 401). L3 items were reviewed by an OpenAI model, so cells based on L3 carry that exposure; headline scores do not use L3. Headline scores, Capability, Composite, ranks and pricing are unchanged.
+v1.7.36
+(
+2026-10-10
+):
+Nine more rows now cover S+P+L1+L2+L3 in the language table and both radars: Diffusion Jev, SPX-CD-Omni, Seb-9B, APUS-OpenJev-v1-9B, APUS-OpenJev-v1-35B-A3B, Jobe Qwen3.5-4B, AutoJev-27B (RTX PRO 6000), NInfer Qwen3.8-27B NVFP4 (T=1.5) and OpenJev (DiffusionGemma 26B-A4B NVFP4, razorback16). The last four are historical rows: they keep their published v1.5 headlines, and their language and category cells come from a new run on the current pools with the original pinned model and serving setup. Diffusion Jev, SPX-CD-Omni, Seb-9B and both APUS rows match their original public answers on at least 97 %. The razorback16 OpenJev model samples stochastically, so its repeated passes agree on 86 to 89 % of the public items; its note says so. Every row has at least 65 completed responses in every language, 109 in every subject topic and 83 in every use case. L3 items were reviewed by an OpenAI model, so cells based on L3 carry that exposure; headline scores do not use L3. Headline scores, Capability, Composite, ranks and pricing are unchanged.
+v1.7.35
+(
+2026-10-10
+):
+Seven more rows now cover S+P+L1+L2+L3 in the language table and both radars: René-1 31B FP8, decisio v0.8.0 on gemma-4-12B-it, Hopper 12B trained, decider-12b v2, decider-12b v1, Bobcat Flash 1.2 and Mica v0.1 4B. Each answered all 1,505 supplemental items with its original pinned model and serving setup on an isolated machine; answers to the 300 public items match the original runs (at least 99 %). Mica keeps its published v1.5 headline; its language and category cells come from a new run on the current pools. Every row has at least 65 completed responses in every language, 109 in every subject topic and 83 in every use case. The language table now lists the mixed-language group first. L3 items were reviewed by an OpenAI model, so cells based on L3 carry that exposure; headline scores do not use L3. Headline scores, Capability, Composite, ranks and pricing are unchanged.
+v1.7.34
+(
+2026-10-10
+):
+Seven more self-hosted rows now cover S+P+L1+L2+L3 in the language table and both radars: TypeCastLM 1.4.0, CoCo-Decision-4B, ClassOne Qwen 3.5 9B, EXAONE-4.0-1.2B-JEV v0.3, jul fast, WaterSheep and Tacet Sonata. Each answered all 1,505 supplemental items with its original pinned model and serving setup on an isolated machine; their answers to the 300 public items match the original runs (at least 97 %). Every row has at least 65 completed responses in every language, 109 in every subject topic and 83 in every use case. Long-input refusals stay scored as before. L3 items were reviewed by an OpenAI model, so cells based on L3 carry that exposure; headline scores do not use L3. Headline scores, Capability, Composite, ranks and pricing are unchanged.
+v1.7.33
+(
+2026-10-10
+):
+Messier One v0.2 now covers S+P+L1+L2+L3, with all 1,505 supplemental items answered natively on the original image with the network disabled: at least 65 completed responses in every language, 109 in every subject topic and 83 in every use case. The original P300 answers recur in each supplement and count once; the original S+P measurement had no HTTP errors. L3 items were reviewed by an OpenAI model, so cells based on L3 carry that exposure; headline scores do not use L3. Headline scores, Capability, Composite, ranks and original row pricing are unchanged.
+v1.7.31
+(
+2026-10-10
+):
+Microsoft-Decision-1 joins the hosted API board after a native Azure Foundry measurement on 1,200 sealed plus 300 public observations: Capability 70.78, Calibration 84.40 and Composite A 69.11. Its 21 context-limit failures remain in the scored denominator. Native median latency is 459 ms on the 124-request speed subset. This new full-set O1S run uses its completed-field median gap reference of 7.088 score points; historical rows retain their own dates, pools and references rather than being remeasured or converted. The existing top five on Composite A and capped Capability are unchanged. All 50 topic/use-case/language cells are recorded; thin cells stay suppressed or table-only, and qualified supplemental coverage remains pending.
+v1.7.30
+(
+2026-10-10
+):
+decisio v0.8.0 on gemma-4-31B-it now covers S+P+L1+L2+L3, with all 1,505 supplemental items answered natively: at least 65 completed responses in every language, 109 in every subject topic and 83 in every use case. The original P300 answers recur in each supplement and count once. The original 23 HTTP 500 errors remain operational non-answers and are not imputed. L3 items were reviewed by an OpenAI model, so its cells based on L3 carry that exposure; this row is the original locally served Gemma offering. Headline scores, Composite, ranks and original row pricing are unchanged.
+v1.7.29
+(
+2026-10-09
+):
+Mercury Decide now has at least 64 completed observations in every language, 109 in every subject topic and 83 in every use case, using S+P+L1+L2+L3. L3 retains 1,416 records on its full 1,418-item denominator, including original refusals and operational failures; two spent failures remain missing. Paid supplemental decisions use the currently declared Inception 2026-09-30 offering and the original native protocol. Public top labels agree on 96.63%, with differing probabilities and unproven historical weights/calibrator equality; the row coverage note gives the comparison. Headline scores, Composite, ranks and original row pricing are unchanged.
+v1.7.28
+(
+2026-10-09
+):
+GLiNER 2.5 Small now covers P300 + L1 + L2 + L3 with 1,802 completed native responses: at least 60 in each of 23 languages, 78 in every subject topic and 52 in every use case. Its original offline CPU/fp32 profile is unchanged. Three earlier public-item OOM outcomes remain missing and contribute no completed coverage; no requests were replayed. These cells exclude historical S answers and stay outside headline scores. Headline scores, Capability, Composite and every rank are unchanged.
+v1.7.27
+(
+2026-10-09
+):
+OpenJev DeBERTa v3 Large adds 60 new L5 items: 20 each in Arabic, Hindi and Greek. It now has at least 63 completed responses in every language (Arabic 70, Hindi 73, Greek 69). The original native context was checked before keeper selection; all 60 requests succeeded, and earlier failures remain scored. Other rows and category views retain their existing measurements. Headline scores, Capability, Composite and every rank are unchanged.
+v1.7.26
+(
+2026-10-08
+):
+BB-Qwen3.5-4B-LoRA now covers S+P+L1+L2+L3, with at least 65 completed responses in each of 23 languages and at least 83 on every capability and use-case spoke. Two DNS failures remain scored and do not count toward completed coverage. Its reference cost stays unknown; these view values do not impute a price. OpenJev DeBERTa v3 Large now includes its completed L1/L2 runs; Arabic (50), Hindi (53) and Greek (49) still need more completed responses. Headline scores, Capability, Composite and every rank are unchanged.
+v1.7.25
+(
+2026-10-08
+):
+Watt Flash 0.1 and OpenJev Verdict completed their language supplements. Both now cover S+P+L1+L2+L3, with at least 65 completed responses in each of 23 languages and at least 83 in each capability and use-case category. Other rows retain their existing measurements, including Fastino’s Hindi L4 supplement. Headline scores, Capability, Composite and every rank are unchanged.
+v1.7.24
+(
+2026-10-08
+):
+Fastino GLiNER 2.5 Decide now has 69 completed Hindi responses after a new 20-item Hindi supplement. Seventeen requests succeeded; three HTTP 400 failures remain scored and do not count toward completed coverage. L4 is used only for this offering’s Hindi language cell, with OpenAI author and independent Anthropic reviewer provenance disclosed. The mghafiri Qwen3.5 0.8B row also completed L3, expanding its language and category cells. Headline scores, Capability, Composite and every rank are unchanged.
+v1.7.23
+(
+2026-10-08
+):
+The Languages table includes every listed model, including historical and catalogue entries. These rows use their stored language measurements where available and show pending cells where measurements are unfinished. Historical headline scores are not used as language values. Headline scores, Capability, Composite and every rank are unchanged.
+v1.7.22
+(
+2026-10-08
+):
+Languages and radars now include completed L1/L2/L3 runs for SPX CD Flash, SPX CD Pro and Decisio Gemma 4 12B v0.9. Coverage counts completed supported responses and recorded input refusals; authentication, rate-limit, service and transport errors do not satisfy reporting thresholds. Competence keeps its original scored observations. 2 listed rows still have incomplete radar coverage and show the reason. Every listed row remains in the completion check. Headline scores, Capability, Composite and every rank are unchanged.
+v1.7.21
+(
+2026-10-08
+):
+Languages and radars: more rows completed their L1/L2/L3 supplement runs, among them Instinct (its API is back), Surogate Rune 26B-A4B v3, Xor 26B-A4B, JADE, Jebadiah 27B, Kev 27B, Decision 2.0 Vega 27B and the self-hosted SimpleJev Qwen3.8-27B. 2 rows still show a reason instead of a full radar: newly listed rows whose supplement runs are not done yet, rows not measured on this item pool, and one model whose pinned weights could not be accessed. Headline scores, Capability, Composite and every rank are unchanged.
+v1.7.20
+(
+2026-10-08
+):
+Correction and progress for the language and radar views. The self-hosted row SimpleJev Qwen3.8-27B wrongly counted the hosted SimpleJev API row's L1/L2/L3 supplement answers in its language and category cells (v1.7.18 and v1.7.19), because both share a file name. Its cells now use only its own S + P answers until its own supplement runs finish, and the cell builder no longer lets a hosted-API run count for a self-hosted row. More open-weights rows completed their L1/L2/L3 runs. 2 rows still show a reason instead of a full radar. Headline scores, Capability, Composite and every rank are unchanged.
+v1.7.19
+(
+2026-10-08
+):
+Languages and radars: the open-weights rows were run on the L3 supplement overnight, and most rows that still lacked the earlier L1/L2 supplements got them too. Their language cells and topic/use-case radars now count every item they answered (S + P + L1 + L2 + L3), and Qwen3.8 27B (Chutes) finished its L3 run. L3 items were reviewed by an OpenAI model, so the L3-based language and category cells of OpenAI rows carry that exposure; a note next to those rows says so, and headline scores do not use L3. 2 rows still show a reason instead of a full radar, for example runs still in progress, a provider that is down, withdrawn weights or rows not measured on this pool. Headline scores, Capability, Composite and every rank are unchanged.
+v1.7.18
+(
+2026-10-08
+):
+Languages and radars for every row. A new sealed supplement, L3 (1,118 items drawn on 7 Oct 2026: items written natively in 21 languages plus a mixed-language group, and English items for thin radar categories such as everyday language, safety and the "other" use case), gives every language at least 60 items on P ∪ L1 ∪ L2 ∪ L3 (before: as few as 4). The hosted API rows answered it: their language cells and their use-case and topic radars now rest on about 2,100 answered items (3,000 for rows that answered the full sealed set), with at least 69 on every spoke. Open-weights rows are being run on it in the current GPU wave and update as they finish. 2 rows that do not reach 30 items on every spoke yet show the reason next to the row. Headline scores, Capability, Composite and every rank are unchanged.
+v1.7.17
+(
+2026-10-07
+):
+Languages now includes every measured row on both boards, with wrappers listed below the models. Self-hosted rows use S 1,200 + P 300 + L1 (354 items) + L2 (33 items) + L3 (1,118 items), where answered. API rows re-run on A4/A5 use their 300/300-item sealed subset instead of S. Every row’s tag lists the pools it actually answered. L3 is a sealed language supplement (1,118 items), drawn 2026-10-07. Every language has at least 60 items in P ∪ L1 ∪ L2 ∪ L3. Header counts show the full S + P + L1 + L2 + L3 pool. Headline scores are unchanged; these raw cells are unequated, scored for language/category views only and outside the Composite. L3 items were written natively by Claude Sonnet 5.5, each solved blind and language-checked by GPT-6.1 Sol, with gold kept only when both agree or a second review confirms; no gold comes from Jev or any measured API. L3 is API-facing by design and is excluded from future headline draws. Rows with unfinished runs retain their actual coverage tags. L3 items were reviewed by an OpenAI model, so the L3-based language and category cells of OpenAI rows (OpenAI Decisions, GPT-6 Luna, GPT-5.6 Luna) carry that exposure; headline scores do not use L3. C1 adds English items for thin radar categories (everyday language, safety and the other use case). L4 adds 20 new Hindi items for Fastino GLiNER 2.5 Decide only. They were authored with OpenAI and independently solved and language-reviewed with Anthropic before sealing. Seventeen L4 requests succeeded; three HTTP 400 failures remain in the scored observations and do not count as completed coverage. L4 is outside headline and category scores and the common header counts. L5 adds 60 new items for OpenJev DeBERTa v3 Large only: 20 each in Arabic, Hindi and Greek. They were authored with OpenAI and independently solved and language-reviewed with Anthropic before sealing, then checked against the original 512-token native context before keeper selection. All 60 native requests succeeded. Previous failures remain scored and do not count as completed coverage. L5 is outside headline and category scores and the common header counts. 19 API rows re-run on A4/A5 have answered L1/L2 supplements; their category radars count those items too. L3 coverage will follow when measured.
+v1.7.16
+(
+2026-10-07
+):
+Compare view, API board: subject-topic and use-case radars for OpenAI Decisions, the 17 API offerings re-run on A4 ∪ P and the classifier.dev wrapper. Their 600 new sealed items were labelled with the same recipe as every other item (Winnow-12B Q8 on our own GPU pod; uc1 items keep their authoring use case); values are raw and rest on 600 items (300 sealed), so more categories fall under the 30-item spoke minimum and are listed below the radar. Each of these rows also gets a breakdown section on its own page. Every live row now has all breakdown views, and a release check keeps it that way. No score, axis, cost or rank changed.
+v1.7.15
+(
+2026-10-07
+):
+Compare view, API board: OpenAI Decisions, the 17 API offerings re-run on A4 ∪ P and the classifier.dev wrapper now show competence per request type and per tier on the open and sealed items they answered (300 open + 300 sealed: fewer sealed items than the full set, so wider uncertainty; the view note says so), and Liquid AI d1 shows its subject-topic and use-case radars. Values are raw, computed from the stored per-item results with the same scorer as every other row. Subject-topic and use-case radars for the 600-item rows follow once their 600 new sealed items are labelled. No score, axis, cost or rank changed.
+v1.7.14
+(
+2026-10-07
+):
+Open-weights board: H2O-Lightning-4B v1.1 (H2O.ai) and Kahn1 4B (Okura66), two Qwen3.5-4B fine-tunes submitted as JevBench add-requests, measured on the same sealed v1.6 pool with the same scorer, G_med and cost basis as every other row (addendum a8 of v1.6.1). Both are priced with labelled cost estimates like every other Qwen3.5-4B row; Kahn1's server reports no token usage, so its estimate is our own count of its input tokens (three passes per decision, its server default). Both rank inside the Jev-class caps: H2O-Lightning-4B at #3 of the Capability Score and #1 of the Composite, Kahn1 at #23 of the Capability Score. No published score, axis or cost changed.
+v1.7.13
+(
+2026-10-07
+):
+Open-weights board: Surogate Rune 26B-A4B v3 (measured on the v1.6 pool for the first time; its dated v1.5 row stays in the carried list) and Xor 26B-A4B (Juspay), both from the top 20 of the community Jev Decision Index on Hugging Face, measured on the same sealed v1.6 pool with the same scorer, G_med and cost basis as every other row (addendum a7 of v1.6.1). Both rank inside the Jev-class caps, at #3 and #4 of the Capability Score. No published score, axis or cost changed.
+v1.7.12
+(
+2026-10-07
+):
+Languages and use cases: the per-language and per-use-case cells now also count two sealed supplements, a language supplement L1 (354 items) and a use-case supplement L2 (33 items), drawn and reviewed on 6 Oct 2026. Every one of the 22 languages (plus the mixed-language group) and every one of the 20 use cases now has at least 30 items (before: as few as 5). 82 rows answered both supplements; rows not run on them yet keep their S + P cells and are tagged S+P (or S+P+L1). Headline scores, Capability, Composite and every rank are unchanged on both boards.
+v1.7.11
+(
+2026-10-07
+):
+Open-weights board: 12 new self-hosted Jev-compatible rows from the top 20 of the community Jev Decision Index on Hugging Face (Perplexity Decider v1.1 27B, torchcast-decision-27b, Kev 27B, decider chat on Gemma-4-31B-it, GEV-26B-Decide, Decision 2.0 Vega 27B, JEV-27B, Jebadiah 27B, JADE, Bespoke Nimble 9B v3, SimpleJev Qwen3.8-27B self-hosted, JPT-35B-A3B), measured on the same sealed v1.6 pool with the same scorer, G_med and cost basis as every other row (addendum a6 of v1.6.1). No published score, axis or cost changed; ranks move only where a new row places above. Rows priced above the Jev-class cost or latency caps are listed under the limits section, not in the Capability ranking.
+v1.7.10
+(
+2026-10-06
+):
+API board: OpenAI Decisions (POST /v1/decisions with gpt-6-luna) replaces its preliminary public-set row with its official result. It answered a fresh sealed API set A5 (300 never-used sealed items, since A4 had already been sent to OpenAI) plus the 300 public items (598 of 600 answered) and is equated to the v1.6.1 scale with the same method and pool as the A4 rows (offsets +5.78 Intelligence, +6.15 Calibration). It is ranked on the API board: Composite 62.5 (95% interval 51.6–64.6), Capability 73.5; list price USD 0.10 per 1M input tokens as of 6 Oct 2026 (launch day), re-checked at each revision. It enters the API Composite top 5 at #5, statistically tied with Instinct (62.2, now #6), and the Jev-class Capability top 5 at #4 (Instinct moves to #5, Vansa-3.4 to #6). Every other score is unchanged; the open-weights board is unchanged.
+v1.7.9
+(
+2026-10-06
+):
+API board: the OpenAI Decisions API (POST /v1/decisions with gpt-6-luna, opened on 6 Oct 2026) is added as a preliminary, unranked row from the 300 public v1.6 items (298 answered; Capability 68.8, Composite 37.2 on that set; list price USD 0.10 per 1M input tokens). Its official sealed run waits for the next fresh sealed API draw. No score or rank changed on either board.
+v1.7.8
+(
+2026-10-06
+):
+API board: Liquid AI d1 is added as a ranked API offering. It answered the full v1.6.1 set (1,200 sealed + 300 public items, all 1,500 answered) on 6 Oct 2026 and is scored exactly like the other full-set API rows, without equating (Composite 73.0, Capability 74.4; tariff USD 0.04 per 1M input tokens). It enters the API board top 5 in Composite and in Jev-class Capability. Every other score is unchanged; the open-weights board is unchanged.
+v1.7.7
+(
+2026-10-06
+):
+API board: 17 API offerings re-measured in full on a fresh sealed API set (A4, 300 never-used sealed items plus the 300 public items, 6 Oct 2026) and equated to the v1.6.1 scale with the published A2/A3 supplement method. They replace the hatched preliminary rows and are ranked on the API board: Instinct and Vansa-3.4 enter its Composite top 5, and Instinct, Vansa-3.4 and Instinct Dual 4B join Sage and Jev in its Jev-class Capability top 5; GPT-6 Luna, Qwen3.8 27B, GPT-6 Luna low, DeepSeek Flash and GPT-5.6 Luna have the highest raw Capability (98.4, 98.2, 97.8, 97.4 and 94.5) but sit outside the Jev-class caps. Qwen3.8 27B (Chutes) is ranked as well (Composite 0.0: no published tariff, so its documented USD 2.18 estimate per 1,000 decisions gives Cost 0). Instinct and Instinct Dual 4B are now treated as production APIs (public tariff), so no demo-endpoint latency adjustment applies to them. classifier.dev (fast tier) is listed as a wrapper, not ranked. No preliminary rows remain. The open-weights board is unchanged.
+v1.7.6
+(
+2026-10-06
+):
+API board: Vansa-3.4 and Instinct Dual 4B now have v1.6 public-set figures and appear as preliminary rows; Autoloops stays pending while its full run on the fresh sealed set is in progress. Very long items that exceed a provider’s context window count as wrong without ending the run. No rank changed.
+v1.7.5
+(
+2026-10-06
+):
+API board: every API offering with a v1.6 public-set figure is drawn in the Composite and Capability charts as a hatched, unranked “preliminary” row at its score position (public set of 300 items; full sealed re-evaluation running); offerings without any v1.6 figure are greyed “pending” rows. Adds Qwen3.8 27B (Chutes) and Fastino GLiDE to the public-set table. The four ranked rows and every rank are unchanged; the open-weights board is unchanged.
+v1.7.4
+(
+2026-10-06
+):
+API board: every reachable API offering that was not yet re-measured on v1.6 now has a dated public-set figure (the 300 public v1.6 items, no sealed items), shown next to its older v1.5 score with Jev and other ranked APIs on the same 300 items as anchors. Not ranked and not comparable with the 1,500-item headline; no score or rank of either board changed.
+v1.7.3
+(
+2026-10-06
+):
+Display only, no score or rank changed. The API board ranks every offering at its own list price and no longer shows a base-model reference price (that comparison only matters against open weights). The Jev reference row and, with “Show API offerings” on, every API offering now sit at their score position in each ranking section (Composite and Capability) instead of the folded end of the list.
+v1.7.2
+(
+2026-10-06
+):
+Display only. The API roster says why carried API rows were not re-run on v1.6 yet (exposure cadence, retired v1.6.0 sealed set) and that no v1.5 to v1.6 conversion is applied.
+v1.7.1
+(
+2026-10-06
+):
+Display only, no score or rank changed. Headings name the board (open weights / API offerings); the API board leads with the Composite Score and lists every API offering we measured, including mode variants, carried v1.5.x rows and wrappers; the Jev reference row reads “Not ranked, only shown as a reference to compare with” on the open-weights board; long base-model notes became numbered footnotes under the ranking; a short expandable note explains the split.
+v1.7.0
+(
+2026-10-06
+):
+Leaderboard split. /jev-models ranks open-weights systems we ran on our own hardware, with Jev 1.13.0 as an unranked reference row and a “Show API offerings” switch; hosted API offerings are ranked on the new /jev-models/api board. No score was recomputed: ranks are the published order filtered to each board. Adds the GPU cost What-If.
+v1.6.1
+(
+2026-10-05
+):
+Hosted APIs (fastino-gliner-2-5-decide, jev-1.13.0, sage-1.3.0, wity-1, wity-1-always, wity-1-off) answer the full 1,500-item set instead of the 600-item API subset and are no longer equated; self-hosted rows unchanged; whole v1.6.0 sealed draw retired. Cost per 1,000 decisions is measured on one common item set (all items except the 23 outside the Jev reference input range) for every token-priced row.
+v1.6.0
+(
+2026-10-05
+):
+Rotating item draw (1,200 sealed + 300 public); hosted APIs on API subsets equated to the self-hosted scale; /jev-models/v1.6.0 stays available unchanged.
+Earlier releases:
+v1.5.7
+,
+v1.5.6
+,
+v1.5.5
+and the historical boards below.
+System types (colours)
+Jev — reference (TypeSafe, closed)
+—
+The closed system JevBench is named after, shown as the reference.
+Closed API (weights not public)
+—
+Available through a hosted API; the weights cannot be downloaded.
+Open weights · LLM decoder
+—
+An autoregressive language model with public weights, including fine-tunes, merges and Jev rebuilds.
+Open weights · diffusion LM
+—
+A language model that generates by iterative denoising instead of token by token.
+Open weights · encoder / classifier
+—
+BERT-style encoders, NLI zero-shot classifiers and GLiNER-type models.
+Open weights · reranker
+—
+A cross-encoder or LLM reranker that scores options against the input.
+Base model control (no decision fine-tune, raw logits)
+—
+An official open checkpoint without any decision fine-tune, read out from raw logits, used as a floor.
+System (router / cascade / ensemble)
+—
+Several models combined at inference time.
+Colours show architecture only; they never change a score or rank. Each class is assigned from cited evidence (config.json, model card, provider docs, or our own run record for hosted APIs).
+Self-hosted rows use S 1,200 + P 300 + L1 (354 items) + L2 (33 items) + L3 (1,118 items), where answered. API rows re-run on A4/A5 use their 300/300-item sealed subset instead of S. Every row’s tag lists the pools it actually answered. L3 is a sealed language supplement (1,118 items), drawn 2026-10-07. Every language has at least 60 items in P ∪ L1 ∪ L2 ∪ L3. Header counts show the full S + P + L1 + L2 + L3 pool. Headline scores are unchanged; these raw cells are unequated, scored for language/category views only and outside the Composite. L3 items were written natively by Claude Sonnet 5.5, each solved blind and language-checked by GPT-6.1 Sol, with gold kept only when both agree or a second review confirms; no gold comes from Jev or any measured API. L3 is API-facing by design and is excluded from future headline draws. Rows with unfinished runs retain their actual coverage tags. L3 items were reviewed by an OpenAI model, so the L3-based language and category cells of OpenAI rows (OpenAI Decisions, GPT-6 Luna, GPT-5.6 Luna) carry that exposure; headline scores do not use L3. C1 adds English items for thin radar categories (everyday language, safety and the other use case). L4 adds 20 new Hindi items for Fastino GLiNER 2.5 Decide only. They were authored with OpenAI and independently solved and language-reviewed with Anthropic before sealing. Seventeen L4 requests succeeded; three HTTP 400 failures remain in the scored observations and do not count as completed coverage. L4 is outside headline and category scores and the common header counts. L5 adds 60 new items for OpenJev DeBERTa v3 Large only: 20 each in Arabic, Hindi and Greek. They were authored with OpenAI and independently solved and language-reviewed with Anthropic before sealing, then checked against the original 512-token native context before keeper selection. All 60 native requests succeeded. Previous failures remain scored and do not count as completed coverage. L5 is outside headline and category scores and the common header counts.
+Method amendments
+5 Oct 2026, v1.6.1 (Florian's decision): hosted/API systems now answer the same full item set as self-hosted systems (1,200 sealed + 300 public). Their earlier answers on the API subsets were reused and only the missing sealed items were sent; every item was logged in the exposure ledger before it was sent. API rows are no longer equated. Consequence: every v1.6.0 sealed item has now been seen by at least two providers, so the whole v1.6.0 sealed draw is retired for future releases; v1.6.2 onward draws fresh items from the reserve.
+5 Oct 2026, v1.6.1 cost rule (Florian's decision): cost per 1,000 decisions is now measured on one common item set for every system: all items except the 23 very long items that lie outside the Jev reference's accepted input range. Before, a system that processed those items paid for their tokens while a system that refused them did not. Refusals still count against Intelligence exactly as before. Hosted APIs with a per-token tariff are priced from their measured tokens on this common set; carried per-decision prices of self-hosted systems are unchanged. Effect: Sage 1.3.0 USD 0.0247 per 1,000 decisions on the common set (0.0650 on all 1,500 items); Jev 1.13.0 0.0323 (unchanged).
+Cost rule, generalised in v1.6.30:
+On every draw, very long items that a ranked row refuses because they exceed its context length are left out of cost for all rows: cost per 1,000 decisions is computed on the same remaining items for every row. A refused item still counts as a wrong answer for Intelligence.
+First published as the v1.6.1 cost rule (5 Oct 2026; 23 items on that draw). From v1.6.30 it applies to draw v1.6-regular-20261012: the 15 items the Jev reference refused with max_tokens_exceeded are left out and 1,485 remain. Rows of draw v1.6-regular-20261010-a2 still show the all-items cost they were published with until a following release re-costs them under this rule.
+The 23 items above are the set of the v1.6.1 draw.
+The v1.6.1 amendments above say hosted APIs are no longer equated.
+Exception since v1.7.7: the 17 API rows re-run on A4 ∪ P (600 items) are equated (+2.57 Intelligence, +3.35 Calibration); see “Full API re-run (A4, v1.7.7)” under Open weights and API offerings. Full-set API rows (Jev, Sage, wity-1, Fastino GLiNER-2.5-Decide, d1 (Liquid AI)) are not equated. OpenAI Decisions (gpt-6-luna) ran later on the fresh sealed API set A5 ∪ P (600 items; A4 had already been sent to that provider) and is equated the same way with A5's own offsets (+5.78 Intelligence, +6.15 Calibration, same pool).
+Rotating item sets
+Each release draws fresh sealed decisions from a larger reserve. Self-hosted open-weights models (run offline on our own GPU pods or Sandy) answer S and P;
+externally hosted models answer the same full set (S and P) as the self-hosted systems since v1.6.1, so hosted APIs are no longer equated.
+Set
+Items
+Choice
+Noul
+Score
+Answered by
+S
+·
+Sealed release draw
+1,200
+600
+300
+300
+self-hosted systems (run offline on our own GPU pods or Sandy) and, from v1.6.1, externally hosted APIs
+A
+·
+API subset (part of S; used by the v1.6.0 hosted-API measurements)
+300
+150
+75
+75
+every system (inside S since v1.6.1); retired for future draws
+P
+·
+Public set
+300
+150
+75
+75
+every system
+Not in the table above (frozen release data): API set A4 · 300 never-used sealed items, answered together with P by the
+18
+API endpoints re-run on 6 Oct 2026 (the
+17
+ranked offerings and the classifier.dev wrapper); retired after that run.
+Self-hosted systems:
+1,500
+items (S
+1,200
++ P
+300
+).
+Hosted APIs: 1,500 items (S 1,200 + P 300), the same as self-hosted systems; A (300) is the part of S that earlier API measurements used.
+Exception since v1.7.7: the 17 API rows re-run on A4 ∪ P (600 items) are equated (+2.57 Intelligence, +3.35 Calibration); see “Full API re-run (A4, v1.7.7)” under Open weights and API offerings. Full-set API rows (Jev, Sage, wity-1, Fastino GLiNER-2.5-Decide, d1 (Liquid AI)) are not equated. OpenAI Decisions (gpt-6-luna) ran later on the fresh sealed API set A5 ∪ P (600 items; A4 had already been sent to that provider) and is equated the same way with A5's own offsets (+5.78 Intelligence, +6.15 Calibration, same pool).
+A sealed item is scored in at most three releases, then retired. An item used in one release is not drawn again in the next. If coverage minimums cannot be met, the release waits for newly reviewed items.
+The selection seed is committed (SHA-256) before any inference, and the draw is a deterministic function of policy, seed and item id.
+API-exposure rule
+An external exposure is any sealed item sent to an endpoint we do not control: closed APIs, and open-weights models reached through third-party hosts, routers or a submitter's endpoint. Timeouts count as exposure.
+From v1.6.1 hosted models receive the full item set (S plus P); items they had already answered were reused and only the missing sealed items were sent. Hosted models are
+re-measured at most once every three refresh releases unless a verified new model version ships. Between measurements they keep their last score with its measurement date.
+Every externally sent sealed item is logged before dispatch. An item exposed to a provider is never scored again for that provider; once two different providers have received it, it retires for everyone. In v1.6.0 Jev 1.13.0 and Fastino GLiNER-2.5-Decide both received the same A, so A retires globally.
+With the v1.6.1 amendment every v1.6.0 sealed item has been seen by at least two providers, so the whole v1.6.0 sealed draw is retired for future releases.
+Public-versus-sealed gap penalty
+Intelligence is half public, half sealed. A system whose public score exceeds its sealed score by more than the field-median gap (G_med =
+2.6
+points
+) plus 8 points loses one Intelligence point per excess point. Hosted APIs are compared on P versus A against the same self-hosted systems' P-versus-A gap (
+-1.2
+points).
+Hosted APIs (not equated since v1.6.1)
+Hosted APIs that answered the full set are scored exactly like self-hosted systems; no equating offset is applied to them. Category and language values stay raw.
+Exception on the live boards: API rows re-run on the fresh API set A4 (v1.7.7) answered A4 ∪ P (600 items) and are equated with the A2/A3 supplement method; OpenAI Decisions the same way on A5 ∪ P (v1.7.10; see Open weights and API offerings above).
+Headline and Composite
+Capability = mean(Intelligence, Calibration) for systems within twice the Jev 1.13.0 cost and median latency (the official caps; the sliders change only your view).
+Composite (option A): Weighted harmonic mean of Intelligence, Calibration, Speed and Cost, multiplied by squared penalties when Intelligence is below its configured floor, or Speed or Cost is below 50. Equal 25% weights do not mean an arithmetic average. It leads the API board and is secondary on open weights.
+Request types Choice, Noul and Score weigh equally; tiers weigh easy
+0.1
+, standard
+0.2
+, hard
+0.4
+, judge
+0.3
+.
+Latency.
+API models are timed end to end from our measuring host, network included. Self-hosted models are timed on our own hardware over loopback (on-GPU, no network), so their measured value is not directly comparable with API latency. The ranking and the latency cap use the same estimate for every self-hosted row: 2 × measured p50 + 150 ms (
+est. incl. network (2x + 150 ms)
+). Tables show the measured value first, tagged “on-GPU, no network”, and the estimate second. A model author can provide a hosted endpoint; we then time it exactly like an API, network included, with no assumption (on request: info@productivity-boost.com, or note it in your
+submission
+).
+Jev-class caps use a fixed reference: Jev 1.13.0 as measured in v1.5 (p50 0.62 s, USD 0.0323 per 1,000 decisions); caps = 2x (1.23 s, USD 0.0646). Jev's own v1.6 p50 is 0.24 s.
+Costs of v1.6-measured systems carry each system's published v1.5.4 cost per 1,000 decisions (pricing rules unchanged; v1.6 item lengths differ) unless the row says otherwise; Fastino's is an estimate from its published tariff and measured tokens.
+Noul decisiveness and Score baseline (addendum B)
+Scored with method option B (scorer setting
+O1S
+), selected on 3 Oct 2026 after the v1.6 scores were known and disclosed as a post-results change. Each split × type competence is clipped at 0 before the type weighting, so a type answered no better than chance counts as chance instead of negative. The Score chance baseline is the error of always predicting the mid-scale level, so a flat know-nothing distribution earns about 0. A Score cell whose golds all sit at mid-scale keeps the v1.5 random-level baseline; this only occurs in small breakdown and bootstrap cells. Calibration is unchanged. This run: G_med =
+2.57
+points
+.
+Failed requests and very long items
+23 items of this draw are very long (about 77,000 to 81,000 input tokens). Systems with a shorter context window refuse them; Jev-Omni runs out of GPU memory on them on its listed RTX 6000 (48 GB) recipe; decider-4b v2's server truncates them to about 32,800 tokens and answers; Plumb-4B reads them in full. Each outcome is the system's own recipe and is scored as such.
+A failed, refused or unparseable answer counts as wrong for Intelligence and stays in the denominator; it does not enter Calibration (the v1.5 rule, applied to every system).
+Failed answers per system:
+Sage 1.3.0 0/1500 · Mercury Decide 23/1500 · Jev 1.13.0 23/1500 · wity-1 (Wity, reasoning auto) 0/1500 · SPX-CD Flash 23/1500 · SPX-CD Pro 23/1500 · Fastino GLiNER-2.5-Decide 31/1500 · BB-Qwen3.5-4B-LoRA 0/1500 · wity-1 (Wity, reasoning always) 0/1500 · wity-1 (Wity, reasoning off) 0/1500 · classifier.dev 9/600 · Instinct 9/600 · Vansa-3.4 9/600 · GPT-6 Luna (low reasoning effort) 0/600 · Autoloops – Gemma 4 31B IT 9/600 · GPT-6 Luna (default medium reasoning effort) 4/600 · Fastino GLiDE 9/600 · SimpleJev Qwen3.6-35B-A3B 9/600 · GPT-5.6 Luna 0/600 · Instinct Dual 4B 0/600 · Gemini 3.1 Flash-Lite 1/600 · system-one-open 0/600 · openjev-sglang 9/600 · DeepSeek V4.1 Flash 5/600 · SimpleJev Qwen3.8-27B 9/600 · decision-machine-1 9/600 · JevAct 21/600 · Qwen3.8 27B 8/600 · OpenAI Decisions 2/600 · d1 0/1500 · Microsoft-Decision-1 0/0 · Amos 1 large 0/1500 · Amos 1 medium 0/1500 · attest-31B-v1.0 15/1500 · Celeris-1 Decision 0/1500 · Jev 1.14.0 15/1500 · kettei-chub 15/1500 · kettei-fat 15/1500 · d1-ultra 15/1500 · Microsoft-Decision-1 (Azure Foundry) — A2 re-run 7/600 · Bespoke Nimble-v4 0/1500 · Bespoke Nimble-v4-max 0/1500 · Sage 1.4 17/1500 · SubQ Snap 0/1500 · Trio-Spark v1.3 102/1500
+.
+Calibration basis
+Systems that return a full probability distribution are calibrated on all components (top-label error, plus distribution distance for Choice and ranked-probability error for Score).
+Fastino GLiNER-2.5-Decide returns a single confidence value, so its Calibration is the top-label error only and is not like-for-like with full-distribution systems.
+Overnight full re-measure (4–5 Oct 2026)
+Every system with a reproducible recipe was re-run on the v1.6.0 pool overnight with the same pinned inputs and scorer (method option B / O1S). This page uses scoring round
+score-v161-3 (v1.6.1)
+(
+2026-10-06 00:39:36 UTC
+). Only complete runs (1,500 items self-hosted, the full API input for hosted APIs) are ranked; partial runs are never ranked, and systems not yet re-measured keep their dated v1.5.x score in the separate table.
+Scores are the official v1.6.0 scorer (score_v16.py, method option B / O1S, bootstrap B = 1,000) over complete outputs only; each scoring round is kept separately.
+Hosted APIs are scored on the same full item set as self-hosted systems (S 1,200 + P 300, v1.6.1) and are not equated.
+GPU-class deviations: reproducible recipes used the hardware listed per row, including H100 for large fast-lane decoders and RTX 6000 for the baseline; hardware differences remain in measured latency. The standard x2 + 0.15 s self-hosted adjustment is an assumption, not a hardware normalization.
+Wity auto remains outside the latency cap and stays ranked in Composite A. OFF and ALWAYS are unranked variants of the AUTO main row.
+6 further measured candidates await a separate publication decision.
+Sage 1.3.0 (Levanto Labs) was measured on 5 Oct from Sandy (Helsinki), text only. Cost uses the Levanto list tariff (USD 0.05/M input, USD 10/M output; levanto.ai/pricing, read 5 Oct) over all 600 answered rows: USD 0.0766/1,000 decisions. Superseded by the v1.6.1 cost rule (common item set): USD 0.0247/1,000 decisions, inside the Jev-class cost cap.
+A fresh Monday Jev 1.13.0 re-check on A3 measured p50 0.239 s and equated Capability 77.5 versus the official 76.5, within the confidence interval; the official v1.6.0 Jev row is retained.
+Display note on the overnight text above (frozen release data).
+Exception since v1.7.7: the 17 API rows re-run on A4 ∪ P (600 items) are equated (+2.57 Intelligence, +3.35 Calibration); see “Full API re-run (A4, v1.7.7)” under Open weights and API offerings. Full-set API rows (Jev, Sage, wity-1, Fastino GLiNER-2.5-Decide, d1 (Liquid AI)) are not equated. OpenAI Decisions (gpt-6-luna) ran later on the fresh sealed API set A5 ∪ P (600 items; A4 had already been sent to that provider) and is equated the same way with A5's own offsets (+5.78 Intelligence, +6.15 Calibration, same pool).
+Supplementary API draws A2 and A3
+History: hosted APIs were first measured on API subsets (A, then A2 and A3) and equated to the self-hosted scale in v1.6.0. From v1.6.1 they answer the same full set as self-hosted systems, so no equating is applied; the earlier subsets A, A2 and A3 are retired.
+Per-model exposure counts (hosted and author-hosted endpoints)
+System (provider)
+v1.6 sealed items sent
+Scored sealed set
+Status
+wity-1-auto (wity via railway)
+1200
+S (1,200 sealed) + P (300 public)
+full set since v1.6.1 (5 Oct 2026); earlier API-subset answers reused, only missing sealed items sent; whole v1.6.0 sealed draw retired
+wity-1-off (wity via railway)
+1200
+S (1,200 sealed) + P (300 public)
+full set since v1.6.1 (5 Oct 2026); earlier API-subset answers reused, only missing sealed items sent; whole v1.6.0 sealed draw retired
+wity-1-always (wity via railway)
+1200
+S (1,200 sealed) + P (300 public)
+full set since v1.6.1 (5 Oct 2026); earlier API-subset answers reused, only missing sealed items sent; whole v1.6.0 sealed draw retired
+jev-1.13.0 (typesafe)
+1200
+S (1,200 sealed) + P (300 public)
+full set since v1.6.1 (5 Oct 2026); earlier API-subset answers reused, only missing sealed items sent; whole v1.6.0 sealed draw retired
+fastino-gliner-2-5-decide (fastino)
+1200
+S (1,200 sealed) + P (300 public)
+full set since v1.6.1 (5 Oct 2026); earlier API-subset answers reused, only missing sealed items sent; whole v1.6.0 sealed draw retired
+gpt-6-luna (openai)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+gpt-6-luna-low (openai)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+gpt-5.6-luna (openai)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+gemini-3.1-flash-lite (google)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+deepseek-flash (deepseek)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+qwen3.8-27b (chutes)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+decision-machine-1 (milliseconds.ai)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+classifier-dev-fast (classifier.dev)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+vansa-3.4 (vansa)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+kushal-gemma4-31b-it-autoloops (autoloops)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+system-one-open (modal via modal)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+openjev-sglang (modal via modal)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+instinct (zoowork)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+instinct-dual-4b (zoowork)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+simplejev-qwen3.8-27b (featherless)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+simplejev-qwen3.6-35b-a3b (featherless)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+jevact (jevact)
+300
+A4 (retired after this run)
+measured 6 Oct 2026 on A4 ∪ P (v1.7.7)
+Sage 1.3.0 (Levanto Labs)
+1200
+S (1,200 sealed) + P (300 public)
+full set since v1.6.1 (5 Oct 2026); earlier API-subset answers reused, only missing sealed items sent; whole v1.6.0 sealed draw retired
+Provenance
+Measured on the v1.6 pool (run completion day, UTC):
+2026-10-05: Sage 1.3.0, Jev 1.13.0, Fastino GLiNER-2.5-Decide · 2026-10-06: wity-1 (Wity, reasoning auto), SPX-CD Flash, SPX-CD Pro, wity-1 (Wity, reasoning always), wity-1 (Wity, reasoning off), classifier.dev, Instinct, Vansa-3.4, GPT-6 Luna (low reasoning effort), Autoloops – Gemma 4 31B IT, GPT-6 Luna (default medium reasoning effort), Fastino GLiDE, SimpleJev Qwen3.6-35B-A3B, GPT-5.6 Luna, Instinct Dual 4B, Gemini 3.1 Flash-Lite, system-one-open, openjev-sglang, DeepSeek V4.1 Flash, SimpleJev Qwen3.8-27B, decision-machine-1, JevAct, Qwen3.8 27B, OpenAI Decisions, d1 · 2026-10-07: Mercury Decide, BB-Qwen3.5-4B-LoRA · 2026-10-10: Microsoft-Decision-1 · 2026-10-12: attest-31B-v1.0, Microsoft-Decision-1 (Azure Foundry) — A2 re-run · 2026-10-13: Amos 1 large, Amos 1 medium, Sage 1.4, SubQ Snap · 2026-10-14: Bespoke Nimble-v4, Bespoke Nimble-v4-max · 2026-10-15: d1-ultra, Trio-Spark v1.3 · 2026-10-16: Celeris-1 Decision, Jev 1.14.0, kettei-chub, kettei-fat
+.
+Aggregate files: results sha256
+5cd8c1332226ea9c179883d2285c0d8b8cc593ae38f2645197364a7ddd9c83c1
+· categories sha256
+0159c4828b3e8620148af06848ef0a5ccfc7d7f0c11aec02460d844dc0c62689
+· dated carry sha256
+334e851944e92383ab3071e52b3012040c7023d0fe236395953169ebee8f0459
+· live category union (
+data/raw/benchmarks/jevbench/v1.6/jevbench-v1.6.1-category-cells.json
+) sha256
+99aa71d219028acaa5c306cf3a087c9d3d4d844667ef9b76b61f6063383d1edb
+. Scoring source sha256
+e15347783b8bedeeddd9017a831608a957f5bf0386f05902c50161ce0468f911
+. The method, release data and carry artifact are independently hashable.
+Release history
+The board above is always the current merged board: every system with its latest measurement. Each release stays readable as published.
+JevBench
+v1.6.35
+·
+2026-10-20
+·
+Seb-9B re-measured at the author’s corrected 32,768-token context, ranked using its declared Qwen/Qwen3.5-9B base estimate. Supersedes the 7 Oct v1.6.1 row on live boards; the frozen archive keeps the old row. Unchanged weights, stock vLLM plus our unchanged shim, Verda A100 80 GB EU; 15 refusals scored wrong. All 64 carried point estimates unchanged.
+JevBench
+v1.6.34
+·
+2026-10-20
+·
+Same-draw addition of Arcbright Elf 1 12B, ranked inside the official cost cap using a labelled nearest-listed-sibling estimate on the unchanged common cost basis. All 63 carried full-draw rows keep every point estimate. Author server, 15 context refusals scored wrong, audited patterns and training claims are disclosed.
+JevBench
+v1.6.33
+·
+2026-10-20
+·
+Same-draw addition of Perplexity Decider v1.2 (27B), ranked over the official cost cap on the unchanged common cost basis. All 62 carried full-draw rows keep every point estimate. Single H200 measurement, own HTTP shim, author training disclosures and long items beyond training length are disclosed.
+JevBench
+v1.6.32
+·
+2026-10-20
+·
+Same-draw additions of Chon-1.0-12B (paid), Chon-1.0-E4B and Vega-U Qwen3.5-4B, ranked on the unchanged common cost basis. All 59 carried full-draw rows keep every point estimate; paid publication exception for the 12B sibling; E4B and Vega-U retain the standing GO. Author serving modes, shared CPU load, think usage, yes/no commit rule and long-state truncation are disclosed.
+JevBench
+v1.6.31
+·
+2026-10-19
+·
+Same-draw additions of Perplexity Decider Flash v1.2 and vLLM-SR d3-turbo, ranked on the unchanged common cost basis. All 57 carried full-draw rows keep every point estimate; d3-turbo changes relaxed-cost Capability top fives; preview GO required. Own HTTP shim, author training-splits statement, long-item caveat, one-question joint mode and Speed during a concurrent host download are disclosed.
+JevBench
+v1.6.30
+·
+2026-10-19
+·
+Same-draw cost-rule release, no new measurement and no row added: the v1.6.1 common cost basis now applies to the regular draw, so cost per 1,000 decisions of every token-priced row is computed on the same 1,485 items, leaving out the 15 items the Jev reference refused with max_tokens_exceeded, which the other rows that did not answer them refused or failed on. Intelligence, Calibration, Speed and Capability are unchanged on all 57 rows; refusals still count as wrong answers. Cost, Cost axis and composites move. The rule text is generalised for every draw, and the v1.6.10 freeze of this draw is superseded. Display only: Jev 1.14.0 is shown as a second unranked reference row on the open-weights board; this display change recomputes no score, cap or rank, and Jev 1.14.0 stays ranked on the API board.
+JevBench
+v1.6.29
+·
+2026-10-18
+·
+Same-draw addition of Torchcast Decision 4B v1.2 (Torchcast AI, paid public fast-lane, Verda A100) and Vega-U (Nandakishor M, own CPU server). Both ranked; 55 carried full-draw rows keep all point estimates. CPU and device-class Speed differences and context truncation are disclosed. Paid top-five changes use the standing automatic publication exception.
+JevBench
+v1.6.28
+·
+2026-10-17
+·
+Same-draw addition of 2 measured systems: basal-omni-1.0-ultra (Remek Kinas, Gemma-4-31B-it, self-hosted; ranked 4 of 45 on the composite, 4 on Capability) and PurpleMIST-Flash-1.0 (Olaverse, self-hosted; listed but not ranked: no listing decision for its base model in the frozen pricing path). All carried full-draw rows keep every point estimate; carried rank shifts are disclosed in the release notes. It changes top-five lists; how the publication was approved is stated in the release notes.
+JevBench
+v1.6.27
+·
+2026-10-17
+·
+Same-draw addition of 2 measured systems: Jev 1.14.0 (TypeSafe AI, hosted API; priced at TypeSafe's public list price, USD 0.042 per million input tokens; ranked 4 of 44 on the composite) and Verdin-4B (self-hosted on our CPU, Speed a lower bound; ranked 24). The Jev reference of the capped views stays Jev 1.13.0. All carried full-draw rows keep every point estimate; carried rank shifts are disclosed in the release notes. No top five changes.
+JevBench
+v1.6.26
+·
+2026-10-16
+·
+Same-draw addition of 13 re-measured systems (previously evaluated on retired protocols, measured again on this draw): 8 ranked of 42 on the composite (shisa-de-1 12, JPT-4B 16, blink-4b 19, Nagi-ENORMOUS 27B 24, Jebadiah 9B v2 25, JEB-35B-A3B 26, Compass 0.2.0 29, RYOTIDE-Qwen 32; JEB-35B-A3B and Nagi-ENORMOUS above the cost cap) and 5 listed but not ranked (no price for their base models). Nimble-v4-max re-priced at Bespoke's new public price, USD 0.04 per million input tokens (now ranked 9, inside the cost cap). All other carried full-draw rows keep every point estimate; carried rank shifts are disclosed in the release notes. It changes top-five lists; how the publication was approved is stated in the release notes.
+JevBench
+v1.6.25
+·
+2026-10-16
+·
+Same-draw addition of 4 measured systems: Celeris-1 Decision (ranked 11 of 34 on the composite, 13 by Capability), hosted, from a paid fast-lane order and priced from Celeris's public list price; and Jebadiah 9B v2.1 by Frontier Infra (ranked 16), self-hosted on the author's own server; and StartLux-Decision v1.1 27B Instant and AutoThink by StartLux Labs (ranked 19 and 25; above the cost cap; weights CC BY-NC 4.0, non-commercial), self-hosted on the author's own server. All 34 carried full-draw rows keep every point estimate; carried rank shifts are disclosed in the release notes. It changes top-five lists; how the publication was approved is stated in the release notes.
+JevBench
+v1.6.24
+·
+2026-10-16
+·
+Same-draw addition of 8 measured systems: Sqwish kettei-fat (ranked 1 of 30 on the composite, 1 by Capability) and kettei-chub (ranked 3), hosted, from paid fast-lane orders; and six earlier-evaluated systems re-measured on this draw: Decision 2.0 Lux 9B, Imajev-9B (over the official cost cap, disclosed), Imajev-2B, ArseneLupin v1.1 and Noma ranked, Bongard-mini listed but not ranked (unpriced). All 26 carried full-draw rows keep every point estimate; carried rank shifts are disclosed in the release notes. It changes top-five lists; how the publication was approved is stated in the release notes.
+JevBench
+v1.6.23
+·
+2026-10-16
+·
+Price-only update on the same draw, no new measurement: Sage 1.4 (Levanto Labs; ranked 3 of 23 on the composite), Nimble-v4 (ranked 11) and Nimble-v4-max (ranked 12; over the official cost cap, disclosed) get their vendors' public list prices and are ranked. Sage 1.3.0 keeps its v1.6.1 row; Sage 1.4 is Levanto's current version. Every other row keeps every point estimate; carried rank shifts are disclosed in the release notes. It changes top-five lists; how the preview was approved is stated in the release notes.
+JevBench
+v1.6.22
+·
+2026-10-16
+·
+Same-draw addition of 4 measured systems: Messier One v0.4 (ranked 6 of 20 on the composite, 12 by Capability; weights CC BY-NC 4.0) and Nev-2B (ranked 15 of 20; 15 context-overflow refusals count as wrong), both priced from frozen base-model references; Nemotron Deciffusion 8B v2 and Trio-Spark v1.3 (MachineFi, hosted API) listed but not ranked, unpriced under the frozen pricing path. All 22 carried full-draw rows keep every point estimate; carried rank shifts are disclosed in the release notes. No top five changes.
+JevBench
+v1.6.21
+·
+2026-10-16
+·
+Same-draw addition: d1-ultra (Liquid AI, hosted API) joins the regular draw, priced from Liquid's public list price (USD 0.042/M input, output free) and ranked: 1 of 18 on the composite, 3 by Capability; 15 of 1,500 prompts exceed its 32,768-token input limit and count as wrong. All 21 carried full-draw rows keep every point estimate; carried rank shifts are disclosed in the release notes. It changes top-five lists; how the preview was approved is stated in the release notes.
+JevBench
+v1.6.20
+·
+2026-10-15
+·
+Same-draw price addendum: SubQ Snap receives a cost axis from its published USD 0.05/M input tariff (output free), with the capacity-limited public preview and waitlist disclosed; estimated cost is 1.003x the official cap, so it stays outside cost-capped views. No new measurements; other full-draw point estimates unchanged.
+JevBench
+v1.6.18
+·
+2026-10-14
+·
+Second regular draw, + Respan Span-02 (ranked, above the official cost cap, RTX 5090 Speed) and 2 Bespoke Labs API rows: Nimble-v4 and Nimble-v4-max. Both listed but not ranked, unpriced under deputy decision #19084; measured Intelligence, Calibration, Capability and Speed only, no Cost, Composite or rank in any view. All 18 carried full-draw rows keep every point estimate; carried rank shifts below Span-02 are disclosed in the release notes; the unranked Microsoft A2 measurement is unchanged. No top five changes.
+JevBench
+v1.6.17
+·
+2026-10-13
+·
+Second regular draw, + 7 systems (5 ranked, 2 listed but not ranked; 18 full-draw rows, same frozen field median): Amos 1 large (Scira), Amos 1 medium (Scira), metask-jev-rain-31B-trained service v3, pjev-2b, PurpleMIST-Mini-1.0 (Olaverse), Sage 1.4 (Levanto Labs), SubQ Snap (preview, SubQ). One paid fast-lane re-submission is disclosed as such; hosted rows above the Jev-class cost cap are ranked and disclosed. Metask service v3 (paid) enters the default Capability top five at #3. Amos 1 large enters the API cost-off Capability top five at #1 with Florian GO (card #17487). The unranked Microsoft A2 measurement is carried through unchanged.
+JevBench
+v1.6.16
+·
+2026-10-13
+·
+Second regular draw, + vLLM-SR d3 (11 full-draw rows, same frozen field median). Highest Capability of the draw, but its estimated cost is far above the Jev-class cap, so it is outside the default Capability ranking and its composite is small. Restated by v1.6.17.
+JevBench
+v1.6.15
+·
+2026-10-13
+·
+Second regular draw, + three self-hosted CPU systems (10 full-draw rows; one of them listed but not ranked because its Speed figure is not official). The unranked Microsoft A2 measurement is carried through unchanged. Restated by v1.6.16.
+JevBench
+v1.6.14
+·
+2026-10-12
+·
+Seven official rows unchanged, plus a separate unranked Microsoft A2 preliminary measurement (equating pool 4 of 6). Restated by v1.6.15.
+JevBench
+v1.6.13
+·
+2026-10-12
+·
+Second regular draw, + attest-31B-v1.0 (7 systems, same frozen field median). Merged into the live board.
+JevBench
+v1.6.12
+·
+2026-10-12
+·
+Second regular draw, + Torchcast Decision 4B (v1.1) (6 systems, same frozen field median). Restated by v1.6.13.
+JevBench
+v1.6.11
+·
+2026-10-12
+·
+Second regular draw, + Uniphore-4B-Decider (5 systems, same frozen field median). Restated by v1.6.12.
+JevBench
+v1.6.10
+·
+2026-10-12
+·
+Second fresh regular draw: 4 paid self-hosted rows (own field median); restated by v1.6.11.
+JevBench
+v1.6.9
+·
+2026-10-10
+·
+Regular draw, + jiwo 0.8b/4b and ClassOne Qwen 3.5 2B/4B and Gemma 4 E4B (16 systems, same frozen field median). Merged into the live board.
+JevBench
+v1.6.8
+·
+2026-10-10
+·
+Regular draw, + modernbert-jev v2 (11 systems); restated by v1.6.9.
+JevBench
+v1.6.7
+·
+2026-10-10
+·
+Regular draw, + Blink v0.3 26B-A4B (10 systems); restated by v1.6.8.
+JevBench
+v1.6.6
+·
+2026-10-10
+·
+Regular draw, + Clef-omni (9 systems); restated by v1.6.7.
+JevBench
+v1.6.5
+·
+2026-10-10
+·
+Regular draw (v1.6-regular-20261010-a2): 8 new open-weights systems; restated by v1.6.6.
+JevBench
+v1.6.4
+·
+2026-10-10
+·
+Fast-lane draw (v1.6-fastlane-20261009), completed: 6 systems incl. 2 wrappers. Merged into the live board.
+JevBench
+v1.6.3
+·
+2026-10-10
+·
+Fast-lane draw, 5 systems; superseded by v1.6.4.
+JevBench
+v1.6.2
+·
+2026-10-09
+·
+Fast-lane draw, first 4 systems; superseded by v1.6.4.
+JevBench
+v1.6.1
+·
+2026-10-06
+·
+Full re-measure on the v1.6.0 draw: hosted APIs on the full set. The reference scale of the live board.
+JevBench
+v1.6.0
+·
+2026-10-05
+·
+Rotating sealed item sets, API-exposure rule, Noul decisiveness, language view, dated carry.
+JevBench
+v1.5.7
+·
+2026-10-04
+·
+Last v1.5 point release.
+JevBench
+v1.5.6
+·
+2026-10-03
+·
+v1.5 point release.
+JevBench
+v1.5.5
+·
+2026-10-02
+·
+v1.5 point release.
+JevBench
+v1.5.0–v1.5.4
+·
+2026-09-28
+·
+v1.5 method (Composite, Capability Score, Jev-class caps); v1.5.1–v1.5.4 on 29 Sep.
+JevBench
+v1.4–v1.4.2.2
+·
+2026-09-23
+·
+v1.4 series.
+JevBench
+v1.0
+·
+2026-09-19
+·
+First JevBench board.
+Fresh full-set API addenda
+These separately sourced measurements use their own accepted sealed draw. Frozen historical exports remain unchanged. All 50 topic, use-case and language labels are retained; official cells need 15 items and numeric radar spokes need 30.
+Valid answers and completed coverage are shown separately. An accepted model/input refusal can count toward coverage while remaining a failed scored answer; authentication, rate-limit and service failures do not.
+Microsoft-Decision-1 (Azure Foundry)
+· all 50 cells
+Measured
+2026-10-10
+· O1S gap reference G_med
+7.0881
+score points ·
+Aggregate results
+Historical comparators keep their own measurement dates, draws and reference values. This addition does not remeasure them on the new pool.
+Languages
+Category
+Items
+Valid answers
+Completed coverage
+Errors
+Official competence
+Sample status
+Types / pool
+English
+1281
+1260
+1281
+21
+56.83
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+German
+97
+97
+97
+0
+51.36
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+French
+80
+80
+80
+0
+49.75
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Spanish
+94
+94
+94
+0
+46.21
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Italian
+79
+79
+79
+0
+45.37
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Portuguese
+85
+85
+85
+0
+58.75
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Dutch
+78
+78
+78
+0
+46.12
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Danish
+77
+77
+77
+0
+49.39
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Swedish
+73
+73
+73
+0
+42.01
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Norwegian
+64
+64
+64
+0
+32.59
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Finnish
+72
+72
+72
+0
+23.96
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Polish
+96
+96
+96
+0
+36.65
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Czech
+73
+73
+73
+0
+38.58
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Greek
+73
+73
+73
+0
+33.36
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Turkish
+74
+74
+74
+0
+42.68
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Ukrainian
+70
+70
+70
+0
+38.45
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Arabic
+76
+76
+76
+0
+44.21
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Hindi
+85
+85
+85
+0
+33.80
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Chinese
+69
+68
+68
+1
+53.79
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Japanese
+85
+85
+85
+0
+54.97
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Korean
+75
+75
+75
+0
+33.10
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Indonesian
+70
+70
+70
+0
+57.30
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Mixed-language
+79
+79
+79
+0
+88.32
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Subject topics
+Category
+Items
+Valid answers
+Completed coverage
+Errors
+Official competence
+Sample status
+Types / pool
+Math & numbers
+459
+448
+459
+11
+20.68
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Coding & software
+277
+277
+277
+0
+57.43
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Rules, policy & law
+1600
+1599
+1599
+1
+53.18
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Finance & commerce
+236
+236
+236
+0
+56.25
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Support & operations
+167
+157
+167
+10
+56.25
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Everyday language
+152
+152
+152
+0
+75.13
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Safety & security
+114
+114
+114
+0
+53.57
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Use cases
+Category
+Items
+Valid answers
+Completed coverage
+Errors
+Official competence
+Sample status
+Types / pool
+Search and retrieval
+97
+97
+97
+0
+85.32
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Scientific discovery
+97
+97
+97
+0
+36.91
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Model routing
+400
+400
+400
+0
+64.30
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+LLM guardrails
+101
+101
+101
+0
+69.68
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Semantic code linting
+96
+96
+96
+0
+19.83
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Feature extraction for predictive modeling
+96
+96
+96
+0
+36.89
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Recruiting
+98
+98
+98
+0
+29.70
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Lead generation
+114
+114
+114
+0
+63.85
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Customer support
+249
+240
+249
+9
+60.37
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Insurance claims
+107
+107
+107
+0
+42.83
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Financial crime
+116
+115
+115
+1
+28.96
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Legal and compliance
+471
+471
+471
+0
+63.42
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+E-commerce marketplaces
+114
+114
+114
+0
+52.63
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Moderation and trust and safety
+98
+98
+98
+0
+67.15
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Advertising
+107
+107
+107
+0
+37.00
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Gaming
+90
+90
+90
+0
+25.06
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Risk assessment
+126
+126
+126
+0
+51.21
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Demand forecasting
+88
+88
+88
+0
+0.00
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Graphs and knowledge graphs
+98
+98
+98
+0
+35.49
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Other
+242
+230
+242
+12
+47.10
+radar sample minimum met
+choice, noul, score
+/
+S1200+P300+L1+L2+L3; full native Foundry union
+Historical v1.3.0 board: weightings, per-task grid, topic radars and held-out diagnostics
+Open this section to load the earlier public-only board and diagnostics.
+Benchmark Heaven
+Sources & methodology
+Decision model benchmarks
+JevBench methodology
+Need custom eval on your data?
+Public API
+GitHub
+MIT licence
+Privacy
+Terms
+Impressum
+Benchmark results with their source and date, and a modeled cost per task that accounts for provider prices, caching and token efficiency. Data from OpenRouter, Artificial Analysis, Epoch AI, DesignArena, benchmark maintainers and provider catalogs.
+Data:
+Artificial Analysis
+·
+Data:
+Epoch AI
+(
+CC BY
+)
+Open source (MIT) and a hobby project —
+the code is on GitHub
+, built to give the world better tools to decide which LLM to choose for the job. The licence covers the code, not the third-party data (its own terms apply).
+Benchmark publishers can ask for their numbers to be removed or shown differently —
+data sources & removal on request
+.
+Support Benchmark Heaven
+·
+Payments go to productivity-boost.com Betriebs UG (haftungsbeschränkt) & Co. KG, the one-person company behind this project.

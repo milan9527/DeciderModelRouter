@@ -1,0 +1,35 @@
+{
+  "url": "https://d3i7ogfx5ml7dc.cloudfront.net",
+  "fixture": false,
+  "http_route": {
+    "request_id": "b7ed8142963f1d9ca1b374a8",
+    "decision_model": "h2oai/h2o-lightning-4b",
+    "selected_model": "openai.gpt-6-luna",
+    "gpu_round_trip_ms": 885.893,
+    "route_ms": 898.221
+  },
+  "browser": {
+    "request_id": "b5286806894383bcf54a55b7",
+    "model_id": "openai.gpt-6-luna",
+    "target_ms": 1284.118,
+    "usage": {
+      "inputTokens": 19,
+      "outputTokens": 100,
+      "totalTokens": 119,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "observed_reference_cost_usd": "0.0000519",
+    "total_ms": 1958.303
+  },
+  "assets": {
+    "index.html": "4ac4048399bd314779b8d99f3d91edc4db7b286b62db7df049d2cb426ad57490",
+    "mark.svg": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+    "gateway.css": "b85cf32f194ab5e06f7f2cfb878724db3da01d0f4e51852f40d55d2483267e4b",
+    "gateway.js": "08e3bdf39d086e7953fe4f03fc8db0572ff00abaa9756d9af66086e88173e502"
+  },
+  "browser_errors": [],
+  "gpu_calls": 2,
+  "bedrock_target_calls": 1,
+  "status": "passed"
+}

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Instances - Amazon Bedrock AgentCore</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="runtime-instances-how-it-works" /><meta name="default_state" content="runtime-instances-how-it-works" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.md" title="Markdown version" /><meta name="description" content="When you host an agent on the Instances compute type, Amazon Bedrock AgentCore Runtime runs your agent on Amazon EC2 managed instances that it provisions and operates inside your own AWS account — so you get the hardware selection and pricing benefits of Amazon EC2 without managing instance lifecycle, operating system and runtime patching, scaling, or teardown. A" /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Bedrock AgentCore" /><meta name="guide" content="Developer Guide" /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" hreflang="x-default" /><meta name="feedback-item" content="bedrock-agentcore" /><meta name="this_doc_product" content="Amazon Bedrock AgentCore" /><meta name="this_doc_guide" content="Developer Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'bedrock-agentcore'}"></script><meta id="panorama-serviceSubSection" value="Developer Guide" /><meta id="panorama-serviceConsolePage" value="Instances" /><meta name="uiVersion" content="2024.10" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="runtime-instances-how-it-works.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Instances - Amazon Bedrock AgentCore</title><meta name="pdf" content="/pdfs/bedrock-agentcore/latest/devguide/bedrock-agentcore-dg.pdf#runtime-instances-how-it-works" /><meta name="rss" content="bedrock-agentcore-dg.rss" /><meta name="forums" content="https://repost.aws/search/content?globalSearch=Amazon Bedrock AgentCore" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=bedrock-agentcore&amp;topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon Bedrock AgentCore",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Developer Guide",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Host agent or tools with Amazon Bedrock AgentCore Runtime",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "How it works",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-compute-how-it-works.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Instances",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-compute-how-it-works.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/bedrock-agentcore/latest/devguide/bedrock-agentcore-dg.pdf#runtime-instances-how-it-works" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/bedrock-agentcore/index.html">Amazon Bedrock AgentCore</a><a href="what-is-bedrock-agentcore.html">Developer Guide</a></div><div id="page-toc-src"><a href="#runtime-instances-when-to-use">When to use Instances</a><a href="#runtime-instances-concepts">Core concepts</a><a href="#runtime-instances-compute-comparison">Compare compute types</a><a href="#runtime-instances-gpu">Use GPU instance types</a><a href="#runtime-instances-invocation-flow">Invocation flow</a><a href="#runtime-instances-persistent-volumes">Persistent storage across sessions</a><a href="#runtime-instances-permissions">IAM roles</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="runtime-instances-how-it-works">Instances</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>When you host an agent on the <strong>Instances</strong> compute type, Amazon Bedrock AgentCore Runtime runs your agent on <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-ec2-managed-instances.html">Amazon EC2 managed instances</a> that it provisions and operates inside your own AWS account — so you get the hardware selection and pricing benefits of Amazon EC2 without managing instance lifecycle, operating system and runtime patching, scaling, or teardown. A <a href="#runtime-instances-capacity-provider">capacity provider</a> defines the infrastructure those instances use, and AgentCore handles provisioning, patching, scaling, and teardown on your behalf. Because the instances run in your account, your data stays in your account, your existing account controls apply, and you can use your EC2 pricing agreements such as Savings Plans, Reserved Instances, and On-Demand Capacity Reservations (ODCRs). With Instances, you get persistent compute and can run multiple collaborating agents on a single instance, while retaining visibility and control over the underlying infrastructure.</p><div class="highlights" id="inline-topiclist"><h6>Topics</h6><ul><li><p><a href="#runtime-instances-when-to-use">When to use Instances</a></p></li><li><p><a href="#runtime-instances-concepts">Core concepts</a></p></li><li><p><a href="#runtime-instances-compute-comparison">Compare compute types</a></p></li><li><p><a href="#runtime-instances-gpu">Use GPU instance types</a></p></li><li><p><a href="#runtime-instances-invocation-flow">Invocation flow</a></p></li><li><p><a href="#runtime-instances-persistent-volumes">Persistent storage across sessions</a></p></li><li><p><a href="#runtime-instances-permissions">IAM roles</a></p></li></ul></div>
+      <h2 id="runtime-instances-when-to-use">When to use Instances</h2>
+      <p>Choose the <strong>Instances</strong> compute type when your workload needs capabilities beyond what the serverless microVM model provides:</p>
+      <div class="itemizedlist">
+          
+          
+          
+          
+      <ul class="itemizedlist"><li class="listitem">
+            <p>
+               <strong>Persistent, long-running sessions</strong> – Sessions can run for up to 14 days, compared to a maximum of 8 hours for microVMs. This suits long-running automation, transformation jobs, and agents that pause and resume over extended periods.</p>
+         </li><li class="listitem">
+            <p>
+               <strong>Specialized hardware</strong> – Choose a supported GPU instance type for compute-intensive workloads such as 3D rendering, simulation, or model inference. AgentCore provisions the GPU drivers on the instance, so standard container images work without bundling drivers, and both compute (CUDA) and graphics workloads are supported. For the supported families, see <a href="#runtime-instances-gpu">Use GPU instance types</a>.</p>
+         </li><li class="listitem">
+            <p>
+               <strong>Multi-agent collaboration</strong> – Multiple agents can run on the same instance, share a filesystem, and coordinate on the same task.</p>
+         </li><li class="listitem">
+            <p>
+               <strong>Your account, your controls</strong> – Instances run in your account, so your data stays in your account and you can use existing cost mechanisms such as Savings Plans and On-Demand Capacity Reservations (ODCRs).</p>
+         </li></ul></div>
+      <p>If your workload is a lightweight, API-driven interaction that completes quickly, the default <strong>microVMs</strong> compute type is usually the better fit. For more information, see <a href="#runtime-instances-compute-comparison">Compare compute types</a>.</p>
+    
+      <h2 id="runtime-instances-concepts">Core concepts</h2>
+      <p>Hosting an agent on Instances introduces a few resources in addition to the core AgentCore Runtime concepts described in <a href="./runtime-how-it-works.html">microVMs</a>.</p>
+       
+         <h3 id="runtime-instances-capacity-provider">Capacity provider</h3>
+         <p>A <strong>capacity provider</strong> defines the EC2 infrastructure your agents run on: the operating system, the allowed instance types, networking (VPC and subnets), storage volumes, and the IAM roles used to provision and access the instances. A capacity provider is a reusable template — you can associate it with multiple agent runtimes, and AgentCore uses it to launch instances when those runtimes are invoked.</p>
+         <p>Key characteristics:</p>
+         <div class="itemizedlist">
+             
+             
+             
+             
+         <ul class="itemizedlist"><li class="listitem">
+               <p>A capacity provider is created in a <code class="code">CREATING</code> state and becomes <code class="code">READY</code> after its configuration is validated. If validation fails, it enters <code class="code">CREATE_FAILED</code>.</p>
+            </li><li class="listitem">
+               <p>After a capacity provider is created, only its description can be edited. To change other configurations, duplicate the capacity provider and make your updates in the duplicate flow.</p>
+            </li><li class="listitem">
+               <p>You can list the runtimes (and runtime versions) associated with a capacity provider, and you must disassociate them before the capacity provider can be deleted.</p>
+            </li><li class="listitem">
+               <p>Deleting a capacity provider stops and deletes all of its associated sessions and their persistent storage.</p>
+            </li></ul></div>
+       
+       
+         <h3 id="runtime-instances-runtime">Agent runtime on Instances</h3>
+         <p>When you create an agent runtime, you choose its <strong>compute type</strong>. Selecting <strong>Instances</strong> associates the runtime with a capacity provider through the <code class="code">capacityProviderConfiguration</code> parameter. The runtime still defines what agent runs (the code or container artifact) and how it’s configured (protocol, authentication, endpoints, versions); the capacity provider defines the compute it runs on.</p>
+         <p>You can’t change the compute type after a runtime is created.</p>
+       
+       
+         <h3 id="runtime-instances-session">Session</h3>
+         <p>A <strong>session</strong> is an isolated EC2 instance instantiated from a runtime’s capacity provider. Each session has its own lifecycle and persistent state, and you identify it with a <code class="code">runtimeSessionId</code> that you provide on invocation. AgentCore creates a session on the first invocation with a new session ID, and the session retains its state across stops.</p>
+         <p>A session runs for a maximum of 14 days. When a session reaches this maximum lifetime, AgentCore automatically stops it. It terminates the EC2 instance but retains the session’s persistent volumes. To resume work after a session is stopped, invoke the runtime again with the same <code class="code">runtimeSessionId</code>. AgentCore provisions a new instance and re-attaches the persistent volumes, so your data is intact. Because the new instance can launch from an updated machine image, a restarted session might run on an instance with the latest patches. When you delete a session, AgentCore deprovisions everything, including the persistent volumes.</p>
+         <p>For the session isolation and multi-tenant security model, see <a href="./runtime-instances-security.html">Security model and permissions for Runtime Instances</a>.</p>
+       
+       
+         <h3 id="runtime-instances-agent">Agent</h3>
+         <p>An <strong>agent</strong> is a workload running within a session. Unlike the microVM model, where one runtime hosts one agent, a single Instances session can host multiple agents. When two agent runtimes share the same capacity provider, you can invoke them with the same <code class="code">runtimeSessionId</code> to land both agents on the same EC2 instance. There, they share a filesystem and can collaborate on the same task.</p>
+       
+       
+         <h3 id="runtime-instances-managed-instances">Understanding managed instances</h3>
+         <p>The EC2 instances that back your sessions are <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-ec2-managed-instances.html">Amazon EC2 managed instances</a> — AgentCore provisions and operates them in your account on your behalf, so you have restricted permissions on them compared with standard EC2 instances. You can identify them by the <code class="code">Operator</code> field in EC2 <code class="code">DescribeInstances</code> output and by the AgentCore capacity-provider tag on the instance.</p>
+         <p>You don’t perform standard EC2 lifecycle operations on these instances directly — for example, you don’t launch, patch, or terminate them yourself. AgentCore manages their lifecycle; to remove them, delete the associated capacity provider, which stops and deletes its sessions and their persistent storage. Managed instances are hidden from your EC2 console views and API list operations by default; you can change this with the <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-ec2-managed-instances.html#managed-resource-visibility-settings">managed resource visibility setting</a>. They remain fully operational and billable in your account.</p>
+       
+    
+      <h2 id="runtime-instances-compute-comparison">Compare compute types</h2>
+      <p>The following table compares the <strong>microVMs</strong> and <strong>Instances</strong> compute types to help you choose the right one for your workload.</p>
+      <div class="table-container"><div class="table-contents"><table id="w363aac15c11b9c11b5"><thead>
+               <tr>
+                  <th align="left" style="text-align: left;vertical-align: top;">Characteristic</th>
+                  <th align="left" style="text-align: left;vertical-align: top;">microVMs</th>
+                  <th align="left" style="text-align: left;vertical-align: top;">Instances</th>
+               </tr>
+            </thead>
+               <tr>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Best suited for</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Lightweight, API-driven agents that start fast, scale on demand, and complete within hours</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Long-running, stateful, or collaborative workloads needing GPUs or multi-agent sessions</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Management model</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Fully AWS managed, serverless, scale on demand</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>
+                        AWS managed EC2 in your account; AWS manages patching and updates, with persistent sessions</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Maximum session duration</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Up to 8 hours</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Up to 14 days</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Operating systems</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Linux containers (<code class="code">arm64</code>)</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Linux (<code class="code">x86_64</code> and <code class="code">arm64</code>)</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Networking</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>
+                        <code class="code">PUBLIC</code> or VPC</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>VPC</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Agent modality</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>API, CLI</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>API, CLI</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Agents per session</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>One runtime hosts one agent (1:1)</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>One session can host multiple agents (1:N)</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Supported artifacts</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Container image and Amazon S3 source</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Container image and Amazon S3 source</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>GPU access</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Not supported</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Choose a supported GPU instance type; drivers are provisioned for you</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Pricing</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Consumption-based, billed by AgentCore</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>EC2 instances run in your account; use your Savings Plans and ODCRs</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Models and frameworks</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Any</p>
+                  </td>
+                  <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                     <p>Any</p>
+                  </td>
+               </tr>
+            </table></div></div>
+    
+      <h2 id="runtime-instances-gpu">Use GPU instance types</h2>
+      <p>For compute-intensive workloads such as model inference, 3D rendering, and media processing, include a GPU instance type in the allowed instance types of your capacity provider. AgentCore provisions the GPU drivers on the instance, so you don’t configure device paths, GPU indices, or driver versions, and standard container images (for example, CUDA images) work without bundling drivers. Both compute (CUDA) and graphics (such as Vulkan, EGL, and GLX) workloads are supported. When more than one agent runs on the same instance, all agents share access to its GPUs.</p>
+      <p>The following GPU and accelerator instance families are supported:</p>
+      <div class="itemizedlist">
+          
+          
+      <ul class="itemizedlist"><li class="listitem">
+            <p>NVIDIA GPU families – <code class="code">g4dn</code>, <code class="code">g5</code>, <code class="code">g6</code>, <code class="code">g6e</code>, <code class="code">gr6</code>, <code class="code">g6f</code>, <code class="code">gr6f</code>, and <code class="code">g7e</code>.</p>
+         </li><li class="listitem">
+            <p>
+               AWS accelerator families – <code class="code">inf2</code> (powered by AWS Inferentia2).</p>
+         </li></ul></div>
+      <p>If you include an accelerator instance type from a family that isn’t supported, <code class="code">CreateCapacityProvider</code> fails with a <code class="code">ValidationException</code> that names the instance type and lists the supported families. Non-accelerator instance types are unaffected.</p>
+    
+      <h2 id="runtime-instances-invocation-flow">Invocation flow</h2>
+      <p>Invoking an agent runtime backed by a capacity provider follows the same <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/APIReference/API_InvokeAgentRuntime.html">InvokeAgentRuntime</a> entry point as the microVM model. AgentCore resolves the capacity provider, ensures an instance and agent are running for your session, and proxies the request to the agent:</p>
+      <div class="orderedlist">
+          
+          
+          
+          
+      <ol style="list-style-type:arabic ! important;"><li>
+            <p>You call <code class="code">InvokeAgentRuntime</code> with the runtime ARN and a <code class="code">runtimeSessionId</code>.</p>
+         </li><li>
+            <p>If no session exists for that session ID, AgentCore provisions an EC2 instance from the runtime’s capacity provider in your account and launches the agent on it. The first invocation for a session takes longer because it includes instance provisioning.</p>
+         </li><li>
+            <p>If a session already exists, AgentCore reuses the running instance. Invoking a second runtime that shares the same capacity provider with the same session ID launches that agent alongside the first on the same instance.</p>
+         </li><li>
+            <p>AgentCore proxies the request to the agent and streams the response back to you. Each agent runs with its own IAM credentials derived from its runtime’s execution role.</p>
+         </li></ol></div>
+      <p>Because the agent runs on an instance in your account, the EC2 instance, its network interfaces, and any persistent volumes are visible in your account’s EC2 console and billed to your account. These are <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-ec2-managed-instances.html">Amazon EC2 managed instances</a> — instances that AgentCore provisions and operates in your account on your behalf. You can control whether they appear in your EC2 console views and API list operations with <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-ec2-managed-instances.html#managed-resource-visibility-settings">managed resource visibility settings</a>.</p>
+    
+      <h2 id="runtime-instances-persistent-volumes">Persistent storage across sessions</h2>
+      <p>A capacity provider can define one or more Amazon EBS volumes. When you save the capacity provider, AgentCore saves the volume configuration and creates the EBS volume on the session’s first launch. When an agent runtime mounts a volume through its storage configuration, the volume’s data survives session stops:</p>
+      <div class="orderedlist">
+          
+          
+          
+      <ol style="list-style-type:arabic ! important;"><li>
+            <p>On the first invocation for a session, AgentCore creates the volume and attaches it to the EC2 instance.</p>
+         </li><li>
+            <p>When AgentCore stops the session, it terminates the EC2 instance but retains the volume.</p>
+         </li><li>
+            <p>On the next invocation with the same <code class="code">runtimeSessionId</code>, AgentCore provisions a new instance and re-attaches the existing volume, so the agent sees its previous data intact.</p>
+         </li></ol></div>
+      <p>This enables stateful agent workflows where workspace files, caches, and checkpoints persist across session restarts. Deleting the session deprovisions the EC2 resources — instance, network interface, and EBS volume — so you stop incurring costs for infrastructure you no longer need.</p>
+    
+      <h2 id="runtime-instances-permissions">IAM roles</h2>
+      <p>Hosting agents on Instances involves the following roles, in addition to the agent runtime execution role that grants your agent code its runtime permissions:</p>
+      <div class="itemizedlist">
+          
+          
+      <ul class="itemizedlist"><li class="listitem">
+            <p>
+               <strong>Instance profile</strong> – An IAM role attached to the EC2 instance. AgentCore uses it to collect system logs from the instance; it does not grant permissions to your agent code (the agent runtime execution role does that).</p>
+         </li><li class="listitem">
+            <p>
+               <strong>Infrastructure role</strong> – An IAM role that AgentCore assumes to provision and manage EC2 instances in your account on your behalf (launching, tagging, and configuring networking for instances and their network interfaces).</p>
+         </li></ul></div>
+      <p>You can let the console create default roles for you, or supply existing roles. Because the infrastructure role grants AgentCore the ability to manage compute in your account, scope it to the least privilege your workloads require, and use IAM conditions to restrict it to specific VPCs, subnets, or instance types where appropriate.</p>
+   <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./runtime-how-it-works.html">microVMs</div><div id="next" class="next-link" accesskey="n" href="./runtime-service-contract.html">Understand the AgentCore Runtime service contract</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=bedrock-agentcore&amp;topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=bedrock-agentcore&amp;topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

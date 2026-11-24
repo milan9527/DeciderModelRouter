@@ -1,0 +1,58 @@
+[
+  {
+    "configuration": "balanced-existing",
+    "live": false,
+    "cases": 4,
+    "route_steps": 24,
+    "strategy": "balanced",
+    "router_group": "existing",
+    "local_frontend_override": false,
+    "executed_targets": false,
+    "target_results": {},
+    "browser_errors": [],
+    "gpu_mutations": [],
+    "mobile_overflow": false
+  },
+  {
+    "configuration": "balanced-local",
+    "live": false,
+    "cases": 4,
+    "route_steps": 24,
+    "strategy": "balanced",
+    "router_group": "local",
+    "local_frontend_override": false,
+    "executed_targets": false,
+    "target_results": {},
+    "browser_errors": [],
+    "gpu_mutations": [],
+    "mobile_overflow": false
+  },
+  {
+    "configuration": "original-existing",
+    "live": false,
+    "cases": 4,
+    "route_steps": 24,
+    "strategy": "original",
+    "router_group": "existing",
+    "local_frontend_override": false,
+    "executed_targets": false,
+    "target_results": {},
+    "browser_errors": [],
+    "gpu_mutations": [],
+    "mobile_overflow": false
+  },
+  {
+    "configuration": "optimized-existing",
+    "live": false,
+    "cases": 4,
+    "route_steps": 24,
+    "strategy": "optimized",
+    "router_group": "existing",
+    "local_frontend_override": false,
+    "executed_targets": false,
+    "target_results": {},
+    "browser_errors": [],
+    "gpu_mutations": [],
+    "mobile_overflow": false
+  }
+]

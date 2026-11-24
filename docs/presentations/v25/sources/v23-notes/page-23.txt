@@ -1,0 +1,4 @@
+流程依据项目 tetris-sft-workflow.svg 横向重排，原图完整保存在本版 sources/docs/diagrams。2026-10-16 首轮 GPU SFT；标签由引擎的六项指标严格支配关系生成。共 18,868 条题，按种子和可观察棋盘隔离四分区，同一局面的候选及措辞变体留在同区。train 更新参数；validation 选 best；calibration 拟合温度；test 只做最终评估。训练后用新种子进行 20 局游戏，共 895 次落块回放；推理时由模型选落点，程序执行。微调检查点另存，部署为单独步骤，不由训练脚本自动发布；未替换支付或路由演示模型。
+全过程：https://github.com/milan9527/StrandsDeciderTetrisFinetuning/blob/main/docs/TETRIS_FINETUNING_WALKTHROUGH.zh.md
+原始记录：sources/reports/2026-10-16/
+承接上文：支付只改输入字段和候选条件；此处是另一个领域的监督微调实测。Tetris效果不能直接当作支付或模型路由已提高准确率，两个业务尚需各自数据验收。

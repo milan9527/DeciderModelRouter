@@ -1,0 +1,5 @@
+本页以Jev官方速度数据说明决策模型的产品定位：它是大模型的补充，适合在有限候选中高频选动作、流程、工具或模型。复杂规划、代码和开放文本生成仍由大模型处理。
+TypeSafe官方发布文给出端到端70ms–500ms，并称在System One shaped queries上，相比其所比较的frontier models可快40x–200x。这里是厂商发布数据及厂商比较，不是本项目的Jev实测，不是所有任务或所有大模型的统一倍数。原文同时说明公开速度评测通常从美国西海岸笔记本发起；输入、地区、排队和模型版本会影响延迟。没有把首页另一个193.6x工作流宣传倍数混入本页。
+后续使用本项目支付、路由、图片、微调、vLLM和AgentCore数据逐项验证；不同批次、输入、调用路径和硬件不混算。
+来源：https://typesafe.ai/blog/introducing-system-one-models-and-jev
+快照：sources/jev-official.txt；sources/new-claims.json。

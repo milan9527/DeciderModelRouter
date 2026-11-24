@@ -15,15 +15,16 @@ MODELS = {
     },
 }
 ROUTING_MODELS = {"us.openai.gpt-6-sol"}
+TARGET_READ_TIMEOUT_SECONDS = 120
 
 
-def create_client():
+def create_client(*, read_timeout=40):
     if os.getenv("BEDROCK_ENABLED", "false").lower() != "true":
         return None
     return boto3.client(
         "bedrock-runtime",
         region_name=os.getenv("AWS_REGION", "us-east-1"),
-        config=Config(connect_timeout=3, read_timeout=40, retries={"max_attempts": 0}),
+        config=Config(connect_timeout=3, read_timeout=read_timeout, retries={"max_attempts": 0}),
     )
 
 

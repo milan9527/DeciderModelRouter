@@ -1,0 +1,4 @@
+这是依据公开发布和评测产品形态作出的趋势观察，不是市场规模、收入或份额统计。TypeSafe 的 Jev 发布文日期 2026-09-15，提出 System One 模型及 RLCD，提供托管 API。Strands 官方发布文日期 2026-10-01，公布 2B 开源模型、权重、训练数据和脚本，强调低延迟实验和混合智能体。Jev 的内部架构不能据此推断为 Decider 的 pointer head。2026-10-21 JevBench API 页面显示 39 个上榜系统；这只是该榜单口径，不代表市场只有 39 个产品，也不等于本项目评测过这些产品。厂商宣传倍数未作为本项目实测结论。
+Strands：https://strandsagents.com/blog/introducing-strands-decider/
+TypeSafe：https://typesafe.ai/blog/introducing-system-one-models-and-jev
+榜单：https://benchmarkheaven.com/jev-models/api

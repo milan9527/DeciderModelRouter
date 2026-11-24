@@ -17,6 +17,10 @@ from statistics import mean
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
+if __package__:
+    from scripts.routing_benchmark_sources import compile_livebench
+else:
+    from routing_benchmark_sources import compile_livebench
 MTEB_REVISION = "34a4409680a1deeb9ffc06942be546c6bed6a3e8"
 LIVEBENCH_RELEASE = "2026_06_25"
 
@@ -38,9 +42,9 @@ def number(value):
 def livebench(mappings, evidence):
     base = "https://livebench.ai/"
     urls = {
-        "scores": f"{base}table_{LIVEBENCH_RELEASE}.csv",
-        "categories": f"{base}categories_{LIVEBENCH_RELEASE}.json",
-        "costs": f"{base}cost_{LIVEBENCH_RELEASE}.csv",
+        "scores": f"{base}v1/table_{LIVEBENCH_RELEASE}.csv",
+        "categories": f"{base}v1/categories_{LIVEBENCH_RELEASE}.json",
+        "costs": f"{base}v1/cost_{LIVEBENCH_RELEASE}.csv",
     }
     raw = {key: fetch(url) for key, url in urls.items()}
     for key, value in raw.items():
@@ -180,11 +184,42 @@ def main():
     )
     parser.add_argument("--aa-key-file")
     parser.add_argument("--output", type=Path, default=ROOT / "app/routing_rankings.json")
+    parser.add_argument("--archive-dir", type=Path, help="Save fetched public source bytes and hashes")
     args = parser.parse_args()
     mappings = json.loads((ROOT / "app/routing_mappings.json").read_text())
     evidence = []
+    captured_at = datetime.now(UTC).isoformat()
+    references, releases = {}, []
     if args.source == "livebench":
-        rows, profile = livebench(mappings, evidence)
+        registry = json.loads((ROOT / "app/routing_registry.json").read_text())
+        archived = []
+
+        def archived_fetch(url):
+            raw = fetch(url)
+            if args.archive_dir:
+                args.archive_dir.mkdir(parents=True, exist_ok=True)
+                name = hashlib.sha256(url.encode()).hexdigest()[:12] + "-" + url.rsplit("/", 1)[-1]
+                (args.archive_dir / name).write_bytes(raw)
+                archived.append(
+                    {"url": url, "file": name, "sha256": hashlib.sha256(raw).hexdigest()}
+                )
+            return raw
+
+        rows, references, releases = compile_livebench(
+            mappings, registry, archived_fetch, evidence, captured_at
+        )
+        if args.archive_dir:
+            (args.archive_dir / "manifest.json").write_text(json.dumps(archived, indent=2) + "\n")
+        profile = {
+            "id": "livebench",
+            "name": "LiveBench",
+            "url": "https://livebench.ai/",
+            "release": registry["releases"][-1],
+            "quality_label": "LiveBench 同批次类别分项",
+            "coding_label": "LiveBench Coding / 可用时 Agentic Coding",
+            "speed_available": False,
+            "note": "不同批次不能混排；分项缺失为未知。价格来源逐配置标注，均为外部参考价。",
+        }
     else:
         rows, profile = artificial_analysis(mappings, args.aa_key_file, evidence)
     if len(rows) < 3:
@@ -201,12 +236,14 @@ def main():
             "note": "本项目取中英文两个子集均分，不是 MTEB 总榜；CC0 结果，提交结果可来自模型提供方。",
         },
         "entries": rows,
+        "model_references": references,
+        "benchmark_releases": releases,
         "evidence": evidence,
     }
     snapshot["version"] = hashlib.sha256(json.dumps(snapshot, sort_keys=True).encode()).hexdigest()[
         :16
     ]
-    snapshot["captured_at"] = datetime.now(UTC).isoformat()
+    snapshot["captured_at"] = captured_at
     args.output.parent.mkdir(parents=True, exist_ok=True)
     temporary = args.output.with_suffix(".tmp")
     temporary.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n")

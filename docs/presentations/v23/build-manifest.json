@@ -1,0 +1,1214 @@
+{
+  "created_at": "2026-10-23T05:34:41.201279+00:00",
+  "pages": 36,
+  "base_file": "docs/presentations/v22/Strands-Decider-v22-从业务验证到优化部署-34页-20261021.pptx",
+  "base_sha256": "f8736588685bac7488b3eb715e0d9a91997e69ed48c2753c613ad082384d8d94",
+  "pptx_file": "docs/presentations/v23/Strands-Decider-v23-业务验证与图片决策对比-36页-20261023.pptx",
+  "pptx_sha256": "928d5ad209e15b94fcb7f8a903fbe93c12fab46ab77ca73279be198a15776074",
+  "insert_after_v22_page": 19,
+  "new_pages": [
+    20,
+    21
+  ],
+  "slides": [
+    {
+      "page": 1,
+      "title": "让决策模型接得住真实业务",
+      "section": "01  为什么需要决策模型",
+      "v9_pages_reworked": [
+        1
+      ],
+      "notes": "基于v9的52页重排为32页。合并机制、支付重复截图、路由解释、优化和选型结论；新增场景验证与RI。\n原页底说明（仅保留于讲稿）：\nv12 · 2026-10-15  |  实验来自保存的真实请求；价格按当日 AWS / Jev 公开口径。",
+      "source": "v22",
+      "v10_page": 1,
+      "body_modified": false,
+      "v11_page": 1,
+      "removed_lower_explanation": "v12 · 2026-10-15  |  实验来自保存的真实请求；价格按当日 AWS / Jev 公开口径。",
+      "v12_page": 1,
+      "v13_page": 1,
+      "v14_page": 1,
+      "v15_page": 1,
+      "v16_page": 1,
+      "v18_page": 1,
+      "v19_page": 1,
+      "notes_modified": false,
+      "v21_page": 1,
+      "content_modified": false,
+      "v22_page": 1
+    },
+    {
+      "page": 2,
+      "title": "决策模型正在形成独立产品：开源权重、托管 API 与专用评测",
+      "section": "01  为什么需要决策模型",
+      "v9_pages_reworked": [],
+      "notes": "这是依据公开发布和评测产品形态作出的趋势观察，不是市场规模、收入或份额统计。TypeSafe 的 Jev 发布文日期 2026-09-15，提出 System One 模型及 RLCD，提供托管 API。Strands 官方发布文日期 2026-10-01，公布 2B 开源模型、权重、训练数据和脚本，强调低延迟实验和混合智能体。Jev 的内部架构不能据此推断为 Decider 的 pointer head。2026-10-21 JevBench API 页面显示 39 个上榜系统；这只是该榜单口径，不代表市场只有 39 个产品，也不等于本项目评测过这些产品。厂商宣传倍数未作为本项目实测结论。\nStrands：https://strandsagents.com/blog/introducing-strands-decider/\nTypeSafe：https://typesafe.ai/blog/introducing-system-one-models-and-jev\n榜单：https://benchmarkheaven.com/jev-models/api",
+      "source": "v22",
+      "content_modified": false,
+      "intro_source": "v20 P2",
+      "body_modified": false,
+      "v21_page": 2,
+      "v22_page": 2
+    },
+    {
+      "page": 3,
+      "title": "把输出限定为可执行选择，让模型专注于判断",
+      "section": "01  为什么需要决策模型",
+      "v9_pages_reworked": [],
+      "notes": "新增概念说明页，不是新增实测。决策模型强调输入状态与类型化输出；有限输出空间减少文本生成开销，使高频判断更易接入软件。Strands Decider 使用基座、LoRA 与 pointer head；Jev 为专有 System One API，不能根据相似接口推断二者内部架构相同。Jev发布文描述并行采样；Strands公开实现用单次前向得到候选分数，其详细原理在后续保留的v19原页说明。choice是当前候选中的选择；noul表示对陈述的支持程度，不能未经校准视为真实业务发生概率；score是给定范围内的评分。输出格式受到约束不代表语义选择一定正确。一次请求可以含共享上下文的多个独立判断；依赖新执行结果的判断需要重新提交事实。\n来源：https://strandsagents.com/blog/introducing-strands-decider/\nhttps://typesafe.ai/blog/introducing-system-one-models-and-jev",
+      "source": "v22",
+      "body_modified": true,
+      "v21_page": 3,
+      "content_modified": false,
+      "v22_page": 3
+    },
+    {
+      "page": 4,
+      "title": "BERT、决策模型与 GPT：输出方式决定适配方式",
+      "section": "01  为什么需要决策模型",
+      "v9_pages_reworked": [
+        4,
+        6,
+        7
+      ],
+      "notes": "BERT固定标签分类头适合标签稳定、有领域标注的数据。新增类别通常需调整分类头和训练。Decider接受请求中的动态候选；Jev提供托管决策接口，内部结构未公开，不能推断与Decider相同。GPT按应用要求生成候选ID，即便输出短仍使用生成式推理路径。\n原页底说明（仅保留于讲稿）：\nBERT 的 NLI 用法也可比较文本候选；此处比较典型分类头，没有进行 BERT 实测。",
+      "source": "v22",
+      "v10_page": 4,
+      "body_modified": false,
+      "v11_page": 4,
+      "removed_lower_explanation": "BERT 的 NLI 用法也可比较文本候选；此处比较典型分类头，没有进行 BERT 实测。",
+      "v12_page": 4,
+      "v13_page": 4,
+      "v14_page": 4,
+      "v15_page": 4,
+      "v16_page": 4,
+      "v18_page": 4,
+      "v19_page": 4,
+      "notes_modified": false,
+      "v21_page": 7,
+      "content_modified": false,
+      "v22_page": 4
+    },
+    {
+      "page": 5,
+      "title": "Decider：读完上下文，直接给候选评分",
+      "section": "01  为什么需要决策模型",
+      "v9_pages_reworked": [
+        3,
+        5
+      ],
+      "notes": "输入按官方模板编码，模型得到隐藏表示，Pointer Head比较候选与答案位置后评分，用校准参数转成输出。去除LM Head的生成路径；约1M参数的头不等于整个模型只有1M。\nhttps://strandsagents.com/blog/introducing-strands-decider/\n原页底说明（仅保留于讲稿）：\n来源：Strands 官方介绍与 v19 实现。API 的 probability / confidence 不是业务正确率。",
+      "source": "v22",
+      "v10_page": 3,
+      "body_modified": false,
+      "v11_page": 3,
+      "removed_lower_explanation": "来源：Strands 官方介绍与 v19 实现。API 的 probability / confidence 不是业务正确率。",
+      "v12_page": 3,
+      "v13_page": 3,
+      "v14_page": 3,
+      "v15_page": 3,
+      "v16_page": 3,
+      "v18_page": 3,
+      "v19_page": 3,
+      "notes_modified": false,
+      "v21_page": 6,
+      "content_modified": false,
+      "v22_page": 5
+    },
+    {
+      "page": 6,
+      "title": "JevBench：综合分、能力分与业务准确率是不同的指标",
+      "section": "01  为什么需要决策模型",
+      "v9_pages_reworked": [],
+      "notes": "2026-10-21 公开 JevBench API 榜单截图，图中第7–9名为裁剪节选，未改动图内数据。Jev1.13 综合分71.491186；Intelligence63.620758、Calibration90.632202，Capability=(I+C)/2=77.12648。63.6是智能单轴，不是能力分。综合分同时考虑智能、校准、速度、成本并有低分轴惩罚，因此不等于正确率。API中位延迟约0.239s。正式榜单包含公开和封闭题，与本项目231题自测分开解释。\nhttps://benchmarkheaven.com/jev-models/api\nhttps://benchmarkheaven.com/jev-models/methodology\n来源快照：sources/jevbench-rows.json；截图：screenshots/jevbench-ranking-detail.png。",
+      "source": "v22",
+      "content_modified": false,
+      "intro_source": "v20 P6",
+      "body_modified": false,
+      "notes_modified": true,
+      "v21_page": 4,
+      "v22_page": 6
+    },
+    {
+      "page": 7,
+      "title": "Decider 公开集：短决策更稳，复杂推理仍有短板",
+      "section": "01  为什么需要决策模型",
+      "v9_pages_reworked": [],
+      "notes": "2026-10-16 02:46 UTC 实测，原版 Strands Decider 2B Hobson v19，us-east-1 g6.xlarge / NVIDIA L4，非 vLLM。使用官方 JevBench 固定提交 1bcc55eb6c8cffde2306b3db03ede39b61c6152a，运行 v1 的 231 道公开题：easy 48、original/standard 72、hard 111。每次一道题，单并发，无重试，Choice/Noul/Score 各预热一次，预热不计入。客户端 ECS Fargate 经私网 HTTP 连接模型，延迟含网络和服务排队，不是纯 GPU kernel 时间；窗口 4096 tokens，输入平均 661.1 tokens。168 正确，63 错误；调用失败和严格格式错误均为 0。Brier=0.34828721233766263，ECE=0.04986926406926421，越低越好。18 个任务族完整数据见 sources/summary.json。工具选择和意图识别是本批优势，长规则、时序数值、多跳推理是短板；小样本公开路由题并不等于生产模型路由验收。这是旧版公开子集，不是当前榜单完整题集；不与旧版 PPT 的 Jev / GPT 榜单数据混算。\n来源：validation/jevbench/README.md\n完整原备注：sources/v21-notes/page-10.txt。",
+      "source": "v22",
+      "body_modified": false,
+      "v18_page": 7,
+      "v19_page": 7,
+      "notes_modified": false,
+      "v21_page": 10,
+      "content_modified": false,
+      "v22_page": 7
+    },
+    {
+      "page": 8,
+      "title": "同一业务后端，连接三个决策模型",
+      "section": "02  三模型演示架构",
+      "v9_pages_reworked": [
+        13
+      ],
+      "notes": "当前演示前端为私有S3+CloudFront OAC，后端为ECS Fargate，用户名密码登录。ECS通过私网互联连接共享g6.xlarge vLLM服务。Bedrock负责GPT，Jev经Lambda适配。本次只更新材料，不变更部署。配置依据deployment/DEPLOYED.md。后续支付和路由沿用此前原版v19采集数据，未改称vLLM结果；原版/vLLM对照见本版P29，与Jev的公共API比较见P30。\n此图描述文字决策接入；新增图片决策见P20–21，使用独立的官方视觉推理服务，尚非vLLM视觉适配。",
+      "source": "v22",
+      "v10_page": 6,
+      "body_modified": false,
+      "v11_page": 6,
+      "removed_lower_explanation": "主演示使用原版 Decider g6.xlarge 常驻服务；独立 vLLM API 见第 28 页。",
+      "v12_page": 6,
+      "v13_page": 6,
+      "v14_page": 6,
+      "v15_page": 6,
+      "v16_page": 7,
+      "v18_page": 9,
+      "v19_page": 9,
+      "notes_modified": false,
+      "v21_page": 12,
+      "content_modified": false,
+      "v22_page": 8
+    },
+    {
+      "page": 9,
+      "title": "四个场景，同样经过五个业务节点",
+      "section": "03  支付客服 · 从误选到输入优化",
+      "v9_pages_reworked": [
+        14,
+        15
+      ],
+      "notes": "支付数据：2026-10-12 presentation-v8-warm，3次预热另存，4场景×5节点×3模型=60次正式调用。Decider v19官方服务在g6.xlarge；Jev 1.13.0经应用的Lambda适配；Bedrock GPT-6.1 Sol low。计时为后端请求总耗时，预热不计入。与演示参考一致只是这20个节点的参考匹配，不是通用准确率。初始四场景都缺少资金完成条件，三模型各为0/4资金业务完成。执行保护不改写模型原始成绩。\n证据：docs/presentations/v8/live-observations.json\n截图保持实际输入输出，未修改内容。\n原页底说明（仅保留于讲稿）：\n模型建议、实际执行动作、对话输入输出和最终业务结果分别记录。",
+      "source": "v22",
+      "v10_page": 7,
+      "body_modified": false,
+      "v11_page": 7,
+      "removed_lower_explanation": "模型建议、实际执行动作、对话输入输出和最终业务结果分别记录。",
+      "v12_page": 7,
+      "v13_page": 7,
+      "v14_page": 7,
+      "v15_page": 7,
+      "v16_page": 8,
+      "v18_page": 10,
+      "v19_page": 10,
+      "notes_modified": false,
+      "v21_page": 13,
+      "content_modified": false,
+      "v22_page": 9
+    },
+    {
+      "page": 10,
+      "title": "支付实测：Decider 更快，审批选择出现分歧",
+      "section": "03  支付客服 · 从误选到输入优化",
+      "v9_pages_reworked": [],
+      "notes": "2026-10-15 03:53–03:54 UTC，真实线上演示同一采集批次。四场景×两种输入×三模型×五步=120次正式调用，另有6次预热且不计入正式统计。每个场景先baseline后optimized，同一步三提供方并行，不同节点顺序请求；每组合只跑一次，没有随机顺序或置信区间。这是输入优化复现实验，不是稳定延迟基准。图中耗时取应用返回timings.backend_total_ms，包含应用排队和提供方调用；不是纯GPU前向时间，也不是浏览器client_ms。三模型收到相同model_input（hash相同），实际供应商API封装不同。GPT模型us.openai.gpt-6.1-sol、low effort；Decider strands-decider-2B-hobson-v19运行在现有g6.xlarge原版服务；Jev响应模型jev-1.13.0。接口返回节选中的choice来自应用保存的真实模型选择；不是声称展示完整供应商原生HTTP响应。原始HTTP请求正文、应用响应、完整模型输入、前端执行日志和最终状态均在sources/payment-live.json。演示参考由业务代码独立给出，不作为答案放入模型输入。模型权重未修改，不是fine-tuning。业务执行全部为浏览器沙盒，未执行外部资金动作；所有120次正式调用均成功。\n这不是自主闭环：五个模型请求使用冻结的初始事实，每步问题和候选变化，模型选择再分别由各提供方的前端沙盒执行。表格是原始模型选择，不是执行器纠正后的动作。原始模式Decider与Jev多产生一个人工复核阻塞，GPT避免了这个额外阻塞，但所有模型仍需等待链上3/12确认。\npending/baseline/intake\n完整原备注：sources/v21-notes/page-15.txt。",
+      "source": "v22",
+      "removed_lower_explanation": "2026-10-15 实测 · 耗时为应用后端耗时 · 输入与接口返回均为节选，完整请求和执行记录见讲稿与来源。",
+      "v12_page": 9,
+      "body_modified": false,
+      "v13_page": 9,
+      "v14_page": 9,
+      "v15_page": 9,
+      "v16_page": 10,
+      "v18_page": 12,
+      "v19_page": 12,
+      "notes_modified": false,
+      "v21_page": 15,
+      "content_modified": false,
+      "v22_page": 10
+    },
+    {
+      "page": 11,
+      "title": "为什么多等了一次审批？从实际请求看条件歧义",
+      "section": "03  支付客服 · 从误选到输入优化",
+      "v9_pages_reworked": [],
+      "notes": "2026-10-15 03:53–03:54 UTC，真实线上演示同一采集批次。四场景×两种输入×三模型×五步=120次正式调用，另有6次预热且不计入正式统计。每个场景先baseline后optimized，同一步三提供方并行，不同节点顺序请求；每组合只跑一次，没有随机顺序或置信区间。这是输入优化复现实验，不是稳定延迟基准。图中耗时取应用返回timings.backend_total_ms，包含应用排队和提供方调用；不是纯GPU前向时间，也不是浏览器client_ms。三模型收到相同model_input（hash相同），实际供应商API封装不同。GPT模型us.openai.gpt-6.1-sol、low effort；Decider strands-decider-2B-hobson-v19运行在现有g6.xlarge原版服务；Jev响应模型jev-1.13.0。接口返回节选中的choice来自应用保存的真实模型选择；不是声称展示完整供应商原生HTTP响应。原始HTTP请求正文、应用响应、完整模型输入、前端执行日志和最终状态均在sources/payment-live.json。演示参考由业务代码独立给出，不作为答案放入模型输入。模型权重未修改，不是fine-tuning。业务执行全部为浏览器沙盒，未执行外部资金动作；所有120次正式调用均成功。\n本页展示实际model_input.state与criteria的节选，以及应用返回的choice节选。基线approved选项已经包含其他场景无需退款审批的说明；问题是await_approval等其他候选未同样明确Only refund，且收款state中混入退款字段，不能说原来完全没有非退款豁免规则。\npending/baseline/approve\n完整原备注：sources/v21-notes/page-14.txt。",
+      "source": "v22",
+      "removed_lower_explanation": "2026-10-15 实测 · 耗时为应用后端耗时 · 输入与接口返回均为节选，完整请求和执行记录见讲稿与来源。",
+      "v12_page": 8,
+      "body_modified": false,
+      "v13_page": 8,
+      "v14_page": 8,
+      "v15_page": 8,
+      "v16_page": 9,
+      "v18_page": 11,
+      "v19_page": 11,
+      "notes_modified": false,
+      "v21_page": 14,
+      "content_modified": false,
+      "v22_page": 11
+    },
+    {
+      "page": 12,
+      "title": "输入优化：删去无关字段，明确每个候选的适用范围",
+      "section": "03  支付客服 · 从误选到输入优化",
+      "v9_pages_reworked": [],
+      "notes": "2026-10-15 03:53–03:54 UTC，真实线上演示同一采集批次。四场景×两种输入×三模型×五步=120次正式调用，另有6次预热且不计入正式统计。每个场景先baseline后optimized，同一步三提供方并行，不同节点顺序请求；每组合只跑一次，没有随机顺序或置信区间。这是输入优化复现实验，不是稳定延迟基准。图中耗时取应用返回timings.backend_total_ms，包含应用排队和提供方调用；不是纯GPU前向时间，也不是浏览器client_ms。三模型收到相同model_input（hash相同），实际供应商API封装不同。GPT模型us.openai.gpt-6.1-sol、low effort；Decider strands-decider-2B-hobson-v19运行在现有g6.xlarge原版服务；Jev响应模型jev-1.13.0。接口返回节选中的choice来自应用保存的真实模型选择；不是声称展示完整供应商原生HTTP响应。原始HTTP请求正文、应用响应、完整模型输入、前端执行日志和最终状态均在sources/payment-live.json。演示参考由业务代码独立给出，不作为答案放入模型输入。模型权重未修改，不是fine-tuning。业务执行全部为浏览器沙盒，未执行外部资金动作；所有120次正式调用均成功。\n代码为app/crypto_profiles.py中的scoped_state和SCOPED_INSTRUCTIONS。pending的state由18字段变为12字段，删除refund_approved、refund_destination_verified、settled、settlement_minutes、settlement_overdue、settlement_sla_minutes。保留的字段和值全部不变。criteria和instructions同时重写，本实验不能单独归因于删字段或某一句话，也没有改变模型权重。全部4个候选ID及其顺序不变，未向模型输入reference_choice。\npending/baseline/approve\n完整原备注：sources/v21-notes/page-16.txt。",
+      "source": "v22",
+      "removed_lower_explanation": "2026-10-15 实测 · 耗时为应用后端耗时 · 输入与接口返回均为节选，完整请求和执行记录见讲稿与来源。",
+      "v12_page": 10,
+      "body_modified": false,
+      "v13_page": 10,
+      "v14_page": 10,
+      "v15_page": 10,
+      "v16_page": 11,
+      "v18_page": 13,
+      "v19_page": 13,
+      "notes_modified": false,
+      "v21_page": 16,
+      "content_modified": false,
+      "v22_page": 12
+    },
+    {
+      "page": 13,
+      "title": "优化后的实际变化：Decider 与 Jev 不再额外等待审批",
+      "section": "03  支付客服 · 从误选到输入优化",
+      "v9_pages_reworked": [],
+      "notes": "2026-10-15 03:53–03:54 UTC，真实线上演示同一采集批次。四场景×两种输入×三模型×五步=120次正式调用，另有6次预热且不计入正式统计。每个场景先baseline后optimized，同一步三提供方并行，不同节点顺序请求；每组合只跑一次，没有随机顺序或置信区间。这是输入优化复现实验，不是稳定延迟基准。图中耗时取应用返回timings.backend_total_ms，包含应用排队和提供方调用；不是纯GPU前向时间，也不是浏览器client_ms。三模型收到相同model_input（hash相同），实际供应商API封装不同。GPT模型us.openai.gpt-6.1-sol、low effort；Decider strands-decider-2B-hobson-v19运行在现有g6.xlarge原版服务；Jev响应模型jev-1.13.0。接口返回节选中的choice来自应用保存的真实模型选择；不是声称展示完整供应商原生HTTP响应。原始HTTP请求正文、应用响应、完整模型输入、前端执行日志和最终状态均在sources/payment-live.json。演示参考由业务代码独立给出，不作为答案放入模型输入。模型权重未修改，不是fine-tuning。业务执行全部为浏览器沙盒，未执行外部资金动作；所有120次正式调用均成功。\n上下两图分别是同次采集中pending-baseline-approve与pending-optimized-approve的真实界面裁剪。只裁剪边界，不改界面数据。两者保留三提供方名字、耗时、原始choice以及实际执行文字。底层执行状态Decider和Jev review_pending:true→false，GPT false→false。三者execute仍返回hold，fundsComplete:false、complete:false、无账本条目。这次改善是去掉不必要的人工审批，没有把链上3/12确认当成满足入账条件。\npending/baseline/approve\n完整原备注：sources/v21-notes/page-17.txt。",
+      "source": "v22",
+      "removed_lower_explanation": "2026-10-15 实测 · 耗时为应用后端耗时 · 输入与接口返回均为节选，完整请求和执行记录见讲稿与来源。",
+      "v12_page": 11,
+      "body_modified": false,
+      "v13_page": 11,
+      "v14_page": 11,
+      "v15_page": 11,
+      "v16_page": 12,
+      "v18_page": 14,
+      "v19_page": 14,
+      "notes_modified": false,
+      "v21_page": 17,
+      "content_modified": false,
+      "v22_page": 13
+    },
+    {
+      "page": 14,
+      "title": "四场景复测：Decider 参考一致从 14/20 提升到 18/20",
+      "section": "03  支付客服 · 从误选到输入优化",
+      "v9_pages_reworked": [],
+      "notes": "2026-10-15 03:53–03:54 UTC，真实线上演示同一采集批次。四场景×两种输入×三模型×五步=120次正式调用，另有6次预热且不计入正式统计。每个场景先baseline后optimized，同一步三提供方并行，不同节点顺序请求；每组合只跑一次，没有随机顺序或置信区间。这是输入优化复现实验，不是稳定延迟基准。图中耗时取应用返回timings.backend_total_ms，包含应用排队和提供方调用；不是纯GPU前向时间，也不是浏览器client_ms。三模型收到相同model_input（hash相同），实际供应商API封装不同。GPT模型us.openai.gpt-6.1-sol、low effort；Decider strands-decider-2B-hobson-v19运行在现有g6.xlarge原版服务；Jev响应模型jev-1.13.0。接口返回节选中的choice来自应用保存的真实模型选择；不是声称展示完整供应商原生HTTP响应。原始HTTP请求正文、应用响应、完整模型输入、前端执行日志和最终状态均在sources/payment-live.json。演示参考由业务代码独立给出，不作为答案放入模型输入。模型权重未修改，不是fine-tuning。业务执行全部为浏览器沙盒，未执行外部资金动作；所有120次正式调用均成功。\n一致性按原始choice计算，执行器修正不计为模型答对。Decider14/20→18/20，Jev18/20→20/20，GPT20/20→20/20。Decider少付核验由request_topup变成await_confirmations，属于退化；同时少付执行由credit_order改为hold，场景总分仍4/5。退款审批await_approval→approved仍错，参考verify_destination；退款execute和close从refund_payment/resolve改为hold/follow_up，故2/5→4/5。商户结算close从resolve→follow_up，4/5→5/5。优化后四场景仍未完成资金业务，是冻结业务事实的固定流程试验，不能以四场景全部未结案推断模型全错。\n逐场景精确统计：\n完整原备注：sources/v21-notes/page-18.txt。",
+      "source": "v22",
+      "removed_lower_explanation": "4 场景 × 2 种输入 × 3 模型 × 5 步 = 120 次成功调用；另有 6 次预热。一次配对观测，不据此声称稳定加速。",
+      "v12_page": 12,
+      "body_modified": false,
+      "v13_page": 12,
+      "v14_page": 12,
+      "v15_page": 12,
+      "v16_page": 13,
+      "v18_page": 15,
+      "v19_page": 15,
+      "notes_modified": false,
+      "v21_page": 18,
+      "content_modified": false,
+      "v22_page": 14
+    },
+    {
+      "page": 15,
+      "title": "退款仍会选错：原始返回与执行结果必须分开看",
+      "section": "03  支付客服 · 从误选到输入优化",
+      "v9_pages_reworked": [],
+      "notes": "2026-10-15 03:53–03:54 UTC，真实线上演示同一采集批次。四场景×两种输入×三模型×五步=120次正式调用，另有6次预热且不计入正式统计。每个场景先baseline后optimized，同一步三提供方并行，不同节点顺序请求；每组合只跑一次，没有随机顺序或置信区间。这是输入优化复现实验，不是稳定延迟基准。图中耗时取应用返回timings.backend_total_ms，包含应用排队和提供方调用；不是纯GPU前向时间，也不是浏览器client_ms。三模型收到相同model_input（hash相同），实际供应商API封装不同。GPT模型us.openai.gpt-6.1-sol、low effort；Decider strands-decider-2B-hobson-v19运行在现有g6.xlarge原版服务；Jev响应模型jev-1.13.0。接口返回节选中的choice来自应用保存的真实模型选择；不是声称展示完整供应商原生HTTP响应。原始HTTP请求正文、应用响应、完整模型输入、前端执行日志和最终状态均在sources/payment-live.json。演示参考由业务代码独立给出，不作为答案放入模型输入。模型权重未修改，不是fine-tuning。业务执行全部为浏览器沙盒，未执行外部资金动作；所有120次正式调用均成功。\n图为优化模式退款审批的真实界面，去掉顶部轮次栏而保留客户请求、输入摘要、三模型返回与实际执行。原始Decider await_approval错误；优化后approved仍错误。Jev与GPT在两个profile中都返回verify_destination。优化后Decider原始返回approved，执行器记录requested_action:approved、action:verify_destination、safety_adjusted:true，原因是退款地址未验证。该修正不能计入模型正确率。三者后续资金步骤均hold，回复follow_up，未退款、未结案。\nrefund/baseline/approve\n完整原备注：sources/v21-notes/page-19.txt。",
+      "source": "v22",
+      "removed_lower_explanation": "2026-10-15 实测 · 耗时为应用后端耗时 · 输入与接口返回均为节选，完整请求和执行记录见讲稿与来源。",
+      "v12_page": 13,
+      "body_modified": false,
+      "v13_page": 13,
+      "v14_page": 13,
+      "v15_page": 13,
+      "v16_page": 14,
+      "v18_page": 16,
+      "v19_page": 16,
+      "notes_modified": false,
+      "v21_page": 19,
+      "content_modified": false,
+      "v22_page": 15
+    },
+    {
+      "page": 16,
+      "title": "第二个任务：从选择支付动作，到选择执行模型",
+      "section": "04  模型路由 · 看速度，也看选择",
+      "v9_pages_reworked": [],
+      "notes": "四类任务只有任务原文，不额外给用户优先级。模型先选择处理流程，再根据候选模型能力、区域可用性与第三方评测证据选择具体型号。程序不按排名替换模型选择；三侧使用相同事实、候选ID和顺序。候选合法不代表型号适用。接下来依次看支付客服两步请求、四任务对照、双语索引误选。本版仅展示原始路由；三轮数据来自docs/results/model-evidence-2026-10-16/results.json。",
+      "source": "v22",
+      "v14_page": 15,
+      "body_modified": false,
+      "v15_page": 15,
+      "v16_page": 16,
+      "v18_page": 18,
+      "v19_page": 18,
+      "notes_modified": false,
+      "v21_page": 21,
+      "content_modified": false,
+      "v22_page": 16
+    },
+    {
+      "page": 17,
+      "title": "支付客服：流程选择一致，具体型号选择不同",
+      "section": "04  模型路由 · 看速度，也看选择",
+      "v9_pages_reworked": [],
+      "notes": "支付客服原始路由：流程选择一致，具体型号选择不同。\n实际请求：回复客户的问题：USDC 已转出，为什么订单仍显示待支付？当前链上确认数为 3/12。\n2026-10-16 原始流程三轮；每阶段后端耗时取均值，预热排除。三路都选择 customer_support；每侧两次判断均由对应模型完成，同阶段输入、候选 ID 与顺序相同，没有增强输入或程序代选。\nDecider：流程选择 96.0 ms，型号选择 353.2 ms，合计 449.2 ms，m04 → Claude Opus 5。\nJev：流程选择 492.1 ms，型号选择 425.7 ms，合计 917.8 ms，m05 → Claude Opus 5.5。\nGPT-6 Sol low：流程选择 1297.8 ms，型号选择 1176.3 ms，合计 2474.1 ms，m16 → GPT-6 Luna。\n只比较路由判断，不代表目标模型已生成答复或业务已完成。三轮重复不构成稳定延迟、吞吐或通用选型准确率结论。\n完整请求、响应与三轮耗时保留于 docs/presentations/v16/sources/support-routing-original.json。原始长备注另存 sources/original-notes-p21.txt；页面内容未修改。",
+      "source": "v22",
+      "body_modified": false,
+      "v16_page": 19,
+      "v18_page": 21,
+      "v19_page": 21,
+      "notes_modified": false,
+      "v21_page": 24,
+      "content_modified": false,
+      "v22_page": 17
+    },
+    {
+      "page": 18,
+      "title": "四任务对照：流程选择一致，具体型号仍有差异",
+      "section": "04  模型路由 · 看速度，也看选择",
+      "v9_pages_reworked": [
+        28,
+        29,
+        30
+      ],
+      "notes": "本页统一使用2026-10-16原始路由三轮记录，与前一页客服使用同一批数据。每路由器四任务×三轮，先选workflow再选model，两步均为真实模型判断。三侧输入、候选ID和顺序相同，预热排除，值为workflow+model的backend_total_ms均值。不含所选模型的目标执行，也不将与GPT选型一致记为准确率。全部四任务在三轮中的型号选择稳定；双语索引的English选择与语言证据不符。下一页是同一任务的较早界面截图，保留实际输入与选择，不将其单次耗时当本页均值。\n来源：docs/results/model-evidence-2026-10-16/results.json；sources/routing-summary.json。",
+      "source": "v22",
+      "v10_page": 12,
+      "body_modified": false,
+      "v11_page": 12,
+      "removed_lower_explanation": "2026-10-13 · 四任务各测一次；型号选择差异不能直接当作下游任务准确率。",
+      "v12_page": 16,
+      "v13_page": 16,
+      "v14_page": 16,
+      "v15_page": 16,
+      "v16_page": 17,
+      "v18_page": 19,
+      "v19_page": 19,
+      "notes_modified": false,
+      "v21_page": 22,
+      "content_modified": false,
+      "v22_page": 18
+    },
+    {
+      "page": 19,
+      "title": "中英文工单索引：同一任务，选中了不同的向量模型",
+      "section": "04  模型路由 · 看速度，也看选择",
+      "v9_pages_reworked": [],
+      "notes": "中英文工单索引：同一任务，三个决策模型选择了不同的向量模型。\n实际请求：将中英文支付工单转换为知识库检索索引所需的向量，工单内容为：USDC 已转账但商户订单仍显示待支付。\n先选择处理流程，再根据区域可用候选和第三方检索证据选择具体型号。用户没有指定优先级或目标模型，同阶段候选与输入一致。\n本批 Decider 选择 Embed English，Jev 和 GPT 选择 Embed Multilingual。输入中的检索均分为 English 30.65、Multilingual 59.23。Jev / GPT 的选择更符合中英文任务与现有证据；本批未执行下游检索效果验证。\n数据来自 2026-10-13 原始路由测试，每任务每模型一次，不代表通用准确率。GPT 路由器为 GPT-6 Sol low；Decider 为原版 v19 / g6.xlarge。\n详细报告：docs/MODEL_ROUTING_COMPARISON.md。完整原始备注另存 sources/original-notes-p20.txt；页面内容与截图未修改。",
+      "source": "v22",
+      "v13_page": 17,
+      "body_modified": false,
+      "v14_page": 17,
+      "v15_page": 17,
+      "v16_page": 18,
+      "v18_page": 20,
+      "v19_page": 20,
+      "notes_modified": false,
+      "v21_page": 23,
+      "content_modified": false,
+      "v22_page": 19
+    },
+    {
+      "source": "new",
+      "v22_page": null,
+      "title": "第三个任务：读懂图片，直接选择业务动作",
+      "content_modified": true,
+      "notes": "承接文字模型路由，第三个业务演示直接将截图提交给三个模型。覆盖支付状态4图×3问题、中文客服4图×1问题、凭证完整性4图×3问题，共12图28项判断。预设或上传图片统一成448×448 PNG，三侧图片字节、上下文、问题、候选含义与顺序一致；不预先OCR，样例预期不发送给模型。每模型一次请求独立回答同组问题，不是先用字段答案改写动作问题，也不真正执行付款或接收凭证。\nDecider沿用v19官方视觉编码器和决策头，在EC2 g6.xlarge/L4独立容器运行；不是本项目文字vLLM服务的图片适配。Jev实际返回jev-1.14.0，经ECS→Lambda→System One提交图片asset；该图片API为试验功能。GPT-6.1 Sol low经Bedrock Converse图片块返回候选ID或Boolean。\n截图为2026-10-23上线浏览器实时验收case-11，裁掉导航、其他字段和折叠区，保留原有三列模型名称、后端/浏览器耗时、动作和预期提示，未修改图片内返回。本次截图后端耗时Decider172.2ms/Jev420.1ms/GPT约1.01s。下一页均值来自另存的12图完整批次，不用截图单次时间替代批次均值。三者都将signature判为true、reference判为false；Decider动作accept，Jev/GPT动作request_reference。Decider字段识别正确，但组合条件动作未符合样例预期。这只能定位可观察的差异，不能据此断言模型内部推理的具体原因。\n来源：sources/vision-browser-2026-10-23.json、sources/vision-catalog.json、screenshots/vision-triple-receipt.png、sources/VISION.md。\n演示：https://d3i7ogfx5ml7dc.cloudfront.net/#vision\n官方视觉能力：https://github.com/strands-labs/strands-decider/blob/main/docs/vision.md\nJev图片接口：https://docs.typesafe.ai/images",
+      "page": 20,
+      "section": "05  图片决策 · 从截图到业务动作"
+    },
+    {
+      "source": "new",
+      "v22_page": null,
+      "title": "图片实测：Decider 响应最快，27/28 项符合预期",
+      "content_modified": true,
+      "notes": "2026-10-23T04:07:59Z至04:08:22Z，通过线上业务API实测12张清晰合成截图。每模型先预热一次，正式请求按图片顺序执行，同一图三模型并发；共3次预热另计、36次正式请求全部HTTP200，每模型12次请求、28项独立判断。12组input_fingerprint逐一相同。各次请求包含1项或3项独立判断，延迟为backend_total_ms整次业务API耗时，不能称为单问题或逐步推理延迟。包括服务等待、图片处理及模型往返；Jev包括Lambda转发，GPT为Bedrock调用。不包含浏览器至API网络；没有测本批并发吞吐或长期尾延迟。\n总体：Decider27/28、均值178.1432ms、中位数171.1785ms；Jev28/28、均值424.6036ms、中位数397.9985ms；GPT28/28、均值1539.1652ms、中位数1208.3675ms。支付：三侧12/12，均值170.2193/469.5495/2107.3458ms。客服：三侧4/4，均值188.8950/418.6625/1273.2473ms。凭证：11/12、12/12、12/12，均值175.3153/385.5988/1236.9025ms。\n符合预期计数按调用前冻结的样例标签，每问题一次评分；noul按0.5转换是/否。GPT只返回Boolean/候选，不补造概率。唯一不符合为case-11动作：Decideraccept，预期request_reference；它的两个字段答案与Jev/GPT一致。对高频清晰截图的分流与状态判断，Decider本批响应更快且符合预期；凭证接收涉及组合条件，需要单独验收。后续可优化条件表达、增加缺失字段反例，并按领域样本微调后复测；本次没有更新权重，没有宣称已消除该错误。12图28项是小样本验收，不代表真实票据通用准确率或生产SLA。\n数据：sources/vision-triple-2026-10-23.json；方法与部署：sources/VISION.md。\n报告：https://github.com/milan9527/StrandsDecider/blob/main/docs/VISION.md",
+      "page": 21,
+      "section": "05  图片决策 · 从截图到业务动作"
+    },
+    {
+      "page": 22,
+      "title": "扩展验证：局部选择可用，复杂证据与多步任务仍需补强",
+      "section": "06  其他场景 · 适用边界",
+      "v9_pages_reworked": [],
+      "notes": "2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。\n报告：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md\n原始索引：validation/model_comparison/summary.json\n原页底说明（仅保留于讲稿）：\n问题数、任务数与请求数不同，不计算跨场景总准确率；来源：validation/README.md。\n2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。\n报告：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md\n原始索引：validation/model_comparison/summary.json\n证据：validation/jev_skills/scenario_summary.json。Decider queued任务尚无产物却finish，测试替换成assert True仍通过，缺发票地址时选一般咨询地址。一个评分1.4936与参考2相差0.5064，刚超容差；不能与错误放行等量解释。客户端RTT中位数Decider164.6ms/Jev119.9ms；P95911.1/163.8ms。没有正式预热阶段，Decider首次六问题请求13.511秒原样保留，具体原因未确定。\n原页底说明（仅保留于讲稿）：\n参考在调用前冻结；按业务用途事后归类。量表采用固定 ±0.5 容差。\n2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。\n报告：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md\n原始索引：validation/model_comparison/summary.json\n使用scored-summary修订后结果：CFPB官方页面为60 calendar days，原匹配60 days漏判。根据保存页面将Jev8/10更正10/10，无模型重跑；修订与原记录均保留。\n原页底说明（仅保留于讲稿）：\n每任务最多 12 步、150 秒；截图留证但不作为视觉输入。五任务各独立运行两次。\n2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。\n报告：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md\n原始索引：validation/model_comparison/summary.json\nDecider第二轮2步，在BankFind入口结束；Jev第二轮6步返回机构结果，Cert628。Jev第一轮10步，包含重复操作；完成率高不代表路径最优。\n原页底说明（仅保留于讲稿）：\n原始页面截图仅裁切可读区域，完整图片与每步 URL / DOM / 动作保存在 validation/browser_finance。\n2026-10-12—13保存的真实调用，本次仅复核汇总，无新增模型调用。直接实验为Skills64、浏览器+金融178、两批政策路由224，总计466次。模型为Decider 2B hobson v19原版服务和Jev1.13.0；这批没有GPT，也没有vLLM。问题、任务、请求的计数单位不同，不汇总跨场景准确率；候选顺序反转和重复运行不算新增独立案例。Jev在独立验证中直连，支付经过Lambda；计时边界和输入不同，不能混算加速倍数。\n完整原备注：sources/v21-notes/page-25.txt。",
+      "source": "v22",
+      "v13_page": 20,
+      "body_modified": false,
+      "v14_page": 19,
+      "v15_page": 20,
+      "v16_page": 20,
+      "v18_page": 22,
+      "v19_page": 22,
+      "notes_modified": false,
+      "v21_page": 25,
+      "content_modified": false,
+      "v22_page": 20
+    },
+    {
+      "page": 23,
+      "title": "进一步优化：用领域标签训练 LoRA 与决策头",
+      "section": "07  领域微调 · 从数据到结果",
+      "v9_pages_reworked": [],
+      "notes": "流程依据项目 tetris-sft-workflow.svg 横向重排，原图完整保存在本版 sources/docs/diagrams。2026-10-16 首轮 GPU SFT；标签由引擎的六项指标严格支配关系生成。共 18,868 条题，按种子和可观察棋盘隔离四分区，同一局面的候选及措辞变体留在同区。train 更新参数；validation 选 best；calibration 拟合温度；test 只做最终评估。训练后用新种子进行 20 局游戏，共 895 次落块回放；推理时由模型选落点，程序执行。微调检查点另存，部署为单独步骤，不由训练脚本自动发布；未替换支付或路由演示模型。\n全过程：https://github.com/milan9527/StrandsDeciderTetrisFinetuning/blob/main/docs/TETRIS_FINETUNING_WALKTHROUGH.zh.md\n原始记录：sources/reports/2026-10-16/\n承接上文：支付只改输入字段和候选条件；此处是另一个领域的监督微调实测。Tetris效果不能直接当作支付或模型路由已提高准确率，两个业务尚需各自数据验收。",
+      "source": "v22",
+      "body_modified": false,
+      "v19_page": 24,
+      "notes_modified": false,
+      "v21_page": 27,
+      "content_modified": false,
+      "v22_page": 21
+    },
+    {
+      "page": 24,
+      "title": "标签怎么来：用一条真实训练题说明“更好的落点”",
+      "section": "07  领域微调 · 从数据到结果",
+      "v9_pages_reworked": [],
+      "notes": "真实样本：训练 JSONL 第 267 行，seed=10001、step=27，当前 Z、下一块 T，此前消行 7。示例由微调全过程文档记录；本页是带标签的训练输入，不是模型推理返回。选项 p676=(x3,r0,y13)，p172=(x0,r0,y13)，p852=(x6,r1,y15)。三个候选均可生成下一块，p852 其余五项指标也均优于其他候选，因此 label=2。六项指标全不差且至少一项更好才生成严格支配标签；各有取舍时不强行给唯一答案。标签仅表示本题候选和单步指标下的优势，不能证明所有未来序列上的最优落点。随机候选 ID、排序及训练 collator 再次换序时，标签同步重映射。\n来源：https://github.com/milan9527/StrandsDeciderTetrisFinetuning/blob/main/docs/TETRIS_FINETUNING_WALKTHROUGH.zh.md#33-一条实际样本",
+      "source": "v22",
+      "body_modified": false,
+      "v19_page": 25,
+      "notes_modified": false,
+      "v21_page": 28,
+      "content_modified": false,
+      "v22_page": 22
+    },
+    {
+      "page": 25,
+      "title": "模型怎么更新：冻结基座，续训 LoRA 与决策头",
+      "section": "07  领域微调 · 从数据到结果",
+      "v9_pages_reworked": [],
+      "notes": "依据 lora-training-step.svg 横向重排。原图完整保留在 sources/docs/diagrams。Qwen3.5-2B 文本基座有 24 层、hidden=2048。原始矩阵冻结，已有 LoRA 的 A/B 继续训练；W有效=W基座+(alpha/r)BA。r=16、alpha=32、dropout=0.05；图中仅展示一个目标层。LoRA 分布于全注意力、线性注意力和前馈网络目标矩阵。本轮可训练 LoRA 参数 16,819,200，pointer head 参数 1,053,184。head 使用整道题和候选向量为当前候选打分，softmax 输出概率。损失 -log P(正确候选)，梯度累积后由 AdamW 更新 LoRA 与 head。基座仍参与前向/反向，但原矩阵不应用权重更新。没有训练文字答案生成，没有 GPT 教师，也没有 PPO/GRPO；训练开始与结束的散列确认两组权重改变。bf16 基座、fp32 head、梯度检查点；batch=2，累积=8，1 epoch，787 次更新。LoRA/head 学习率 2e-5/1e-4；完整训练子进程 3842.60 秒，约 64 分钟。\n来源：https://github.com/milan9527/StrandsDeciderTetrisFinetuning/blob/main/docs/TETRIS_FINETUNING_WALKTHROUGH.zh.md#5-lora-和多层模型在这里如何工作",
+      "source": "v22",
+      "body_modified": false,
+      "v19_page": 26,
+      "notes_modified": false,
+      "v21_page": 29,
+      "content_modified": false,
+      "v22_page": 23
+    },
+    {
+      "page": 26,
+      "title": "独立测试：准确率提高，候选换序后的选择也更稳定",
+      "section": "07  领域微调 · 从数据到结果",
+      "v9_pages_reworked": [],
+      "notes": "结果来自 2026-10-16 summary.json、baseline/report.json、adapted/report.json，原版 v19 与 SFT 在完全相同 test 分区比较。原顺序 SFT 答对 2067/2068；反序并改名答对 2066/2068；实际选择一致 2065/2068。一致率表示同一道题两种排列选到同一实际落点，不是两模型动作一致。验证曲线使用另一个 2120 条 validation 分区，只用来选 best；两者最终 99.95% 是巧合，不能混同。温度由 2090 条 calibration 选择，本轮 T=1.0；正温度不改变候选排序。本次同时使用 LoRA/head 更新和排列增强，未做消融，不能单独归因。只证明当前引擎支配比较题分布的效果；没有复测全部其他能力，不将该准确率用于支付、模型路由、JevBench 或三模型总体排名。\n报告：https://github.com/milan9527/StrandsDeciderTetrisFinetuning/blob/main/finetuning/RESULTS.md\n训练：sources/reports/2026-10-16/training.json",
+      "source": "v22",
+      "body_modified": false,
+      "v19_page": 27,
+      "notes_modified": false,
+      "v21_page": 30,
+      "content_modified": false,
+      "v22_page": 24
+    },
+    {
+      "page": 27,
+      "title": "完整对局：微调版 10/10 局达到 50 块上限",
+      "section": "07  领域微调 · 从数据到结果",
+      "v9_pages_reworked": [],
+      "notes": "完整对局不使用训练或测试的种子。每个模型在 50000–50004 上，数字/自然语言各五局，每局最多 50 块，总共 20 局。保留原应用的候选分组、初选和决选，实际执行与原始模型选择一致，没有用启发式替换模型选择，895 次落块全部通过回放。原版数字 0/5 到达上限、平均消行 1.8；SFT 数字 5/5、12.2。原版自然语言 1/5、3.0；SFT 自然语言 5/5、14.2。SFT 两种输入仍分别有 17/250 指标劣选，不等同于长期策略错误；比较题高准确率没有覆盖有取舍的全部游戏状态。这是一次训练、五个新种子的短局证据，不推断无限存活或通用业务能力。项目后来提供统一 finetune.py 入口，其真实 CPU smoke 不等于重跑本批 GPU；本页所有效果和约64分钟训练时间仍来自首轮GPU实验。\n项目：https://github.com/milan9527/StrandsDeciderTetrisFinetuning\n结果：https://github.com/milan9527/StrandsDeciderTetrisFinetuning/blob/main/finetuning/RESULTS.md\n回放：sources/reports/2026-10-16/replay-verification.json",
+      "source": "v22",
+      "body_modified": false,
+      "v19_page": 28,
+      "notes_modified": false,
+      "v21_page": 31,
+      "content_modified": false,
+      "v22_page": 25
+    },
+    {
+      "page": 28,
+      "title": "效果验证之后，再用 vLLM 改善并发服务能力",
+      "section": "08  vLLM · 部署与性能",
+      "v9_pages_reworked": [
+        37,
+        38
+      ],
+      "notes": "性能证据来自独立StrandsDeciderVLLM项目；v9/sources/vllm/provenance.json保存来源提交与哈希。v19、vLLM0.31.0，BF16 torso/FP32 Pointer Head，单L4。原版对齐比较在g6.4xlarge同机，容器限制4vCPU/14GiB，回环HTTP；后续独立公网压测在g6.xlarge。20个固定支付输入，每次一个choice，固定worker收到完整响应后发下一个请求；失败不重试，预热另计。吞吐=成功数/正式总时长，失败占用总时长；分位数仅统计成功响应。相同输入反复调用只测性能，不扩充独立质量样本。数值对齐是对原版，不证明选择正确。\n性能报告：https://github.com/milan9527/StrandsDeciderVLLM/blob/main/docs/VLLM_PERFORMANCE.zh-CN.md\nJev对比：https://github.com/milan9527/StrandsDeciderVLLM/blob/main/docs/JEV_CONCURRENCY.zh-CN.md\n导出合并LoRA并携带head/calibration/tokenizer；自定义pooler取候选/答案位置，全prefill后应用官方answer转换。严格比较choice与概率/置信度；容差0.02异常保留。\n原页底说明（仅保留于讲稿）：\nvLLM 0.31.0；BF16 底座 / FP32 Pointer Head；未开启前缀缓存、分块预填充或 CUDA Graph。\n本版将重复部署架构合入P8。适配与性能实验使用原始Decider v19，不是将前述Tetris检查点作为本次vLLM压测对象。",
+      "source": "v22",
+      "v10_page": 23,
+      "body_modified": false,
+      "v11_page": 24,
+      "removed_lower_explanation": "vLLM 0.31.0；BF16 底座 / FP32 Pointer Head；未开启前缀缓存、分块预填充或 CUDA Graph。",
+      "v12_page": 27,
+      "v13_page": 22,
+      "v14_page": 21,
+      "v15_page": 22,
+      "v16_page": 22,
+      "v18_page": 24,
+      "v19_page": 29,
+      "notes_modified": false,
+      "v21_page": 32,
+      "content_modified": false,
+      "v22_page": 26
+    },
+    {
+      "page": 29,
+      "title": "同一块 L4，8 并发吞吐提升约 2.36 倍",
+      "section": "08  vLLM · 部署与性能",
+      "v9_pages_reworked": [
+        41
+      ],
+      "notes": "性能证据来自独立StrandsDeciderVLLM项目；v9/sources/vllm/provenance.json保存来源提交与哈希。v19、vLLM0.31.0，BF16 torso/FP32 Pointer Head，单L4。原版对齐比较在g6.4xlarge同机，容器限制4vCPU/14GiB，回环HTTP；后续独立公网压测在g6.xlarge。20个固定支付输入，每次一个choice，固定worker收到完整响应后发下一个请求；失败不重试，预热另计。吞吐=成功数/正式总时长，失败占用总时长；分位数仅统计成功响应。相同输入反复调用只测性能，不扩充独立质量样本。数值对齐是对原版，不证明选择正确。\n性能报告：https://github.com/milan9527/StrandsDeciderVLLM/blob/main/docs/VLLM_PERFORMANCE.zh-CN.md\nJev对比：https://github.com/milan9527/StrandsDeciderVLLM/blob/main/docs/JEV_CONCURRENCY.zh-CN.md\n8并发原版14.76RPS/P95542.8ms；vLLM复测34.91RPS/P95237.6ms。更早测试的5次超时保留在原始报告，本图为标明的复测。\n原页底说明（仅保留于讲稿）：\n每档 80 请求，预热另计。提升同时包含推理路径和调度变化，不能全部归因于批处理。",
+      "source": "v22",
+      "v10_page": 25,
+      "body_modified": false,
+      "v11_page": 26,
+      "removed_lower_explanation": "每档 80 请求，预热另计。提升同时包含推理路径和调度变化，不能全部归因于批处理。",
+      "v12_page": 29,
+      "v13_page": 24,
+      "v14_page": 23,
+      "v15_page": 24,
+      "v16_page": 24,
+      "v18_page": 26,
+      "v19_page": 31,
+      "notes_modified": false,
+      "v21_page": 34,
+      "content_modified": false,
+      "v22_page": 27
+    },
+    {
+      "page": 30,
+      "title": "低并发 Decider 延迟低，Jev 在中并发吞吐更高",
+      "section": "08  vLLM · 部署与性能",
+      "v9_pages_reworked": [
+        44,
+        45
+      ],
+      "notes": "性能证据来自独立StrandsDeciderVLLM项目；v9/sources/vllm/provenance.json保存来源提交与哈希。v19、vLLM0.31.0，BF16 torso/FP32 Pointer Head，单L4。原版对齐比较在g6.4xlarge同机，容器限制4vCPU/14GiB，回环HTTP；后续独立公网压测在g6.xlarge。20个固定支付输入，每次一个choice，固定worker收到完整响应后发下一个请求；失败不重试，预热另计。吞吐=成功数/正式总时长，失败占用总时长；分位数仅统计成功响应。相同输入反复调用只测性能，不扩充独立质量样本。数值对齐是对原版，不证明选择正确。\n性能报告：https://github.com/milan9527/StrandsDeciderVLLM/blob/main/docs/VLLM_PERFORMANCE.zh-CN.md\nJev对比：https://github.com/milan9527/StrandsDeciderVLLM/blob/main/docs/JEV_CONCURRENCY.zh-CN.md\nDecider10239/10240，1次HTTP502，10次confidence差.0202超.02容差；Jev10240/10240。每侧560预热另计。128并发出现尾延迟，不用短测替代长期SLA。\n原页底说明（仅保留于讲稿）：\n2026-10-13，每模型 10,240 次正式尝试；P95 为成功响应端到端延迟，单位毫秒。\n合并原并发说明：Decider这批短输入在8并发后吞吐进入平台，继续增加并发主要增加排队。8192为每批token预算；更大的预算未改善该短输入样本吞吐。",
+      "source": "v22",
+      "v10_page": 27,
+      "body_modified": false,
+      "v11_page": 28,
+      "removed_lower_explanation": "2026-10-13，每模型 10,240 次正式尝试；P95 为成功响应端到端延迟，单位毫秒。",
+      "v12_page": 31,
+      "v13_page": 26,
+      "v14_page": 25,
+      "v15_page": 26,
+      "v16_page": 26,
+      "v18_page": 28,
+      "v19_page": 33,
+      "notes_modified": false,
+      "v21_page": 36,
+      "content_modified": false,
+      "v22_page": 28
+    },
+    {
+      "page": 31,
+      "title": "Jev 按输入 token 计费；EC2 按运行容量计费",
+      "section": "09  Jev 与 EC2 · 成本选择",
+      "v9_pages_reworked": [],
+      "notes": "公开价格快照2026-10-15。Jev每百万输入token0.042USD，结构化输出免费；实际输入token包含state、问题与候选，不能只按用户任务的字数估算。EC2 On-Demand实例运行时间产生计算费，没有请求但实例仍运行也计费；停止后计算费停止，磁盘等另计。一年Standard RI No Upfront是按承诺换折扣的计费安排，非另一种模型部署；停止实例仍付承诺，不预留区域容量。月均730小时，全年8760小时，年承诺5575.0392USD。EC2价格不是按token或请求计费；平均每次费用是计算费除以实际服务请求数，利用率影响分摊。算例使用此前实测Jev支付输入均值656.95token，不套用本次目标模型生成token。每月100万决策的Jev API费27.5919USD；EC2按需713.648USD、RI464.5866USD。尚未测量g6.2xlarge容量，单台承载仅为价格比较前提。下游生成模型与应用/EBS/网络/高可用/运维费用另计。\n{\n  \"price_snapshot\": \"2026-10-15T02:55:19.745810+00:00\",\n  \"region\": \"us-east-1\",\n  \"instance\": \"g6.2xlarge\",\n  \"jev_input_usd_per_million_tokens\": 0.042,\n  \"jev_output_usd\": 0,\n  \"on_demand_hourly_usd\": 0.9776,\n  \"one_year_no_upfront_hourly_usd\": 0.63642,\n  \"hours_per_month\": 730,\n  \"example_monthly_payment_decisions\": 1000000,\n  \"mean_jev_input_tokens_per_decision\": 656.95,\n  \"jev_example_month_usd\": 27.591900000000003,\n  \"on_demand_example_month_usd\": 713.648,\n  \"one_year_ri_example_month_usd\": 464.5866,\n  \"assumption\": \"One instance can serve the load; compute/API only. Target-model execution, EBS, network and application costs extra.\",\n  \"sources\": [\n    {\n      \"source\": \"docs/presentations/v11/sources/cost-calculation.json\",\n      \"file\": \"docs/presentations/v13/sources/cost-calculation.json\",\n      \"sha256\": \"daaa5dc74c76701c3c196939ace04ddd3bce24e9d3256e7911490ae61f2ce85f\"\n    },\n    {\n      \"source\": \"docs/presentations/v11/sources/aws-g6.2xlarge-pricing.json\",\n      \"file\": \"docs/presentations/v13/sources/aws-g6.2xlarge-pricing.json\",\n      \"sha256\": \"1ace75968f835a2b54ba68e7dc09295eb9826e863fb99847c11cad9ce4cb8759\"\n    },\n    {\n      \"source\": \"docs/presentations/v11/sources/aws-ri-overview.txt\",\n      \"file\": \"docs/presentations/v13/sources/aws-ri-overview.txt\",\n      \"sha256\": \"6fddeee46012635935f14a37fb1717e12d087da4168f7e6b1a44e32362f1cf76\"\n    },\n    {\n      \"source\": \"docs/presentations/v11/sources/aws-ri-scope.txt\",\n      \"file\": \"docs/presentations/v13/sources/aws-ri-scope.txt\",\n      \"sha256\": \"753e8f736ddfcf00d316b303230ad7fc00cea7887d786efee20ac84d95847ce1\"\n    },\n    {\n      \"source\": \"docs/presentations/v11/sources/jev-pricing.txt\",\n      \"file\": \"docs/presentations/v13/sources/jev-pricing.txt\",\n      \"sha256\": \"713ad290e1acac16427afd04dfaca867492c3cd58cddbcb87bf9c713e07454af\"\n    },\n    {\n      \"source\": \"docs/presentations/v11/sources/crossover-calculation.json\",\n      \"file\": \"docs/presentations/v13/sources/crossover-calculation.json\",\n      \"sha256\": \"435fb6eabf7bf5eb02b800aec0a0edb96a26c393dd68a14ea82c54af51cae3a9\"\n    }\n  ]\n}",
+      "source": "v22",
+      "v13_page": 27,
+      "body_modified": false,
+      "v14_page": 26,
+      "v15_page": 27,
+      "v16_page": 27,
+      "v18_page": 29,
+      "v19_page": 34,
+      "notes_modified": false,
+      "v21_page": 37,
+      "content_modified": false,
+      "v22_page": 29
+    },
+    {
+      "page": 32,
+      "title": "支付单次：1 年 RI 的交点约 1684 万次/月",
+      "section": "09  Jev 与 EC2 · 成本选择",
+      "v9_pages_reworked": [],
+      "notes": "价格来自2026-10-15 AWS Price List：us-east-1/Linux/Shared/g6.2xlarge。On-Demand0.9776USD/h，730h=713.648USD/月；Standard RI 1年No Upfront0.63642USD/h，月均464.5866USD，全年承诺5575.0392USD，无预付。停止实例仍付RI小时承诺，区域RI不预留容量。三条曲线只比较On-Demand、该1年RI与Jev，不展示3年RI。Jev0.042USD/百万输入token，输出免费；用真实usage而非Decider tokenizer估计。EC2图线是单台全年常驻的计算费。仅在单台可满足负载且质量达标时比较交点；g6.2xlarge未进行本批容量实测。未计EBS、网络、后端、运维、冗余、税、下游模型和业务工具。费用是公开价估算，不是账单；没有购买RI。\n来源：sources/cost-calculation.json；sources/aws-g6.2xlarge-pricing.json。\nAWS RI：https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html\nJev：https://typesafe.ai/blog/introducing-system-one-models-and-jev\n平均 656.95 输入 token / 次，Jev每百万次$27.5919。费用交点：RI16.837789百万；按需25.864402百万。\n小于RI交点：Jev调用费低于两种EC2计算费；两交点之间：RI<Jev<On-Demand；高于按需交点：RI<On-Demand<Jev。各区间均假设一台实例可满足负载。\n原页底说明（仅保留于讲稿）：\ng6.2xlarge · us-east-1 · 730h/月；只比计算/API费用，容量与质量另验。RI 闲置仍计费，其他资源费用另计。",
+      "source": "v22",
+      "v11_page": 29,
+      "body_modified": false,
+      "removed_lower_explanation": "g6.2xlarge · us-east-1 · 730h/月；只比计算/API费用，容量与质量另验。RI 闲置仍计费，其他资源费用另计。",
+      "v12_page": 32,
+      "v13_page": 28,
+      "v14_page": 27,
+      "v15_page": 28,
+      "v16_page": 28,
+      "v18_page": 30,
+      "v19_page": 35,
+      "notes_modified": false,
+      "v21_page": 38,
+      "content_modified": false,
+      "v22_page": 30
+    },
+    {
+      "page": 33,
+      "title": "两步模型路由：1 年 RI 的交点约 394 万条/月",
+      "section": "09  Jev 与 EC2 · 成本选择",
+      "v9_pages_reworked": [],
+      "notes": "价格来自2026-10-15 AWS Price List：us-east-1/Linux/Shared/g6.2xlarge。On-Demand0.9776USD/h，730h=713.648USD/月；Standard RI 1年No Upfront0.63642USD/h，月均464.5866USD，全年承诺5575.0392USD，无预付。停止实例仍付RI小时承诺，区域RI不预留容量。三条曲线只比较On-Demand、该1年RI与Jev，不展示3年RI。Jev0.042USD/百万输入token，输出免费；用真实usage而非Decider tokenizer估计。EC2图线是单台全年常驻的计算费。仅在单台可满足负载且质量达标时比较交点；g6.2xlarge未进行本批容量实测。未计EBS、网络、后端、运维、冗余、税、下游模型和业务工具。费用是公开价估算，不是账单；没有购买RI。\n来源：sources/cost-calculation.json；sources/aws-g6.2xlarge-pricing.json。\nAWS RI：https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html\nJev：https://typesafe.ai/blog/introducing-system-one-models-and-jev\n平均 2,805.75 输入 token / 条，Jev每百万条$117.8415。费用交点：RI3.942470百万；按需6.055999百万。\n小于RI交点：Jev调用费低于两种EC2计算费；两交点之间：RI<Jev<On-Demand；高于按需交点：RI<On-Demand<Jev。各区间均假设一台实例可满足负载。\n原页底说明（仅保留于讲稿）：\ng6.2xlarge · us-east-1 · 730h/月；只比计算/API费用，容量与质量另验。RI 闲置仍计费，其他资源费用另计。",
+      "source": "v22",
+      "v11_page": 30,
+      "body_modified": false,
+      "removed_lower_explanation": "g6.2xlarge · us-east-1 · 730h/月；只比计算/API费用，容量与质量另验。RI 闲置仍计费，其他资源费用另计。",
+      "v12_page": 33,
+      "v13_page": 29,
+      "v14_page": 28,
+      "v15_page": 29,
+      "v16_page": 29,
+      "v18_page": 31,
+      "v19_page": 36,
+      "notes_modified": false,
+      "v21_page": 39,
+      "content_modified": false,
+      "v22_page": 31
+    },
+    {
+      "page": 34,
+      "title": "按任务选模型：先验证效果，再优化速度与成本",
+      "section": "10  总结与资料",
+      "v9_pages_reworked": [],
+      "notes": "支付汇总来自2026-10-15四场景、每场景五步的优化输入实测：Decider91.5ms/18/20，Jev388.5ms/20/20，GPT1271.9ms/20/20。延迟为应用后端单次决策均值，参考一致只描述本批预设业务策略，不代表普遍正确率。Decider为原版v19历史采集。其他场景适用性以本版P22各自验证为依据；领域微调效果见P23–27，来自Tetris独立实验，不等于已完成支付或路由微调。Jev适合波动流量和按量计费，自托管在稳定负载下结合容量与RI评估。",
+      "source": "v22",
+      "v11_page": 31,
+      "body_modified": false,
+      "removed_lower_explanation": "支付为平均后端耗时与参考一致次数；小样本。公共 vLLM 延迟与验证场景的 RTT 分开统计。",
+      "v12_page": 34,
+      "v13_page": 30,
+      "v14_page": 29,
+      "v15_page": 30,
+      "v16_page": 30,
+      "v18_page": 32,
+      "v19_page": 37,
+      "notes_modified": false,
+      "v21_page": 40,
+      "content_modified": false,
+      "v22_page": 32
+    },
+    {
+      "page": 35,
+      "title": "打开演示，查看真实过程和原始记录",
+      "section": "10  总结与资料",
+      "v9_pages_reworked": [
+        52
+      ],
+      "notes": "在线演示：https://d3i7ogfx5ml7dc.cloudfront.net，使用已有用户名密码。项目：https://github.com/milan9527/StrandsDecider；vLLM：https://github.com/milan9527/StrandsDeciderVLLM；微调：https://github.com/milan9527/StrandsDeciderTetrisFinetuning。截图、实验记录和分批统计来源见前文备注及本版讲稿。后接候选顺序诊断附录，标为internal only。",
+      "source": "v22",
+      "v10_page": 32,
+      "body_modified": false,
+      "v11_page": 32,
+      "removed_lower_explanation": "PPT 内含逐页讲稿与来源；v12 新增三模型支付实际请求、优化前后结果与真实界面。",
+      "v12_page": 35,
+      "v13_page": 31,
+      "v14_page": 30,
+      "v15_page": 31,
+      "v16_page": 31,
+      "v18_page": 33,
+      "v19_page": 38,
+      "notes_modified": false,
+      "v21_page": 41,
+      "content_modified": false,
+      "v22_page": 33
+    },
+    {
+      "page": 36,
+      "title": "只交换选项顺序，Decider 的选择随之改变",
+      "section": "附录  internal only · 候选顺序诊断",
+      "v9_pages_reworked": [],
+      "notes": "internal only。本页仅展示原始输入的候选顺序诊断，现有优化流程页面保持原样。原始输入使用MIRACL dev en/zh平均分：English30.651，Multilingual59.225，v4 50.6635；这些分数与型号、候选ID、问题说明、业务任务完全不变，只改变criteria对象的插入顺序。原始请求427输入token，远小于4096上下文上限；直接调用/api/decide，mode=live。三次分别返回m00、m02、m01，均为当前排列首项。模型概率由服务真实返回，没有程序改写答案、把候选排名用于选型，或在此页计为准确率。独立诊断共保存六次调用，本页只取其中三次原始输入，不混入正式路由耗时。已经确认当前调用链在本样例对顺序敏感；尚未隔离模型、提示表达及底层推理实现各自影响。不能推广为全部Decider任务偏好首项，也未对Jev/GPT做同等顺序诊断。后续：核对渲染与候选读回；在不同任务和全部候选排列下重测；再验证模型分步判断或用随机排列训练数据适配。始终保留模型真实答案。\n原始请求与响应：sources/order-original-diagnostic.json\n完整原备注：sources/v21-notes/page-42.txt。",
+      "source": "v22",
+      "body_modified": false,
+      "classification": "internal only",
+      "v15_page": 32,
+      "v16_page": 32,
+      "v18_page": 34,
+      "v19_page": 39,
+      "notes_modified": false,
+      "v21_page": 42,
+      "content_modified": false,
+      "v22_page": 34
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/presentations/v23/sources/strands-introduction.txt",
+      "sha256": "9b4ab5150c0a154e7b4dd471cf6356de7e72de01f4763ce02a1d4dbeb94e7f24"
+    },
+    {
+      "path": "docs/presentations/v23/sources/jev-introduction.txt",
+      "sha256": "ea6c9f81269973b28b35f05ec3bf2e1a931997e5f71a9df928a6392b7c62fecb"
+    },
+    {
+      "path": "docs/presentations/v23/sources/jevbench-rows.json",
+      "sha256": "f7da3188b608d0ffb40ee31c96df0bb9a1be4355c39112be42d00d7c425b9344"
+    },
+    {
+      "path": "docs/presentations/v23/sources/screenshot.json",
+      "sha256": "5a40ce7c456296e7ac28420d24fbb5706a103db22e7b9e4483fb3648a95f2359"
+    },
+    {
+      "path": "docs/presentations/v23/sources/manifest.json",
+      "sha256": "6e1dcf0b0892361b654913471c075a82b1f69e6aa032e8d384a72b403a25a4ea"
+    },
+    {
+      "path": "docs/presentations/v23/screenshots/jevbench-leaderboard.png",
+      "sha256": "9409d72f14f65fe542b3df81bbb874e996b7f70f36fde214bafb81590ce00b2e"
+    },
+    {
+      "path": "docs/presentations/v23/screenshots/jevbench-ranking-detail.png",
+      "sha256": "208354316f24e0cc4649d5ab1d366927cf51d657c7e8aee8d08b8002d50c82ac"
+    },
+    {
+      "path": "docs/presentations/v3/icons/receipt-text.svg",
+      "sha256": "264e3ac8b35b5f914333729e40d0de43107765ae636be6eac4e122cf76f6bb87"
+    },
+    {
+      "path": "docs/presentations/v3/icons/list-filter.svg",
+      "sha256": "502573071e3b8118356eb408df781872f0608071b4b09cd99954ba1d8e2b8b37"
+    },
+    {
+      "path": "docs/presentations/v3/icons/brain-circuit.svg",
+      "sha256": "a338cb589935721dc00da71ea7d7457ab7fbb85cff90a62cc3ac6b2ebc68cd82"
+    },
+    {
+      "path": "docs/presentations/v3/icons/clipboard-check.svg",
+      "sha256": "e2bac86a6b24caa0d7d0dcc2719ec6b7870ec5eef2d21afae498d8cb5eefda96"
+    },
+    {
+      "path": "docs/presentations/v23/sources/routing-summary.json",
+      "sha256": "53897f5a4a9dbf1e38640a59c86f458617b6abc67c682c1031c3611dabb86f77"
+    },
+    {
+      "path": "docs/presentations/v23/sources/support-routing-original.json",
+      "sha256": "e72156ce745d1aec4a863929c16630658a298937a95f44c2af07a5aafdc79236"
+    },
+    {
+      "path": "docs/presentations/v23/sources/payment-comparison.json",
+      "sha256": "4a366d688c87386ae8222826a11d1136e374eb4700734fad8d627ec1d6557126"
+    },
+    {
+      "path": "docs/presentations/v23/sources/finetuning-summary.json",
+      "sha256": "2256d98b0b40463d863c268c73644a13cb48c07680624eafeb40ba64cfd12208"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-01.txt",
+      "sha256": "299927defa4ed8693b3dec17d52a39b5812852ca1ceffd3f30be6b521f57c1ab"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-02.txt",
+      "sha256": "edfccf09da4d2de42c8710f113f18516e741f431654ca1bb653bce3f70209c68"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-03.txt",
+      "sha256": "b281edd7dcfa6316fd5f6a0123f4235bbe98de7776ceb954b173446f784c97d5"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-04.txt",
+      "sha256": "9be687e619096d96145239fc41e67a4fa42b37b91f7f42de755495c58f3297ae"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-05.txt",
+      "sha256": "d8956420ac932a348a14f312d7a75f84d342fa58805e9225f282934c33da70a2"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-06.txt",
+      "sha256": "cd1ec883847d6f68bd80871a865eb2bbf698265a25586a828ae055991c247207"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-07.txt",
+      "sha256": "676bd13eac69abe7d836497cdf0cd9e6a252a9e3125c10010530b184391f0b61"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-08.txt",
+      "sha256": "f787f107da31cd8123a4ed8c0c90625b5f1e647f0d80b03f43955f25323a2db0"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-09.txt",
+      "sha256": "a549e9da5447704c0591f24a1ebe47fdf9f90cd0b61a620a6c4421f9c7ec21b3"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-10.txt",
+      "sha256": "625f8b308b065a22f0906e1ae794f21b91462d9278085dc54cecbbc429ba43db"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-11.txt",
+      "sha256": "52551b23cfa366c90a7408e92bacfc729f5209cb39610ca27a5af583fd2d8140"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-12.txt",
+      "sha256": "938d0154499be2ccb4653571adb830368d35ccc3b64028a8aeb63a12cc1e6bb2"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-13.txt",
+      "sha256": "14f81fdad2ef5054f2ae5ff73abaaaf23c6dce1be64953e4260fb3926708bc14"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-14.txt",
+      "sha256": "377b97c5e7c347af6f94f3477d57f8ea7639ccb93aed03b05cf1fe45cc2e2138"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-15.txt",
+      "sha256": "437d5d104982b12f8de2d970d9a0436f613b217abeca4a6f6a6dc65d8ffbd311"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-16.txt",
+      "sha256": "8b7c908e50854bc588fae4c0b8c66586983da79fe4a574dd4e575d4158336e50"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-17.txt",
+      "sha256": "c4b24cf16ecd1d97945cf2f09563cbe67242e55fab47b7444854fae538019ab0"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-18.txt",
+      "sha256": "c7c773cd8ef55b544ecd2af807851a7072e7c86962b1c0c5639f2e3a10af468a"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-19.txt",
+      "sha256": "5a84745aa67779eca89768951c950cbdd5ad45d2e437077d388abdbcf1c23ff0"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-20.txt",
+      "sha256": "2a953a384929f48806159d761cb6149b414920a978e500415c190a5f894ea992"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-21.txt",
+      "sha256": "cc1d7fdf0b47c60105fd0ff0c7bd46cab661a1d5858665e43c258be222fd3bc8"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-22.txt",
+      "sha256": "a802198c5f56c121e5c37fcb5505c7a0348ec54a740e73b8d391f59ec93a9fac"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-23.txt",
+      "sha256": "698f790b7230ae19c20b5f56e05bb6fdaadfe467dc655b4d49fceeeb2ea6cbc9"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-24.txt",
+      "sha256": "1e1b1bcfd86050713fb4392abfff513e3e9fb5c92a0301ded02e08bc665eea9c"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-25.txt",
+      "sha256": "78dcabf6ced6be5e4fe79ee72c6cf2548d666373b726d74029c14973ef4f4449"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-26.txt",
+      "sha256": "805edf4a6de28fecf0a8c04792a462aee1b936deead81a515d5bd9683ef7942c"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-27.txt",
+      "sha256": "3456324a5bbf7e3ea88a0fa9d557d7cfdb31fb4b905e97d43d1d7f406f4b8fe2"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-28.txt",
+      "sha256": "9fa64b606107e693b31f0bab875516ee6c571cddfd5c3597900e7f2a8c7cc3de"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-29.txt",
+      "sha256": "b65314fc596f2d6c0e83c582c0e51511171a743067acdb20020ad537f786d9b9"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-30.txt",
+      "sha256": "9e8e4ccb250820071f606a1ea1f7a858a1614f4632b2c9b0e5ad20f558552e2f"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-31.txt",
+      "sha256": "0c4b21e68f9c783c9b04103706853a4719af23d9898888bf2b12658fbbf4ca49"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-32.txt",
+      "sha256": "2f9c9d03f0da9cb18440798f25affd34de3190734d5d55721dedf99d4f6ae6dc"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-33.txt",
+      "sha256": "1dcada0952e406f957bed0e561e92685adc99d9ccedba0cc30428e46ed6a232b"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-34.txt",
+      "sha256": "28930dfae732959ef30c0b81c669909face632b824da6474716e2f4980385e56"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-35.txt",
+      "sha256": "9172ceac4963f2486e200a7e90b64eebb9cdc660f4dab2a198562d941e4165a0"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-36.txt",
+      "sha256": "177b285d8dac21ff8f44ccd0e2e0c12a18b3d1979e9eb20e4784d410d911db14"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-37.txt",
+      "sha256": "244302679888a817342a3f7b4e063128419791d6df0f7be78a984804a6ef9f95"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-38.txt",
+      "sha256": "aefd54ccb2b1f5fdae5539a940b1b659a2de609cd2ea3959f9692a44b2bf4b1c"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-39.txt",
+      "sha256": "147ae6d9f0647a0ac5a3a02ccd6f260f17fae9093464208c11b633024d85c90c"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-40.txt",
+      "sha256": "08a18724414bfce68edfafa3633ee6822cd6a4ba92b5ae56874a5091a668f968"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-41.txt",
+      "sha256": "9a908f3ead9fe0808b49737d5cfe330c8dfdbd21e1960e58db732a8da0ee446a"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v21-notes/page-42.txt",
+      "sha256": "ac8ee8abb825d04e27523ae3944c89d35df7114c86d287f514fcf47cc3207ccc"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-01.txt",
+      "sha256": "299927defa4ed8693b3dec17d52a39b5812852ca1ceffd3f30be6b521f57c1ab"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-02.txt",
+      "sha256": "edfccf09da4d2de42c8710f113f18516e741f431654ca1bb653bce3f70209c68"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-03.txt",
+      "sha256": "b281edd7dcfa6316fd5f6a0123f4235bbe98de7776ceb954b173446f784c97d5"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-04.txt",
+      "sha256": "676bd13eac69abe7d836497cdf0cd9e6a252a9e3125c10010530b184391f0b61"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-05.txt",
+      "sha256": "cd1ec883847d6f68bd80871a865eb2bbf698265a25586a828ae055991c247207"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-06.txt",
+      "sha256": "708812899672d5897d4d9dab0b39806ab02ff370099fd5df80303613d41277c6"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-07.txt",
+      "sha256": "c8037142574bd8d4d088ca17897fb6c84d2a23e509576bb6b8d6a71e991082e7"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-08.txt",
+      "sha256": "72e4a9ba90e3e604b91d397d97d266237836bc7ec0de842bbeb745a67894236f"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-09.txt",
+      "sha256": "14f81fdad2ef5054f2ae5ff73abaaaf23c6dce1be64953e4260fb3926708bc14"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-10.txt",
+      "sha256": "2dbaf2481816b1d6fd71b435ed10d4ff8eba38904deb9d22089f1e912365d767"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-11.txt",
+      "sha256": "16962c064db27fcda03d4c320301950fe65aefca488cd8144c777fc3e83846fd"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-12.txt",
+      "sha256": "a55220bbc3fbea2e76fc098097cad3619d31bee4f22fd85b17ea7874cca8d37a"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-13.txt",
+      "sha256": "905608cd10f1442c209ddcfa0748d18c3b349677f235e4568a2ba3745924a392"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-14.txt",
+      "sha256": "84dc1a5b61ac2d8b0f1db84576e0f18f11caf066c0cfff1e7214d0c429671876"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-15.txt",
+      "sha256": "bdae37608bfaa1bfb00d7122f691e249ff375d502405e7fed2394968a03c9e97"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-16.txt",
+      "sha256": "1217f3ef0f5c35627a1f4e995301980cf2a658ed39d6c8a97a9cf2e02a99b398"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-17.txt",
+      "sha256": "1e1b1bcfd86050713fb4392abfff513e3e9fb5c92a0301ded02e08bc665eea9c"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-18.txt",
+      "sha256": "c994264973658c6b9cba05368cc1f13c389f414daabd002ec1907b9d90763a7c"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-19.txt",
+      "sha256": "698f790b7230ae19c20b5f56e05bb6fdaadfe467dc655b4d49fceeeb2ea6cbc9"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-20.txt",
+      "sha256": "70a3456ec954b35fa9be4079a9f751b7661f7089b530fbe3a644fda180dca19e"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-21.txt",
+      "sha256": "ef918df7f0d0596c5f3a70c939bd3d873bbf4df52d980bf343710e7c2aa39987"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-22.txt",
+      "sha256": "9fa64b606107e693b31f0bab875516ee6c571cddfd5c3597900e7f2a8c7cc3de"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-23.txt",
+      "sha256": "b65314fc596f2d6c0e83c582c0e51511171a743067acdb20020ad537f786d9b9"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-24.txt",
+      "sha256": "9e8e4ccb250820071f606a1ea1f7a858a1614f4632b2c9b0e5ad20f558552e2f"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-25.txt",
+      "sha256": "0c4b21e68f9c783c9b04103706853a4719af23d9898888bf2b12658fbbf4ca49"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-26.txt",
+      "sha256": "d5b8791197e9999e52aa9af360c0cd4e1e84c9710cede7d2726d89590b08fd91"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-27.txt",
+      "sha256": "28930dfae732959ef30c0b81c669909face632b824da6474716e2f4980385e56"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-28.txt",
+      "sha256": "f9c98d48533d69758fc95872974270b8f43f797e83220bcba27b0f44d7d397a6"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-29.txt",
+      "sha256": "244302679888a817342a3f7b4e063128419791d6df0f7be78a984804a6ef9f95"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-30.txt",
+      "sha256": "aefd54ccb2b1f5fdae5539a940b1b659a2de609cd2ea3959f9692a44b2bf4b1c"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-31.txt",
+      "sha256": "147ae6d9f0647a0ac5a3a02ccd6f260f17fae9093464208c11b633024d85c90c"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-32.txt",
+      "sha256": "a96bb083406de89309c789e82d4f2b5c7c0e063d5fefe3ac6f2e6668bead4a2f"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-33.txt",
+      "sha256": "0bbd08acc9c68353751c398ec493549abd2407b9e30ec9fba0c485733af60e21"
+    },
+    {
+      "path": "docs/presentations/v23/sources/v22-notes/page-34.txt",
+      "sha256": "e83b0ff7dd76d5c24faf0bb72cab5e2928ae2184ef8dd54d0c3bd7d2bd916552"
+    },
+    {
+      "path": "docs/presentations/v23/sources/vision-triple-2026-10-23.json",
+      "sha256": "cfb0f75fed012f3a5c34b920198839b10849a1cc6132d21beb60533e1b93051c"
+    },
+    {
+      "path": "docs/presentations/v23/sources/vision-browser-2026-10-23.json",
+      "sha256": "1d56213ac665a4e41cdb161cebaff423f24d9f725095d963e750713c6ed6d3be"
+    },
+    {
+      "path": "docs/presentations/v23/sources/VISION.md",
+      "sha256": "d9fb106ee07d168bc7d63fb751890667078f0da25c50aa1b155fce5db01e0915"
+    },
+    {
+      "path": "docs/presentations/v23/sources/vision-catalog.json",
+      "sha256": "be7847752cbba88b8ecd197e633de6d6cb183e9c1562465533a53d23770124f8"
+    },
+    {
+      "path": "docs/presentations/v23/screenshots/vision-triple-receipt.png",
+      "sha256": "1788c6971d8f2e227d687376827eeef374ac158790d3a7bc0dbdf87d54ade79a"
+    },
+    {
+      "path": "docs/presentations/v23/screenshots/receipt-case-11.png",
+      "sha256": "2e7bcb85ec9ab06c3ef1116dbc002d5edcb761d06e45115624fc70475098ca25"
+    },
+    {
+      "path": "docs/presentations/v23/assets/vision-receipt-decider.png",
+      "sha256": "e7c4bc1d67b2fa8ba7a27da0b0ad2e77c9e46094949bf166837044bcc62b9de0"
+    },
+    {
+      "path": "docs/presentations/v23/assets/vision-receipt-jev.png",
+      "sha256": "982b0505b465debbe02664d2cabcaf487606212330f061c9e59187ea591069ff"
+    },
+    {
+      "path": "docs/presentations/v23/assets/vision-receipt-bedrock.png",
+      "sha256": "9e554d5d83d093142d9788226037917e0e46d7831da7683c15c7cc10f88f0bc3"
+    },
+    {
+      "path": "docs/presentations/v3/icons/scan-eye.svg",
+      "sha256": "343741486dfe4188a80628e3b8ae7a71f6ac63e0de5fbf474674b053c8f80721"
+    },
+    {
+      "path": "docs/presentations/v3/icons/arrow-left-right.svg",
+      "sha256": "2d64da427cbb3f14e522658459903829575b09ec15162c1a69ea6ad341a4359a"
+    }
+  ],
+  "new_source_provenance": [
+    {
+      "source": "docs/results/vision-triple-2026-10-23.json",
+      "snapshot": "docs/presentations/v23/sources/vision-triple-2026-10-23.json",
+      "sha256": "cfb0f75fed012f3a5c34b920198839b10849a1cc6132d21beb60533e1b93051c"
+    },
+    {
+      "source": "docs/results/vision-triple-browser-2026-10-23.json",
+      "snapshot": "docs/presentations/v23/sources/vision-browser-2026-10-23.json",
+      "sha256": "1d56213ac665a4e41cdb161cebaff423f24d9f725095d963e750713c6ed6d3be"
+    },
+    {
+      "source": "docs/VISION.md",
+      "snapshot": "docs/presentations/v23/sources/VISION.md",
+      "sha256": "d9fb106ee07d168bc7d63fb751890667078f0da25c50aa1b155fce5db01e0915"
+    },
+    {
+      "source": "app/vision_assets/catalog.json",
+      "snapshot": "docs/presentations/v23/sources/vision-catalog.json",
+      "sha256": "be7847752cbba88b8ecd197e633de6d6cb183e9c1562465533a53d23770124f8"
+    },
+    {
+      "source": "docs/images/vision/triple-receipt.png",
+      "snapshot": "docs/presentations/v23/screenshots/vision-triple-receipt.png",
+      "sha256": "1788c6971d8f2e227d687376827eeef374ac158790d3a7bc0dbdf87d54ade79a"
+    },
+    {
+      "source": "frontend/static/vision/case-11.png",
+      "snapshot": "docs/presentations/v23/screenshots/receipt-case-11.png",
+      "sha256": "2e7bcb85ec9ab06c3ef1116dbc002d5edcb761d06e45115624fc70475098ca25"
+    }
+  ],
+  "new_images": [
+    {
+      "source": "docs/presentations/v23/screenshots/vision-triple-receipt.png",
+      "crop": [
+        261,
+        714,
+        685,
+        1174
+      ],
+      "output": "docs/presentations/v23/assets/vision-receipt-decider.png",
+      "sha256": "e7c4bc1d67b2fa8ba7a27da0b0ad2e77c9e46094949bf166837044bcc62b9de0",
+      "operation": "crop only; all displayed model outputs and timings unchanged"
+    },
+    {
+      "source": "docs/presentations/v23/screenshots/vision-triple-receipt.png",
+      "crop": [
+        701,
+        714,
+        1125,
+        1146
+      ],
+      "output": "docs/presentations/v23/assets/vision-receipt-jev.png",
+      "sha256": "982b0505b465debbe02664d2cabcaf487606212330f061c9e59187ea591069ff",
+      "operation": "crop only; all displayed model outputs and timings unchanged"
+    },
+    {
+      "source": "docs/presentations/v23/screenshots/vision-triple-receipt.png",
+      "crop": [
+        1140,
+        714,
+        1564,
+        1137
+      ],
+      "output": "docs/presentations/v23/assets/vision-receipt-bedrock.png",
+      "sha256": "9e554d5d83d093142d9788226037917e0e46d7831da7683c15c7cc10f88f0bc3",
+      "operation": "crop only; all displayed model outputs and timings unchanged"
+    }
+  ],
+  "internal_only_pages": [
+    36
+  ],
+  "all_34_retained_bodies_unchanged": true,
+  "all_retained_images_unchanged": true,
+  "new_model_calls": 0,
+  "new_training_jobs": 0,
+  "vision_models": {
+    "decider": [
+      "strands-decider-2B-hobson-v19-vision"
+    ],
+    "jev": [
+      "jev-1.14.0"
+    ],
+    "bedrock": [
+      "us.openai.gpt-6.1-sol"
+    ]
+  }
+}

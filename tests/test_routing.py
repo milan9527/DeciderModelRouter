@@ -4,6 +4,7 @@ import json
 from unittest.mock import MagicMock
 
 import pytest
+from botocore.exceptions import ClientError, ReadTimeoutError
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
@@ -296,6 +297,83 @@ def test_embedding_execution_returns_real_dimensions(client):
     result = response.json()
     assert result["dimensions"] == 32 and len(result["vector_preview"]) == 12
     assert stream.closed and result["complete"]
+
+
+def test_target_throttle_returns_429_with_retry_hint_and_no_automatic_retry(client):
+    app.state.bedrock = MagicMock()
+    app.state.bedrock.converse.side_effect = ClientError(
+        {"Error": {"Code": "ThrottlingException", "Message": "Too many tokens"}},
+        "Converse",
+    )
+    response = client.post("/api/routing/execute", json=execution_body("coding"))
+    assert response.status_code == 429
+    assert response.headers["retry-after"] == "60"
+    assert "配额不足" in response.json()["detail"]
+    assert app.state.bedrock.converse.call_count == 1
+
+
+def test_target_uses_separate_client_without_changing_request_configuration(client):
+    app.state.bedrock = MagicMock()
+    app.state.bedrock.converse.side_effect = AssertionError("Classifier client must not execute")
+    app.state.bedrock_target = MagicMock()
+    app.state.bedrock_target.converse.return_value = {
+        "output": {"message": {"content": [{"text": "complete code"}]}},
+        "stopReason": "end_turn",
+        "usage": {"inputTokens": 100, "outputTokens": 1000},
+    }
+    payload = execution_body("coding")
+    response = client.post("/api/routing/execute", json=payload)
+    assert response.status_code == 200 and response.json()["complete"]
+    app.state.bedrock.converse.assert_not_called()
+    call = app.state.bedrock_target.converse.call_args.kwargs
+    assert call["inferenceConfig"] == {"maxTokens": 4096}
+    assert (
+        call["additionalModelRequestFields"]
+        == pool("coding")["candidates"][0]["benchmark"]["request_fields"]
+    )
+
+
+def test_target_read_timeout_does_not_duplicate_submission(client):
+    app.state.bedrock_target = MagicMock()
+    app.state.bedrock_target.converse.side_effect = ReadTimeoutError(endpoint_url="https://test")
+    response = client.post("/api/routing/execute", json=execution_body("coding"))
+    assert response.status_code == 504
+    assert "120 秒" in response.json()["detail"]
+    assert "上游可能仍在生成" in response.json()["detail"]
+    assert app.state.bedrock_target.converse.call_count == 1
+
+
+def test_bedrock_target_timeout_does_not_change_classifier_deadline_or_retry_policy(monkeypatch):
+    from app import bedrock
+
+    monkeypatch.setenv("BEDROCK_ENABLED", "true")
+    factory = MagicMock()
+    monkeypatch.setattr(bedrock.boto3, "client", factory)
+    bedrock.create_client()
+    bedrock.create_client(read_timeout=bedrock.TARGET_READ_TIMEOUT_SECONDS)
+    decision, target = [call.kwargs["config"] for call in factory.call_args_list]
+    assert decision.read_timeout == 40
+    assert target.read_timeout == 120
+    assert decision.retries == target.retries == {"max_attempts": 0}
+
+
+def test_client_cannot_force_execution_of_zero_quota_model(client, monkeypatch):
+    catalog = load_catalog()
+    kimi = next(m for m in catalog["models"] if m["id"] == "moonshotai.kimi-k3")
+    kimi["account_available"] = True
+    kimi["inference_quotas"] = {
+        "region": "us-east-1",
+        "invoke_id": kimi["invoke_id"],
+        "checked_at": "2026-11-24T12:00:00Z",
+        "checks": [{"code": "L-51FF35D5", "name": "Kimi K3 TPM", "value": 0}],
+    }
+    monkeypatch.setattr("app.routing.load_catalog", lambda: catalog)
+    app.state.bedrock = MagicMock()
+    body = execution_body("coding")
+    body["model_id"] = "moonshotai.kimi-k3"
+    response = client.post("/api/routing/execute", json=body)
+    assert response.status_code == 422
+    app.state.bedrock.converse.assert_not_called()
 
 
 def test_reasoning_only_budget_exhaustion_is_not_a_completed_answer(client):

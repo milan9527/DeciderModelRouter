@@ -1,0 +1,4 @@
+输入按官方模板编码，模型得到隐藏表示，Pointer Head比较候选与答案位置后评分，用校准参数转成输出。去除LM Head的生成路径；约1M参数的头不等于整个模型只有1M。
+https://strandsagents.com/blog/introducing-strands-decider/
+原页底说明（仅保留于讲稿）：
+来源：Strands 官方介绍与 v19 实现。API 的 probability / confidence 不是业务正确率。

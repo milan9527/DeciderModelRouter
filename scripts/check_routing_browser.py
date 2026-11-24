@@ -14,9 +14,14 @@ def main():
     parser.add_argument("--credentials", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--live", action="store_true")
+    parser.add_argument(
+        "--strategy", choices=["original", "optimized", "balanced"], default="balanced"
+    )
+    parser.add_argument("--router-group", choices=["existing", "local"], default="existing")
     parser.add_argument("--chromium", type=Path)
     parser.add_argument(
-        "--frontend", type=Path,
+        "--frontend",
+        type=Path,
         help="Serve local frontend assets in the browser while using the given API URL",
     )
     parser.add_argument(
@@ -41,11 +46,14 @@ def main():
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.on(
             "request",
-            lambda request: calls.append(request.post_data_json)
-            if request.url.endswith("/api/routing/decision")
-            else None,
+            lambda request: (
+                calls.append(request.post_data_json)
+                if request.url.endswith("/api/routing/decision")
+                else None
+            ),
         )
         if args.frontend:
+
             def frontend(route):
                 path = urlparse(route.request.url).path
                 if path == "/" or path.startswith("/static/"):
@@ -53,6 +61,7 @@ def main():
                     route.fulfill(path=asset)
                 else:
                     route.continue_()
+
             page.route(args.url.rstrip("/") + "/**", frontend)
 
         def prohibit(route):
@@ -68,14 +77,26 @@ def main():
         page.locator("#login-password").fill(credentials["password"])
         page.locator("#login-submit").click()
         expect(page.locator(".rt-case")).to_have_count(4)
-        expect(page.locator("[data-rt-strategy]")).to_have_count(0)
+        expect(page.locator("[data-rt-strategy]")).to_have_count(1)
+        page.locator("[data-rt-strategy]").select_option(args.strategy)
+        page.locator("[data-rt-routers]").select_option(args.router_group)
         expect(page.locator('[data-rt-field="capability"]')).to_have_count(0)
         expect(page.locator('[data-rt-field="priority"]')).to_have_count(0)
+        catalog = page.request.get(args.url + "/api/routing/catalog").json()
+        evidence_version = {
+            "original": None,
+            "optimized": catalog["evidence_optimization"]["version"],
+            "balanced": catalog["balance_optimization"]["version"],
+        }[args.strategy]
+        providers = (
+            ("decider", "liquid", "h2o")
+            if args.router_group == "local"
+            else ("decider", "jev", "bedrock")
+        )
         if args.live:
-            catalog = page.request.get(args.url + "/api/routing/catalog").json()
             case = catalog["cases"][0]
             warmups = {}
-            for provider in ("decider", "jev", "bedrock"):
+            for provider in providers:
                 flow = None
                 for stage in ("workflow", "model"):
                     payload = {
@@ -83,7 +104,8 @@ def main():
                         "provider": provider,
                         "stage": stage,
                         "mode": "live",
-                        "strategy": "original",
+                        "strategy": args.strategy,
+                        "evidence_version": evidence_version,
                         "catalog_version": catalog["version"],
                         "ranking_version": catalog["rankings"]["version"],
                     }
@@ -111,13 +133,15 @@ def main():
             page.locator("[data-rt-export]").click()
         result = json.loads(Path(download.value.path()).read_text())
         (args.output / "results.json").write_text(json.dumps(result, ensure_ascii=False, indent=2))
-        assert result["strategy"] == "original"
+        assert result["strategy"] == args.strategy
+        assert result["router_group"] == args.router_group
         assert "evidence_optimization" not in result
         assert len(calls) == 24, len(calls)
-        assert all(call["strategy"] == "original" for call in calls)
-        assert all("evidence_version" not in call for call in calls)
+        assert all(call["strategy"] == args.strategy for call in calls)
+        assert all(call.get("evidence_version") == evidence_version for call in calls)
         for case, workspace in result["cases"].items():
-            assert workspace["runStrategy"] == "original"
+            assert workspace["runStrategy"] == args.strategy
+            assert set(workspace["sides"]) == set(providers)
             assert "optimizedSides" not in workspace
             model_inputs = {}
             fingerprints = set()
@@ -143,9 +167,7 @@ def main():
                 assert chosen["model"]["id"] == model_step["selected_model"]["id"]
                 for step in side["steps"]:
                     assert step["source"] in (
-                        {"live", "single_candidate"}
-                        if args.live
-                        else {"rule_replay", "single_candidate"}
+                        {"live", "constraint_singleton"} if args.live else {"rule_replay"}
                     )
                     if not args.live:
                         assert step["timings"] is None and step["usage"] is None
@@ -197,7 +219,8 @@ def main():
                     "live": args.live,
                     "cases": 4,
                     "route_steps": 24,
-                    "original_strategy_only": True,
+                    "strategy": args.strategy,
+                    "router_group": args.router_group,
                     "local_frontend_override": bool(args.frontend),
                     "executed_targets": args.execute_targets,
                     "target_results": {

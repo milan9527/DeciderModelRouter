@@ -1,0 +1,4 @@
+2026-10-21 公开 JevBench API 榜单截图，图中第7–9名为裁剪节选，未改动图内数据。Jev1.13 综合分71.491186；Intelligence63.620758、Calibration90.632202，Capability=(I+C)/2=77.12648。63.6是智能单轴，不是能力分。综合分同时考虑智能、校准、速度、成本并有低分轴惩罚，因此不等于正确率。API中位延迟约0.239s。正式榜单包含公开和封闭题，与本项目231题自测分开解释。
+https://benchmarkheaven.com/jev-models/api
+https://benchmarkheaven.com/jev-models/methodology
+来源快照：sources/jevbench-rows.json；截图：screenshots/jevbench-ranking-detail.png。

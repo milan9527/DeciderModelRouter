@@ -78,6 +78,21 @@ def candidate_pool(catalog, rankings, task, workflow, exclusion):
         if not entry:
             rejected[mid] = "无已核实的评测映射；保留在完整目录"
             continue
+        # Legacy model-decision paths also receive one comparable release.
+        if entry["source"] == "livebench" and entry.get("release"):
+            requested = getattr(task.routing_preferences, "benchmark_release", "auto")
+            release = rankings["profile"]["release"] if requested == "auto" else requested
+            entry = next(
+                (
+                    c for c in [entry, *entry.get("configurations", [])]
+                    if c.get("release") == release
+                    and c.get("configuration_status", "verified") == "verified"
+                ),
+                None,
+            )
+            if entry is None:
+                rejected[mid] = f"无 LiveBench {release} 的已核验配置；可在分类网关选择其他批次"
+                continue
         if not any(value is not None for value in entry["metrics"].values()):
             rejected[mid] = "没有可提供给决策模型的评测数据"
             continue

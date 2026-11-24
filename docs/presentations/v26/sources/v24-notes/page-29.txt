@@ -1,0 +1,7 @@
+性能证据来自独立StrandsDeciderVLLM项目；v9/sources/vllm/provenance.json保存来源提交与哈希。v19、vLLM0.31.0，BF16 torso/FP32 Pointer Head，单L4。原版对齐比较在g6.4xlarge同机，容器限制4vCPU/14GiB，回环HTTP；后续独立公网压测在g6.xlarge。20个固定支付输入，每次一个choice，固定worker收到完整响应后发下一个请求；失败不重试，预热另计。吞吐=成功数/正式总时长，失败占用总时长；分位数仅统计成功响应。相同输入反复调用只测性能，不扩充独立质量样本。数值对齐是对原版，不证明选择正确。
+性能报告：https://github.com/milan9527/StrandsDeciderVLLM/blob/main/docs/VLLM_PERFORMANCE.zh-CN.md
+Jev对比：https://github.com/milan9527/StrandsDeciderVLLM/blob/main/docs/JEV_CONCURRENCY.zh-CN.md
+导出合并LoRA并携带head/calibration/tokenizer；自定义pooler取候选/答案位置，全prefill后应用官方answer转换。严格比较choice与概率/置信度；容差0.02异常保留。
+原页底说明（仅保留于讲稿）：
+vLLM 0.31.0；BF16 底座 / FP32 Pointer Head；未开启前缀缓存、分块预填充或 CUDA Graph。
+本版将重复部署架构合入P8。适配与性能实验使用原始Decider v19，不是将前述Tetris检查点作为本次vLLM压测对象。

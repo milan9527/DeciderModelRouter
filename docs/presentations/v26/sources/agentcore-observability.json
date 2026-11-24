@@ -1,0 +1,15 @@
+{
+  "collected_at": "2026-10-26T14:09:27.792654+00:00",
+  "log_group": "/aws/bedrock-agentcore/runtimes/strands_decider_gpu_probe_20261026_code-D5WwIX5Beo-DEFAULT",
+  "span_count": 48,
+  "business_sessions": [
+    "bfe7fe55-business-0",
+    "bfe7fe55-business-1",
+    "bfe7fe55-business-2",
+    "bfe7fe55-business-3",
+    "bfe7fe55-business-4",
+    "bfe7fe55-business-5",
+    "bfe7fe55-business-6",
+    "bfe7fe55-business-7"
+  ]
+}

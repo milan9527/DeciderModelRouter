@@ -1,0 +1,636 @@
+[
+  {
+    "provider": "liquid",
+    "case_id": "payment-pending-ready-execute",
+    "processing_ms": 45.05644482560456,
+    "result": {
+      "id": "Ug4RICO1JFHkyFvhqscHJISrQZOzuC34",
+      "provider": "liquid",
+      "status": "ok",
+      "queue_ms": 0.2156838309019804,
+      "load_ms": 42058.21699509397,
+      "data": {
+        "answers": {
+          "action": {
+            "type": "choice",
+            "choice": "credit_order",
+            "confidence": 0.9911823423892611,
+            "probabilities": {
+              "hold": 0.000937773374244237,
+              "credit_order": 0.9911823423892611,
+              "refund_payment": 0.00056084837601825,
+              "escalate_settlement": 0.0004043670295435144,
+              "wait_settlement": 0.0008343700546232774,
+              "reconcile_settlement": 0.006080298776309666
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 399,
+          "output_tokens": 0
+        },
+        "model": "LiquidAI/d1-2B",
+        "latency_ms": 42.15719201602042,
+        "deployment": "BF16 · Transformers"
+      }
+    },
+    "total_ms": 42138.78399296664
+  },
+  {
+    "provider": "liquid",
+    "case_id": "routing-intent-debug",
+    "processing_ms": 31.42414800822735,
+    "result": {
+      "id": "Q42xVDOLTU-TCWsrgQiosIqNEQYqOlsv",
+      "provider": "liquid",
+      "status": "ok",
+      "queue_ms": 0.14596199616789818,
+      "load_ms": 0,
+      "data": {
+        "answers": {
+          "action": {
+            "type": "choice",
+            "choice": "code_analysis",
+            "confidence": 0.9581073482120348,
+            "probabilities": {
+              "economy_text": 0.00042916836662173965,
+              "code_analysis": 0.9581073482120348,
+              "reasoning": 0.0005173809161442927,
+              "vision": 0.0005549500806524342,
+              "long_document": 0.00046033205369288367,
+              "clarify": 0.039930820370853715
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 229,
+          "output_tokens": 0
+        },
+        "model": "LiquidAI/d1-2B",
+        "latency_ms": 29.36521009542048,
+        "deployment": "BF16 · Transformers"
+      }
+    },
+    "total_ms": 33.38802303187549
+  },
+  {
+    "provider": "liquid",
+    "case_id": "device-06",
+    "processing_ms": 89.06973013654351,
+    "result": {
+      "id": "45Ac0YdufiXo7EsmVlnQaL6Gnk1F1CzP",
+      "provider": "liquid",
+      "status": "ok",
+      "queue_ms": 0.10783202014863491,
+      "load_ms": 0,
+      "data": {
+        "answers": {
+          "power": {
+            "type": "choice",
+            "choice": "unchanged",
+            "confidence": 0.830237514850049,
+            "probabilities": {
+              "on": 0.12804874634756402,
+              "off": 0.04171373880238692,
+              "unchanged": 0.830237514850049
+            }
+          },
+          "temperature": {
+            "type": "choice",
+            "choice": "24",
+            "confidence": 0.2815983788319782,
+            "probabilities": {
+              "16": 0.12723414205251632,
+              "17": 0.013821624067584382,
+              "18": 0.16841381702116226,
+              "19": 0.011736111097412101,
+              "20": 0.015901793270646093,
+              "21": 0.006100771430210475,
+              "22": 0.14638301649603022,
+              "23": 0.006100771430210475,
+              "24": 0.2815983788319782,
+              "25": 0.02008743483882583,
+              "26": 0.004943723969304355,
+              "27": 0.019623507840855824,
+              "28": 0.13332123905709614,
+              "29": 0.006245002145629565,
+              "30": 0.009290644324165558,
+              "unchanged": 0.003823208636064529,
+              "clarify": 0.02537481349030764
+            }
+          },
+          "mode": {
+            "type": "choice",
+            "choice": "unchanged",
+            "confidence": 0.9248038780085664,
+            "probabilities": {
+              "cool": 0.01867930583287238,
+              "heat": 0.05345808939795727,
+              "dry": 0.0019140203421445508,
+              "fan": 0.0011447064184593565,
+              "unchanged": 0.9248038780085664
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 568,
+          "output_tokens": 0
+        },
+        "model": "LiquidAI/d1-2B",
+        "latency_ms": 86.3763818051666,
+        "deployment": "BF16 · Transformers"
+      }
+    },
+    "total_ms": 90.96241509541869
+  },
+  {
+    "provider": "liquid",
+    "case_id": "temperature-set-03",
+    "processing_ms": 69.88304504193366,
+    "result": {
+      "id": "2GHNFMfeVq4Nsxs0OFDCsupkkH6pIQtW",
+      "provider": "liquid",
+      "status": "ok",
+      "queue_ms": 0.11800299398601055,
+      "load_ms": 0,
+      "data": {
+        "answers": {
+          "t16": {
+            "type": "choice",
+            "choice": "no",
+            "confidence": 0.9917567509668993,
+            "probabilities": {
+              "yes": 0.008243249033100631,
+              "no": 0.9917567509668993
+            }
+          },
+          "t17": {
+            "type": "choice",
+            "choice": "no",
+            "confidence": 0.9905278844471698,
+            "probabilities": {
+              "yes": 0.009472115552830297,
+              "no": 0.9905278844471698
+            }
+          },
+          "t18": {
+            "type": "choice",
+            "choice": "no",
+            "confidence": 0.9928273447315065,
+            "probabilities": {
+              "yes": 0.007172655268493546,
+              "no": 0.9928273447315065
+            }
+          },
+          "t19": {
+            "type": "choice",
+            "choice": "no",
+            "confidence": 0.9903061212600303,
+            "probabilities": {
+              "yes": 0.009693878739969698,
+              "no": 0.9903061212600303
+            }
+          },
+          "t20": {
+            "type": "choice",
+            "choice": "no",
+            "confidence": 0.9898470583168804,
+            "probabilities": {
+              "yes": 0.01015294168311961,
+              "no": 0.9898470583168804
+            }
+          },
+          "t21": {
+            "type": "choice",
+            "choice": "no",
+            "confidence": 0.9835217026305649,
+            "probabilities": {
+              "yes": 0.016478297369435225,
+              "no": 0.9835217026305649
+            }
+          },
+          "t22": {
+            "type": "choice",
+            "choice": "yes",
+            "confidence": 0.9767653465928418,
+            "probabilities": {
+              "yes": 0.9767653465928418,
+              "no": 0.023234653407158287
+            }
+          },
+          "t23": {
+            "type": "choice",
+            "choice": "yes",
+            "confidence": 0.9650414817216818,
+            "probabilities": {
+              "yes": 0.9650414817216818,
+              "no": 0.03495851827831809
+            }
+          },
+          "t24": {
+            "type": "choice",
+            "choice": "yes",
+            "confidence": 0.922501009523351,
+            "probabilities": {
+              "yes": 0.922501009523351,
+              "no": 0.07749899047664902
+            }
+          },
+          "t25": {
+            "type": "choice",
+            "choice": "yes",
+            "confidence": 0.922501009523351,
+            "probabilities": {
+              "yes": 0.922501009523351,
+              "no": 0.07749899047664906
+            }
+          },
+          "t26": {
+            "type": "choice",
+            "choice": "no",
+            "confidence": 0.9928273447315065,
+            "probabilities": {
+              "yes": 0.007172655268493546,
+              "no": 0.9928273447315065
+            }
+          },
+          "t27": {
+            "type": "choice",
+            "choice": "no",
+            "confidence": 0.9941797638351981,
+            "probabilities": {
+              "yes": 0.005820236164801843,
+              "no": 0.9941797638351981
+            }
+          },
+          "t28": {
+            "type": "choice",
+            "choice": "no",
+            "confidence": 0.9941797638351981,
+            "probabilities": {
+              "yes": 0.005820236164801843,
+              "no": 0.9941797638351981
+            }
+          },
+          "t29": {
+            "type": "choice",
+            "choice": "no",
+            "confidence": 0.9939030115785715,
+            "probabilities": {
+              "yes": 0.0060969884214284766,
+              "no": 0.9939030115785715
+            }
+          },
+          "t30": {
+            "type": "choice",
+            "choice": "no",
+            "confidence": 0.9913657850457269,
+            "probabilities": {
+              "yes": 0.008634214954272976,
+              "no": 0.9913657850457269
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 813,
+          "output_tokens": 0
+        },
+        "model": "LiquidAI/d1-2B",
+        "latency_ms": 67.05423281528056,
+        "deployment": "BF16 · Transformers"
+      }
+    },
+    "total_ms": 71.83549902401865
+  },
+  {
+    "provider": "h2o",
+    "case_id": "payment-pending-ready-execute",
+    "processing_ms": 120.4059929586947,
+    "result": {
+      "id": "SNudD-GYFL-cpuZdgxGg0RnWpj_RlJED",
+      "provider": "h2o",
+      "status": "ok",
+      "queue_ms": 0.10787299834191799,
+      "load_ms": 245563.60803800635,
+      "data": {
+        "model": "h2oai/h2o-lightning-4b",
+        "answers": {
+          "action": {
+            "type": "choice",
+            "choice": "credit_order",
+            "probabilities": {
+              "hold": 0.0058415796777431675,
+              "credit_order": 0.9755356068641993,
+              "refund_payment": 0.005176086571450851,
+              "escalate_settlement": 0.004852526604152078,
+              "wait_settlement": 0.00421851680647553,
+              "reconcile_settlement": 0.004375683475979
+            },
+            "confidence": 0.9706427282370391
+          }
+        },
+        "probability_source": "native",
+        "effort_used": {
+          "tier": "fast",
+          "passes_per_decision": 1
+        },
+        "usage": {
+          "input_tokens": 448,
+          "processed_input_tokens": 448,
+          "output_tokens": 1,
+          "latency_ms": 117.6
+        },
+        "attention_mode": "bidirectional",
+        "deployment": "FP8 · vLLM 0.30.0"
+      }
+    },
+    "total_ms": 246638.59120896086
+  },
+  {
+    "provider": "h2o",
+    "case_id": "routing-intent-debug",
+    "processing_ms": 84.51066701672971,
+    "result": {
+      "id": "VSKf5JBzvRSUG56_pnkzdG3aMFksoTrY",
+      "provider": "h2o",
+      "status": "ok",
+      "queue_ms": 0.1398830208927393,
+      "load_ms": 0,
+      "data": {
+        "model": "h2oai/h2o-lightning-4b",
+        "answers": {
+          "action": {
+            "type": "choice",
+            "choice": "code_analysis",
+            "probabilities": {
+              "economy_text": 0.00609553912205326,
+              "code_analysis": 0.8657914041343729,
+              "reasoning": 0.005935520860424904,
+              "vision": 0.0051802667915865075,
+              "long_document": 0.006088187974330751,
+              "clarify": 0.11090908111723174
+            },
+            "confidence": 0.8389496849612476
+          }
+        },
+        "probability_source": "native",
+        "effort_used": {
+          "tier": "fast",
+          "passes_per_decision": 1
+        },
+        "usage": {
+          "input_tokens": 290,
+          "processed_input_tokens": 290,
+          "output_tokens": 1,
+          "latency_ms": 82.3
+        },
+        "attention_mode": "bidirectional",
+        "deployment": "FP8 · vLLM 0.30.0"
+      }
+    },
+    "total_ms": 86.62837510928512
+  },
+  {
+    "provider": "h2o",
+    "case_id": "device-06",
+    "processing_ms": 542.1694701071829,
+    "result": {
+      "id": "zvZR05AMYOXVnqIc6GWqNGXAZOThTxs4",
+      "provider": "h2o",
+      "status": "ok",
+      "queue_ms": 0.11620298027992249,
+      "load_ms": 0,
+      "data": {
+        "model": "h2oai/h2o-lightning-4b",
+        "answers": {
+          "power": {
+            "type": "choice",
+            "choice": "unchanged",
+            "probabilities": {
+              "on": 0.016355890704054722,
+              "off": 0.020182747722761126,
+              "unchanged": 0.9634613615731842
+            },
+            "confidence": 0.9451920423597763
+          },
+          "temperature": {
+            "type": "choice",
+            "choice": "24",
+            "probabilities": {
+              "16": 0.0005138533766624845,
+              "17": 0.00029589425197272377,
+              "18": 0.0004670449824592363,
+              "19": 0.00030741384916232404,
+              "20": 0.0003701344696543082,
+              "21": 0.0003956306831925926,
+              "22": 0.0005172221857014308,
+              "23": 0.0009582872733012463,
+              "24": 0.9891588974967346,
+              "25": 0.0038730266376314684,
+              "26": 0.0005913709220204769,
+              "27": 0.0004488102244766074,
+              "28": 0.00043011704111373805,
+              "29": 0.0003259753266490385,
+              "30": 0.0003469001070783073,
+              "unchanged": 0.0005047867408699396,
+              "clarify": 0.0004946344313195704
+            },
+            "confidence": 0.9884813285902805
+          },
+          "mode": {
+            "type": "choice",
+            "choice": "unchanged",
+            "probabilities": {
+              "cool": 0.00800624951426666,
+              "heat": 0.00856393227100896,
+              "dry": 0.005936540975517462,
+              "fan": 0.006927245740495865,
+              "unchanged": 0.970566031498711
+            },
+            "confidence": 0.9632075393733888
+          }
+        },
+        "probability_source": "native",
+        "effort_used": {
+          "tier": "fast",
+          "passes_per_decision": 1
+        },
+        "usage": {
+          "input_tokens": 587,
+          "processed_input_tokens": 893,
+          "output_tokens": 3,
+          "latency_ms": 539.4
+        },
+        "attention_mode": "bidirectional",
+        "deployment": "FP8 · vLLM 0.30.0"
+      }
+    },
+    "total_ms": 544.2458579782397
+  },
+  {
+    "provider": "h2o",
+    "case_id": "temperature-set-03",
+    "processing_ms": 978.696377016604,
+    "result": {
+      "id": "S2fjxBljazIMXwPsZChcswhB5ugIro4E",
+      "provider": "h2o",
+      "status": "ok",
+      "queue_ms": 0.14368188567459583,
+      "load_ms": 0,
+      "data": {
+        "model": "h2oai/h2o-lightning-4b",
+        "answers": {
+          "t16": {
+            "type": "choice",
+            "choice": "no",
+            "probabilities": {
+              "yes": 0.04739761819248855,
+              "no": 0.9526023818075113
+            },
+            "confidence": 0.9052047636150227
+          },
+          "t17": {
+            "type": "choice",
+            "choice": "no",
+            "probabilities": {
+              "yes": 0.043415649574667044,
+              "no": 0.956584350425333
+            },
+            "confidence": 0.9131687008506659
+          },
+          "t18": {
+            "type": "choice",
+            "choice": "no",
+            "probabilities": {
+              "yes": 0.04633126997597872,
+              "no": 0.9536687300240213
+            },
+            "confidence": 0.9073374600480426
+          },
+          "t19": {
+            "type": "choice",
+            "choice": "no",
+            "probabilities": {
+              "yes": 0.04668883702806811,
+              "no": 0.9533111629719319
+            },
+            "confidence": 0.9066223259438637
+          },
+          "t20": {
+            "type": "choice",
+            "choice": "no",
+            "probabilities": {
+              "yes": 0.045756364747146366,
+              "no": 0.9542436352528537
+            },
+            "confidence": 0.9084872705057074
+          },
+          "t21": {
+            "type": "choice",
+            "choice": "no",
+            "probabilities": {
+              "yes": 0.044637550808712685,
+              "no": 0.9553624491912873
+            },
+            "confidence": 0.9107248983825746
+          },
+          "t22": {
+            "type": "choice",
+            "choice": "yes",
+            "probabilities": {
+              "yes": 0.9533601507420516,
+              "no": 0.04663984925794831
+            },
+            "confidence": 0.9067203014841032
+          },
+          "t23": {
+            "type": "choice",
+            "choice": "yes",
+            "probabilities": {
+              "yes": 0.9490724878994058,
+              "no": 0.0509275121005941
+            },
+            "confidence": 0.8981449757988116
+          },
+          "t24": {
+            "type": "choice",
+            "choice": "yes",
+            "probabilities": {
+              "yes": 0.9519734292888868,
+              "no": 0.04802657071111309
+            },
+            "confidence": 0.9039468585777737
+          },
+          "t25": {
+            "type": "choice",
+            "choice": "yes",
+            "probabilities": {
+              "yes": 0.9444543754712241,
+              "no": 0.05554562452877588
+            },
+            "confidence": 0.8889087509424483
+          },
+          "t26": {
+            "type": "choice",
+            "choice": "no",
+            "probabilities": {
+              "yes": 0.045466622297703145,
+              "no": 0.9545333777022967
+            },
+            "confidence": 0.9090667554045935
+          },
+          "t27": {
+            "type": "choice",
+            "choice": "no",
+            "probabilities": {
+              "yes": 0.04588865635387165,
+              "no": 0.9541113436461285
+            },
+            "confidence": 0.908222687292257
+          },
+          "t28": {
+            "type": "choice",
+            "choice": "no",
+            "probabilities": {
+              "yes": 0.04661746467529799,
+              "no": 0.9533825353247021
+            },
+            "confidence": 0.9067650706494041
+          },
+          "t29": {
+            "type": "choice",
+            "choice": "no",
+            "probabilities": {
+              "yes": 0.04794803186962384,
+              "no": 0.9520519681303762
+            },
+            "confidence": 0.9041039362607524
+          },
+          "t30": {
+            "type": "choice",
+            "choice": "no",
+            "probabilities": {
+              "yes": 0.04708587043204889,
+              "no": 0.9529141295679511
+            },
+            "confidence": 0.9058282591359021
+          }
+        },
+        "probability_source": "native",
+        "effort_used": {
+          "tier": "fast",
+          "passes_per_decision": 1
+        },
+        "usage": {
+          "input_tokens": 828,
+          "processed_input_tokens": 1710,
+          "output_tokens": 15,
+          "latency_ms": 975.9
+        },
+        "attention_mode": "bidirectional",
+        "deployment": "FP8 · vLLM 0.30.0"
+      }
+    },
+    "total_ms": 980.9958389960229
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-10-16T04:48:20.668671+00:00",
+  "pages": 34,
+  "zip_crc_valid": true,
+  "missing_internal_parts": [],
+  "changed_parts": [
+    "ppt/notesSlides/notesSlide16.xml",
+    "ppt/notesSlides/notesSlide21.xml"
+  ],
+  "only_two_notes_parts_changed": true,
+  "all_34_rendered_pages_match_v17": true,
+  "pdf_text_differences": [],
+  "pdf_pixel_differences": [],
+  "notes_p20_characters": 473,
+  "notes_p21_characters": 565,
+  "pptx_sha256": "060af053292eac97ad75e3ae5d775695e8e49d0e8b7e5ebbcd3c6ea0a43c3dab",
+  "pdf_sha256": "502dfe56c448c8c7e28312f9fdd0106e360419bc6d1a5b557fa028791114803b",
+  "native_powerpoint_error_reproduced": false,
+  "native_powerpoint_available": false
+}

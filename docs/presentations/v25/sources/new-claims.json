@@ -1,0 +1,32 @@
+{
+  "retrieved_at": "2026-10-26T14:57:53.706679+00:00",
+  "official_jev": {
+    "url": "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+    "quote": "End-to-end response time is 70ms-500ms for TypeSafe. This can range from 40x-200x faster for the same levels of frontier intelligence for System One shaped queries.",
+    "attribution": "TypeSafe official launch article; vendor comparison, not this demo."
+  },
+  "customer_case": {
+    "source": "User supplied on 2026-10-26",
+    "status": "已经实现",
+    "customer": "自动驾驶客户",
+    "task": "Jev 智能驾驶意图识别模型微调",
+    "method": "RLCD 范式 DPO+LoRA",
+    "choice_accuracy": 0.9,
+    "latency_ms": 100,
+    "sample_size": null,
+    "latency_statistic_and_boundary": null,
+    "independently_retested_in_this_project": false,
+    "note": "Customer-case figures; not a claim about public Jev API fine-tuning support."
+  },
+  "potential_case": {
+    "customer": "智能家居客户",
+    "task": "智能设备根据当前用户输入，自动选择动作和流程，都是固定选项",
+    "status": "潜在场景",
+    "measured_results": null
+  },
+  "aws_sources": {
+    "runtime_instances": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-instances-how-it-works.html",
+    "a2a": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.html",
+    "evaluation": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/getting-started-on-demand.html"
+  }
+}

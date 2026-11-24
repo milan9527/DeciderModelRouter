@@ -1,0 +1,11 @@
+{
+  "mode": "replay",
+  "model_calls": 0,
+  "bedrock_cases": 4,
+  "local_classifiers": 3,
+  "no_route_requirement_checked": true,
+  "category_filter_checked": true,
+  "mobile_overflow": false,
+  "browser_errors": [],
+  "forbidden_calls": []
+}

@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#151a2e" />
+    <title>Model Gateway · 智能模型网关</title>
+    <link rel="icon" href="./mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./gateway.css" />
+    <script type="module" src="./gateway.js"></script>
+  </head>
+  <body>
+    <section id="auth" class="auth-screen">
+      <form id="login-form" class="login-card">
+        <img src="./mark.svg" width="46" height="46" alt="" />
+        <p class="eyebrow">MODEL GATEWAY</p>
+        <h1>连接任务与合适的模型。</h1>
+        <p class="muted">登录网关，查看每次路由的依据与性能。</p>
+        <label
+          >用户名<input
+            name="username"
+            autocomplete="username"
+            required
+            maxlength="32"
+        /></label>
+        <label
+          >密码<input
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            maxlength="128"
+        /></label>
+        <p id="login-error" class="error" role="alert"></p>
+        <button class="primary" id="login-submit">
+          登录工作台 <span>→</span>
+        </button>
+      </form>
+    </section>
+    <div id="app" hidden>
+      <aside class="sidebar">
+        <a class="brand" href="#workspace"
+          ><img src="./mark.svg" width="34" height="34" alt="" /><span
+            >Model Gateway<small>智能模型网关</small></span
+          ></a
+        >
+        <div class="nav-caption">WORKSPACE</div>
+        <nav aria-label="工作空间">
+          <a href="#workspace" data-page="workspace" class="active"
+            ><span>◈</span> 网关工作台</a
+          >
+          <a href="#models" data-page="models"><span>▦</span> Bedrock 模型</a>
+          <a href="#performance" data-page="performance"
+            ><span>▥</span> 会话性能</a
+          >
+        </nav>
+        <div class="sidebar-bottom">
+          <span class="tiny">ROUTING ARCHITECTURE</span>
+          <p>
+            GPU 决策服务<br /><i>↓</i> 确定性选模策略<br /><i>↓</i> Amazon
+            Bedrock
+          </p>
+          <div class="sidebar-rule"></div>
+          <small>按任务分类 · 按证据选择</small>
+        </div>
+      </aside>
+      <div class="shell">
+        <header class="topbar">
+          <div class="breadcrumb">
+            工作空间 <span>/</span> <strong id="page-title">网关工作台</strong>
+          </div>
+          <div class="top-actions">
+            <button id="health" class="status">
+              <i></i><span>检查 GPU 服务</span></button
+            ><span id="username"></span
+            ><button id="logout" class="text-button">退出</button>
+          </div>
+        </header>
+        <main>
+          <section data-view="workspace">
+            <div class="page-heading">
+              <div>
+                <p class="eyebrow">INTELLIGENT ROUTING</p>
+                <h1>一个入口，每次选择都有依据。</h1>
+                <p class="muted">
+                  从任务理解到模型响应，查看完整路径与每一步的开销。
+                </p>
+              </div>
+              <span class="region" id="region">Amazon Bedrock</span>
+            </div>
+            <div class="metrics" id="metrics"></div>
+            <div class="workspace-grid">
+              <section class="panel request-panel">
+                <div class="panel-heading">
+                  <h2>发起请求</h2>
+                  <span class="tiny">REQUEST</span>
+                </div>
+                <form id="request-form">
+                  <label
+                    >任务内容 <span class="muted" id="char-count">0 / 1400</span
+                    ><textarea
+                      id="task"
+                      rows="8"
+                      maxlength="1400"
+                      required
+                      placeholder="描述你要完成的任务，网关将自动分类并选择合适的模型。"
+                    ></textarea>
+                  </label>
+                  <div
+                    id="examples"
+                    class="examples"
+                    aria-label="示例任务"
+                  ></div>
+                  <div class="form-divider"></div>
+                  <label
+                    >决策模型 · GPU 服务<select id="provider"></select
+                  ></label>
+                  <fieldset>
+                    <legend>路由偏好</legend>
+                    <div class="tier-control">
+                      <label
+                        ><input type="radio" name="tier" value="low" /><span
+                          >节省成本</span
+                        ></label
+                      ><label
+                        ><input
+                          type="radio"
+                          name="tier"
+                          value="medium"
+                          checked
+                        /><span>均衡</span></label
+                      ><label
+                        ><input type="radio" name="tier" value="high" /><span
+                          >能力优先</span
+                        ></label
+                      >
+                    </div>
+                  </fieldset>
+                  <div class="field-row">
+                    <label
+                      >输出 Token 上限（含推理）<input
+                        id="max-output"
+                        type="number"
+                        value="4096"
+                        min="1"
+                        max="16384"
+                        required /></label
+                    ><label
+                      >参考费用上限 · $<input
+                        id="max-cost"
+                        type="number"
+                        min="0"
+                        max="1000000"
+                        step="any"
+                        placeholder="不限制"
+                    /></label>
+                  </div>
+                  <p class="footnote">
+                    代码示例预设期望 8192、上限 16384 Token，可自行调整。推理会占用输出预算；增大上限可能增加费用，参考费用约束按上限核算。
+                  </p>
+                  <details class="advanced">
+                    <summary>更多约束与运行模式</summary>
+                    <label>文本评测批次<select id="benchmark-release">
+                      <option value="auto">自动 · 优先可比型号覆盖数</option>
+                    </select></label>
+                    <p class="footnote">每次只比较同一批次、同一组分项。选择历史批次可使用该批次已评测的型号；旧成绩不代表当前任务正确率。</p>
+                    <label
+                      >期望输出 Token（含推理）<input
+                        id="expected-output"
+                        type="number"
+                        value="512"
+                        min="1"
+                        max="16384"
+                        required
+                    /></label>
+                    <label
+                      >业务成功率下限<input
+                        id="min-success"
+                        type="number"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        placeholder="留空；需要业务验证数据"
+                    /></label>
+                    <label
+                      >目标模型 P95 上限 · ms<input
+                        id="max-latency"
+                        type="number"
+                        min="1"
+                        max="300000"
+                        placeholder="留空；需要实测延迟"
+                    /></label>
+                    <label class="check"
+                      ><input
+                        id="cross-region"
+                        type="checkbox"
+                        checked
+                      />允许美国跨区域推理</label
+                    >
+                    <label
+                      >运行模式<select id="mode">
+                        <option value="live">实时调用</option>
+                        <option value="replay">流程回放 · 不调用模型</option>
+                      </select></label
+                    >
+                  </details>
+                  <p class="form-note" id="mode-note">
+                    参考费用用于选模，不是实际账单；不含 GPU 决策成本。
+                  </p>
+                  <div
+                    id="request-error"
+                    class="error"
+                    role="alert"
+                    hidden
+                  ></div>
+                  <button id="run" class="primary" type="submit">
+                    路由并执行 <span>→</span>
+                  </button>
+                  <div class="secondary-actions">
+                    <button id="route-only" type="button">仅分析路由</button
+                    ><button id="cancel" type="button" hidden>停止等待</button>
+                  </div>
+                </form>
+              </section>
+              <div class="results-column">
+                <section class="panel process-panel">
+                  <div class="panel-heading">
+                    <h2><i class="live-dot"></i> 请求路径</h2>
+                    <span id="run-badge" class="badge">等待请求</span>
+                  </div>
+                  <div id="stages" class="stages" aria-live="polite"></div>
+                  <div class="trace-meta">
+                    <code id="request-id">REQUEST ID · —</code
+                    ><span id="wall-clock">等待开始</span>
+                  </div>
+                </section>
+                <section class="panel selection-panel">
+                  <div class="panel-heading">
+                    <h2>路由决策</h2>
+                    <span class="tiny">WHY THIS MODEL</span>
+                  </div>
+                  <div id="decision">
+                    <div class="empty-state">
+                      <div class="route-art" aria-hidden="true">
+                        <span>任务</span><i></i><b>◈</b><i></i><span>模型</span>
+                      </div>
+                      <h3>让任务决定模型</h3>
+                      <p>
+                        一次 GPU 分类，评估七项任务属性。<br />结合能力证据、费用和约束选择
+                        Bedrock 配置。
+                      </p>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel detail-panel">
+                  <div class="tabs" role="tablist" aria-label="运行详情">
+                    <button role="tab" data-tab="response" aria-selected="true">
+                      模型响应</button
+                    ><button
+                      role="tab"
+                      data-tab="candidates"
+                      aria-selected="false"
+                    >
+                      候选与依据</button
+                    ><button role="tab" data-tab="timing" aria-selected="false">
+                      性能明细</button
+                    ><button role="tab" data-tab="trace" aria-selected="false">
+                      事件记录
+                    </button>
+                  </div>
+                  <div id="response" data-tabpanel="response" role="tabpanel">
+                    <p class="empty-copy">
+                      执行后，模型的实际输出将显示在这里。
+                    </p>
+                  </div>
+                  <div
+                    id="candidates"
+                    data-tabpanel="candidates"
+                    role="tabpanel"
+                    hidden
+                  ></div>
+                  <div
+                    id="timing"
+                    data-tabpanel="timing"
+                    role="tabpanel"
+                    hidden
+                  ></div>
+                  <div
+                    id="trace"
+                    data-tabpanel="trace"
+                    role="tabpanel"
+                    hidden
+                  ></div>
+                  <div class="detail-footer">
+                    <span>完整记录保留在当前页面会话</span
+                    ><button id="export" class="text-button" disabled>
+                      导出 JSON ↓
+                    </button>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </section>
+          <section data-view="models" hidden>
+            <div class="page-heading">
+              <div>
+                <p class="eyebrow">MODEL INVENTORY</p>
+                <h1>按类别查看 Bedrock 模型</h1>
+                <p class="muted" id="catalog-summary"></p>
+              </div>
+              <label class="category-label"
+                >任务类别<select id="category"></select
+              ></label>
+            </div>
+            <div class="field-row">
+              <label>筛选依据<select id="evidence-filter">
+                <option value="all">全部目录型号</option>
+                <option value="benchmarked">有评测且配置已核验</option>
+                <option value="configuration_pending">有评测 · 配置待核验</option>
+                <option value="unmapped">待补充可比评测</option>
+              </select></label>
+              <label>搜索型号<input id="model-search" type="search" placeholder="例如 Nova、Llama、Qwen" /></label>
+            </div>
+            <section class="panel table-panel">
+              <div id="model-table" class="table-scroll"></div>
+            </section>
+          </section>
+          <section data-view="performance" hidden>
+            <div class="page-heading">
+              <div>
+                <p class="eyebrow">SESSION OBSERVABILITY</p>
+                <h1>性能，从每次真实请求开始。</h1>
+                <p class="muted">
+                  当前页面最近 50 次请求；回放不计入统计，刷新页面即清空。
+                </p>
+              </div>
+            </div>
+            <div id="session-metrics" class="metrics"></div>
+            <section class="panel table-panel">
+              <div class="panel-heading">
+                <h2>请求记录</h2>
+                <span class="tiny">P50 / P95 使用最近秩法</span>
+              </div>
+              <div id="history" class="table-scroll"></div>
+            </section>
+          </section>
+          <footer class="page-footer">
+            <span>MODEL GATEWAY</span
+            ><span>任务分类 → 证据筛选 → 成本与能力平衡 → 模型执行</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

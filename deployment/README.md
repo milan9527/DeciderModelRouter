@@ -1,5 +1,7 @@
 # AWS 部署
 
+模型网关使用 **S3 + CloudFront + OAC 前端、ECS Fargate 后端、独立 GPU 决策服务**，通过 [`deploy_gateway.py`](deploy_gateway.py) 直接调用 AWS SDK 发布，不使用 CloudFormation。资源标识可读取现有本地 `.deployment/outputs.json`，操作步骤见[网关部署说明](../docs/MODEL_GATEWAY.zh.md#ecs-后端)。下文的旧栈部署命令用于历史环境维护，不是网关发布入口。
+
 独立扩展方案：[AgentCore GPU EC2 架构与验证](../docs/AGENTCORE_GPU.md)，已验证 Runtime 管理 GPU、业务会话复用、Observability 和 Evaluations。其代码在 [StrandsDeciderAgentCore](https://github.com/milan9527/StrandsDeciderAgentCore) 维护；下文仍描述本演示现有的 ECS / vLLM / 视觉服务部署。
 
 当前文字 Decider 请求使用共享 **vLLM / EC2 On-Demand `g6.xlarge`** 服务。工作台、工具守卫、支付固定／优化流程、自主闭环和模型路由共用这一入口。[图片决策](../docs/VISION.md)使用另一台现有 `g6.xlarge` 上的官方视觉服务；两台实例持续运行，业务 API 部署在 ECS Fargate。

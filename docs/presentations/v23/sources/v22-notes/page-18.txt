@@ -1,0 +1,2 @@
+本页统一使用2026-10-16原始路由三轮记录，与前一页客服使用同一批数据。每路由器四任务×三轮，先选workflow再选model，两步均为真实模型判断。三侧输入、候选ID和顺序相同，预热排除，值为workflow+model的backend_total_ms均值。不含所选模型的目标执行，也不将与GPT选型一致记为准确率。全部四任务在三轮中的型号选择稳定；双语索引的English选择与语言证据不符。下一页是同一任务的较早界面截图，保留实际输入与选择，不将其单次耗时当本页均值。
+来源：docs/results/model-evidence-2026-10-16/results.json；sources/routing-summary.json。

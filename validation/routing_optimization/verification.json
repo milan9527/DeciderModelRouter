@@ -1,0 +1,46 @@
+{
+  "verified_at": "2026-11-24T05:49:47.847976+00:00",
+  "live_model_calls": 0,
+  "checks": [
+    {
+      "command": ".venv/bin/pytest -q",
+      "passed": 318,
+      "note": "Full regression before the final three additional parameter-validation cases."
+    },
+    {
+      "command": ".venv/bin/pytest -q tests/test_routing.py tests/test_routing_evidence.py tests/test_routing_balance.py",
+      "passed": 66,
+      "note": "Final routing code, including the three additional parameter-validation cases."
+    },
+    {
+      "command": ".venv/bin/ruff check app/routing.py app/routing_balance.py tests/test_routing_balance.py scripts/check_routing_browser.py",
+      "passed": true
+    },
+    {
+      "command": "node --input-type=module --check < frontend/static/routing.js",
+      "passed": true
+    },
+    {
+      "name": "browser replay",
+      "configurations": 4,
+      "cases_per_configuration": 4,
+      "routing_requests": 96,
+      "passed": true,
+      "details": "browser-verification.json"
+    },
+    {
+      "name": "source SHA-256 integrity",
+      "public_sources": 15,
+      "local_sources": 5,
+      "passed": true
+    }
+  ],
+  "code_sha256": {
+    "app/routing.py": "5b5d2d546416b6bb4b9a835e4679b720788ab23ab1abed532d05bf4f9ac2ab5f",
+    "app/routing_balance.py": "85d2b3075aef4286341341ea8824f74ee8edf1f1a0ed0584f69b90b814295208",
+    "frontend/static/routing.js": "06fc593b3e123c57a3d57af59e689c9ecc5a9e4600010008f993ad5f98752099",
+    "scripts/check_routing_browser.py": "e764bc33a0976fe6a4ed206e182c0a3e1c8cbb85646b1872dbe7face23fc9483",
+    "tests/test_routing_balance.py": "3f1d519b355f12a4c4fffbd526198e64600199ab809d0d544eeb084feec5b261"
+  },
+  "limitations": "No new real decision-model accuracy, downstream quality, latency or cost-savings measurement. Browser results are replay only."
+}

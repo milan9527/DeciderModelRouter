@@ -16,10 +16,15 @@ from starlette.concurrency import run_in_threadpool
 
 from app.auth import Auth
 from app.auth import router as auth_router
+from app.bedrock import TARGET_READ_TIMEOUT_SECONDS
 from app.bedrock import create_client as create_bedrock
+from app.comparison import ComparisonRuns
+from app.comparison import router as comparison_router
 from app.crypto import router as crypto_router
 from app.crypto_loop import router as crypto_loop_router
 from app.examples import EXAMPLES, GUARD_QUESTIONS, public_examples
+from app.gateway import router as gateway_router
+from app.gateway_decision import GatewayDecisionService
 from app.gpu import configured_gpu, inference_lease
 from app.gpu import router as gpu_router
 from app.jev import create_client as create_jev
@@ -52,21 +57,27 @@ async def lifespan(app):
     app.state.vision_slots = asyncio.Semaphore(1)
     app.state.sagemaker = create_runtime() if os.getenv("GPU_PROVIDER") == "sagemaker" else None
     app.state.bedrock = create_bedrock()
+    app.state.bedrock_target = create_bedrock(read_timeout=TARGET_READ_TIMEOUT_SECONDS)
     app.state.bedrock_slots = asyncio.Semaphore(2)
     app.state.jev = create_jev()
     app.state.jev_slots = asyncio.Semaphore(2)
+    app.state.comparison = ComparisonRuns()
     async with httpx.AsyncClient(
         timeout=httpx.Timeout(app.state.model_timeout, connect=5),
         trust_env=False,
     ) as client:
         app.state.client = client
+        app.state.gateway_decision = GatewayDecisionService(client)
         try:
             yield
         finally:
+            await app.state.comparison.close()
             if app.state.sagemaker:
                 app.state.sagemaker.close()
             if app.state.bedrock:
                 app.state.bedrock.close()
+            if app.state.bedrock_target:
+                app.state.bedrock_target.close()
             if app.state.jev:
                 app.state.jev.close()
 
@@ -85,6 +96,8 @@ app.include_router(crypto_router)
 app.include_router(crypto_loop_router)
 app.include_router(routing_router)
 app.include_router(vision_router)
+app.include_router(comparison_router)
+app.include_router(gateway_router)
 
 
 @app.middleware("http")
@@ -94,6 +107,7 @@ async def authenticate(request, call_next):
 
 if os.getenv("SERVE_FRONTEND", "true").lower() == "true":
     app.mount("/static", StaticFiles(directory=FRONTEND / "static"), name="static")
+    app.mount("/gateway", StaticFiles(directory=FRONTEND / "gateway", html=True), name="gateway")
 
     @app.get("/", include_in_schema=False)
     def index():
@@ -236,9 +250,7 @@ async def call_model(request: Request, payload: dict):
         else:
             options = {}
             if request.app.state.model_provider == "vllm":
-                options["headers"] = {
-                    "Authorization": f"Bearer {request.app.state.model_api_key}"
-                }
+                options["headers"] = {"Authorization": f"Bearer {request.app.state.model_api_key}"}
             response = await request.app.state.client.post(
                 request.state.model_upstream + "/v1/systemone", json=payload, **options
             )
@@ -248,7 +260,8 @@ async def call_model(request: Request, payload: dict):
                 )
             if response.status_code == 429:
                 raise HTTPException(
-                    429, "模型服务正在处理其他请求，请稍后重试。",
+                    429,
+                    "模型服务正在处理其他请求，请稍后重试。",
                     headers={"Retry-After": response.headers.get("Retry-After", "1")},
                 )
             response.raise_for_status()

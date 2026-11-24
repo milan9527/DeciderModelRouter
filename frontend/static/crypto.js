@@ -61,6 +61,16 @@ const duration = (ms) =>
     : ms >= 1000
       ? `${(ms / 1000).toFixed(2)} s`
       : `${ms.toFixed(1)} ms`;
+const decisionTime = (result) =>
+  result?.source === "live"
+    ? `决策耗时 ${duration(result.timings?.backend_total_ms)}`
+    : result?.source === "rule_replay"
+      ? "规则回放 · 未推理"
+      : "—";
+const requestTimeLabel = (loop) =>
+  loop ? "整轮请求（含执行）" : "整次请求（含网络）";
+const requestTimeHint =
+  "从页面发出请求到读完响应，包含网络、鉴权和前端接收处理；闭环还包含本轮沙盒执行，不等于后端决策耗时。";
 const money = (value) =>
   Number(value).toLocaleString("en-US", {
     minimumFractionDigits: 2,
@@ -282,7 +292,7 @@ function renderLoopHistory() {
   return `<section class="cx-loop-history"><div class="cx-results-heading"><h2>自主闭环 · 每轮反馈与调整 · ${w.runMode === "replay" ? "规则回放" : "真实模型"}</h2><p>模型选择、实际动作和模拟器事件分别记录。最多 20 次决策，同一步连续两次无进展转人工；刷新页面会清除本次演练。</p></div><div class="cx-final-grid">${providers
     .map((provider) => {
       const e = w.executions[provider];
-      return `<article class="cx-loop-lane" data-cx-loop-history="${provider}"><h3>${providerNames[provider]}</h3>${e?.timeline.length ? e.timeline.map((r, i) => `<div class="cx-loop-entry ${r.kind}"><small>第 ${i + 1} 轮 · ${r.kind === "event" ? "模拟器更新证据" : r.kind === "error" ? "请求失败" : "判断 → 执行 → 反馈"} · ${duration(r.elapsed_ms)}</small><strong>${ui.esc(r.title)}</strong><p>${ui.esc(r.reason)}</p></div>`).join("") : "<p>等待闭环运行。</p>"}</article>`;
+      return `<article class="cx-loop-lane" data-cx-loop-history="${provider}"><h3>${providerNames[provider]}</h3>${e?.timeline.length ? e.timeline.map((r, i) => `<div class="cx-loop-entry ${r.kind}"><small>第 ${i + 1} 轮 · ${r.kind === "event" ? "模拟器更新证据" : r.kind === "error" ? "请求失败" : "判断 → 执行 → 反馈"}${r.decision_ms != null ? ` · 决策耗时 ${duration(r.decision_ms)}` : ""} · 整轮请求 ${duration(r.elapsed_ms)}</small><strong>${ui.esc(r.title)}</strong><p>${ui.esc(r.reason)}</p></div>`).join("") : "<p>等待闭环运行。</p>"}</article>`;
     })
     .join("")}</div></section>`;
 }
@@ -299,9 +309,9 @@ function comparisonTable() {
     const history = (execution?.decisionHistory || []).filter(
       (d) => d.stage === stage && d.source === "live",
     );
-    return `<td data-cx-compare="${provider}-${stage}"><div class="cx-table-choice">${ui.esc(r?.label || (r?.error ? "调用失败" : running ? "判断中…" : "等待运行"))}<b>${r?.source === "live" ? duration(r.timings.backend_total_ms) : r?.source === "rule_replay" ? "回放" : "—"}</b></div><div class="cx-table-action ${outcome?.state || ""}">${running ? "处理中…" : record?.error ? `请求失败：${ui.esc(record.error)}` : record?.applied ? `实际：${ui.esc(record.label)}${record.safety_adjusted ? " · 保护调整" : ""}` : r?.error ? ui.esc(r.error) : r?.choice ? "尚未执行" : "—"}</div>${history.length > 1 ? `<small>${history.length} 次判断合计 ${duration(history.reduce((n, d) => n + d.timings.backend_total_ms, 0))}</small>` : ""}</td>`;
+    return `<td data-cx-compare="${provider}-${stage}"><div class="cx-table-choice">${ui.esc(r?.label || (r?.error ? "调用失败" : running ? "判断中…" : "等待运行"))}<b data-cx-decision-time>${decisionTime(r)}</b></div>${r?.source === "live" && r.client_ms != null ? `<small class="cx-table-request" title="${requestTimeHint}">${requestTimeLabel(w.workflowKind === "loop")} ${duration(r.client_ms)}</small>` : ""}${w.workflowKind === "loop" && r?.dialogue_round ? `<small class="cx-table-round">第 ${r.dialogue_round} 轮 · 最近一次判断</small>` : ""}<div class="cx-table-action ${outcome?.state || ""}">${running ? "处理中…" : record?.error ? `请求失败：${ui.esc(record.error)}` : record?.applied ? `实际：${ui.esc(record.label)}${record.safety_adjusted ? " · 保护调整" : ""}` : r?.error ? ui.esc(r.error) : r?.choice ? "尚未执行" : "—"}</div>${history.length > 1 ? `<small>${history.length} 次判断合计 ${duration(history.reduce((n, d) => n + d.timings.backend_total_ms, 0))}</small>` : ""}</td>`;
   };
-  return `<div class="cx-table-wrap"><table class="cx-compare-table"><caption>逐步流程对比${w.workflowKind === "loop" ? " · 每步最近一次结果" : ""}</caption><thead><tr><th>业务步骤</th>${providers.map((p) => `<th>${providerNames[p]}</th>`).join("")}<th>选择对比</th></tr></thead><tbody>${catalog.stages
+  return `<div class="cx-table-wrap"><table class="cx-compare-table"><caption>逐步流程对比${w.dialogueRun ? ` · 第 ${w.dialogueRun} 次对比` : ""}${w.workflowKind === "loop" ? " · 每步最近一次判断" : ""}</caption><thead><tr><th>业务步骤</th>${providers.map((p) => `<th>${providerNames[p]}</th>`).join("")}<th>选择对比</th></tr></thead><tbody>${catalog.stages
     .map((stage, i) => {
       const rows = providers.map((p) => results[p][stage.id]);
       const sameInput = rows.every(
@@ -363,7 +373,7 @@ function lane(provider) {
           .join("")}</div>`
       : `<p class="cx-model-note">${result.source === "live" ? "GPT 返回候选动作 JSON，不提供可与 Decider 比较的校准概率。" : "确定性规则回放，没有模型概率或推理时间。"}</p>`;
     detail = `<div class="cx-decision ${result.matches_reference ? "match" : "mismatch"}"><span>${result.source === "live" ? "真实模型建议" : "规则回放 · 非模型输出"}</span><h3>${ui.esc(result.label)}</h3><p>${result.matches_reference ? "与演示参考一致" : `与演示参考不同：${ui.esc(result.reference_label)}`}</p></div>
-      <div class="cx-detail-metrics"><div><span>本步后端总耗时</span><b>${duration(result.timings?.backend_total_ms)}</b></div><div><span>浏览器往返</span><b>${result.source === "live" ? duration(result.client_ms) : "未推理"}</b></div><div><span>${provider === "decider" ? "归一化 confidence" : provider === "jev" ? "Jev confidence" : "输入 / 输出 tokens"}</span><b>${provider !== "bedrock" ? (result.confidence == null ? "—" : result.confidence.toFixed(3)) : result.usage ? `${result.usage.input_tokens} / ${result.usage.output_tokens}` : "—"}</b></div></div>
+      <div class="cx-detail-metrics"><div><span>决策耗时（后端）</span><b>${duration(result.timings?.backend_total_ms)}</b></div><div title="${requestTimeHint}"><span>${requestTimeLabel(w.workflowKind === "loop")}</span><b>${result.source === "live" ? duration(result.client_ms) : "未推理"}</b></div><div><span>${provider === "decider" ? "归一化 confidence" : provider === "jev" ? "Jev confidence" : "输入 / 输出 tokens"}</span><b>${provider !== "bedrock" ? (result.confidence == null ? "—" : result.confidence.toFixed(3)) : result.usage ? `${result.usage.input_tokens} / ${result.usage.output_tokens}` : "—"}</b></div></div>
       ${result.source === "live" ? `<p class="cx-model-note">模型版本：${ui.esc(result.model)}${provider === "jev" ? " · 概率与 confidence 来自 Jev，不视作与 Decider 相同的校准尺度。" : ""}</p>` : ""}${distribution}<details class="cx-raw"><summary>查看原始响应与输入指纹</summary><pre>${ui.esc(JSON.stringify(result, null, 2))}</pre></details>`;
   }
   return `<section class="cx-lane ${provider}" aria-label="${providerNames[provider]} 对比结果">
@@ -736,7 +746,7 @@ function dialogueOutput(provider, side, showInput) {
     side.request.state?.status === "waiting" && side.request.auto_events;
   const time =
     r?.source === "live"
-      ? `决策 ${duration(r.timings?.backend_total_ms)}`
+      ? decisionTime(r)
       : r
         ? "规则回放 · 未调用模型"
         : side.pending
@@ -747,13 +757,13 @@ function dialogueOutput(provider, side, showInput) {
               ? "流程状态 · 未调用模型"
               : "未获得模型决策";
   return `<article class="cx-turn-side ${provider}" data-cx-dialogue-output="${provider}">
-    <div class="cx-turn-model"><h4>${providerNames[provider]}</h4><span>${time}</span></div>
+    <div class="cx-turn-model"><h4>${providerNames[provider]}</h4><span data-cx-decision-time>${time}</span></div>
     ${showInput ? dialogueInput(side) : ""}
     <div class="cx-turn-output"><span class="cx-io-label">${simulation ? "模拟事件输出 · 未调用模型" : r?.source === "rule_replay" ? "回放输出" : "模型输出"}</span>
       ${side.pending ? `<p class="cx-turn-pending">${pendingEvent ? "正在检查等待条件／推进模拟事件…" : "正在等待本轮决策…"}</p>` : side.error ? `<p class="cx-turn-error">请求失败：${ui.esc(side.error)}</p>` : r ? `<strong>${ui.esc(r.label)}</strong><code>${ui.esc(r.choice)}</code>` : simulation ? `<strong>${ui.esc(eventNames[simulation.name])}</strong><p>${ui.esc(eventChange(simulation.name, simulation.before, simulation.after))}</p>` : `<p>${ui.esc(side.response?.state.reason || "本轮未调用模型。")}</p>`}
     </div>
     ${record ? `<div class="cx-turn-execution"><span class="cx-io-label">实际执行${side.executions.length > 1 ? ` · 第 ${side.executions.length} 次尝试` : ""}</span><p>${ui.esc(executionOutput(record))}</p>${record.safety_reason ? `<p class="cx-turn-feedback">${ui.esc(record.safety_reason)}</p>` : ""}${record.loop_feedback ? `<p class="cx-turn-feedback">反馈：${ui.esc(record.loop_feedback.reason)}</p>` : ""}${record.customer_reply && record.stage !== "close" ? `<p class="cx-turn-reply">客服回复（模板）：${ui.esc(record.customer_reply)}</p>` : ""}</div>` : r ? `<p class="cx-turn-empty">尚未执行该建议。</p>` : ""}
-    <div class="cx-turn-time"><time>${new Date(side.startedAt).toLocaleTimeString("zh-CN", { hour12: false })}</time>${side.elapsedMs != null ? `<span>请求往返 ${duration(side.elapsedMs)}</span>` : ""}</div>
+    <div class="cx-turn-time"><time>${new Date(side.startedAt).toLocaleTimeString("zh-CN", { hour12: false })}</time>${side.elapsedMs != null ? `<span class="cx-request-time" title="${requestTimeHint}">${requestTimeLabel(!!side.request.state)} ${duration(side.elapsedMs)}</span>` : ""}</div>
     <details class="cx-turn-raw" data-cx-panel="turn-${side.id}" ${panelOpen(`turn-${side.id}`)}><summary>完整请求与返回</summary><pre>${ui.esc(JSON.stringify({ request: side.request, response: side.response || r || null, error: side.error || null, executions: side.executions }, null, 2))}</pre></details>
   </article>`;
 }
@@ -765,7 +775,8 @@ function renderDialogues() {
   return `<section class="cx-dialogues" aria-label="每轮对话输入与输出">
     <div class="cx-dialogue-heading"><h2>每轮输入 / 输出</h2><label>对比记录 <select data-cx-dialogue-run ${runs.length ? "" : "disabled"}>${runs.length && w.viewedDialogueRun === 0 ? '<option value="0" selected>等待当前组合运行</option>' : ""}${runs.length ? runs.map((run) => `<option value="${run}" ${run === w.viewedDialogueRun ? "selected" : ""}>第 ${run} 次 · ${workflowNames[w.dialogues.find((row) => row.run === run).kind]} · ${comparisonName(w.dialogues.find((row) => row.run === run).providers || providers)}${run === w.dialogueRun ? " · 最近" : ""}</option>`).join("") : "<option>等待开始</option>"}</select></label></div>
     <div class="cx-dialogue-layout"><div class="cx-dialogue-main">
-      <p class="cx-dialogue-note">${rows.length ? `${rows.length} 轮 · 滚动查看全部输入与输出` : "开始对比后逐轮显示输入与输出"} · 客服模板单独标注</p>
+      <p class="cx-dialogue-note">${rows.length ? `${rows.length} 轮 · 同一轮决策耗时与下表一致，含后端排队及模型调用；整次请求另列` : "开始对比后逐轮显示输入与输出"}</p>
+      ${rows.length && w.viewedDialogueRun !== w.dialogueRun ? `<p class="cx-history-notice" data-cx-history-notice>正在查看第 ${w.viewedDialogueRun} 次历史记录；下方流程表为第 ${w.dialogueRun} 次对比。</p>` : ""}
       <div class="cx-dialogue-feed" tabindex="0" aria-label="逐轮输入与三侧输出记录">
         ${
           rows.length
@@ -958,8 +969,10 @@ async function run(which) {
           const t = performance.now();
           try {
             const result = await ui.api("/api/crypto/decision", request);
-            result.client_ms =
-              runMode === "live" ? performance.now() - t : null;
+            // Stop at response receipt, before audit/UI work. Both views use this value.
+            dialogue.elapsedMs = performance.now() - t;
+            result.client_ms = runMode === "live" ? dialogue.elapsedMs : null;
+            result.dialogue_round = index + 1;
             w.results[provider][stage] = result;
             dialogue.result = result;
             addAudit(
@@ -967,6 +980,7 @@ async function run(which) {
               `${providerNames[provider]} · ${stageData(stage).label} → ${result.label}${result.source !== "live" ? "（规则回放）" : ""}${!result.matches_reference ? "；与演示参考不同（不因此暂停）" : ""}`,
             );
           } catch (error) {
+            dialogue.elapsedMs ??= performance.now() - t;
             dialogue.error = error.message;
             w.results[provider][stage] = { error: error.message };
             addAudit(
@@ -975,7 +989,6 @@ async function run(which) {
             );
           } finally {
             dialogue.pending = false;
-            dialogue.elapsedMs = performance.now() - t;
           }
           render();
         }),
@@ -1098,10 +1111,15 @@ async function runLoop(resume = false) {
           const tickStarted = performance.now();
           try {
             const response = await ui.api("/api/crypto/loop/tick", request);
+            const elapsed = performance.now() - tickStarted;
+            dialogue.elapsedMs = elapsed;
+            if (response.decision) {
+              response.decision.client_ms = runMode === "live" ? elapsed : null;
+              response.decision.dialogue_round = execution.dialogueTicks;
+            }
             dialogue.response = clone(response);
             dialogue.result = response.decision;
             dialogue.pending = false;
-            const elapsed = performance.now() - tickStarted;
             execution.elapsedMs += elapsed;
             execution.loopState = response.state;
             execution.snapshot = clone(response.state.snapshot);
@@ -1126,6 +1144,9 @@ async function runLoop(resume = false) {
                 title: `${stageData(record.stage).label}：${response.decision.label} → ${record.label}`,
                 reason: record.loop_feedback.reason,
                 elapsed_ms: elapsed,
+                decision_ms: response.decision.source === "live"
+                  ? response.decision.timings?.backend_total_ms
+                  : null,
               });
               if (record.customer_reply)
                 addConversation("reply", record.customer_reply, {
@@ -1161,9 +1182,10 @@ async function runLoop(resume = false) {
             }
             render();
           } catch (error) {
+            dialogue.elapsedMs ??= performance.now() - tickStarted;
             dialogue.error = error.message;
             dialogue.pending = false;
-            const elapsed = performance.now() - tickStarted;
+            const elapsed = dialogue.elapsedMs;
             execution.elapsedMs += elapsed;
             execution.error = error.message;
             execution.runningStage = null;
@@ -1186,8 +1208,6 @@ async function runLoop(resume = false) {
             );
             render();
             break;
-          } finally {
-            dialogue.elapsedMs = performance.now() - tickStarted;
           }
         }
       }),

@@ -1,0 +1,7 @@
+承接文字模型路由，第三个业务演示直接将截图提交给三个模型。覆盖支付状态4图×3问题、中文客服4图×1问题、凭证完整性4图×3问题，共12图28项判断。预设或上传图片统一成448×448 PNG，三侧图片字节、上下文、问题、候选含义与顺序一致；不预先OCR，样例预期不发送给模型。每模型一次请求独立回答同组问题，不是先用字段答案改写动作问题，也不真正执行付款或接收凭证。
+Decider沿用v19官方视觉编码器和决策头，在EC2 g6.xlarge/L4独立容器运行；不是本项目文字vLLM服务的图片适配。Jev实际返回jev-1.14.0，经ECS→Lambda→System One提交图片asset；该图片API为试验功能。GPT-6.1 Sol low经Bedrock Converse图片块返回候选ID或Boolean。
+截图为2026-10-23上线浏览器实时验收case-11，裁掉导航、其他字段和折叠区，保留原有三列模型名称、后端/浏览器耗时、动作和预期提示，未修改图片内返回。本次截图后端耗时Decider172.2ms/Jev420.1ms/GPT约1.01s。下一页均值来自另存的12图完整批次，不用截图单次时间替代批次均值。三者都将signature判为true、reference判为false；Decider动作accept，Jev/GPT动作request_reference。Decider字段识别正确，但组合条件动作未符合样例预期。这只能定位可观察的差异，不能据此断言模型内部推理的具体原因。
+来源：sources/vision-browser-2026-10-23.json、sources/vision-catalog.json、screenshots/vision-triple-receipt.png、sources/VISION.md。
+演示：https://d3i7ogfx5ml7dc.cloudfront.net/#vision
+官方视觉能力：https://github.com/strands-labs/strands-decider/blob/main/docs/vision.md
+Jev图片接口：https://docs.typesafe.ai/images

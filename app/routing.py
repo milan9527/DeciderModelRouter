@@ -1,20 +1,36 @@
 """Let each router choose a workflow, then choose a model using benchmark evidence."""
 
 import asyncio
+import hashlib
 import json
+import logging
 import os
+import secrets
 from pathlib import Path
 from time import perf_counter
+from time import time as unix_time
 from typing import Literal
 
+import httpx
 from botocore.exceptions import BotoCoreError, ClientError, ReadTimeoutError
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import Field, field_validator
 from starlette.concurrency import run_in_threadpool
 
+from app.bedrock import TARGET_READ_TIMEOUT_SECONDS
 from app.bedrock import decide as bedrock_decide
 from app.crypto import fingerprint
 from app.jev import JevError
+from app.routing_balance import (
+    BALANCE_VERSION,
+    TEXT_WORKFLOWS,
+    RoutingPreferences,
+    balance_catalog,
+    balanced_payload,
+    balanced_pool,
+    observed_reference_cost,
+    preferences,
+)
 from app.routing_evidence import (
     EVIDENCE_VERSION,
     evidence_catalog,
@@ -28,10 +44,27 @@ from app.routing_policy import (
     load_rankings,
     model_payload,
 )
+from app.routing_profile import (
+    RequestProfile,
+    bedrock_profile,
+    parse_profile,
+    profile_payload,
+    replay_profile,
+)
+from app.routing_quota import quota_exclusion
+from app.routing_selector import (
+    SELECTOR_VERSION,
+    categories,
+    choose,
+    configurations,
+    load_calibration,
+)
 from app.schemas import StrictModel
 
 router = APIRouter(prefix="/api/routing", tags=["Model routing comparison"])
+logger = logging.getLogger(__name__)
 ROUTER_MODEL = "us.openai.gpt-6-sol"
+LOCAL_ROUTERS = {"liquid": "LiquidAI/d1-2B", "h2o": "h2oai/h2o-lightning-4b"}
 CATALOG_PATH = Path(__file__).with_name("bedrock_catalog.json")
 CASES = [
     {
@@ -78,6 +111,7 @@ class Task(StrictModel):
     text: str = Field(min_length=1, max_length=1400)
     allow_cross_region: bool = True
     include_legacy: bool = False
+    routing_preferences: RoutingPreferences | None = None
 
     @field_validator("text")
     @classmethod
@@ -88,12 +122,12 @@ class Task(StrictModel):
 
 
 class RouteDecision(StrictModel):
-    strategy: Literal["original", "optimized"] = "original"
+    strategy: Literal["original", "optimized", "balanced"] = "original"
     evidence_version: str | None = Field(default=None, max_length=64)
     stage: Literal["workflow", "model"]
     workflow: TaskType | None = None
     task: Task
-    provider: Literal["decider", "jev", "bedrock"]
+    provider: Literal["decider", "jev", "bedrock", "liquid", "h2o"]
     mode: Literal["live", "replay"] = "live"
     catalog_version: str = Field(max_length=64)
     ranking_version: str = Field(max_length=64)
@@ -105,8 +139,25 @@ class Execute(StrictModel):
     model_id: str = Field(min_length=1, max_length=200)
     catalog_version: str = Field(max_length=64)
     ranking_version: str = Field(max_length=64)
-    strategy: Literal["original", "optimized"] = "original"
+    strategy: Literal["original", "optimized", "balanced"] = "original"
     evidence_version: str | None = Field(default=None, max_length=64)
+
+
+class AutoRoute(StrictModel):
+    task: Task
+    provider: Literal["decider", "jev", "bedrock", "liquid", "h2o"] = "bedrock"
+    mode: Literal["live", "replay"] = "live"
+    catalog_version: str = Field(max_length=64)
+    ranking_version: str = Field(max_length=64)
+    policy_version: str = Field(max_length=64)
+
+
+class AutoExecute(StrictModel):
+    route_token: str = Field(min_length=32, max_length=80, pattern=r"^[A-Za-z0-9_-]+$")
+
+
+def route_key(token):
+    return "ROUTE#" + hashlib.sha256(token.encode()).hexdigest()
 
 
 def load_catalog():
@@ -131,6 +182,9 @@ def exclusion(model, task, kind=None):
         return "账户可用性未确认"
     if not model["invoke_id"]:
         return "需要预置容量或单独部署"
+    quota_reason = quota_exclusion(model, os.getenv("AWS_REGION", "us-east-1"))
+    if quota_reason:
+        return quota_reason
     if model["lifecycle"] != "ACTIVE" and not task.include_legacy:
         return "旧版模型未纳入本次选择"
     if not task.allow_cross_region and any(
@@ -199,9 +253,17 @@ def catalog(request: Request):
         "router_model": ROUTER_MODEL,
         "reasoning_effort": "low",
         "evidence_optimization": evidence_catalog(),
+        "balance_optimization": balance_catalog(),
+        "classified_routing": {
+            "version": SELECTOR_VERSION,
+            "calibration_version": load_calibration()["version"],
+            "categories": categories(data, rankings, Task(text="catalog"), exclusion),
+            "assessment_fields": list(profile_payload(Task(text="catalog"))["questions"]),
+        },
         "configured": {
             "bedrock": request.app.state.bedrock is not None,
             "jev": request.app.state.jev is not None,
+            **{key: bool(os.getenv("OPEN_MODELS_URL")) for key in LOCAL_ROUTERS},
         },
     }
 
@@ -209,6 +271,29 @@ def catalog(request: Request):
 def check_evidence_version(body):
     if body.strategy == "optimized" and body.evidence_version != EVIDENCE_VERSION:
         raise HTTPException(409, "优化输入版本已更新，请刷新页面后重新比较。")
+    if body.strategy == "balanced" and body.evidence_version != BALANCE_VERSION:
+        raise HTTPException(409, "成本均衡策略已更新，请刷新页面后重新比较。")
+    if body.strategy != "balanced" and body.task.routing_preferences is not None:
+        raise HTTPException(422, "路由偏好仅适用于成本均衡策略，其他策略不会忽略这些限制。")
+    policy = preferences(body.task)
+    if any(
+        v is not None
+        for v in (policy.min_success_rate, policy.max_latency_ms, policy.min_context_tokens)
+    ):
+        raise HTTPException(422, "业务成功率、延迟与上下文限制请使用分类选型 /auto 接口。")
+
+
+def selection_pool(body, data, rankings):
+    pool = candidate_pool(data, rankings, body.task, body.workflow, exclusion)
+    if body.strategy == "balanced":
+        if body.workflow not in TEXT_WORKFLOWS | {"embedding"}:
+            raise HTTPException(422, "成本均衡目前支持文本和检索向量；其他模态尚无费用适配。")
+        pool = balanced_pool(body.task, body.workflow, pool, rankings)
+    return pool
+
+
+def strategy_version(strategy):
+    return {"optimized": EVIDENCE_VERSION, "balanced": BALANCE_VERSION}.get(strategy)
 
 
 @router.post("/rank", deprecated=True)
@@ -232,6 +317,37 @@ async def infer(body, request, payload):
     from app.main import live_decision
 
     started = perf_counter()
+    if body.provider in LOCAL_ROUTERS:
+        base_url = os.getenv("OPEN_MODELS_URL", "").rstrip("/")
+        if not base_url:
+            raise HTTPException(503, "常驻开放权重决策模型尚未配置 OPEN_MODELS_URL。")
+        try:
+            async with asyncio.timeout(50):
+                response = await request.app.state.client.post(
+                    f"{base_url}/v1/systemone/{body.provider}",
+                    json=payload,
+                    timeout=45,
+                )
+                response.raise_for_status()
+                result = response.json()
+            if result.get("model") != LOCAL_ROUTERS[body.provider]:
+                raise ValueError("Unexpected model identity")
+            return {
+                **result["answers"]["action"],
+                "model": result["model"],
+                "usage": result.get("usage"),
+                "deployment": result.get("deployment"),
+                "timings": {
+                    "backend_total_ms": round((perf_counter() - started) * 1000, 3),
+                    "model_reported_ms": result.get("latency_ms"),
+                },
+            }
+        except (TimeoutError, httpx.TimeoutException) as exc:
+            raise HTTPException(504, "开放权重路由模型超时；未切换模型。") from exc
+        except httpx.HTTPError as exc:
+            raise HTTPException(503, "开放权重路由服务调用失败；未切换模型。") from exc
+        except (ValueError, KeyError, TypeError, AttributeError) as exc:
+            raise HTTPException(502, "开放权重路由模型身份或返回格式无效。") from exc
     if body.provider == "decider":
         result = await live_decision(request, payload, measure_decisions=True)
         return {
@@ -281,6 +397,247 @@ async def infer(body, request, payload):
         raise HTTPException(502, "路由模型未返回有效候选 ID。") from exc
 
 
+async def infer_profile(body, request, payload):
+    """Exactly one upstream request for all assessment fields."""
+    from app.main import live_decision
+
+    started = perf_counter()
+    try:
+        async with asyncio.timeout(50):
+            if body.provider == "decider":
+                return await live_decision(request, payload, measure_decisions=False)
+            if body.provider in LOCAL_ROUTERS:
+                base = os.getenv("OPEN_MODELS_URL", "").rstrip("/")
+                if not base:
+                    raise HTTPException(503, "常驻开放权重决策模型尚未配置。")
+                response = await request.app.state.client.post(
+                    f"{base}/v1/systemone/{body.provider}",
+                    json=payload,
+                    timeout=45,
+                )
+                response.raise_for_status()
+                result = response.json()
+                if result.get("model") != LOCAL_ROUTERS[body.provider]:
+                    raise ValueError("Unexpected model")
+            else:
+                client = getattr(request.app.state, body.provider)
+                if client is None:
+                    raise HTTPException(503, f"{body.provider} 尚未配置。")
+                async with getattr(request.app.state, body.provider + "_slots"):
+                    if body.provider == "jev":
+                        result = await run_in_threadpool(client.system_one, payload)
+                    else:
+                        catalog = load_catalog()
+                        classifier = next(
+                            (m for m in catalog["models"] if m["invoke_id"] == ROUTER_MODEL), None
+                        )
+                        if classifier is None or exclusion(classifier, body.task, "general_text"):
+                            raise HTTPException(503, "Bedrock 分类模型不在当前可用目录中。")
+                        result = await run_in_threadpool(
+                            bedrock_profile, client, ROUTER_MODEL, payload
+                        )
+        parse_profile(result)
+        return {
+            **result,
+            "timings": {
+                "backend_total_ms": round((perf_counter() - started) * 1000, 3),
+                "execution": "batch",
+            },
+        }
+    except JevError as exc:
+        raise HTTPException(exc.status_code, exc.detail) from exc
+    except (TimeoutError, httpx.TimeoutException) as exc:
+        raise HTTPException(504, "任务分类超时，未生成替代结果。") from exc
+    except (httpx.HTTPError, ClientError, BotoCoreError) as exc:
+        raise HTTPException(503, "任务分类服务调用失败，未自动回退。") from exc
+    except (ValueError, KeyError, TypeError, AttributeError) as exc:
+        raise HTTPException(502, "任务分类结果不完整或不符合候选协议。") from exc
+
+
+def auto_selection(task, profile, data, rankings, calibration):
+    pool = configurations(data, rankings, task, profile.workflow, exclusion)
+    return choose(task, profile, pool, rankings, calibration)
+
+
+@router.post("/auto")
+async def auto_route(body: AutoRoute, request: Request):
+    return await run_classified_route(body, request)
+
+
+async def run_classified_route(body, request, *, infer=None, emit=None):
+    """Shared policy pipeline; the gateway supplies its independent GPU transport."""
+
+    async def progress(stage, status, data=None):
+        if emit is not None:
+            await emit(stage, status, data or {})
+
+    started = perf_counter()
+    data, rankings, calibration = load_catalog(), load_rankings(), load_calibration()
+    check_version(data, body.catalog_version)
+    check_ranking_version(rankings, body.ranking_version)
+    if body.policy_version != SELECTOR_VERSION:
+        raise HTTPException(409, "分类选型策略已更新，请刷新。")
+    await progress("catalog", "completed", {"model_count": len(data["models"])})
+    payload = profile_payload(body.task)
+    await progress("classification", "started")
+    if body.mode == "replay":
+        profile = replay_profile(body.task, replay_choice(body.task))
+        result = {
+            "model": None,
+            "usage": None,
+            "timings": None,
+            "answers": {k: {"choice": v} for k, v in profile.model_dump().items()},
+        }
+    else:
+        result = await (infer or infer_profile)(body, request, payload)
+        try:
+            profile = parse_profile(result)
+        except (ValueError, KeyError, TypeError) as exc:
+            raise HTTPException(502, "任务分类未返回完整有效属性。") from exc
+    flow = {
+        **result,
+        "profile": profile.model_dump(),
+        "stage": "workflow",
+        "source": "rule_replay" if body.mode == "replay" else "live",
+        "strategy": "classified",
+        "choice": profile.workflow,
+        "label": WORKFLOWS[profile.workflow]["label"],
+        "workflow": {"id": profile.workflow, **WORKFLOWS[profile.workflow]},
+        "model_input": payload,
+        "input_hash": fingerprint(payload),
+        "candidate_count": len(WORKFLOWS),
+        "selected_model": None,
+        "assessment_count": len(payload["questions"]),
+    }
+    await progress("classification", "completed", flow)
+    await progress("selection", "started")
+    selection_started = perf_counter()
+    selection = auto_selection(body.task, profile, data, rankings, calibration)
+    policy_ms = round((perf_counter() - selection_started) * 1000, 3)
+    chosen = next(
+        (
+            r
+            for r in selection["candidates"]
+            if r["candidate_id"] == selection["selected_candidate_id"]
+        ),
+        None,
+    )
+    route_token = None
+    receipt_started = perf_counter()
+    if chosen and body.mode == "live":
+        route_token = secrets.token_urlsafe(32)
+        # Shared existing store makes receipts work across workers, without trusting a client profile.
+        await run_in_threadpool(
+            request.app.state.auth.store.put,
+            {
+                "pk": route_key(route_token),
+                "username": request.state.user["username"],
+                "expires_at": int(unix_time()) + 900,
+                "record": json.dumps(
+                    {
+                        "task": body.task.model_dump(mode="json"),
+                        "profile": profile.model_dump(),
+                        "configuration_id": chosen["candidate_id"],
+                        "policy_version": SELECTOR_VERSION,
+                        "catalog_version": data["version"],
+                        "ranking_version": rankings["version"],
+                        "calibration_version": calibration["version"],
+                    }
+                ),
+            },
+        )
+    receipt_ms = round((perf_counter() - receipt_started) * 1000, 3)
+    policy_input = {
+        "profile": profile.model_dump(),
+        "preferences": preferences(body.task).model_dump(mode="json"),
+        "catalog_version": data["version"],
+        "ranking_version": rankings["version"],
+        "calibration_version": calibration["version"],
+        "policy_version": SELECTOR_VERSION,
+        "cost_context": selection["cost_context"],
+        "candidates": [
+            {
+                k: r.get(k)
+                for k in ("candidate_id", "task_scores", "cost_evidence", "business_evidence")
+            }
+            for r in selection["candidates"]
+        ],
+    }
+    step = {
+        "stage": "model",
+        "strategy": "classified",
+        "evidence_version": SELECTOR_VERSION,
+        "source": "rule_replay" if body.mode == "replay" else "deterministic_policy",
+        "choice": chosen["candidate_id"] if chosen else None,
+        "label": chosen["model"]["name"] if chosen else "无符合条件的模型",
+        "model": None,
+        "usage": None,
+        "workflow": flow["workflow"],
+        "selected_model": chosen["model"] if chosen else None,
+        "selection": selection,
+        "policy_input": policy_input,
+        "input_hash": fingerprint(policy_input),
+        "candidate_count": selection["candidate_count"],
+        "route_token": route_token,
+        "timings": {
+            "backend_total_ms": round((perf_counter() - selection_started) * 1000, 3),
+            "policy_ms": policy_ms,
+            "receipt_ms": receipt_ms,
+        }
+        if body.mode == "live"
+        else None,
+        "notice": selection["reason"],
+    }
+    await progress("selection", "completed", step)
+    return {
+        "status": "selected" if chosen else "no_route",
+        "strategy": "classified",
+        "steps": [flow, step],
+        "catalog_version": data["version"],
+        "ranking_version": rankings["version"],
+        "policy_version": SELECTOR_VERSION,
+        "calibration_version": calibration["version"],
+        "route_total_ms": round((perf_counter() - started) * 1000, 3)
+        if body.mode == "live"
+        else None,
+    }
+
+
+@router.post("/auto/execute")
+async def auto_execute(body: AutoExecute, request: Request):
+    item = await run_in_threadpool(
+        request.app.state.auth.store.get,
+        route_key(body.route_token),
+    )
+    if (
+        not item
+        or item["username"] != request.state.user["username"]
+        or int(item["expires_at"]) <= unix_time()
+    ):
+        raise HTTPException(409, "路由记录无效或已过期，请重新分类。")
+    record = json.loads(item["record"])
+    data, rankings, calibration = load_catalog(), load_rankings(), load_calibration()
+    check_version(data, record["catalog_version"])
+    check_ranking_version(rankings, record["ranking_version"])
+    if (
+        record["policy_version"] != SELECTOR_VERSION
+        or record["calibration_version"] != calibration["version"]
+    ):
+        raise HTTPException(409, "路由策略或业务评测已更新，请重新分类。")
+    task, profile = Task(**record["task"]), RequestProfile(**record["profile"])
+    selection = auto_selection(task, profile, data, rankings, calibration)
+    if selection["selected_candidate_id"] != record["configuration_id"]:
+        raise HTTPException(409, "所选配置已不满足当前路由策略，请重新分类。")
+    row = next(
+        r for r in selection["candidates"] if r["candidate_id"] == record["configuration_id"]
+    )
+    if profile.tools == "yes" or profile.structured_output == "yes":
+        raise HTTPException(422, "已选型；当前执行演示尚未提供工具或结构化输出参数。")
+    return await execute_selected(
+        request, row, task, profile.workflow, "classified", SELECTOR_VERSION, rankings["version"]
+    )
+
+
 @router.post("/decision")
 async def decision(body: RouteDecision, request: Request):
     started = perf_counter()
@@ -296,17 +653,22 @@ async def decision(body: RouteDecision, request: Request):
     else:
         if body.workflow is None:
             raise HTTPException(422, "请先完成流程选择。")
-        pool = candidate_pool(data, rankings, body.task, body.workflow, exclusion)
+        pool = selection_pool(body, data, rankings)
         if not pool["candidates"]:
             raise HTTPException(422, "该流程没有满足调用条件且有评测依据的模型；未猜选或回退。")
         if len(pool["candidates"]) > 24:
             raise HTTPException(
                 422, "当前评测候选超过接口的 24 项上限；需要扩展候选协议，未静默截断。"
             )
-        build_payload = optimized_payload if body.strategy == "optimized" else model_payload
+        build_payload = {
+            "original": model_payload,
+            "optimized": optimized_payload,
+            "balanced": balanced_payload,
+        }[body.strategy]
         payload = build_payload(body.task, body.workflow, pool, rankings)
     criteria = payload["questions"]["action"]["criteria"]
-    if body.mode == "replay":
+    singleton = body.strategy == "balanced" and body.stage == "model" and len(criteria) == 1
+    if body.mode == "replay" or singleton:
         result = {
             "choice": replay_choice(body.task)
             if body.stage == "workflow"
@@ -320,7 +682,7 @@ async def decision(body: RouteDecision, request: Request):
     else:
         result = await infer(body, request, payload)
     choice = result.get("choice")
-    if choice not in criteria:
+    if not isinstance(choice, str) or choice not in criteria:
         raise HTTPException(502, "模型返回了候选之外的选择；未替换或自动纠正。")
     selected_row = (
         next((row for row in pool["candidates"] if row["candidate_id"] == choice), None)
@@ -332,9 +694,13 @@ async def decision(body: RouteDecision, request: Request):
         **result,
         "provider": body.provider,
         "stage": body.stage,
-        "source": "rule_replay" if body.mode == "replay" else "live",
+        "source": "rule_replay"
+        if body.mode == "replay"
+        else "constraint_singleton"
+        if singleton
+        else "live",
         "strategy": body.strategy,
-        "evidence_version": EVIDENCE_VERSION if body.strategy == "optimized" else None,
+        "evidence_version": strategy_version(body.strategy),
         "label": selected_row["model"]["name"] if selected_row else WORKFLOWS[choice]["label"],
         "workflow": {"id": workflow, **WORKFLOWS[workflow]},
         "model_input": payload,
@@ -357,7 +723,11 @@ async def decision(body: RouteDecision, request: Request):
         "route_total_ms": round((perf_counter() - started) * 1000, 3)
         if body.mode == "live"
         else None,
-        "notice": "界面回放，非模型结果。" if body.mode == "replay" else None,
+        "notice": "界面回放，非模型结果。"
+        if body.mode == "replay"
+        else "限制后仅一个候选，由程序直接路由，未调用决策模型。"
+        if singleton
+        else None,
     }
 
 
@@ -368,7 +738,10 @@ def execute_target(client, model, task, kind, benchmark):
         kwargs = {
             "modelId": invoke_id,
             "messages": [{"role": "user", "content": [{"text": task.text}]}],
-            "inferenceConfig": {"maxTokens": 4096},
+            "inferenceConfig": {
+                **benchmark.get("inference_config", {}),
+                "maxTokens": preferences(task).max_output_tokens,
+            },
         }
         if benchmark.get("request_fields"):
             kwargs["additionalModelRequestFields"] = benchmark["request_fields"]
@@ -382,7 +755,7 @@ def execute_target(client, model, task, kind, benchmark):
             "text": text
             if has_final_text
             else (
-                "已达到 4096 输出 token 上限；模型仅返回推理内容，尚未生成最终答复。"
+                f"已达到 {preferences(task).max_output_tokens} 输出 token 上限；模型仅返回推理内容，尚未生成最终答复。"
                 "本次任务未完成，未自动重试或降低评测配置。"
             ),
             "has_final_text": has_final_text,
@@ -434,48 +807,90 @@ async def execute(body: Execute, request: Request):
     check_version(data, body.catalog_version)
     rankings = load_rankings()
     check_ranking_version(rankings, body.ranking_version)
-    pool = candidate_pool(data, rankings, body.task, body.workflow, exclusion)
+    check_evidence_version(body)
+    pool = selection_pool(body, data, rankings)
     row = next((row for row in pool["candidates"] if row["model"]["id"] == body.model_id), None)
     if row is None:
         raise HTTPException(422, "所选模型不属于该流程当前可用的评测候选。")
-    check_evidence_version(body)
+    return await execute_selected(
+        request,
+        row,
+        body.task,
+        body.workflow,
+        body.strategy,
+        strategy_version(body.strategy),
+        rankings["version"],
+    )
+
+
+async def execute_selected(
+    request, row, task, workflow, strategy, evidence_version, ranking_version
+):
     model = row["model"]
-    if request.app.state.bedrock is None:
+    client = getattr(request.app.state, "bedrock_target", None) or request.app.state.bedrock
+    if client is None:
         raise HTTPException(503, "Bedrock 尚未配置。")
     started = perf_counter()
     try:
-        async with asyncio.timeout(50):
+        async with asyncio.timeout(TARGET_READ_TIMEOUT_SECONDS + 10):
             async with request.app.state.bedrock_slots:
+                invoked_at = perf_counter()
                 result = await run_in_threadpool(
                     execute_target,
-                    request.app.state.bedrock,
+                    client,
                     model,
-                    body.task,
-                    body.workflow,
+                    task,
+                    workflow,
                     row["benchmark"],
                 )
+                returned_at = perf_counter()
         return {
             **result,
             "model_id": model["id"],
             "invoke_id": model["invoke_id"],
             "backend_total_ms": round((perf_counter() - started) * 1000, 3),
+            "timings": {
+                "queue_ms": round((invoked_at - started) * 1000, 3),
+                "upstream_ms": round((returned_at - invoked_at) * 1000, 3),
+            },
             "source": "live",
-            "ranking_version": rankings["version"],
+            "ranking_version": ranking_version,
             "request_fields": row["benchmark"].get("request_fields", {}),
-            "strategy": body.strategy,
-            "evidence_version": EVIDENCE_VERSION if body.strategy == "optimized" else None,
+            "strategy": strategy,
+            "evidence_version": evidence_version,
+            "cost_evidence": row.get("cost_evidence"),
+            "observed_reference_cost_usd": observed_reference_cost(
+                row["benchmark"], result.get("usage"), workflow
+            ),
         }
     except TimeoutError as exc:
         raise HTTPException(504, "目标模型执行超时，未自动重试或切换模型。") from exc
     except ReadTimeoutError as exc:
         raise HTTPException(
-            504, "目标模型在 40 秒响应等待内未返回；评测推理档位可能较慢。本次未完成，未切换模型。"
+            504,
+            f"目标模型在 {TARGET_READ_TIMEOUT_SECONDS} 秒响应等待内未返回；本次未完成。"
+            "上游可能仍在生成，未自动重试或切换模型。",
         ) from exc
     except (ClientError, BotoCoreError) as exc:
         code = exc.response["Error"]["Code"] if isinstance(exc, ClientError) else type(exc).__name__
         detail = (
             exc.response["Error"].get("Message", "")[:600] if isinstance(exc, ClientError) else ""
         )
+        if code == "ThrottlingException":
+            logger.warning(
+                "Bedrock target throttled model=%s invoke_id=%s max_output_tokens=%s request_id=%s",
+                model["id"],
+                model["invoke_id"],
+                preferences(task).max_output_tokens,
+                exc.response.get("ResponseMetadata", {}).get("RequestId", "unknown"),
+            )
+            raise HTTPException(
+                429,
+                f"Bedrock 对 {model['name']} 限流：Token 或请求配额不足。"
+                "可稍后重试；若持续发生，需核查该调用端点的账户配额并刷新目录。"
+                "本次未自动重试或切换模型。",
+                headers={"Retry-After": "60"},
+            ) from exc
         raise HTTPException(503, f"目标模型调用失败（{code}）：{detail}") from exc
     except (ValueError, KeyError, TypeError) as exc:
         raise HTTPException(502, "目标模型没有返回当前适配器支持的结果。") from exc

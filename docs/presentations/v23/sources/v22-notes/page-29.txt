@@ -1,0 +1,49 @@
+公开价格快照2026-10-15。Jev每百万输入token0.042USD，结构化输出免费；实际输入token包含state、问题与候选，不能只按用户任务的字数估算。EC2 On-Demand实例运行时间产生计算费，没有请求但实例仍运行也计费；停止后计算费停止，磁盘等另计。一年Standard RI No Upfront是按承诺换折扣的计费安排，非另一种模型部署；停止实例仍付承诺，不预留区域容量。月均730小时，全年8760小时，年承诺5575.0392USD。EC2价格不是按token或请求计费；平均每次费用是计算费除以实际服务请求数，利用率影响分摊。算例使用此前实测Jev支付输入均值656.95token，不套用本次目标模型生成token。每月100万决策的Jev API费27.5919USD；EC2按需713.648USD、RI464.5866USD。尚未测量g6.2xlarge容量，单台承载仅为价格比较前提。下游生成模型与应用/EBS/网络/高可用/运维费用另计。
+{
+  "price_snapshot": "2026-10-15T02:55:19.745810+00:00",
+  "region": "us-east-1",
+  "instance": "g6.2xlarge",
+  "jev_input_usd_per_million_tokens": 0.042,
+  "jev_output_usd": 0,
+  "on_demand_hourly_usd": 0.9776,
+  "one_year_no_upfront_hourly_usd": 0.63642,
+  "hours_per_month": 730,
+  "example_monthly_payment_decisions": 1000000,
+  "mean_jev_input_tokens_per_decision": 656.95,
+  "jev_example_month_usd": 27.591900000000003,
+  "on_demand_example_month_usd": 713.648,
+  "one_year_ri_example_month_usd": 464.5866,
+  "assumption": "One instance can serve the load; compute/API only. Target-model execution, EBS, network and application costs extra.",
+  "sources": [
+    {
+      "source": "docs/presentations/v11/sources/cost-calculation.json",
+      "file": "docs/presentations/v13/sources/cost-calculation.json",
+      "sha256": "daaa5dc74c76701c3c196939ace04ddd3bce24e9d3256e7911490ae61f2ce85f"
+    },
+    {
+      "source": "docs/presentations/v11/sources/aws-g6.2xlarge-pricing.json",
+      "file": "docs/presentations/v13/sources/aws-g6.2xlarge-pricing.json",
+      "sha256": "1ace75968f835a2b54ba68e7dc09295eb9826e863fb99847c11cad9ce4cb8759"
+    },
+    {
+      "source": "docs/presentations/v11/sources/aws-ri-overview.txt",
+      "file": "docs/presentations/v13/sources/aws-ri-overview.txt",
+      "sha256": "6fddeee46012635935f14a37fb1717e12d087da4168f7e6b1a44e32362f1cf76"
+    },
+    {
+      "source": "docs/presentations/v11/sources/aws-ri-scope.txt",
+      "file": "docs/presentations/v13/sources/aws-ri-scope.txt",
+      "sha256": "753e8f736ddfcf00d316b303230ad7fc00cea7887d786efee20ac84d95847ce1"
+    },
+    {
+      "source": "docs/presentations/v11/sources/jev-pricing.txt",
+      "file": "docs/presentations/v13/sources/jev-pricing.txt",
+      "sha256": "713ad290e1acac16427afd04dfaca867492c3cd58cddbcb87bf9c713e07454af"
+    },
+    {
+      "source": "docs/presentations/v11/sources/crossover-calculation.json",
+      "file": "docs/presentations/v13/sources/crossover-calculation.json",
+      "sha256": "435fb6eabf7bf5eb02b800aec0a0edb96a26c393dd68a14ea82c54af51cae3a9"
+    }
+  ]
+}

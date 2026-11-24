@@ -1,0 +1,14 @@
+Demo：https://d3i7ogfx5ml7dc.cloudfront.net
+主项目：https://github.com/milan9527/StrandsDecider
+vLLM：https://github.com/milan9527/StrandsDeciderVLLM
+验证：https://github.com/milan9527/StrandsDecider/blob/main/validation/README.md
+官方介绍：https://strandsagents.com/blog/introducing-strands-decider/
+评测：https://benchmarkheaven.com/jev-models/api
+价格与条款见sources。
+原页底说明（仅保留于讲稿）：
+PPT 内含逐页讲稿与来源；v12 新增三模型支付实际请求、优化前后结果与真实界面。
+v13共31页：其他场景只展示最终对照；原第17页增加任务原文；新增结算分析真实路由与目标执行、API token与EC2容量计费对照。
+v14共30页：第15页补充路由四类业务场景；第18页将高频客服的路由与目标结果合并呈现。其他场景最终对比、vLLM、Jev/EC2计费及交叉图沿用v13。
+微调项目：https://github.com/milan9527/StrandsDeciderTetrisFinetuning
+全过程：https://github.com/milan9527/StrandsDeciderTetrisFinetuning/blob/main/docs/TETRIS_FINETUNING_WALKTHROUGH.zh.md
+结果：https://github.com/milan9527/StrandsDeciderTetrisFinetuning/blob/main/finetuning/RESULTS.md

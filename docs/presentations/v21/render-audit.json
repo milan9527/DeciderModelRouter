@@ -1,0 +1,179 @@
+{
+  "audited_at": "2026-10-21T09:22:59.486348+00:00",
+  "pages": 42,
+  "new_pages": [
+    2,
+    3,
+    4
+  ],
+  "preserved_v19_content_images_and_notes": [
+    {
+      "v19_page": 1,
+      "v21_page": 1
+    },
+    {
+      "v19_page": 2,
+      "v21_page": 5
+    },
+    {
+      "v19_page": 3,
+      "v21_page": 6
+    },
+    {
+      "v19_page": 4,
+      "v21_page": 7
+    },
+    {
+      "v19_page": 5,
+      "v21_page": 8
+    },
+    {
+      "v19_page": 6,
+      "v21_page": 9
+    },
+    {
+      "v19_page": 7,
+      "v21_page": 10
+    },
+    {
+      "v19_page": 8,
+      "v21_page": 11
+    },
+    {
+      "v19_page": 9,
+      "v21_page": 12
+    },
+    {
+      "v19_page": 10,
+      "v21_page": 13
+    },
+    {
+      "v19_page": 11,
+      "v21_page": 14
+    },
+    {
+      "v19_page": 12,
+      "v21_page": 15
+    },
+    {
+      "v19_page": 13,
+      "v21_page": 16
+    },
+    {
+      "v19_page": 14,
+      "v21_page": 17
+    },
+    {
+      "v19_page": 15,
+      "v21_page": 18
+    },
+    {
+      "v19_page": 16,
+      "v21_page": 19
+    },
+    {
+      "v19_page": 17,
+      "v21_page": 20
+    },
+    {
+      "v19_page": 18,
+      "v21_page": 21
+    },
+    {
+      "v19_page": 19,
+      "v21_page": 22
+    },
+    {
+      "v19_page": 20,
+      "v21_page": 23
+    },
+    {
+      "v19_page": 21,
+      "v21_page": 24
+    },
+    {
+      "v19_page": 22,
+      "v21_page": 25
+    },
+    {
+      "v19_page": 23,
+      "v21_page": 26
+    },
+    {
+      "v19_page": 24,
+      "v21_page": 27
+    },
+    {
+      "v19_page": 25,
+      "v21_page": 28
+    },
+    {
+      "v19_page": 26,
+      "v21_page": 29
+    },
+    {
+      "v19_page": 27,
+      "v21_page": 30
+    },
+    {
+      "v19_page": 28,
+      "v21_page": 31
+    },
+    {
+      "v19_page": 29,
+      "v21_page": 32
+    },
+    {
+      "v19_page": 30,
+      "v21_page": 33
+    },
+    {
+      "v19_page": 31,
+      "v21_page": 34
+    },
+    {
+      "v19_page": 32,
+      "v21_page": 35
+    },
+    {
+      "v19_page": 33,
+      "v21_page": 36
+    },
+    {
+      "v19_page": 34,
+      "v21_page": 37
+    },
+    {
+      "v19_page": 35,
+      "v21_page": 38
+    },
+    {
+      "v19_page": 36,
+      "v21_page": 39
+    },
+    {
+      "v19_page": 37,
+      "v21_page": 40
+    },
+    {
+      "v19_page": 38,
+      "v21_page": 41
+    },
+    {
+      "v19_page": 39,
+      "v21_page": 42
+    }
+  ],
+  "all_39_original_slides_preserved_in_order": true,
+  "base_and_intro_source_files_unchanged": true,
+  "internal_only_pages": [
+    42
+  ],
+  "package_relationships_valid": true,
+  "source_checksums_valid": true,
+  "new_metrics_match_public_source": true,
+  "rendered_text_missing": [],
+  "shape_bounds_issues": [],
+  "pptx_sha256": "7fa9f4e9b4d6fd1b80abac2120a1d90360de2d1007fbf2e7231a834942689917",
+  "pdf_sha256": "9fb7ec38de77fff549434fd7bab5971830fa43828822d41c51f5f8cac77d4fbb"
+}

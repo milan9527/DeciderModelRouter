@@ -1,0 +1,51 @@
+{
+  "url": "https://d3i7ogfx5ml7dc.cloudfront.net",
+  "scenario": "smoke",
+  "fixture": false,
+  "http_route": {
+    "request_id": "310ab6996af6fb09d778bc7b",
+    "decision_model": "h2oai/h2o-lightning-4b",
+    "selected_model": "google.gemma-3-4b-it",
+    "gpu_round_trip_ms": 543.837,
+    "route_ms": 551.801,
+    "benchmark_release": "2025-04-02"
+  },
+  "browser": {
+    "request_id": "dbaac42004781e12e71e7a43",
+    "model_id": "google.gemma-3-4b-it",
+    "target_ms": 529.354,
+    "usage": {
+      "inputTokens": 21,
+      "outputTokens": 32,
+      "totalTokens": 53
+    },
+    "observed_reference_cost_usd": "0.00000244",
+    "total_ms": 1096.108
+  },
+  "assets": {
+    "index.html": "26bd7a0e3c79af9bc800ffc48d3c169c843dfc020168f09a5b686b0265cb1475",
+    "mark.svg": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+    "gateway.css": "b85cf32f194ab5e06f7f2cfb878724db3da01d0f4e51852f40d55d2483267e4b",
+    "gateway.js": "ecf092a620c26431f008226d2949a91c63688fd70194e60b3a52290f37fe44be"
+  },
+  "zero_quota_exclusions": [
+    "moonshotai.kimi-k3",
+    "zai.glm-5.3"
+  ],
+  "mapping_coverage": {
+    "mapped_models": 60,
+    "total_models": 124,
+    "counts": {
+      "unmapped": 10,
+      "specialized": 29,
+      "reference_only": 14,
+      "capacity_variant": 11,
+      "benchmarked": 51,
+      "configuration_pending": 9
+    }
+  },
+  "browser_errors": [],
+  "gpu_calls": 2,
+  "bedrock_target_calls": 1,
+  "status": "passed"
+}

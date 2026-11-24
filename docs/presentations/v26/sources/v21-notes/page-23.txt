@@ -1,0 +1,6 @@
+中英文工单索引：同一任务，三个决策模型选择了不同的向量模型。
+实际请求：将中英文支付工单转换为知识库检索索引所需的向量，工单内容为：USDC 已转账但商户订单仍显示待支付。
+先选择处理流程，再根据区域可用候选和第三方检索证据选择具体型号。用户没有指定优先级或目标模型，同阶段候选与输入一致。
+本批 Decider 选择 Embed English，Jev 和 GPT 选择 Embed Multilingual。输入中的检索均分为 English 30.65、Multilingual 59.23。Jev / GPT 的选择更符合中英文任务与现有证据；本批未执行下游检索效果验证。
+数据来自 2026-10-13 原始路由测试，每任务每模型一次，不代表通用准确率。GPT 路由器为 GPT-6 Sol low；Decider 为原版 v19 / g6.xlarge。
+详细报告：docs/MODEL_ROUTING_COMPARISON.md。完整原始备注另存 sources/original-notes-p20.txt；页面内容与截图未修改。

@@ -1,6 +1,7 @@
-import { mountCrypto } from "/static/crypto.js?v=triple1";
+import { mountCrypto } from "/static/crypto.js?v=payment-timing-v1";
 import { mountRouting } from "/static/routing.js?v=original-only-v1";
 import { mountVision } from "/static/vision.js?v=vision-triple-v1";
+import { mountComparison } from "/static/comparison.js?v=device-scenes-v1";
 
 const paths = {
   image: '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 5-5 4 4 4-6 5 7"/>',
@@ -67,6 +68,7 @@ const names = {
   crypto: "支付流程对比",
   routing: "模型路由对比",
   vision: "图片决策",
+  comparison: "五模型对比",
   history: "运行记录",
   about: "理解 Decider",
 };
@@ -439,6 +441,8 @@ function showPage() {
     mountRouting({ api, esc, icon, toast, openGpuDialog, ensureGpuReady });
   if (currentPage === "vision" && currentUser)
     mountVision({ api, esc, icon, toast });
+  if (currentPage === "comparison" && currentUser)
+    mountComparison({ api, esc, icon, toast });
   if (currentPage === "crypto" && currentUser)
     mountCrypto({
       api,

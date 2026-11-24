@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Getting started with on-demand evaluation - Amazon Bedrock AgentCore</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="getting-started-on-demand" /><meta name="default_state" content="getting-started-on-demand" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/getting-started-on-demand.md" title="Markdown version" /><meta name="description" content="Follow these steps to set up and run your first on-demand evaluation." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Bedrock AgentCore" /><meta name="guide" content="Developer Guide" /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" hreflang="x-default" /><meta name="feedback-item" content="bedrock-agentcore" /><meta name="this_doc_product" content="Amazon Bedrock AgentCore" /><meta name="this_doc_guide" content="Developer Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'bedrock-agentcore'}"></script><meta id="panorama-serviceSubSection" value="Developer Guide" /><meta id="panorama-serviceConsolePage" value="Getting started with on-demand evaluation" /><meta name="uiVersion" content="2024.10" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="getting-started-on-demand.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Getting started with on-demand evaluation - Amazon Bedrock AgentCore</title><meta name="pdf" content="/pdfs/bedrock-agentcore/latest/devguide/bedrock-agentcore-dg.pdf#getting-started-on-demand" /><meta name="rss" content="bedrock-agentcore-dg.rss" /><meta name="forums" content="https://repost.aws/search/content?globalSearch=Amazon Bedrock AgentCore" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=bedrock-agentcore&amp;topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/getting-started-on-demand.html" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon Bedrock AgentCore",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Developer Guide",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Evaluate agent performance with Amazon Bedrock AgentCore Evaluations",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "On-demand evaluation",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/on-demand-evaluations.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Getting started with on-demand evaluation",
+        "item" : "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/on-demand-evaluations.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/bedrock-agentcore/latest/devguide/bedrock-agentcore-dg.pdf#getting-started-on-demand" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/bedrock-agentcore/index.html">Amazon Bedrock AgentCore</a><a href="what-is-bedrock-agentcore.html">Developer Guide</a></div><div id="page-toc-src"><a href="#prerequisites-on-demand">Prerequisites</a><a href="#supported-frameworks-on-demand">Supported frameworks</a><a href="#create-deploy-agent-on-demand">Step 1: Create and deploy your agent</a><a href="#invoke-agent-on-demand">Step 2: Invoke your agent</a><a href="#evaluate-agent-on-demand">Step 3: Evaluate agent</a><a href="#evaluation-results-on-demand">Step 4: Evaluation results</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="getting-started-on-demand">Getting started with on-demand evaluation</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>Follow these steps to set up and run your first on-demand evaluation.</p><div class="highlights" id="inline-topiclist"><h6>Topics</h6><ul><li><p><a href="#prerequisites-on-demand">Prerequisites</a></p></li><li><p><a href="#supported-frameworks-on-demand">Supported frameworks</a></p></li><li><p><a href="#create-deploy-agent-on-demand">Step 1: Create and deploy your agent</a></p></li><li><p><a href="#invoke-agent-on-demand">Step 2: Invoke your agent</a></p></li><li><p><a href="#evaluate-agent-on-demand">Step 3: Evaluate agent</a></p></li><li><p><a href="#evaluation-results-on-demand">Step 4: Evaluation results</a></p></li></ul></div>
+      <h2 id="prerequisites-on-demand">Prerequisites</h2>
+      <p>To use AgentCore Evaluations OnDemand Evaluation features, you need:</p>
+      <div class="itemizedlist">
+          
+          
+          
+          
+          
+      <ul class="itemizedlist"><li class="listitem">
+            <p>
+               <strong>
+                  AWS Account</strong> with appropriate IAM permissions</p>
+         </li><li class="listitem">
+            <p>
+               <strong>Amazon Bedrock</strong> access with model invocation permissions</p>
+         </li><li class="listitem">
+            <p>
+               <strong>Transaction Search</strong> enabled in CloudWatch - see <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Enable-TransactionSearch.html">Enable Transaction Search</a>
+            </p>
+         </li><li class="listitem">
+            <p>
+               <strong>Python 3.10</strong> or later installed</p>
+         </li><li class="listitem">
+            <p>
+               <strong>The OpenTelemetry library</strong> – Include <code class="code">aws-opentelemetry-distro</code> (ADOT) in your <code class="code">requirements.txt</code> file</p>
+         </li></ul></div>
+    
+      <h2 id="supported-frameworks-on-demand">Supported frameworks</h2>
+      <p>Build your agent with a framework and instrumentation library that AgentCore Evaluations supports. For more information about supported frameworks and instrumentation libraries, see <a href="./supported-frameworks.html">Supported agent frameworks</a>.</p>
+    
+      <h2 id="create-deploy-agent-on-demand">Step 1: Create and deploy your agent</h2>
+      <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><h6>Note</h6></div><div class="awsdocs-note-text"><p>If you have an agent already up and running in AgentCore Runtime, you can directly move to step 2</p></div></div>
+      <p>Create and deploy your agent by following the <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-getting-started.html">Get Started guide for AgentCore Runtime</a> . You can find additional examples in the <a href="https://github.com/awslabs/amazon-bedrock-agentcore-samples/tree/main/01-features/06-observe-evaluate-optimize-your-agent/02-evaluate" rel="noopener noreferrer" target="_blank"><span>AgentCore Evaluations Samples</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+    
+      <h2 id="invoke-agent-on-demand">Step 2: Invoke your agent</h2>
+      <p>Invoke your agent using the following command and view the traces, sessions and metrics on GenAI Observability dashboard on CloudWatch.</p>
+      <div class="highlights" id="inline-topiclist"><h6>Topics</h6><ul><li><p><a href="#example-invoke-agent">Example invoke_agent.py</a></p></li></ul></div>
+       
+         <h3 id="example-invoke-agent">Example invoke_agent.py</h3>
+         <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (python)--><code class="python ">import boto3
+import json
+import uuid
+
+region = "region-code"
+ace_demo_agent_arn = "agent-arn from step-1"
+
+agent_core_client = boto3.client('bedrock-agentcore', region_name=region)
+
+text_to_analyze = "Sample text to test agent for agentcore evaluations demo"
+
+payload = json.dumps(<span>{</span>
+    "prompt": f"Can you analyze this text and tell me about its statistics: <span>{</span>text_to_analyze}"
+})
+
+# random session-id, you can set your own here
+session_id = "test-ace-demo-session-18a1dba0-62a0-462g"
+
+response = agent_core_client.invoke_agent_runtime(
+    agentRuntimeArn=ace_demo_agent_arn,
+    runtimeSessionId=session_id,
+    payload=payload,
+    qualifier="DEFAULT"
+)
+
+response_body = response['response'].read()
+response_data = json.loads(response_body)
+print("Agent Response:", response_data)
+print("SessionId:", session_id)</code></pre>
+       
+    
+      <h2 id="evaluate-agent-on-demand">Step 3: Evaluate agent</h2>
+      <p>Once you have made a few invocations to your agent, you are ready to evaluate it. For evaluations we require:</p>
+      <div class="itemizedlist">
+          
+          
+      <ul class="itemizedlist"><li class="listitem">
+            <p>
+               <code class="code">EvaluatorId</code> : this can be the id for either a builtin evaluator or a custom created one</p>
+         </li><li class="listitem">
+            <p>
+               <code class="code">SessionSpans</code> : spans are the telemetry blocks emitted when you interact with an application. The application in our example is an agent hosted on AgentCore Runtime.</p>
+            <div class="itemizedlist">
+                
+                
+                
+            <ul class="itemizedlist"><li class="listitem">
+                  <p>For on-demand evaluation, we need to download the spans from CloudWatch log groups and use them for evaluation.</p>
+               </li><li class="listitem">
+                  <p>The AgentCore CLI downloads the spans for you.</p>
+               </li><li class="listitem">
+                  <p>If you are not using the AgentCore CLI, we will show how to download logs using session-id and use them for evaluation using the AWS SDK.</p>
+               </li></ul></div>
+         </li></ul></div>
+      <div class="highlights" id="inline-topiclist"><h6>Topics</h6><ul><li><p><a href="#agentcore-cli-evaluation">Code samples for AgentCore CLI and AgentCore SDK</a></p></li><li><p><a href="#simulate-on-demand">Replay a dataset and evaluate the sessions</a></p></li><li><p><a href="#aws-sdk-evaluation">AWS SDK</a></p></li></ul></div>
+       
+         <h3 id="agentcore-cli-evaluation">Code samples for AgentCore CLI and AgentCore SDK</h3>
+         <p>The following code samples demonstrate how to run on-demand evaluations using different development approaches. Choose the method that best fits your development environment and preferences.</p>
+         <div class="example"><h6>Example</h6><div class="example-contents"><awsdocs-tabs><dl style="display: none">
+               <dt>AgentCore CLI</dt><dd tab-id="agentcore-cli">
+                     <div class="orderedlist">
+                         
+                     <ol style="list-style-type:arabic ! important;"><li>
+                           <p></p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash "># Runs evaluation for the specified runtime and session.
+# It auto queries cloudwatch logs and orchestrates evaluation over multiple evaluators.
+
+RUNTIME_ID="your_runtime_id"
+SESSION_ID="YOUR_SESSION_ID"
+agentcore eval ondemand evaluate \
+  --agent "$RUNTIME_ID" \
+  --session-ids "$SESSION_ID" \
+  --evaluators "Builtin.Helpfulness" "Builtin.GoalSuccessRate"</code></pre>
+                           <p>Use the Runtime ID, which is the part of the Runtime ARN after <code class="code">runtime/</code>. For a project deployed with the AgentCore CLI, <code class="code">agentcore status</code> shows the Runtime ARN.</p>
+                           <p>The command queries the agent’s CloudWatch traces and prints the evaluation scores synchronously. Omit <code class="code">--session-ids</code> and use <code class="code">--lookback-days</code>, or use <code class="code">--start-time</code> and <code class="code">--end-time</code>, to evaluate a time window.</p>
+                        </li></ol></div>
+                  </dd>
+               <dt>AgentCore SDK</dt><dd tab-id="agentcore-sdk">
+                     <div class="orderedlist">
+                         
+                     <ol style="list-style-type:arabic ! important;"><li>
+                           <p></p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (python)--><code class="python ">from bedrock_agentcore_starter_toolkit import Evaluation
+
+# Initialize the evaluation client
+eval_client = Evaluation()
+
+# Run evaluation on a specific session
+results = eval_client.run(
+    agent_id="YOUR_AGENT_ID",      # Replace with your agent ID
+    session_id="YOUR_SESSION_ID",  # Replace with your session ID
+    evaluators=["Builtin.Helpfulness", "Builtin.GoalSuccessRate"]
+)
+
+# Display results
+successful = results.get_successful_results()
+failed = results.get_failed_results()
+
+print(f"  Successful: <span>{</span>len(successful)}")
+print(f"  Failed:     <span>{</span>len(failed)}")
+
+if successful:
+    result = successful[0]
+    print("\n📊 Result:")
+    print(f"  Evaluator: <span>{</span>result.evaluator_name}")
+    print(f"  Score:     <span>{</span>result.value:.2f}")
+    print(f"  Label:     <span>{</span>result.label}")
+    if result.explanation:
+        print(f"  Explanation: <span>{</span>result.explanation[:150]}...")</code></pre>
+                        </li></ol></div>
+                  </dd>
+            </dl></awsdocs-tabs></div></div>
+       
+       
+         <h3 id="simulate-on-demand">Replay a dataset and evaluate the sessions</h3>
+         <p>Use <code class="code">agentcore eval ondemand simulate</code> to invoke each example in a local JSONL file or an AgentCore dataset, wait for the resulting traces, and evaluate those sessions synchronously.</p>
+         <p>The command replays only predefined scenarios that have scripted <code class="code">turns</code>. It fails before it invokes the agent if any example contains <code class="code">actor_profile</code>. To run simulated scenarios, use the AgentCore SDK as described in <a href="./user-simulation.html">User simulation</a>.</p>
+         <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">agentcore eval ondemand simulate \
+  --runtime-id &lt;runtime-id&gt; \
+  --payload-template '<span>{</span>"prompt":"<span>{</span>input}"}' \
+  --dataset &lt;dataset-id-or-jsonl-path&gt; \
+  --dataset-version &lt;dataset-version&gt; \
+  --evaluators Builtin.Helpfulness</code></pre>
+         <p>Omit <code class="code">--dataset-version</code> when <code class="code">--dataset</code> is a local JSONL path. The default trace-ingestion wait is three minutes; use <code class="code">--ingestion-wait-ms</code> to change it.</p>
+       
+       
+         <h3 id="aws-sdk-evaluation">AWS SDK</h3>
+         <div class="highlights" id="inline-topiclist"><h6>Topics</h6><ul><li><p><a href="#download-span-logs">Download span-logs from CloudWatch</a></p></li><li><p><a href="#call-evaluate">Call Evaluate</a></p></li><li><p><a href="#using-evaluation-targets">Using evaluation targets</a></p></li></ul></div>
+          
+            <h4 id="download-span-logs">Download span-logs from CloudWatch</h4>
+            <p>Before calling the <code class="code">Evaluate</code> API, you need to download the span logs from CloudWatch. You can use the Python code below to do so and optionally save them in a JSON file. This makes it easier to make the request for the same session with different evaluators.</p>
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><h6>Note</h6></div><div class="awsdocs-note-text"><p>It takes a couple of minutes for logs to get populated in CloudWatch, so it’s possible that if you try running the below script "immediately" after agent invocation, the logs are empty or incomplete</p></div></div>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (python)--><code class="python ">import boto3
+import time
+import json
+from datetime import datetime, timedelta
+
+region = "region-code"
+agent_id = "agent-id-from-step-2"
+session_id = "session-id-from-step-3"
+
+def query_logs(log_group_name, query_string):
+    client = boto3.client('logs', region_name=region)
+    start_time = datetime.now() - timedelta(minutes=60) # past 1 hour
+    end_time = datetime.now()
+
+    query_id = client.start_query(
+        logGroupName=log_group_name,
+        startTime=int(start_time.timestamp()),
+        endTime=int(end_time.timestamp()),
+        queryString=query_string
+    )['queryId']
+
+    while (result := client.get_query_results(queryId=query_id))['status'] not in ['Complete', 'Failed']:
+        time.sleep(1)
+
+    if result['status'] == 'Failed':
+        raise Exception("Query failed")
+    return result['results']
+
+def query_session_logs(log_group_name, session_id, **kwargs):
+    query = f"""fields @timestamp, @message
+    | filter ispresent(scope.name) and ispresent(attributes.session.id)
+    | filter attributes.session.id = "<span>{</span>session_id}"
+    | sort @timestamp asc"""
+    return query_logs(log_group_name, query, **kwargs)
+
+def query_agent_runtime_logs(agent_id, endpoint, session_id, **kwargs):
+    return query_session_logs(
+        f"/aws/bedrock-agentcore/runtimes/<span>{</span>agent_id}-<span>{</span>endpoint}",
+        session_id, **kwargs)
+
+def query_aws_spans_logs(session_id, **kwargs):
+    return query_session_logs("aws/spans", session_id, **kwargs)
+
+def extract_messages_as_json(query_results):
+    return [json.loads(f['value']) for row in query_results
+            for f in row if f['field'] == '@message'
+            and f['value'].strip().startswith('<span>{</span>')]
+
+def get_session_span_logs():
+    agent_runtime_logs = query_agent_runtime_logs(
+        agent_id=agent_id, endpoint="DEFAULT", session_id=session_id
+    )
+    print(f"Downloaded <span>{</span>len(agent_runtime_logs)} runtime-log entries")
+
+    aws_span_logs = query_aws_spans_logs(session_id=session_id)
+    print(f"Downloaded <span>{</span>len(aws_span_logs)} aws/span entries")
+
+    session_span_logs = extract_messages_as_json(aws_span_logs) + extract_messages_as_json(agent_runtime_logs)
+    print(f"Returning <span>{</span>len(aws_span_logs) + len(agent_runtime_logs)} total records")
+    return session_span_logs
+
+# get the spans from cloudwatch
+session_span_logs = get_session_span_logs()
+
+# optional (dump in a json file for reuse)
+session_span_logs_file_name = "ace-demo-session.json"
+with open(session_span_logs_file_name, "w") as f:
+    json.dump(session_span_logs, f, indent=2)</code></pre>
+          
+          
+            <h4 id="call-evaluate">Call Evaluate</h4>
+            <p>Once you have the input spans, you can invoke the <code class="code">Evaluate</code> API. The response can take a few moments because a large language model scores your traces.</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (python)--><code class="python "># initialise client
+ace_dp_client = boto3.client('bedrock-agentcore', region_name = region)
+
+# call evaluate
+response = ace_dp_client.evaluate(
+    evaluatorId = "Builtin.Helpfulness", # can be a custom evaluator id as well
+    evaluationInput = <span>{</span>"sessionSpans": session_span_logs})
+
+print(response["evaluationResults"])</code></pre>
+            <p>If you use above and dump the session-spans in a json file, you can also subsequently run evaluate as below</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (python)--><code class="python ">with open(session_span_logs_file_name, "r") as f:
+    session_span_logs = json.load(f)
+
+# initialise client
+ace_dp_client = boto3.client('bedrock-agentcore', region_name = region)
+
+# call evaluate
+response = ace_dp_client.evaluate(
+    evaluatorId = "Builtin.ToolSelectionAccuracy", # can be a custom evaluator id as well
+    evaluationInput = <span>{</span>"sessionSpans": session_span_logs})
+
+print(response["evaluationResults"])</code></pre>
+          
+          
+            <h4 id="using-evaluation-targets">Using evaluation targets</h4>
+            <p>To evaluate a specific trace or tool within a session, you can specify the target using the <code class="code">evaluationTarget</code> parameter in your request.</p>
+            <div class="highlights" id="inline-topiclist"><h6>Topics</h6><ul><li><p><a href="#session-level-evaluator">Session-level evaluator</a></p></li><li><p><a href="#trace-level-evaluator">Trace-level evaluator</a></p></li><li><p><a href="#tool-call-level-evaluator">Tool call level evaluator</a></p></li></ul></div>
+             
+               <h5 id="session-level-evaluator">Session-level evaluator</h5>
+               <p>Since the service supports only one session per evaluation, you do not need to explicitly set the evaluation target.</p>
+             
+             
+               <h5 id="trace-level-evaluator">Trace-level evaluator</h5>
+               <p>For trace-level evaluators (such as <code class="code">Builtin.Helpfulness</code> or <code class="code">Builtin.Correctness</code> ), set the trace IDs in the <code class="code">evaluationTarget</code> parameter:</p>
+               <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (python)--><code class="python ">response = ace_dp_client.evaluate(
+    evaluatorId = "Builtin.Helpfulness",
+    evaluationInput = <span>{</span>"sessionSpans": session_span_logs},
+    evaluationTarget = <span>{</span>"traceIds": ["trace-id-1", "trace-id-2"]}
+)</code></pre>
+             
+             
+               <h5 id="tool-call-level-evaluator">Tool call level evaluator</h5>
+               <p>For span-level evaluators (such as <code class="code">Builtin.ToolSelectionAccuracy</code> ), set the span IDs in the <code class="code">evaluationTarget</code> parameter:</p>
+               <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (python)--><code class="python ">response = ace_dp_client.evaluate(
+    evaluatorId = "Builtin.ToolSelectionAccuracy",
+    evaluationInput = <span>{</span>"sessionSpans": session_span_logs},
+    evaluationTarget = <span>{</span>"spanIds": ["span-id-1", "span-id-2"]}
+)</code></pre>
+             
+          
+       
+    
+      <h2 id="evaluation-results-on-demand">Step 4: Evaluation results</h2>
+      <p>Each <code class="code">Evaluate</code> API call returns a response containing a list of evaluator results. Because a single session can include multiple traces and tool calls, these elements are evaluated as separate entities. Consequently, a single API call may return multiple evaluation results.</p>
+      <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "evaluationResults": [ <span>{</span>evaluation-result-1}, <span>{</span>evaluation-result_2},.... ]
+}</code></pre>
+      <p>A <a href="./multi-dimension-evaluators.html">multi-dimension evaluator</a> returns one result per dimension for each entity it evaluates. Each result has <code class="code">evaluationDimensionName</code> set to the dimension it rates.</p>
+      <div class="highlights" id="inline-topiclist"><h6>Topics</h6><ul><li><p><a href="#result-limit">Result limit</a></p></li><li><p><a href="#partial-failures">Partial failures</a></p></li><li><p><a href="#span-context">Span context</a></p></li><li><p><a href="#example-successful-result">Example successful result entry</a></p></li><li><p><a href="#example-failed-result">Example failed result entry</a></p></li></ul></div>
+       
+         <h3 id="result-limit">Result limit</h3>
+         <p>The number of evaluations returned per API call is limited to 10 results. For example, if you evaluate a session containing 15 traces using a trace-level evaluator, the response includes a maximum of 10 results. By default, the API returns the last 10 evaluations, as these typically contain the most context relevant to evaluation quality.</p>
+       
+       
+         <h3 id="partial-failures">Partial failures</h3>
+         <p>An API call may process n evaluations while m of them fail. Failures can occur due to various reasons, including:</p>
+         <div class="itemizedlist">
+             
+             
+             
+             
+         <ul class="itemizedlist"><li class="listitem">
+               <p>Throttling from model providers</p>
+            </li><li class="listitem">
+               <p>Parsing errors</p>
+            </li><li class="listitem">
+               <p>Model timeouts</p>
+            </li><li class="listitem">
+               <p>Other processing issues</p>
+            </li></ul></div>
+         <p>In cases of partial failure, the response includes both successful and failed evaluations. Failed results include an error code and error message to help you diagnose the issue.</p>
+         <p>For a multi-dimension evaluator, one dimension can fail while the others succeed. For details, see <a href="./multi-dimension-evaluators.html#multi-dimension-evaluators-errors">Errors and token usage</a>.</p>
+       
+       
+         <h3 id="span-context">Span context</h3>
+         <p>Each evaluator result has a <code class="code">spanContext</code> field that identifies the entity evaluated:</p>
+         <div class="itemizedlist">
+             
+             
+             
+         <ul class="itemizedlist"><li class="listitem">
+               <p>For session-level evaluators, only <code class="code">sessionId</code> is present.</p>
+            </li><li class="listitem">
+               <p>For trace-level evaluators, <code class="code">sessionId</code> and <code class="code">traceId</code> are present.</p>
+            </li><li class="listitem">
+               <p>For tool-level evaluators, <code class="code">sessionId</code> , <code class="code">traceId</code> , and <code class="code">spanId</code> are present.</p>
+            </li></ul></div>
+       
+       
+         <h3 id="example-successful-result">Example successful result entry</h3>
+         <p>This is just one entry. If a session has multiple traces, you will see multiple such entries, one for each trace. Similarly for tool-level evaluators, if there are multiple tool calls and a tool evaluator (such as <code class="code">Builtin.ToolSelectionAccuracy</code> ) is provided, there will be one result per tool span.</p>
+         <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+  "evaluatorArn": "arn:aws:bedrock-agentcore:::evaluator/Builtin.Helpfulness",
+  "evaluatorId": "Builtin.Helpfulness",
+  "evaluatorName": "Builtin.Helpfulness",
+  "explanation": ".... evaluation explanation will be added here ...",
+  "context": <span>{</span>
+    "spanContext": <span>{</span>
+      "sessionId": "test-ace-demo-session-18a1dba0-62a0-462e",
+      "traceId": "....trace_id......."
+    }
+  },
+  "value": 0.83,
+  "label": "Very Helpful",
+  "tokenUsage": <span>{</span>
+    "inputTokens": 958,
+    "outputTokens": 211,
+    "totalTokens": 1169
+  }
+}</code></pre>
+       
+       
+         <h3 id="example-failed-result">Example failed result entry</h3>
+         <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "evaluatorArn": "arn:aws:bedrock-agentcore:::evaluator/Builtin.Helpfulness",
+    "evaluatorId": "Builtin.Helpfulness",
+    "evaluatorName": "Builtin.Helpfulness",
+    "context": <span>{</span>
+        "spanContext": <span>{</span>
+            "sessionId": "test-ace-demo-session-18a1dba0-62a0-462e",
+            "traceId": "....trace_id......."
+        }
+    },
+    "errorMessage": ".... details of the error....",
+    "errorCode": ".... name/code of the error...."
+}</code></pre>
+       
+   <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./ondemand-evaluations-prereqs.html">Prerequisites</div><div id="next" class="next-link" accesskey="n" href="./ground-truth-evaluations.html">Ground truth evaluations</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=bedrock-agentcore&amp;topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/getting-started-on-demand.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=bedrock-agentcore&amp;topic_url=https://docs.aws.amazon.com/en_us/bedrock-agentcore/latest/devguide/getting-started-on-demand.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

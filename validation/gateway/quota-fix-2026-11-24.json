@@ -1,0 +1,346 @@
+{
+  "status": "passed",
+  "root_cause": "Authorized US Kimi K3 inference profile has zero applied tokens-per-minute quota. Model authorization alone was incorrectly sufficient for routing eligibility.",
+  "original_failure": {
+    "at": "2026-11-24T12:37:01.425275+00:00",
+    "status": 503,
+    "response": {
+      "detail": "目标模型调用失败（ThrottlingException）：Too many tokens, please wait before trying again."
+    }
+  },
+  "quota_evidence": [
+    {
+      "model_id": "moonshotai.kimi-k3",
+      "region": "us-east-1",
+      "invoke_id": "us.moonshotai.kimi-k3",
+      "checked_at": "2026-11-24T12:40:21.180267+00:00",
+      "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+      "checks": [
+        {
+          "code": "L-51FF35D5",
+          "name": "Cross-region model inference tokens per minute for Moonshot AI Kimi K3",
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "model_id": "zai.glm-5.3",
+      "region": "us-east-1",
+      "invoke_id": "us.zai.glm-5.3",
+      "checked_at": "2026-11-24T12:40:21.180267+00:00",
+      "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+      "checks": [
+        {
+          "code": "L-4A544964",
+          "name": "Cross-region model inference tokens per minute for Z.ai GLM 5.3",
+          "value": 0.0
+        }
+      ]
+    }
+  ],
+  "catalog_before": "6eb66a1994726070",
+  "catalog_after": "70dcd487416044e9",
+  "quota_snapshot": {
+    "checked_at": "2026-11-24T12:40:21.180267+00:00",
+    "checked_models": 23,
+    "unmapped_models": 101,
+    "note": "Exact invocation-endpoint quota snapshot, not live remaining capacity. Zero quotas stay excluded until refreshed; positive/unknown quotas do not guarantee runtime capacity. No Mantle quota is used for Converse."
+  },
+  "tests_passed": 409,
+  "image_smoke": {
+    "api_import": "ok",
+    "catalog_version": "70dcd487416044e9",
+    "zero_quota_exclusions": [
+      "moonshotai.kimi-k3",
+      "zai.glm-5.3"
+    ],
+    "target_read_timeout_seconds": 120,
+    "explicit_output_cap_supported": 16384,
+    "default_api_output_cap": 4096
+  },
+  "api_image_digest": "sha256:ce614887f91134a422abd7bf0840e52afbbd0410ce2b2ae9aacc796d57248dad",
+  "fix": "Exclude verified zero-quota endpoints before selection and execution; expose quota evidence and refresh path. Return 429 for runtime throttling. Use a dedicated 120-second target client and an explicit editable code output preset that includes reasoning; preserve reference-cost limits and benchmark request fields, with no automatic resubmission.",
+  "intermediate_verification": {
+    "record": "aws-quota-fix-2026-11-24/browser-run.json",
+    "result": {
+      "type": "error",
+      "request_id": "7c683123b63101895d018ff0",
+      "sequence": 9,
+      "elapsed_ms": 40976.717,
+      "stage": "execution",
+      "data": {
+        "code": 504,
+        "message": "目标模型在 40 秒响应等待内未返回；评测推理档位可能较慢。本次未完成，未切换模型。"
+      }
+    },
+    "selected_model": "anthropic.claude-sonnet-5",
+    "gpu_requests": 2,
+    "target_requests": 1,
+    "note": "Zero-quota filtering passed; the target hit the previous 40-second SDK read timeout. Upstream token usage was not returned and is unknown."
+  },
+  "target_timeout_fix": {
+    "target_read_timeout_seconds": 120,
+    "classifier_read_timeout_seconds": 40,
+    "automatic_retries": 0,
+    "output_token_limit_changed": false,
+    "benchmark_configuration_changed": false
+  },
+  "intermediate_reasoning_budget": {
+    "record": "aws-quota-fix-final-2026-11-24/browser-run.json",
+    "result": {
+      "model_id": "anthropic.claude-sonnet-5",
+      "invoke_id": "us.anthropic.claude-sonnet-5",
+      "usage": {
+        "inputTokens": 74,
+        "outputTokens": 4096,
+        "totalTokens": 4170,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "stop_reason": "max_tokens",
+      "complete": false,
+      "has_final_text": false,
+      "backend_total_ms": 35036.993,
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "xhigh"
+        }
+      },
+      "observed_reference_cost_usd": "0.061662"
+    },
+    "gpu_requests": 2,
+    "target_requests": 1,
+    "note": "At the previous 4096 output cap all returned tokens were reasoning, with no final text. Preserved as an incomplete run."
+  },
+  "explicit_code_preset": {
+    "expected_output_tokens": 8192,
+    "max_output_tokens": 16384,
+    "includes_reasoning": true,
+    "api_default_expected_output_tokens": 512,
+    "api_default_max_output_tokens": 4096,
+    "automatic_retry": false,
+    "benchmark_request_fields_changed": false,
+    "user_cost_limit_preserved": true,
+    "reference_limit_checked_at_output_cap": true
+  },
+  "local_browser": {
+    "fixture": "synthetic; not a GPU performance benchmark",
+    "processes": [
+      "independent static frontend/proxy",
+      "API with Bedrock fixture",
+      "GPU HTTP fixture"
+    ],
+    "gpu_fixture_calls": 4,
+    "real_model_calls": 0,
+    "browser_errors": [],
+    "checks": [
+      "authentication",
+      "stream before inference completes",
+      "one GPU call per run",
+      "selection evidence",
+      "execution and timing",
+      "no route",
+      "GPU failure",
+      "partial output",
+      "replay excluded from metrics",
+      "no direct browser GPU access",
+      "export without receipts",
+      "mobile overflow"
+    ]
+  },
+  "final_verification": {
+    "record": "aws-code-budget-2026-11-24/verification.json",
+    "report": {
+      "url": "https://d3i7ogfx5ml7dc.cloudfront.net",
+      "scenario": "code",
+      "fixture": false,
+      "http_route": {
+        "request_id": "7ec761a3830bfe366830fcb3",
+        "decision_model": "h2oai/h2o-lightning-4b",
+        "selected_model": "anthropic.claude-sonnet-5",
+        "gpu_round_trip_ms": 515.186,
+        "route_ms": 527.015
+      },
+      "browser": {
+        "request_id": "5d048c513ff5156ef7d76008",
+        "model_id": "anthropic.claude-sonnet-5",
+        "target_ms": 82486.917,
+        "usage": {
+          "inputTokens": 74,
+          "outputTokens": 8975,
+          "totalTokens": 9049,
+          "cacheReadInputTokens": 0,
+          "cacheWriteInputTokens": 0
+        },
+        "observed_reference_cost_usd": "0.134847",
+        "total_ms": 83238.824
+      },
+      "assets": {
+        "index.html": "75aa8548e3a28de7365af5ff70e735c8dac608e3a8bcf491c8a16a4b81ad1ec4",
+        "mark.svg": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+        "gateway.css": "b85cf32f194ab5e06f7f2cfb878724db3da01d0f4e51852f40d55d2483267e4b",
+        "gateway.js": "4bc5152cba2826ec8706d1320a4e00021cb5c7aebee5d750802c4e8c12c9abfb"
+      },
+      "zero_quota_exclusions": [
+        "moonshotai.kimi-k3",
+        "zai.glm-5.3"
+      ],
+      "browser_errors": [],
+      "gpu_calls": 2,
+      "bedrock_target_calls": 1,
+      "status": "passed"
+    },
+    "response_state": {
+      "complete": true,
+      "has_final_text": true,
+      "stop_reason": "end_turn",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "xhigh"
+        }
+      }
+    },
+    "output_inspection": "Final text includes PaymentWebhookHandler, signature validation and concurrent duplicate-event test examples. Generated tests were not run; complete response is not a business correctness rating."
+  },
+  "release": {
+    "resources": {
+      "cluster": "strands-decider-demo",
+      "service": "strands-decider-demo",
+      "bucket": "strands-decider-demo-frontendbucket-sdeevobzfie4",
+      "distribution_id": "EJSAOZVC0U08G",
+      "region": "us-east-1"
+    },
+    "previous_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:34",
+    "new_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:35",
+    "phase": "complete",
+    "objects": [
+      {
+        "key": "gateway/gateway.css",
+        "sha256": "b85cf32f194ab5e06f7f2cfb878724db3da01d0f4e51852f40d55d2483267e4b",
+        "size": 19775,
+        "previous_version": "vJlk.4l4JH8uVGP.KBHf4R3XKvbgcwaU",
+        "version": "2MAYFm0bpGcDEheselN91WoGNg0wtXoW"
+      },
+      {
+        "key": "gateway/gateway.js",
+        "sha256": "4bc5152cba2826ec8706d1320a4e00021cb5c7aebee5d750802c4e8c12c9abfb",
+        "size": 27606,
+        "previous_version": "3_PMYtOPzOklp.hrrugTP9iOC2zsTMeH",
+        "version": "1owsqN1L923CIfaDekqjwMXLq.8BuAZR"
+      },
+      {
+        "key": "gateway/mark.svg",
+        "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+        "size": 276,
+        "previous_version": "dfAD3fmVd.lvTnpypsTNDSG_Gl7Q7q0J",
+        "version": "wRfjQFkNoKRBbeWZBjh.krx3QHP4CFTJ"
+      },
+      {
+        "key": "gateway/index.html",
+        "sha256": "75aa8548e3a28de7365af5ff70e735c8dac608e3a8bcf491c8a16a4b81ad1ec4",
+        "size": 13974,
+        "previous_version": "wPMV1pZGVfFR5ck8XFpYLId8BytnEvSX",
+        "version": "8oGNrhkFckL4garLRZsDpSQZfsH0k3gu"
+      }
+    ],
+    "url": "https://d3i7ogfx5ml7dc.cloudfront.net/gateway/index.html",
+    "invalidation_id": "I9W28D1I6YMH4CIJBVAMZREW1H"
+  },
+  "aws_state": {
+    "verified_at": "2026-11-24T13:00:45.784029+00:00",
+    "ecs_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:35",
+    "ecs_rollout": "COMPLETED",
+    "healthy_tasks": 1,
+    "image_digest": "sha256:ce614887f91134a422abd7bf0840e52afbbd0410ce2b2ae9aacc796d57248dad",
+    "frontend_objects": [
+      {
+        "key": "gateway/gateway.css",
+        "sha256": "b85cf32f194ab5e06f7f2cfb878724db3da01d0f4e51852f40d55d2483267e4b",
+        "size": 19775,
+        "previous_version": "vJlk.4l4JH8uVGP.KBHf4R3XKvbgcwaU",
+        "version": "2MAYFm0bpGcDEheselN91WoGNg0wtXoW"
+      },
+      {
+        "key": "gateway/gateway.js",
+        "sha256": "4bc5152cba2826ec8706d1320a4e00021cb5c7aebee5d750802c4e8c12c9abfb",
+        "size": 27606,
+        "previous_version": "3_PMYtOPzOklp.hrrugTP9iOC2zsTMeH",
+        "version": "1owsqN1L923CIfaDekqjwMXLq.8BuAZR"
+      },
+      {
+        "key": "gateway/mark.svg",
+        "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+        "size": 276,
+        "previous_version": "dfAD3fmVd.lvTnpypsTNDSG_Gl7Q7q0J",
+        "version": "wRfjQFkNoKRBbeWZBjh.krx3QHP4CFTJ"
+      },
+      {
+        "key": "gateway/index.html",
+        "sha256": "75aa8548e3a28de7365af5ff70e735c8dac608e3a8bcf491c8a16a4b81ad1ec4",
+        "size": 13974,
+        "previous_version": "wPMV1pZGVfFR5ck8XFpYLId8BytnEvSX",
+        "version": "8oGNrhkFckL4garLRZsDpSQZfsH0k3gu"
+      }
+    ],
+    "cloudfront_invalidation": {
+      "id": "I9W28D1I6YMH4CIJBVAMZREW1H",
+      "status": "Completed"
+    },
+    "s3_public_access_block": {
+      "BlockPublicAcls": true,
+      "IgnorePublicAcls": true,
+      "BlockPublicPolicy": true,
+      "RestrictPublicBuckets": true
+    },
+    "s3_oac": [
+      {
+        "id": "frontend",
+        "oac": "E1SVDBT0VAM7H8"
+      }
+    ],
+    "gpu": {
+      "instance_id": "i-0ae7eb0abcb815af3",
+      "instance_type": "g6.xlarge",
+      "state": "running",
+      "lifecycle_changes_this_fix": false
+    },
+    "cloudformation_used": false
+  },
+  "call_accounting_this_fix": {
+    "gateway_gpu_requests": 7,
+    "bedrock_target_attempts": 4,
+    "breakdown": [
+      {
+        "case": "original Kimi reproduction",
+        "gpu": 1,
+        "target": 1,
+        "result": "503 ThrottlingException; zero quota"
+      },
+      {
+        "case": "quota filtering, previous timeout",
+        "gpu": 2,
+        "target": 1,
+        "result": "504 after 40-second target read timeout; upstream usage unknown"
+      },
+      {
+        "case": "120-second timeout, previous 4096 cap",
+        "gpu": 2,
+        "target": 1,
+        "result": "incomplete; max_tokens; no final text"
+      },
+      {
+        "case": "explicit code preset, final verification",
+        "gpu": 2,
+        "target": 1,
+        "result": "complete; end_turn"
+      }
+    ],
+    "excludes": "Health checks, local synthetic fixtures, and other users requests"
+  }
+}

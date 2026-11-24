@@ -1,0 +1,3 @@
+结果来自 2026-10-16 summary.json、baseline/report.json、adapted/report.json，原版 v19 与 SFT 在完全相同 test 分区比较。原顺序 SFT 答对 2067/2068；反序并改名答对 2066/2068；实际选择一致 2065/2068。一致率表示同一道题两种排列选到同一实际落点，不是两模型动作一致。验证曲线使用另一个 2120 条 validation 分区，只用来选 best；两者最终 99.95% 是巧合，不能混同。温度由 2090 条 calibration 选择，本轮 T=1.0；正温度不改变候选排序。本次同时使用 LoRA/head 更新和排列增强，未做消融，不能单独归因。只证明当前引擎支配比较题分布的效果；没有复测全部其他能力，不将该准确率用于支付、模型路由、JevBench 或三模型总体排名。
+报告：https://github.com/milan9527/StrandsDeciderTetrisFinetuning/blob/main/finetuning/RESULTS.md
+训练：sources/reports/2026-10-16/training.json

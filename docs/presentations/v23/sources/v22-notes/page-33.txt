@@ -1,0 +1,1 @@
+在线演示：https://d3i7ogfx5ml7dc.cloudfront.net，使用已有用户名密码。项目：https://github.com/milan9527/StrandsDecider；vLLM：https://github.com/milan9527/StrandsDeciderVLLM；微调：https://github.com/milan9527/StrandsDeciderTetrisFinetuning。截图、实验记录和分批统计来源见前文备注及本版讲稿。后接候选顺序诊断附录，标为internal only。

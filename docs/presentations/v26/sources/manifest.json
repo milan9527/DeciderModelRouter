@@ -1,0 +1,34 @@
+[
+  {
+    "name": "strands-introduction",
+    "url": "https://strandsagents.com/blog/introducing-strands-decider/",
+    "captured_at": "2026-10-21T08:49:58.237100+00:00",
+    "file": "docs/presentations/v20/sources/web/strands-introduction.html",
+    "sha256": "e4a75c02e52f9f7adbff799ff922c450d61fa4a78e92e5aa04cef8f03779f83e",
+    "text_length": 16042
+  },
+  {
+    "name": "jev-introduction",
+    "url": "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+    "captured_at": "2026-10-21T08:49:58.276943+00:00",
+    "file": "docs/presentations/v20/sources/web/jev-introduction.html",
+    "sha256": "452f84fe8779ef1b3b4145040ff3c5ef015ff7a96f40d8d9cd4afd1526f56656",
+    "text_length": 13665
+  },
+  {
+    "name": "jevbench",
+    "url": "https://benchmarkheaven.com/jev-models/api",
+    "captured_at": "2026-10-21T08:49:59.801339+00:00",
+    "file": "docs/presentations/v20/sources/web/jevbench.html",
+    "sha256": "c91ded0d2d6600cb0638188f8894788166fe61675001ac6a617e978ad3b3a04c",
+    "text_length": 176211
+  },
+  {
+    "name": "decider-model-card",
+    "url": "https://huggingface.co/StrandsAgents/strands-decider-2B-hobson-v19/raw/main/README.md",
+    "captured_at": "2026-10-21T08:49:58.177873+00:00",
+    "file": "docs/presentations/v20/sources/web/decider-model-card.md",
+    "sha256": "e9bd6ec77988cf45a0b13ebf3193743bcf1c9a0bd34f43bed84a211c76025ecb",
+    "text_length": 9841
+  }
+]
