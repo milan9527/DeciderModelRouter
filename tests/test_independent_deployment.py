@@ -1,3 +1,5 @@
+import base64
+import json
 from pathlib import Path
 from unittest.mock import MagicMock
 
@@ -47,10 +49,40 @@ def test_runtime_image_creation_never_reboots_source_and_is_checkpointed(tmp_pat
 
 
 def test_new_gpu_bootstrap_guards_source_and_fetches_fresh_credentials_at_runtime():
-    script = bootstrap("arn:aws:secretsmanager:us-east-1:123456789012:secret:new", "i-original")
+    data = bootstrap("arn:aws:secretsmanager:us-east-1:123456789012:secret:new", "i-original")
+    assert len(data.encode()) < 16 * 1024
+    config = json.loads(data.split("\n", 1)[1])
+    early = config["bootcmd"][0][2]
+    assert 'test "$instance" != "i-original"' in early
+    assert "systemctl stop --no-block" in early and "systemctl disable" in early
+    assert config["runcmd"] == [["bash", "/var/lib/decider-router/bootstrap.sh"]]
+    script = base64.b64decode(config["write_files"][0]["content"]).decode()
     assert 'test "$instance" != "i-original"' in script
     assert "get_secret_value" in script
     assert "OPEN_MODELS_API_KEY_FILE" in script
     assert "dmr-decider" in script and "dmr-h2o" in script and "dmr-liquid" in script
     assert "SecretString" in script
+    assert "fetch-router-key.py" in script
+    assert "/decider-model-router/gpu" in script
     assert "Cognito" not in script and "cloudformation" not in script.lower()
+
+
+def test_gpu_proxy_rejects_requests_when_configured_key_is_missing_or_empty(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from deployment.open_models import gateway
+
+    path = tmp_path / "key"
+    monkeypatch.setenv("OPEN_MODELS_API_KEY_FILE", str(path))
+    monkeypatch.setattr(gateway, "ENDPOINTS", {})
+    with TestClient(gateway.app) as client:
+        assert client.get("/health").status_code == 503
+        path.write_text("")
+        assert client.get("/health").status_code == 503
+        path.write_text("test-only-gpu-key")
+        assert client.get("/health").status_code == 401
+        assert client.get("/health", headers={"Authorization": "Bearer wrong"}).status_code == 401
+        assert (
+            client.get("/health", headers={"Authorization": "Bearer test-only-gpu-key"}).status_code
+            == 200
+        )

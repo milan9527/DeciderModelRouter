@@ -1,10 +1,11 @@
 {
   "date": "2026-11-24",
   "pytest": {
-    "passed": 439,
+    "passed": 440,
     "warnings": 1,
-    "seconds": 40.78,
-    "scope": "full repository tests; mocked upstreams"
+    "seconds": 41.71,
+    "scope": "full repository tests; mocked upstreams",
+    "log": "full-tests-final.txt"
   },
   "lint": "passed on changed application, deployment, validation and test modules",
   "api_image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router:independent-20261124-142039",
@@ -55,5 +56,9 @@
   },
   "current_sources_match_image": true,
   "browser": "browser-2026-11-24-c/verification.json",
-  "real_model_calls": 0
+  "real_model_calls": 0,
+  "deployment_regression": {
+    "passed": 4,
+    "after": "dedicated GPU key, log group and early boot changes"
+  }
 }

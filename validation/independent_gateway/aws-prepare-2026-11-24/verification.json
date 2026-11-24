@@ -12,5 +12,6 @@
   "gpu_calls": 0,
   "bedrock_target_calls": 0,
   "invalid_replay_execute_request_rejected": 422,
-  "browser_errors": []
+  "browser_errors": [],
+  "unconfigured_evaluation_disabled": true
 }

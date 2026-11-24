@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 from time import perf_counter
+from uuid import uuid4
 
 import httpx
 from playwright.sync_api import expect, sync_playwright
@@ -93,6 +94,10 @@ def main():
             "execute_target": False,
             **{k: catalog[k] for k in ("catalog_version", "ranking_version", "policy_version")},
         }
+        if persistent:
+            session = client.post("/api/gateway/sessions", json={"title": "上线验收 · 真实模型路由"})
+            session.raise_for_status()
+            payload.update(session_id=session.json()["id"], client_request_id=str(uuid4()))
         received, started = [], perf_counter()
         with client.stream("POST", "/api/gateway/runs", json=payload) as response:
             response.raise_for_status()
@@ -130,6 +135,11 @@ def main():
         report["mapping_coverage"] = {
             k: catalog["evidence_inventory"][k] for k in ("mapped_models", "total_models", "counts")
         }
+        if persistent:
+            duplicate = client.post("/api/gateway/runs", json=payload)
+            assert duplicate.status_code == 409
+            assert events[0]["request_id"] in duplicate.json()["detail"]
+            report["duplicate_request_rejected"] = duplicate.status_code
         client.post("/api/auth/logout", json={}).raise_for_status()
 
     errors, urls = [], []

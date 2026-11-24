@@ -47,9 +47,14 @@ def main():
     def instance(iid):
         row = ec2.describe_instances(InstanceIds=[iid])["Reservations"][0]["Instances"][0]
         return {
-            "id": iid, "state": row["State"]["Name"], "type": row["InstanceType"],
-            "vpc": row["VpcId"], "private_ip": row["PrivateIpAddress"],
-            "public_ip": row.get("PublicIpAddress"), "launch_time": str(row["LaunchTime"]),
+            "id": iid,
+            "state": row["State"]["Name"],
+            "type": row["InstanceType"],
+            "vpc": row["VpcId"],
+            "private_ip": row["PrivateIpAddress"],
+            "public_ip": row.get("PublicIpAddress"),
+            "launch_time": str(row["LaunchTime"]),
+            "availability_zone": row["Placement"]["AvailabilityZone"],
         }
 
     old_before = service("strands-decider-demo")["taskDefinition"]
@@ -87,7 +92,10 @@ def main():
             response = client.get("/api/gateway/history/" + rid)
             response.raise_for_status()
             before[rid] = response.json()
-        reviewer = {"username": "audit_" + secrets.token_hex(4), "password": secrets.token_urlsafe(24)}
+        reviewer = {
+            "username": "audit_" + secrets.token_hex(4),
+            "password": secrets.token_urlsafe(24),
+        }
         client.post("/api/gateway/users", json=reviewer).raise_for_status()
         try:
             with httpx.Client(base_url=base, headers=headers, timeout=30, trust_env=False) as other:
@@ -96,14 +104,25 @@ def main():
                 assert other.get("/api/gateway/users").status_code == 403
                 assert other.get("/api/gateway/history/" + ids[0]).status_code == 404
                 assert other.get("/api/gateway/evaluations/" + job["id"]).status_code == 404
-                client.post("/api/gateway/users/" + reviewer["username"], json={"enabled": False}).raise_for_status()
+                client.post(
+                    "/api/gateway/users/" + reviewer["username"], json={"enabled": False}
+                ).raise_for_status()
                 assert other.get("/api/gateway/account").status_code == 401
         finally:
-            client.post("/api/gateway/users/" + reviewer["username"], json={"enabled": False}).raise_for_status()
-        save("isolation.json", {
-            "cross_user_history": 404, "cross_user_evaluation": 404, "user_admin_api": 403,
-            "disabled_session": 401, "temporary_account": reviewer["username"], "disabled": True,
-        })
+            client.post(
+                "/api/gateway/users/" + reviewer["username"], json={"enabled": False}
+            ).raise_for_status()
+        save(
+            "isolation.json",
+            {
+                "cross_user_history": 404,
+                "cross_user_evaluation": 404,
+                "user_admin_api": 403,
+                "disabled_session": 401,
+                "temporary_account": reviewer["username"],
+                "disabled": True,
+            },
+        )
         previous_tasks = running()
         deployment = ecs.update_service(cluster=cluster, service=cluster, forceNewDeployment=True)[
             "service"
@@ -119,7 +138,8 @@ def main():
                 len(deployments) == 1
                 and deployments[0]["id"] == expected
                 and deployments[0].get("rolloutState") == "COMPLETED"
-                and tasks and not set(tasks) & set(previous_tasks)
+                and tasks
+                and not set(tasks) & set(previous_tasks)
                 and current["runningCount"] == current["desiredCount"] == 1
             ):
                 break
@@ -134,13 +154,20 @@ def main():
             assert client.get("/api/gateway/history/" + rid).json() == value
         assert client.get("/api/gateway/evaluations/" + job["id"]).json() == job
         details = ecs.describe_tasks(cluster=cluster, tasks=tasks)["tasks"]
-        save("restart-persistence.json", {
-            "previous_tasks": previous_tasks, "new_tasks": tasks, "deployment_id": expected,
-            "task_definition": current["taskDefinition"],
-            "image_digests": [c.get("imageDigest") for t in details for c in t["containers"]],
-            "run_ids": ids, "evaluation_id": job["id"],
-            "identical_records_after_restart": True, "login_survived": True,
-        })
+        save(
+            "restart-persistence.json",
+            {
+                "previous_tasks": previous_tasks,
+                "new_tasks": tasks,
+                "deployment_id": expected,
+                "task_definition": current["taskDefinition"],
+                "image_digests": [c.get("imageDigest") for t in details for c in t["containers"]],
+                "run_ids": ids,
+                "evaluation_id": job["id"],
+                "identical_records_after_restart": True,
+                "login_survived": True,
+            },
+        )
         client.post("/api/auth/logout", json={}).raise_for_status()
     assert service("strands-decider-demo")["taskDefinition"] == old_before
     assert instance("i-0ae7eb0abcb815af3") == old_gpu
@@ -157,15 +184,25 @@ def main():
         tables[name] = {"ttl": ttl, "recovery": recovery}
     anonymous_s3 = httpx.get(
         f"https://{resources['bucket']}.s3.us-east-1.amazonaws.com/gateway/index.html",
-        trust_env=False, timeout=30,
+        trust_env=False,
+        timeout=30,
     ).status_code
     assert anonymous_s3 == 403
-    save("aws-isolation.json", {
-        "cloudfront": resources["distribution"]["Id"], "url": base,
-        "s3": resources["bucket"], "oac": resources["oac"], "anonymous_s3": anonymous_s3,
-        "vpc": resources["vpc"], "gpu": current_gpu, "tables": tables,
-        "old_service_task_definition_unchanged": old_before, "old_gpu_unchanged": old_gpu,
-    })
+    save(
+        "aws-isolation.json",
+        {
+            "cloudfront": resources["distribution"]["Id"],
+            "url": base,
+            "s3": resources["bucket"],
+            "oac": resources["oac"],
+            "anonymous_s3": anonymous_s3,
+            "vpc": resources["vpc"],
+            "gpu": current_gpu,
+            "tables": tables,
+            "old_service_task_definition_unchanged": old_before,
+            "old_gpu_unchanged": old_gpu,
+        },
+    )
     errors = []
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
@@ -190,10 +227,17 @@ def main():
         browser.close()
     assert not errors, errors
     report = {
-        "status": "passed", "fixture": False, "url": base, "gpu_calls": 48,
-        "bedrock_target_calls": 0, "evaluation_id": job["id"],
-        "dataset_scope": job["dataset_scope"], "summary": job["summary"],
-        "ecs_restart_persistence": True, "account_isolation": True, "browser_errors": errors,
+        "status": "passed",
+        "fixture": False,
+        "url": base,
+        "gpu_calls": 48,
+        "bedrock_target_calls": 0,
+        "evaluation_id": job["id"],
+        "dataset_scope": job["dataset_scope"],
+        "summary": job["summary"],
+        "ecs_restart_persistence": True,
+        "account_isolation": True,
+        "browser_errors": errors,
     }
     save("verification.json", report)
     print(json.dumps(report, ensure_ascii=False, indent=2))

@@ -13,11 +13,30 @@ from botocore.exceptions import ClientError
 from deployment.independent_gateway import NAME, REGION, TAGS
 
 
+def key_fetcher(secret_arn):
+    return f"""#!/usr/bin/python3
+import os
+from pathlib import Path
+import boto3
+key = boto3.client("secretsmanager", region_name="{REGION}").get_secret_value(SecretId="{secret_arn}")["SecretString"]
+if not key.strip():
+    raise RuntimeError("The dedicated GPU secret is empty")
+path = Path("/opt/decider-secrets/api-key")
+temporary = path.with_suffix(".next")
+fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+with os.fdopen(fd, "w") as stream:
+    stream.write(key)
+temporary.chmod(0o600)
+temporary.replace(path)
+"""
+
+
 def bootstrap(secret_arn, source_instance):
     gateway = base64.b64encode(
         (Path(__file__).parent / "open_models/gateway.py").read_bytes()
     ).decode()
-    return f"""#!/bin/bash
+    fetcher = base64.b64encode(key_fetcher(secret_arn).encode()).decode()
+    script = f"""#!/bin/bash
 set -euo pipefail
 umask 077
 token=$(curl -fsS -X PUT http://169.254.169.254/latest/api/token -H 'X-aws-ec2-metadata-token-ttl-seconds: 300')
@@ -41,6 +60,9 @@ key=boto3.client("secretsmanager",region_name="{REGION}").get_secret_value(Secre
 p=pathlib.Path("/opt/decider-secrets/api-key")
 p.write_text(key)
 p.chmod(0o600)
+fetcher=pathlib.Path("/opt/decider-secrets/fetch-router-key.py")
+fetcher.write_bytes(base64.b64decode("{fetcher}"))
+fetcher.chmod(0o700)
 pathlib.Path("/opt/decider-open-models/source/gateway.py").write_bytes(base64.b64decode("{gateway}"))
 PY
 export DMR_INSTANCE="$instance"
@@ -63,6 +85,9 @@ for old,new in units.items():
  text=pathlib.Path(path).read_text()
  for before,after in units.items():text=text.replace(before+".service",after+".service")
  for before,after in containers.items():text=text.replace(before,after)
+ if old=="decider-vllm":
+  text=text.replace("/opt/decider-vllm/fetch-key.sh", "/opt/decider-secrets/fetch-router-key.py")
+  text=text.replace("/strands-decider-vllm/model", "/decider-model-router/gpu")
  if old=="decider-comparison-gateway":
   text=text.replace("--network host", "--network host -v /opt/decider-secrets/api-key:/run/secrets/router-key:ro -e OPEN_MODELS_API_KEY_FILE=/run/secrets/router-key")
   text=text.replace("{source_instance}",os.environ["DMR_INSTANCE"])
@@ -73,12 +98,39 @@ systemctl enable dmr-decider dmr-h2o dmr-liquid dmr-gateway
 systemctl start --no-block dmr-decider dmr-h2o dmr-liquid dmr-gateway
 touch /opt/decider-open-models/independent-bootstrap-complete
 """
+    # Cloned oneshot model units can keep multi-user.target waiting, which prevents
+    # cloud-final (and a plain shell user-data script) from ever running.
+    early = (
+        script[: script.index("systemctl stop")]
+        + """
+systemctl stop --no-block decider-comparison-gateway decider-liquid decider-h2o decider-vllm
+systemctl disable decider-comparison-gateway decider-liquid decider-h2o decider-vllm
+"""
+    )
+    return "#cloud-config\n" + json.dumps(
+        {
+            "bootcmd": [["bash", "-c", early]],
+            "write_files": [
+                {
+                    "path": "/var/lib/decider-router/bootstrap.sh",
+                    "permissions": "0700",
+                    "encoding": "b64",
+                    "content": base64.b64encode(script.encode()).decode(),
+                }
+            ],
+            "runcmd": [["bash", "/var/lib/decider-router/bootstrap.sh"]],
+        }
+    )
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--source-instance", required=True)
+    parser.add_argument("--subnet-index", type=int, help="Use one configured private subnet")
+    parser.add_argument(
+        "--instance-type", choices=("g6.xlarge", "g6.2xlarge", "g5.xlarge"), default="g6.xlarge"
+    )
     args = parser.parse_args()
     session = boto3.Session(region_name=REGION)
     ec2, iam, sm = session.client("ec2"), session.client("iam"), session.client("secretsmanager")
@@ -86,8 +138,10 @@ def main():
     state = json.loads(path.read_text()) if path.exists() else {}
 
     def save():
-        path.write_text(json.dumps(state, indent=2) + "\n")
-        path.chmod(0o600)
+        temporary = path.with_suffix(".tmp")
+        temporary.write_text(json.dumps(state, indent=2) + "\n")
+        temporary.chmod(0o600)
+        temporary.replace(path)
 
     while True:
         resources = json.loads((args.output / "resources.json").read_text())
@@ -126,6 +180,30 @@ def main():
                 }
             ),
         )
+    logs = session.client("logs")
+    log_group = "/decider-model-router/gpu"
+    try:
+        logs.create_log_group(logGroupName=log_group, tags={"Project": NAME})
+    except logs.exceptions.ResourceAlreadyExistsException:
+        pass
+    logs.put_retention_policy(logGroupName=log_group, retentionInDays=30)
+    account = session.client("sts").get_caller_identity()["Account"]
+    iam.put_role_policy(
+        RoleName=NAME + "-gpu",
+        PolicyName="DedicatedGPULogs",
+        PolicyDocument=json.dumps(
+            {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": ["logs:CreateLogStream", "logs:PutLogEvents"],
+                        "Resource": f"arn:aws:logs:{REGION}:{account}:log-group:{log_group}:*",
+                    }
+                ],
+            }
+        ),
+    )
     if "instance_id" not in state:
         while True:
             image = ec2.describe_images(ImageIds=[resources["gpu_image"]])["Images"][0]
@@ -137,11 +215,23 @@ def main():
                 "Waiting for the private runtime image (source GPU remains running)...", flush=True
             )
             time.sleep(15)
-        for i in (1, 0):
+        subnet_indices = sorted(
+            (
+                int(k.removeprefix("private_subnet_"))
+                for k in resources
+                if k.startswith("private_subnet_")
+            ),
+            reverse=True,
+        )
+        if args.subnet_index is not None:
+            if args.subnet_index not in subnet_indices:
+                raise ValueError("The requested private subnet is not configured")
+            subnet_indices = [args.subnet_index]
+        for i in subnet_indices:
             try:
                 instance = ec2.run_instances(
                     ImageId=resources["gpu_image"],
-                    InstanceType="g6.xlarge",
+                    InstanceType=args.instance_type,
                     MinCount=1,
                     MaxCount=1,
                     SubnetId=resources[f"private_subnet_{i}"],
@@ -160,7 +250,9 @@ def main():
                         }
                     ],
                     UserData=bootstrap(state["secret_arn"], args.source_instance),
-                    ClientToken=resources["deployment_id"] + f"-gpu-{i}",
+                    ClientToken=resources["deployment_id"]
+                    + f"-gpu-{i}"
+                    + ("" if args.instance_type == "g6.xlarge" else "-" + args.instance_type),
                     TagSpecifications=[
                         {
                             "ResourceType": "instance",
@@ -172,14 +264,18 @@ def main():
                 state.update(
                     instance_id=instance["InstanceId"],
                     private_ip=instance["PrivateIpAddress"],
-                    instance_type="g6.xlarge",
+                    instance_type=args.instance_type,
                     image_id=resources["gpu_image"],
                 )
                 save()
                 break
             except ClientError as exc:
-                if exc.response["Error"]["Code"] != "InsufficientInstanceCapacity" or i == 0:
+                if (
+                    exc.response["Error"]["Code"] != "InsufficientInstanceCapacity"
+                    or i == subnet_indices[-1]
+                ):
                     raise
+                print("GPU capacity unavailable; trying another dedicated subnet.", flush=True)
     print(json.dumps({"phase": "gpu_launched", **state}))
 
 

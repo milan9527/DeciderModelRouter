@@ -12,12 +12,14 @@ flowchart LR
     ALB --> API[ECS Fargate · 独立 FastAPI]
     API --> AUTH[DynamoDB · 账户和认证会话]
     API --> DATA[DynamoDB · 业务会话/运行/评测]
-    API -->|私网 HTTP + Bearer| GPU[新 g6.xlarge · L4 24GB]
+    API -->|私网 HTTP + Bearer| GPU[新 g5.xlarge · A10G 24GB]
     GPU --> D[Decider / Liquid / H2O]
     API --> BR[Amazon Bedrock 目标模型]
 ```
 
 专用 VPC、子网、安全组、NAT、ECS 集群/服务/角色、ALB、CloudFront、S3、两张 DynamoDB 表、GPU 实例和密钥。GPU 从现有已验证运行环境创建私有镜像再启动新实例，镜像创建使用 `NoReboot=True`，原实例继续运行；新实例使用独立角色和轮换后的密钥。镜像用于复制运行环境，线上请求不依赖原 GPU。
+
+本次 `g6.xlarge` / `g6.2xlarge` 在多个可用区返回容量不足，最终使用 `us-east-1f` 的新 `g5.xlarge`（A10G 24GB）。AWS Linux 按需计算参考价为 $1.006/小时，不含 EBS、网络、ECS 等费用；部署脚本可用 `--instance-type` 指定规格。原 GPU 保持运行。
 
 生产只运行 `app.gateway_main:app`。静态资源单独发布到 S3；API 容器不提供前端文件，也不加载旧支付、视觉、GPU 启停和比较页面接口。无 Cognito、CloudFormation、公开注册接口。GPU 无公网 IP、无 SSH 入站，通过 SSM 运维。
 
@@ -45,13 +47,13 @@ flowchart LR
 
 评测页可选择 Decider、Liquid、H2O 和 1–16 个冻结参考任务，最多 48 次分类调用。三个模型使用相同任务和标签，按样本顺序执行，不调用 Bedrock 目标模型。提交前显示调用数量，任务离开页面后可继续并回看。
 
-保存数据集版本、任务、预期/实际七项属性、逐字段一致情况、全字段一致率、失败、模型和时延。失败计入一致率分母；HTTP P50/P95 包含排队与校验，GPU 往返单独记录。进程退出会保留已完成样本并标记中断，不自动重跑；单账户限一项运行评测，单 API 进程同时最多两项。
+保存数据集版本、任务、预期/实际七项属性、逐字段一致情况、全字段一致率、失败、模型和时延。失败计入一致率分母；HTTP P50/P95 包含排队与校验，GPU 往返单独记录。进程退出会保留已完成样本并标记中断，不自动重跑。当前评测并发限制在进程内实现：每账户一项、总计最多两项；滚动发布期间不保证跨容器全局限流。
 
 这 16 个样本属于**可见的开发参考集**，既非独立保留测试集，也非 Bedrock 生成质量评测。公开 LiveBench/MTEB 映射、分类参考一致、人工业务验收三者分别展示。生产业务校准仍为 `uncalibrated`；新评测结果不会偷偷替换阈值或训练模型。需要业务校准时，应冻结独立业务题集与验收规则、执行候选目标模型并记录成本/质量，再通过既有校准流程验证发布。
 
 ## 登录与用户管理
 
-密码使用 scrypt 哈希；认证使用服务端保存的随机会话及 `Secure / HttpOnly / SameSite` Cookie，默认 8 小时。写操作检查同源和客户端请求头，登录有速率限制。密码修改、管理员重置/禁用会更新账户版本，使已有登录失效；并发修改使用版本条件，避免密码重置重新启用已禁用账户。
+密码使用 scrypt 哈希；认证使用服务端保存的随机会话及 `Secure / HttpOnly / SameSite` Cookie，默认 8 小时。写操作检查同源和客户端请求头，登录有速率限制。密码修改、管理员重置/禁用会更新账户版本，使已有登录失效；账户页的并发修改使用版本条件，重置密码保留账户的禁用状态。
 
 初始管理员为 `admin`，随机密码保存在 AWS Secrets Manager **`DeciderModelRouter/admin-credentials`**，由有权限的运维人员读取。首次登录后可在账户页修改密码；该 Secret 是初始凭据记录，不随用户自行改密自动更新。管理员在页面创建普通用户、禁用/恢复账户、重置密码；不能禁用自己。
 
@@ -66,6 +68,8 @@ python -m scripts.manage_users disable alice
 ```
 
 不在命令行参数中传递密码；交互输入或 `--generate-to` 保存到新的 0600 文件。凭据不得提交 GitHub。
+
+CLI 的 `reset` 属于运维恢复操作，会重新启用账户。日常重置密码并保留禁用状态，可使用账户管理页面。
 
 ## 直接 AWS 部署
 
@@ -104,6 +108,8 @@ GPU 镜像生成较慢时，可将发布命令的 `--gpu ...` 换成 `--prepare`
 ## 运维边界
 
 `/api/live`、`/api/ready` 是容器健康接口；GPU 暂时不可用不影响登录和历史查询。登录后的 `/api/gateway/status` 显示 GPU 连通性。GPU 服务常驻 `dmr-decider`、`dmr-liquid`、`dmr-h2o`、`dmr-gateway`，只能在本项目新实例上操作。
+
+复制运行环境后，cloud-init 在启动早期禁用继承的旧模型服务，避免其等待旧密钥而阻塞初始化。新 Decider 启动前只读取本项目 Secret，CloudWatch 日志写入专用 `/decider-model-router/gpu`（保留 30 天）；GPU 角色不获得原项目密钥或日志权限。配置了密钥文件的 GPU 代理在文件缺失或为空时拒绝请求。
 
 当前 ECS 单副本、GPU 单实例、单 NAT，提供资源独立性，不宣称多可用区高可用。DynamoDB 支持 PITR；恢复会生成新表，应核对数据后将 ECS 的 `AUTH_TABLE` / `GATEWAY_DATA_TABLE` 指向恢复表并调整 IAM。认证恢复可能使历史会话恢复，必要时同步失效账户会话版本。
 
