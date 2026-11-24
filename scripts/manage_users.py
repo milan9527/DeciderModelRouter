@@ -15,6 +15,9 @@ def main():
     parser.add_argument("action", choices=["create", "reset", "disable"])
     parser.add_argument("username")
     parser.add_argument(
+        "--admin", action="store_true", help="Create or reset an administrator account"
+    )
+    parser.add_argument(
         "--generate-to",
         type=Path,
         help="Generate a strong password and save credentials to a new mode-0600 JSON file",
@@ -44,7 +47,13 @@ def main():
             password = getpass.getpass("Password (12–128 characters): ")
             if password != getpass.getpass("Confirm password: "):
                 parser.error("Passwords do not match")
-        save_user(store, username, password, reset=args.action == "reset")
+        save_user(
+            store,
+            username,
+            password,
+            reset=args.action == "reset",
+            role="admin" if args.admin else None,
+        )
     print(f"Account {args.action} completed: {username}")
 
 

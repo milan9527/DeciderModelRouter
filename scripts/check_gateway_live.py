@@ -52,6 +52,9 @@ def main():
         catalog = client.get("/api/gateway/catalog")
         catalog.raise_for_status()
         catalog = catalog.json()
+        persistent = catalog.get("persistent_history", False)
+        baseline = client.get("/api/gateway/performance").json() if persistent else {}
+        expected_live = baseline.get("live_requests", 0) + 2 if persistent else 1
         status = client.get("/api/gateway/status").json()
         save("status.json", status)
         assert status["decision"]["connected"], status
@@ -200,7 +203,32 @@ def main():
         page.evaluate("scrollTo(0, 0)")
         page.screenshot(path=str(args.output / "timings.png"), full_page=True)
         page.locator('[data-page="performance"]').click()
-        expect(page.locator("#session-metrics .metric-value").first).to_have_text("1")
+        expect(page.locator("#session-metrics .metric-value").first).to_have_text(str(expected_live))
+        if persistent:
+            saved = []
+            for run_id in (report["http_route"]["request_id"], report["browser"]["request_id"]):
+                response = page.request.get(base + "/api/gateway/history/" + run_id)
+                assert response.ok
+                record = response.json()
+                assert record["events"] and record["id"] == run_id
+                assert "route_token" not in json.dumps(record)
+                saved.append(record)
+            save("persisted-runs.json", saved)
+            page.reload()
+            expect(page.locator("#app")).to_be_visible(timeout=30000)
+            page.locator('[data-page="performance"]').click()
+            expect(page.locator("#session-metrics .metric-value").first).to_have_text(str(expected_live))
+            for record in saved:
+                expect(page.locator(f'[data-run="{record["id"]}"]')).to_be_visible()
+            page.screenshot(path=str(args.output / "persistent-history.png"), full_page=True)
+            report["persistence"] = {
+                "backend": "DynamoDB",
+                "baseline_live_requests": baseline["live_requests"],
+                "live_requests": expected_live,
+                "saved_run_ids": [r["id"] for r in saved],
+                "survives_browser_reload": True,
+                "route_tokens_removed": True,
+            }
         if blocked:
             page.locator('[data-page="models"]').click()
             page.locator("#model-table .excluded summary").click()

@@ -1,12 +1,15 @@
 """Private gateway for two independently resident GPU model services."""
 
 import asyncio
+import hmac
 import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import httpx
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 
 MODEL_IDS = {"liquid": "LiquidAI/d1-2B", "h2o": "h2oai/h2o-lightning-4b"}
 ENDPOINTS = {"liquid": "http://127.0.0.1:18801", "h2o": "http://127.0.0.1:18803"}
@@ -38,6 +41,15 @@ async def lifespan(app):
 
 
 app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
+
+
+@app.middleware("http")
+async def authenticate(request, call_next):
+    key_file = os.getenv("OPEN_MODELS_API_KEY_FILE")
+    key = Path(key_file).read_text().strip() if key_file else os.getenv("OPEN_MODELS_API_KEY", "")
+    if key and not hmac.compare_digest(request.headers.get("authorization", ""), "Bearer " + key):
+        return JSONResponse({"detail": "Unauthorized"}, status_code=401)
+    return await call_next(request)
 
 
 @app.get("/health")

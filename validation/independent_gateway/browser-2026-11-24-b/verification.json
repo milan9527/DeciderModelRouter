@@ -1,0 +1,34 @@
+{
+  "fixture": "synthetic; not a GPU performance benchmark",
+  "processes": [
+    "independent static frontend/proxy",
+    "API with Bedrock fixture",
+    "GPU HTTP fixture"
+  ],
+  "gpu_fixture_calls": 6,
+  "real_model_calls": 0,
+  "browser_errors": [],
+  "checks": [
+    "explicit benchmark release preserved in routing",
+    "Nova benchmark sources and category scores",
+    "reference-only and pending-configuration filters",
+    "authentication",
+    "database persistence after reload and relogin",
+    "user history isolation and admin-only user management",
+    "session creation and rename",
+    "twenty searchable task templates",
+    "persisted classifier evaluation with two synthetic calls",
+    "independent human business review",
+    "stream before inference completes",
+    "one GPU call per run",
+    "selection evidence",
+    "execution and timing",
+    "no route",
+    "GPU failure",
+    "partial output",
+    "replay excluded from metrics",
+    "no direct browser GPU access",
+    "export without receipts",
+    "mobile overflow"
+  ]
+}

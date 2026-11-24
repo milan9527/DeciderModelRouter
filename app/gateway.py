@@ -12,8 +12,10 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import StreamingResponse
 from pydantic import Field, model_validator
+from starlette.concurrency import run_in_threadpool
 
 from app import routing
+from app.gateway_templates import load_templates
 from app.routing_inventory import inventory
 from app.routing_selector import SELECTOR_VERSION, categories, load_calibration
 from app.schemas import StrictModel
@@ -30,6 +32,9 @@ class GatewayRun(StrictModel):
     catalog_version: str = Field(max_length=64)
     ranking_version: str = Field(max_length=64)
     policy_version: str = Field(max_length=64)
+    session_id: str | None = Field(None, pattern=r"^[a-f0-9]{24}$")
+    template_id: str | None = Field(None, max_length=80)
+    client_request_id: str | None = Field(None, pattern=r"^[a-zA-Z0-9-]{16,64}$")
 
     @model_validator(mode="after")
     def replay_cannot_execute(self):
@@ -55,16 +60,9 @@ def catalog(request: Request):
         "categories": categories(
             data, rankings, routing.Task(text="gateway catalog"), routing.exclusion
         ),
-        "examples": [
-            {
-                **case,
-                "routing_preferences": {
-                    "expected_output_tokens": 8192 if case["id"] == "code" else 512,
-                    "max_output_tokens": 16384 if case["id"] == "code" else 4096,
-                },
-            }
-            for case in routing.CASES
-        ],
+        "examples": load_templates()["items"],
+        "templates_version": load_templates()["version"],
+        "persistent_history": hasattr(request.app.state, "history"),
         "decision_service": request.app.state.gateway_decision.public_config(),
         "bedrock_configured": request.app.state.bedrock is not None,
     }
@@ -80,27 +78,39 @@ async def status(request: Request, provider: Literal["decider", "liquid", "h2o"]
     }
 
 
-async def event_stream(body, request):
+async def event_stream(body, request, *, run_id=None, record=None):
     """The response owns the worker: disconnect cancels it, with bounded event buffering."""
     queue = asyncio.Queue(maxsize=16)
     started = perf_counter()
-    request_id = secrets.token_hex(12)
+    request_id = run_id or secrets.token_hex(12)
     sequence = 0
     stage = "catalog"
+    storage_failed = False
+    history = getattr(request.app.state, "history", None)
+    user = request.state.user["username"] if history and record else None
 
     async def send(event_type, data=None, **fields):
-        nonlocal sequence
+        nonlocal sequence, storage_failed
         sequence += 1
-        await queue.put(
-            {
-                "type": event_type,
-                "request_id": request_id,
-                "sequence": sequence,
-                "elapsed_ms": round((perf_counter() - started) * 1000, 3),
-                **fields,
-                "data": data or {},
-            }
-        )
+        event = {
+            "type": event_type,
+            "request_id": request_id,
+            "sequence": sequence,
+            "elapsed_ms": round((perf_counter() - started) * 1000, 3),
+            **fields,
+            "data": data or {},
+        }
+        if history and record and not storage_failed:
+            try:
+                await run_in_threadpool(history.event, user, record, event)
+            except Exception as exc:
+                sequence -= 1
+                storage_failed = True
+                logger.exception("History persistence failed: %s", request_id)
+                raise HTTPException(
+                    503, "历史存储暂时不可用；本次处理已停止，请凭请求 ID 核查。"
+                ) from exc
+        await queue.put(event)
 
     async def progress(name, state, data):
         nonlocal stage
@@ -116,9 +126,15 @@ async def event_stream(body, request):
                     "mode": body.mode,
                     "provider": body.provider,
                     "execute_target": body.execute_target,
+                    "session_id": record["session_id"] if record else None,
+                    "history_saved": bool(record),
                 },
             )
-            route_body = routing.AutoRoute(**body.model_dump(exclude={"execute_target"}))
+            route_body = routing.AutoRoute(
+                **body.model_dump(
+                    exclude={"execute_target", "session_id", "template_id", "client_request_id"}
+                )
+            )
             route = await routing.run_classified_route(
                 route_body,
                 request,
@@ -177,6 +193,9 @@ async def event_stream(body, request):
         task.cancel()
         with contextlib.suppress(asyncio.CancelledError):
             await task
+        if history and record and record["status"] == "running":
+            with contextlib.suppress(Exception):
+                await asyncio.shield(run_in_threadpool(history.interrupted, user, record, stage))
 
 
 @router.post("/runs")
@@ -193,8 +212,23 @@ async def run(body: GatewayRun, request: Request):
         request.app.state.gateway_decision.service(body.provider)
         if body.execute_target and request.app.state.bedrock is None:
             raise HTTPException(503, "Bedrock 尚未配置；可选择仅分析路由。")
+    run_id = secrets.token_hex(12)
+    record = None
+    if history := getattr(request.app.state, "history", None):
+        try:
+            record = await run_in_threadpool(
+                history.begin,
+                request.state.user["username"],
+                body,
+                run_id,
+            )
+        except HTTPException:
+            raise
+        except Exception as exc:
+            logger.exception("Cannot create persisted run")
+            raise HTTPException(503, "历史数据库不可用，尚未调用模型。") from exc
     return StreamingResponse(
-        event_stream(body, request),
+        event_stream(body, request, run_id=run_id, record=record),
         media_type="application/x-ndjson",
         headers={"Cache-Control": "no-store", "X-Accel-Buffering": "no"},
     )

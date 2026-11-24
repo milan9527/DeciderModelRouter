@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#151a2e" />
-    <title>Model Gateway · 智能模型网关</title>
+    <title>DeciderModelRouter · 智能模型网关</title>
     <link rel="icon" href="./mark.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./gateway.css" />
     <script type="module" src="./gateway.js"></script>
@@ -41,7 +41,7 @@
       <aside class="sidebar">
         <a class="brand" href="#workspace"
           ><img src="./mark.svg" width="34" height="34" alt="" /><span
-            >Model Gateway<small>智能模型网关</small></span
+            >DeciderModelRouter<small>独立模型路由与评测</small></span
           ></a
         >
         <div class="nav-caption">WORKSPACE</div>
@@ -51,8 +51,10 @@
           >
           <a href="#models" data-page="models"><span>▦</span> Bedrock 模型</a>
           <a href="#performance" data-page="performance"
-            ><span>▥</span> 会话性能</a
+            ><span>▥</span> 历史与性能</a
           >
+          <a href="#evaluations" data-page="evaluations" data-persistent hidden><span>◇</span> 决策模型评测</a>
+          <a href="#account" data-page="account" data-persistent hidden><span>◎</span> 账户管理</a>
         </nav>
         <div class="sidebar-bottom">
           <span class="tiny">ROUTING ARCHITECTURE</span>
@@ -89,6 +91,12 @@
               <span class="region" id="region">Amazon Bedrock</span>
             </div>
             <div class="metrics" id="metrics"></div>
+            <div class="session-bar" data-persistent hidden>
+              <label>当前会话<select id="session-select" aria-label="当前会话"></select></label>
+              <button id="new-session" class="secondary" type="button">＋ 新建会话</button>
+              <button id="rename-session" class="text-button" type="button">重命名</button>
+              <span class="muted">请求和结果自动保存，重新登录后可继续查看。</span>
+            </div>
             <div class="workspace-grid">
               <section class="panel request-panel">
                 <div class="panel-heading">
@@ -106,11 +114,16 @@
                       placeholder="描述你要完成的任务，网关将自动分类并选择合适的模型。"
                     ></textarea>
                   </label>
+                  <div class="field-row template-search">
+                    <label>场景分类<select id="template-category"><option value="all">全部场景</option></select></label>
+                    <label>搜索模板<input id="template-search" type="search" placeholder="验签、对账、摘要…" /></label>
+                  </div>
                   <div
                     id="examples"
                     class="examples"
                     aria-label="示例任务"
                   ></div>
+                  <p id="template-rubric" class="footnote"></p>
                   <div class="form-divider"></div>
                   <label
                     >决策模型 · GPU 服务<select id="provider"></select
@@ -292,7 +305,7 @@
                     hidden
                   ></div>
                   <div class="detail-footer">
-                    <span>完整记录保留在当前页面会话</span
+                    <span id="record-storage-note">完整记录保留在当前页面会话</span
                     ><button id="export" class="text-button" disabled>
                       导出 JSON ↓
                     </button>
@@ -329,19 +342,69 @@
             <div class="page-heading">
               <div>
                 <p class="eyebrow">SESSION OBSERVABILITY</p>
-                <h1>性能，从每次真实请求开始。</h1>
-                <p class="muted">
+                <h1>历史记录与性能</h1>
+                <p class="muted" id="history-description">
                   当前页面最近 50 次请求；回放不计入统计，刷新页面即清空。
                 </p>
               </div>
             </div>
+            <div class="history-filters" data-persistent hidden>
+              <label>会话范围<select id="history-scope"><option value="all">全部会话</option><option value="session">当前会话</option></select></label>
+              <label>时间范围<select id="history-days"><option value="1">最近 24 小时</option><option value="7">最近 7 天</option><option value="30" selected>最近 30 天</option><option value="180">最近 180 天</option></select></label>
+              <button id="refresh-history" class="secondary" type="button">刷新数据</button>
+            </div>
             <div id="session-metrics" class="metrics"></div>
+            <p id="performance-note" class="footnote" data-persistent hidden></p>
+            <section id="model-performance" class="panel table-panel" data-persistent hidden></section>
             <section class="panel table-panel">
               <div class="panel-heading">
                 <h2>请求记录</h2>
                 <span class="tiny">P50 / P95 使用最近秩法</span>
               </div>
               <div id="history" class="table-scroll"></div>
+              <button id="more-history" class="text-button" data-persistent hidden>加载更多记录 ↓</button>
+            </section>
+          </section>
+          <section data-view="evaluations" hidden>
+            <div class="page-heading"><div><p class="eyebrow">REPRODUCIBLE EVALUATIONS</p><h1>比较决策模型的判断</h1><p class="muted">同一任务、同一七项分类标准。记录逐项差异、失败和耗时。</p></div></div>
+            <div class="evaluation-grid">
+              <section class="panel padded-panel">
+                <h2>创建评测</h2>
+                <p class="footnote">这是可查看的开发参考集，不是隐藏测试集；分类一致率不代表目标模型业务正确率。评测不会调用 Bedrock 目标模型或自动修改选模策略。</p>
+                <form id="evaluation-form">
+                  <fieldset><legend>决策模型</legend><div id="evaluation-providers" class="choice-list"></div></fieldset>
+                  <fieldset><legend>参考任务</legend><div id="evaluation-cases" class="choice-list case-list"></div></fieldset>
+                  <p id="evaluation-budget" class="form-note"></p>
+                  <button id="evaluation-start" class="primary">开始分类评测 →</button>
+                </form>
+              </section>
+              <section class="panel padded-panel"><div class="panel-heading"><h2>已保存评测</h2><button id="refresh-evaluations" class="text-button">刷新</button></div><div id="evaluation-history"></div></section>
+            </div>
+            <section id="evaluation-result" class="panel padded-panel" hidden></section>
+          </section>
+          <section data-view="account" hidden>
+            <div class="page-heading"><div><p class="eyebrow">YOUR ACCOUNT</p><h1>账户与访问权限</h1><p class="muted">用户名密码认证。会话、历史和评测结果按账户隔离。</p></div></div>
+            <div class="evaluation-grid">
+              <section class="panel padded-panel"><h2>修改密码</h2><p id="account-description" class="muted"></p>
+                <form id="password-form">
+                  <label>当前密码<input id="current-password" type="password" autocomplete="current-password" required maxlength="128" /></label>
+                  <label>新密码<input id="new-password" type="password" autocomplete="new-password" required minlength="12" maxlength="128" /></label>
+                  <label>确认新密码<input id="confirm-password" type="password" autocomplete="new-password" required minlength="12" maxlength="128" /></label>
+                  <p class="footnote">12–128 个字符。修改后所有旧登录会话失效。</p>
+                  <button class="primary">更新密码</button>
+                </form>
+              </section>
+              <section id="admin-panel" class="panel padded-panel" hidden><h2>创建用户</h2>
+                <form id="user-form">
+                  <label>用户名<input id="new-user-name" autocomplete="off" required minlength="3" maxlength="32" pattern="[a-zA-Z0-9_.-]{3,32}" /></label>
+                  <label>初始密码<input id="new-user-password" type="password" autocomplete="new-password" required minlength="12" maxlength="128" /></label>
+                  <label class="check"><input id="new-user-admin" type="checkbox" />管理员权限</label>
+                  <button class="primary">创建账户</button>
+                </form>
+              </section>
+            </div>
+            <section id="users-panel" class="panel padded-panel" hidden><h2>用户管理</h2><div id="users-table" class="table-scroll"></div>
+              <form id="reset-password-form" class="history-filters"><label>重置用户密码<select id="reset-user"></select></label><label>新密码<input id="reset-user-password" type="password" minlength="12" maxlength="128" autocomplete="new-password" required /></label><button class="secondary">重置密码</button></form>
             </section>
           </section>
           <footer class="page-footer">
@@ -351,5 +414,21 @@
         </main>
       </div>
     </div>
+    <dialog id="history-detail" class="record-dialog">
+      <div class="panel-heading"><h2>运行详情</h2><button id="close-history-detail" class="text-button" aria-label="关闭运行详情">关闭 ×</button></div>
+      <div id="history-detail-content"></div>
+      <div class="dialog-actions"><button id="history-reuse" class="secondary">载入任务到工作台</button><button id="history-export" class="text-button">导出完整记录 ↓</button></div>
+      <form id="review-form" hidden><h3>业务结果验收</h3><p class="footnote">请根据实际输出和独立业务标准判断。记录不会自动转为路由校准数据。</p>
+        <label>验收结论<select id="review-passed"><option value="true">通过</option><option value="false">未通过</option></select></label>
+        <label>验收标准<textarea id="review-rubric" required minlength="3" maxlength="1000" rows="3"></textarea></label>
+        <label>备注<textarea id="review-notes" maxlength="2000" rows="2"></textarea></label>
+        <button class="primary">保存人工验收</button>
+      </form>
+    </dialog>
+    <dialog id="session-dialog" class="small-dialog"><form id="session-form">
+      <h2 id="session-dialog-title">新建会话</h2><label>会话名称<input id="session-title" required maxlength="80" /></label>
+      <div class="dialog-actions"><button class="primary">保存</button><button id="cancel-session" type="button" class="text-button">取消</button></div>
+    </form></dialog>
+    <div id="notification" class="notification" role="status" hidden></div>
   </body>
 </html>

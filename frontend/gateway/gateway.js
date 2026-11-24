@@ -59,6 +59,25 @@ let history = [],
   clockTimer,
   lastBrowserMs = null,
   terminalSeen = false;
+let activeTemplateId = null;
+const workspace = new Workspace({
+  api, esc, ms, usd, signedOut: showLogin,
+  reuse: (request) => {
+    if (busy) { workspace.notify("请等待当前请求结束后再载入历史任务"); return; }
+    $("#task").value = request.task.text;
+    $("#provider").value = request.provider;
+    $("#mode").value = request.mode;
+    const p = request.task.routing_preferences || {};
+    for (const [id, key] of [["expected-output", "expected_output_tokens"], ["max-output", "max_output_tokens"], ["max-cost", "max_reference_cost_usd"], ["min-success", "min_success_rate"], ["max-latency", "max_latency_ms"]])
+      $(`#${id}`).value = p[key] ?? "";
+    if (p.cost_tier) $(`input[name="tier"][value="${p.cost_tier}"]`).checked = true;
+    $("#benchmark-release").value = p.benchmark_release || "auto";
+    $("#cross-region").checked = request.task.allow_cross_region !== false;
+    activeTemplateId = request.template_id;
+    $("#char-count").textContent = `${$("#task").value.length} / 1400`;
+    updateMode();
+  },
+});
 
 function errorMessage(data) {
   if (typeof data?.detail === "string") return data.detail;
@@ -98,6 +117,7 @@ function resetRun() {
 }
 function showLogin() {
   controller?.abort();
+  workspace.reset();
   history = [];
   $("#app").hidden = true;
   $("#auth").hidden = false;
@@ -115,12 +135,9 @@ async function enter(user) {
     )
     .join("");
   $("#provider").value = catalog.decision_service.default_provider;
-  $("#examples").innerHTML = catalog.examples
-    .map(
-      (e) =>
-        `<button type="button" data-example="${esc(e.id)}">${esc(e.title)} ↗</button>`,
-    )
-    .join("");
+  $("#template-category").innerHTML = '<option value="all">全部场景</option>' +
+    [...new Set(catalog.examples.map((e) => e.category))].map((c) => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  renderTemplates();
   $("#category").innerHTML = Object.entries(catalog.categories)
     .map(
       ([key, value]) =>
@@ -142,10 +159,11 @@ async function enter(user) {
   renderHistory();
   updateMode();
   if (!$("#task").value) setExample("code");
+  await workspace.enter(user, catalog);
   checkHealth();
 }
 function setPage() {
-  const page = ["workspace", "models", "performance"].includes(
+  const page = ["workspace", "models", "performance", "evaluations", "account"].includes(
     location.hash.slice(1),
   )
     ? location.hash.slice(1)
@@ -159,9 +177,12 @@ function setPage() {
   $("#page-title").textContent = {
     workspace: "网关工作台",
     models: "Bedrock 模型",
-    performance: "会话性能",
+    performance: "历史与性能",
+    evaluations: "决策模型评测",
+    account: "账户管理",
   }[page];
   if (page === "performance") renderHistory();
+  else workspace.page(page);
 }
 async function checkHealth() {
   const provider = $("#provider").value;
@@ -192,6 +213,18 @@ function setExample(id) {
   $("#expected-output").value = example.routing_preferences.expected_output_tokens;
   $("#max-output").value = example.routing_preferences.max_output_tokens;
   $("#char-count").textContent = `${$("#task").value.length} / 1400`;
+  activeTemplateId = id;
+  $("#template-rubric").textContent = "验收参考：" + (example.rubric || []).join("；");
+}
+function renderTemplates() {
+  if (!catalog) return;
+  const category = $("#template-category").value, search = $("#template-search").value.trim().toLowerCase();
+  const templates = catalog.examples.filter((e) =>
+    (category === "all" || e.category === category) &&
+    `${e.title} ${e.description} ${e.task}`.toLowerCase().includes(search));
+  $("#examples").innerHTML = templates.map((e) =>
+    `<button type="button" data-example="${esc(e.id)}" title="${esc(e.description)}">${esc(e.title)} ↗</button>`).join("") ||
+    '<p class="footnote">没有符合条件的模板。</p>';
 }
 function updateMode() {
   const replay = $("#mode").value === "replay";
@@ -464,6 +497,8 @@ async function start(executeTarget) {
     return;
   }
   const body = {
+    ...workspace.requestFields(),
+    template_id: activeTemplateId,
     task: {
       text: $("#task").value,
       allow_cross_region: $("#cross-region").checked,
@@ -612,6 +647,10 @@ function percentile(values, p) {
     : null;
 }
 function renderHistory() {
+  if (workspace.enabled) {
+    workspace.refreshHistory().catch((error) => workspace.notify(error.message));
+    return;
+  }
   const live = history.filter((r) => r.mode === "live"),
     routed = live.filter((r) => Number.isFinite(r.route_ms));
   const executed = live.filter((r) => r.status === "executed");
@@ -693,8 +732,11 @@ $("#category").addEventListener("change", renderModels);
 $("#evidence-filter").addEventListener("change", renderModels);
 $("#model-search").addEventListener("input", renderModels);
 $("#task").addEventListener("input", () => {
+  activeTemplateId = null;
   $("#char-count").textContent = `${$("#task").value.length} / 1400`;
 });
+$("#template-category").addEventListener("change", renderTemplates);
+$("#template-search").addEventListener("input", renderTemplates);
 $("#examples").addEventListener("click", (event) => {
   if (event.target.dataset.example) setExample(event.target.dataset.example);
 });
@@ -729,3 +771,4 @@ api("/auth/me")
     if (!error.message.includes("登录"))
       $("#login-error").textContent = error.message;
   });
+import { Workspace } from "./workspace.js";

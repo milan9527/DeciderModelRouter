@@ -20,7 +20,7 @@ class Observation(StrictModel):
     configuration_id: str = Field(pattern=r"^[a-f0-9]{24}$")
     profile: RequestProfile
     input_tokens: int = Field(ge=1, le=2_000_000, strict=True)
-    max_output_tokens: int = Field(ge=0, le=4096, strict=True)
+    max_output_tokens: int = Field(ge=0, le=16384, strict=True)
     passed: bool = Field(strict=True)
     latency_ms: float = Field(ge=0, le=3_600_000, allow_inf_nan=False)
     total_cost_usd: Decimal = Field(ge=0, le=1_000_000, max_digits=25, decimal_places=18)

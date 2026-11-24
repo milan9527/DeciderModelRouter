@@ -75,6 +75,14 @@ class SQLiteStore:
         with self.connect() as db:
             db.execute("DELETE FROM auth WHERE pk=?", (key,))
 
+    def replace_version(self, item, version):
+        with self.connect() as db:
+            result = db.execute(
+                "UPDATE auth SET data=? WHERE pk=? AND json_extract(data, '$.version')=?",
+                (json.dumps(item), item["pk"], version),
+            )
+            return result.rowcount == 1
+
     def increment(self, key, expires):
         with self.connect() as db:
             db.execute("BEGIN IMMEDIATE")
@@ -125,6 +133,19 @@ class DynamoStore:
     def delete(self, key):
         self.client.delete_item(TableName=self.name, Key=self.encode({"pk": key}))
 
+    def replace_version(self, item, version):
+        try:
+            self.client.put_item(
+                TableName=self.name,
+                Item=self.encode(item),
+                ConditionExpression="#version=:version",
+                ExpressionAttributeNames={"#version": "version"},
+                ExpressionAttributeValues=self.encode({":version": version}),
+            )
+            return True
+        except self.client.exceptions.ConditionalCheckFailedException:
+            return False
+
     def increment(self, key, expires):
         result = self.client.update_item(
             TableName=self.name,
@@ -142,10 +163,14 @@ def configured_store():
     return SQLiteStore(os.getenv("AUTH_DB_PATH", ".data/auth.sqlite3"))
 
 
-def save_user(store, username, password, *, reset=False):
+def save_user(store, username, password, *, reset=False, role=None):
     username = canonical_username(username)
     if not 12 <= len(password) <= 128:
         raise ValueError("密码长度须为 12–128 个字符")
+    existing = store.get("USER#" + username) if reset else None
+    role = role or (existing or {}).get("role", "user")
+    if role not in ("admin", "user"):
+        raise ValueError("Invalid account role")
     store.put(
         {
             "pk": "USER#" + username,
@@ -153,6 +178,7 @@ def save_user(store, username, password, *, reset=False):
             "password_hash": hash_password(password),
             "version": secrets.token_hex(16),
             "enabled": True,
+            "role": role,
         },
         create=not reset,
     )

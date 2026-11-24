@@ -1,5 +1,7 @@
 # 模型网关工作台
 
+**独立服务当前文档：[INDEPENDENT_SERVICE.zh.md](INDEPENDENT_SERVICE.zh.md)。** 新服务使用专用 CloudFront / S3 / ECS / GPU / DynamoDB，自建认证，提供持久化历史、20 个模板和分类评测。下文保留原共享部署的工作台说明及历史验证；其中“刷新清空”等描述仅适用于旧入口。
+
 独立入口：`/gateway/index.html`。生产前端使用 **S3 + CloudFront + OAC**，后端使用 **ECS Fargate**，GPU 决策模型独立部署。网关通过 AWS SDK 直接发布，不使用 CloudFormation。
 
 开发时前端单独运行在 `http://127.0.0.1:5173`，API 运行在 `8000`。原有模型路由对比页保留。

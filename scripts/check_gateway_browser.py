@@ -59,7 +59,7 @@ def serve(role, port):
                 "deployment": "SYNTHETIC BROWSER TEST; NOT A GPU BENCHMARK",
             }
     else:
-        from app import main
+        from app import gateway_main as main
         from app.auth import SQLiteStore, save_user
 
         class FixtureBedrock:
@@ -88,12 +88,16 @@ def serve(role, port):
             def close(self):
                 pass
 
+        store = SQLiteStore(os.environ["AUTH_DB_PATH"])
         save_user(
-            SQLiteStore(os.environ["AUTH_DB_PATH"]),
+            store,
             "tester",
             "gateway-browser-fixture-only",
         )
-        main.create_bedrock = FixtureBedrock
+        user = store.get("USER#tester")
+        user["role"] = "admin"
+        store.put(user)
+        main.create_client = FixtureBedrock
         app = main.app
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 
@@ -125,6 +129,7 @@ def smoke(output):
         env.update(
             {
                 "AUTH_DB_PATH": str(Path(scratch) / "auth.sqlite3"),
+                "GATEWAY_DB_PATH": str(Path(scratch) / "gateway.sqlite3"),
                 "AUTH_COOKIE_SECURE": "false",
                 "SERVE_FRONTEND": "false",
                 "BEDROCK_ENABLED": "false",
@@ -259,6 +264,71 @@ def smoke(output):
                 expect(page.locator("#session-metrics")).to_contain_text("1 次回放不计入")
                 page.evaluate("scrollTo(0, 0)")
                 page.screenshot(path=str(output / "performance.png"), full_page=True)
+                page.reload()
+                expect(page.locator("#app")).to_be_visible()
+                expect(page.locator("#session-metrics .metric-value").first).to_have_text("4")
+                expect(page.locator("#history tbody tr")).to_have_count(5)
+                page.locator(f'[data-run="{record["events"][0]["request_id"]}"]').click()
+                expect(page.locator("#history-detail")).to_be_visible()
+                expect(page.locator("#history-detail-content")).to_contain_text("本地联调测试桩")
+                page.locator("#review-passed").select_option("false")
+                page.locator("#review-rubric").fill("合成响应只验证链路，不能作为业务通过")
+                page.locator("#review-form button").click()
+                expect(page.locator("#notification")).to_have_text("人工验收已保存")
+                page.screenshot(path=str(output / "saved-run.png"), full_page=True)
+                page.locator("#close-history-detail").click()
+                page.locator('[data-page="workspace"]').click()
+                page.locator("#new-session").click()
+                page.locator("#session-title").fill("独立验收会话")
+                page.locator("#session-form button.primary").click()
+                expect(page.locator("#session-select option:checked")).to_have_text("独立验收会话")
+                page.locator("#rename-session").click()
+                page.locator("#session-title").fill("重命名后的会话")
+                page.locator("#session-form button.primary").click()
+                expect(page.locator("#session-select option:checked")).to_have_text("重命名后的会话")
+                page.locator("#template-category").select_option("代码")
+                page.locator("#template-search").fill("HMAC")
+                expect(page.locator("#examples button")).to_have_count(1)
+                page.locator("#template-search").fill("")
+                page.locator("#template-category").select_option("all")
+                expect(page.locator("#examples button")).to_have_count(20)
+                page.locator('[data-page="evaluations"]').click()
+                for checkbox in page.locator('input[name="eval-case"]').all():
+                    if checkbox.is_checked():
+                        checkbox.uncheck()
+                for case in ("summarize", "sql-report"):
+                    page.locator(f'input[name="eval-case"][value="{case}"]').check()
+                expect(page.locator("#evaluation-budget")).to_contain_text("2 次 GPU 调用尝试")
+                page.locator("#evaluation-start").click()
+                expect(page.locator("#evaluation-result h2")).to_have_text("评测结果 · 已完成", timeout=20000)
+                expect(page.locator("#evaluation-result")).to_contain_text("2 / 2")
+                page.screenshot(path=str(output / "evaluation.png"), full_page=True)
+                page.locator('[data-page="account"]').click()
+                expect(page.locator("#admin-panel")).to_be_visible()
+                page.locator("#new-user-name").fill("reviewer")
+                page.locator("#new-user-password").fill("reviewer-browser-fixture-only")
+                page.locator("#user-form button").click()
+                expect(page.locator("#users-table")).to_contain_text("reviewer")
+                page.locator('[data-user="reviewer"]').click()
+                expect(page.locator('[data-user="reviewer"]')).to_have_text("启用")
+                page.locator('[data-user="reviewer"]').click()
+                expect(page.locator('[data-user="reviewer"]')).to_have_text("停用并撤销登录")
+                page.screenshot(path=str(output / "accounts.png"), full_page=True)
+                page.locator("#logout").click()
+                page.locator('input[name="username"]').fill("reviewer")
+                page.locator('input[name="password"]').fill("reviewer-browser-fixture-only")
+                page.locator("#login-submit").click()
+                expect(page.locator("#app")).to_be_visible()
+                expect(page.locator("#admin-panel")).to_be_hidden()
+                page.locator('[data-page="performance"]').click()
+                expect(page.locator("#session-metrics .metric-value").first).to_have_text("0")
+                expect(page.locator("#history")).to_contain_text("没有保存的请求")
+                page.locator("#logout").click()
+                page.locator('input[name="username"]').fill("tester")
+                page.locator('input[name="password"]').fill("gateway-browser-fixture-only")
+                page.locator("#login-submit").click()
+                expect(page.locator("#app")).to_be_visible()
+                expect(page.locator("#session-metrics .metric-value").first).to_have_text("4")
                 page.locator('[data-page="models"]').click()
                 page.locator("#category").select_option("customer_support")
                 page.locator("#model-search").fill("nova micro")
@@ -280,7 +350,7 @@ def smoke(output):
                 expect(cohere).to_contain_text("en 57.12")
                 expect(cohere).to_contain_text("nDCG@10 × 100")
                 page.set_viewport_size({"width": 390, "height": 844})
-                for section in ("models", "performance", "workspace"):
+                for section in ("models", "performance", "evaluations", "account", "workspace"):
                     page.locator(f'[data-page="{section}"]').click()
                     assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), (
                         section
@@ -293,7 +363,7 @@ def smoke(output):
                 assert all(url.startswith(base) for url in requests), requests
                 browser.close()
             stats = httpx.get(f"http://127.0.0.1:{gpu_port}/stats").json()
-            assert stats["calls"] == 4, stats
+            assert stats["calls"] == 6, stats
             verification = {
                 "fixture": "synthetic; not a GPU performance benchmark",
                 "processes": [
@@ -309,6 +379,12 @@ def smoke(output):
                     "Nova benchmark sources and category scores",
                     "reference-only and pending-configuration filters",
                     "authentication",
+                    "database persistence after reload and relogin",
+                    "user history isolation and admin-only user management",
+                    "session creation and rename",
+                    "twenty searchable task templates",
+                    "persisted classifier evaluation with two synthetic calls",
+                    "independent human business review",
                     "stream before inference completes",
                     "one GPU call per run",
                     "selection evidence",

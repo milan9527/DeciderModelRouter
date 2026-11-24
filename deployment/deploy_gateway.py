@@ -16,7 +16,7 @@ from botocore.config import Config
 from botocore.exceptions import ClientError
 
 ROOT = Path(__file__).resolve().parents[1]
-ASSETS = ("gateway.css", "gateway.js", "mark.svg", "index.html")
+ASSETS = ("gateway.css", "workspace.js", "gateway.js", "mark.svg", "index.html")
 MIME = {
     ".html": "text/html; charset=utf-8",
     ".css": "text/css; charset=utf-8",

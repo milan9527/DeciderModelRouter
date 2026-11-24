@@ -300,7 +300,7 @@ def test_uploads_only_gateway_verifies_versions_and_waits_invalidation(publisher
     ]
     result = publisher.publish(data, definition(), "old-task", tmp_path, "example.cloudfront.net")
     assert result["phase"] == "complete"
-    assert len(result["objects"]) == 4
+    assert len(result["objects"]) == len(deploy.ASSETS)
     assert all(row["previous_version"] == "previous-version" for row in result["objects"])
     assert all(row["version"] == "new-version" for row in result["objects"])
     assert [call.kwargs["Key"] for call in publisher.s3.put_object.call_args_list][
