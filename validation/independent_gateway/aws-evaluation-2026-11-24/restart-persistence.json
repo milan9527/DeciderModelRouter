@@ -1,0 +1,20 @@
+{
+  "previous_tasks": [
+    "arn:aws:ecs:us-east-1:632930644527:task/decider-model-router/ce9b979650c549fb87260ffc82b172a1"
+  ],
+  "new_tasks": [
+    "arn:aws:ecs:us-east-1:632930644527:task/decider-model-router/7a703e1ca82d411d96135884dc6ff111"
+  ],
+  "deployment_id": "ecs-svc/1033494632990229817",
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:3",
+  "image_digests": [
+    "sha256:2f29179eb58e7dacf8d352e963f6669a9a2a64fa14da2566ff28990c68852529"
+  ],
+  "run_ids": [
+    "85999dc1eb687e1cff3f2550",
+    "dc0df6c5a589a105f5c26d1c"
+  ],
+  "evaluation_id": "d3f5cbb588b2473f943898b8",
+  "identical_records_after_restart": true,
+  "login_survived": true
+}

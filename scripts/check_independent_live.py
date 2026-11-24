@@ -85,6 +85,14 @@ def main():
         assert job["status"] == "completed", job["status"]
         assert len(job["results"]) == job["started_gpu_calls"] == 48
         assert job["target_model_calls"] == 0
+        completed = [row for row in job["results"] if row["status"] == "completed"]
+        assert all("deployment" in row for row in completed)
+        if gpu["instance_type"] == "g5.xlarge":
+            assert all(
+                row["deployment"].startswith("FP8 W8A16 / Marlin")
+                for row in completed
+                if row["provider"] == "h2o"
+            )
         # Mismatches and model failures are results, never rewritten as a passing accuracy.
         ids = smoke["persistence"]["saved_run_ids"]
         before = {}
@@ -216,11 +224,21 @@ def main():
         page.locator('[data-page="evaluations"]').click()
         page.locator(f'[data-evaluation="{job["id"]}"]').click()
         expect(page.locator("#evaluation-result h2")).to_have_text("评测结果 · 已完成")
+        if gpu["instance_type"] == "g5.xlarge":
+            h2o_row = (
+                page.locator(".evaluation-row")
+                .filter(has=page.locator("summary", has_text="h2o"))
+                .first
+            )
+            h2o_row.locator("summary").click()
+            expect(h2o_row.locator(".footnote")).to_contain_text("Marlin")
         page.screenshot(path=str(args.output / "real-evaluation.png"), full_page=True)
         page.locator('[data-page="performance"]').click()
         expect(page.locator(f'[data-run="{ids[0]}"]')).to_be_visible()
         page.screenshot(path=str(args.output / "history-after-restart.png"), full_page=True)
         page.locator('[data-page="account"]').click()
+        expect(page.locator("#users-table")).to_contain_text(credentials["username"])
+        expect(page.locator("#users-table")).to_contain_text(reviewer["username"])
         page.screenshot(path=str(args.output / "accounts.png"), full_page=True)
         page.locator("#logout").click()
         expect(page.locator("#auth")).to_be_visible()

@@ -1,0 +1,17 @@
+{
+  "instance": "i-01180cf02d12e6e31",
+  "key_mode": "0o600",
+  "proxy_sha256": "11559ab37f07f2e4270652885e65cbd2e2cb16c6eaf527f46808a6b06bc51db7",
+  "legacy_units": {
+    "decider-vllm": "disabled",
+    "decider-h2o": "disabled",
+    "decider-liquid": "disabled",
+    "decider-comparison-gateway": "disabled"
+  },
+  "unauthenticated": {
+    "decider": 401,
+    "proxy": 401
+  },
+  "dedicated_key_fetcher": true,
+  "dedicated_log_group": true
+}

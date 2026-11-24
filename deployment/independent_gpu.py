@@ -31,7 +31,7 @@ temporary.replace(path)
 """
 
 
-def bootstrap(secret_arn, source_instance):
+def bootstrap(secret_arn, source_instance, instance_type="g6.xlarge"):
     gateway = base64.b64encode(
         (Path(__file__).parent / "open_models/gateway.py").read_bytes()
     ).decode()
@@ -88,8 +88,12 @@ for old,new in units.items():
  if old=="decider-vllm":
   text=text.replace("/opt/decider-vllm/fetch-key.sh", "/opt/decider-secrets/fetch-router-key.py")
   text=text.replace("/strands-decider-vllm/model", "/decider-model-router/gpu")
+ if old=="decider-h2o" and "{instance_type}"=="g5.xlarge":
+  text=text.replace("--quantization fp8", "--quantization fp8 --linear-backend marlin")
  if old=="decider-comparison-gateway":
   text=text.replace("--network host", "--network host -v /opt/decider-secrets/api-key:/run/secrets/router-key:ro -e OPEN_MODELS_API_KEY_FILE=/run/secrets/router-key")
+  if "{instance_type}"=="g5.xlarge":
+   text=text.replace("--network host", "--network host -e H2O_LINEAR_BACKEND=marlin")
   text=text.replace("{source_instance}",os.environ["DMR_INSTANCE"])
  pathlib.Path("/etc/systemd/system/"+new+".service").write_text(text)
 PY
@@ -249,7 +253,9 @@ def main():
                             },
                         }
                     ],
-                    UserData=bootstrap(state["secret_arn"], args.source_instance),
+                    UserData=bootstrap(
+                        state["secret_arn"], args.source_instance, args.instance_type
+                    ),
                     ClientToken=resources["deployment_id"]
                     + f"-gpu-{i}"
                     + ("" if args.instance_type == "g6.xlarge" else "-" + args.instance_type),

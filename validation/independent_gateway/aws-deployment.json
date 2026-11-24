@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-24",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/gateway/index.html",
+  "region": "us-east-1",
+  "project": "decider-model-router",
+  "cloudfront": "E3OCAAF3NQ1LYX",
+  "bucket": "decider-model-router-632930644527-us-east-1",
+  "vpc": "vpc-05ac5abdb873adec9",
+  "cluster": "decider-model-router",
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:3",
+  "image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router@sha256:2f29179eb58e7dacf8d352e963f6669a9a2a64fa14da2566ff28990c68852529",
+  "invalidation": "IBPO9SQ94XXVRED1B1P48THQN3",
+  "gpu": {
+    "instance": "i-01180cf02d12e6e31",
+    "type": "g5.xlarge",
+    "private_ip": "10.146.14.77",
+    "availability_zone": "us-east-1f",
+    "accelerator": "NVIDIA A10G 24GB",
+    "private_ami": "ami-0ed3e180b912b2ea3",
+    "source_rebooted": false,
+    "selection": "g6.xlarge and g6.2xlarge unavailable across attempted AZs; g5.xlarge launched in us-east-1f",
+    "linux_on_demand_usd_per_hour": 1.006,
+    "price_excludes": "EBS, ECS, ALB, NAT, storage, traffic and model inference",
+    "h2o_precision": "FP8 weights, BF16 activations, Marlin",
+    "startup_compatibility": "Default CUTLASS FP8 failed on SM86; explicit Marlin passed official two-way probes (max probability deviation 0.0151) and health checks"
+  },
+  "auth_table": "decider-model-router-auth",
+  "data_table": "decider-model-router-data",
+  "cognito": false,
+  "cloudformation": false
+}

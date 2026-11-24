@@ -1,0 +1,61 @@
+{
+  "cloudfront": "E3OCAAF3NQ1LYX",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net",
+  "s3": "decider-model-router-632930644527-us-east-1",
+  "oac": "E3FP5MHA6YE62X",
+  "anonymous_s3": 403,
+  "vpc": "vpc-05ac5abdb873adec9",
+  "gpu": {
+    "id": "i-01180cf02d12e6e31",
+    "state": "running",
+    "type": "g5.xlarge",
+    "vpc": "vpc-05ac5abdb873adec9",
+    "private_ip": "10.146.14.77",
+    "public_ip": null,
+    "launch_time": "2026-11-24 15:32:58+00:00",
+    "availability_zone": "us-east-1f"
+  },
+  "tables": {
+    "decider-model-router-auth": {
+      "ttl": {
+        "TimeToLiveStatus": "ENABLED",
+        "AttributeName": "expires_at"
+      },
+      "recovery": {
+        "ContinuousBackupsStatus": "ENABLED",
+        "PointInTimeRecoveryDescription": {
+          "PointInTimeRecoveryStatus": "ENABLED",
+          "RecoveryPeriodInDays": 35,
+          "EarliestRestorableDateTime": "2026-11-24 14:13:21+00:00",
+          "LatestRestorableDateTime": "2026-11-24 16:09:30.346000+00:00"
+        }
+      }
+    },
+    "decider-model-router-data": {
+      "ttl": {
+        "TimeToLiveStatus": "ENABLED",
+        "AttributeName": "expires_at"
+      },
+      "recovery": {
+        "ContinuousBackupsStatus": "ENABLED",
+        "PointInTimeRecoveryDescription": {
+          "PointInTimeRecoveryStatus": "ENABLED",
+          "RecoveryPeriodInDays": 35,
+          "EarliestRestorableDateTime": "2026-11-24 14:13:42+00:00",
+          "LatestRestorableDateTime": "2026-11-24 16:09:30.372000+00:00"
+        }
+      }
+    }
+  },
+  "old_service_task_definition_unchanged": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:36",
+  "old_gpu_unchanged": {
+    "id": "i-0ae7eb0abcb815af3",
+    "state": "running",
+    "type": "g6.xlarge",
+    "vpc": "vpc-0c036c30b82b3703f",
+    "private_ip": "172.31.33.164",
+    "public_ip": "174.129.189.193",
+    "launch_time": "2026-11-24 10:16:20+00:00",
+    "availability_zone": "us-east-1d"
+  }
+}

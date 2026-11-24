@@ -52,6 +52,7 @@ def client(tmp_path, monkeypatch, auth_config):
                     "model": routing.LOCAL_ROUTERS["h2o"],
                     "answers": {k: {"choice": v} for k, v in profile().model_dump().items()},
                     "latency_ms": 3.0,
+                    "deployment": "FP8 W8A16 / Marlin · test fixture",
                     "usage": {"input_tokens": 20, "output_tokens": 7},
                 },
             )
@@ -290,6 +291,7 @@ def test_evaluation_records_actual_field_mismatches_without_target_calls(client)
     assert job["summary"][0]["exact_matches"] == 1
     assert job["summary"][0]["field_accuracy"]["workflow"] == 0.5
     assert job["target_model_calls"] == 0
+    assert all(row["deployment"] == "FP8 W8A16 / Marlin · test fixture" for row in job["results"])
     gateway_main.app.state.bedrock.converse.assert_not_called()
     assert client.get("/api/gateway/evaluations").json()["items"][0]["id"] == job_id
     assert (

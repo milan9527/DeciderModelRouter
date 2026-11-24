@@ -22,10 +22,17 @@ API 文档：https://d3eipg2g3l3an3.cloudfront.net/api/docs（需登录）。
 | 会话/运行/评测表 | `decider-model-router-data` |
 | 初始管理员 | `admin`；密码见 Secrets Manager `DeciderModelRouter/admin-credentials` |
 | GPU 服务密钥 | Secrets Manager `DeciderModelRouter/gpu-service-key` |
+| 独立 GPU | `i-01180cf02d12e6e31` · `g5.xlarge` · A10G 24GB · `us-east-1f` · 无公网 IP |
 
-当前完成第一阶段发布：ECS revision **1**，登录、会话、历史和 20 个模板可用，GPU 镜像仍在生成，三个分类器均显式未配置。[真实数据库与浏览器验收](../validation/independent_gateway/aws-prepare-2026-11-24/verification.json)通过：回放保存并跨重新登录读取，回放不计入性能，0 次真实模型调用。GPU 接入后的最终发布及评测结果将更新在本节。
+当前 ECS revision **3** 已完成部署，Decider、Liquid、H2O 三个独立 GPU 服务均健康。新实例使用专用私有 AMI，未重启原 GPU；G6 多可用区容量不足后选用 G5。H2O 在 A10G 上使用 FP8 W8A16 / Marlin，结果保存实际部署配置。CloudFront 刷新 `IBPO9SQ94XXVRED1B1P48THQN3` 已完成，五个前端文件与公网逐字节一致。
 
-两张表启用按需容量、TTL 和 PITR，业务历史按账户保存 180 天。构建镜像固定为 `sha256:ff059ba6c19994bdf84e3e084eb5bab2c336ca7dce379122a51faa6e520461e0`，本机审计目录 `.deployment/independent-20261124-140400/`。**439 项软件测试通过**，最终本地浏览器联调通过；[架构与运维](../docs/INDEPENDENT_SERVICE.zh.md)、[验证口径](../validation/independent_gateway/README.zh.md)。
+[真实路由验收](../validation/independent_gateway/aws-smoke-2026-11-24/verification.json)通过：两次 H2O 分类、一次 Bedrock 调用；重复请求在再次调用 GPU 前返回 409。Gemma 3 4B 完整返回 21 输入 / 31 输出 Token，目标耗时 601.442ms、后端总耗时 1329.034ms，参考费用 $0.00000239。两条真实记录保存到 DynamoDB，刷新后可读，无浏览器错误。
+
+[真实分类评测](../validation/independent_gateway/aws-evaluation-2026-11-24/evaluation.json)：16 个可见开发参考任务 × 3 个模型，48 次调用全部完成，0 次失败；七项一致率为 Decider 50%、Liquid 56.25%、H2O 43.75%。这是开发参考一致率，不是业务准确率。原始差异和运行配置均保留，未据此自动修改校准。
+
+[容器替换与隔离验收](../validation/independent_gateway/aws-evaluation-2026-11-24/verification.json)通过：ECS 替换前后 Task ARN 不同，原登录继续有效，两条运行与完整评测记录逐字段一致；跨用户历史/评测访问返回 404，普通用户管理接口返回 403，禁用后旧会话返回 401。S3 匿名访问为 403，原服务 revision 36 与原 GPU 未改变。
+
+两张表启用按需容量、TTL 和 PITR，业务历史按账户保存 180 天。构建镜像固定为 `sha256:2f29179eb58e7dacf8d352e963f6669a9a2a64fa14da2566ff28990c68852529`，本机审计目录 `.deployment/independent-20261124-140400/`。**440 项软件测试通过**，最终本地浏览器联调通过；[架构与运维](../docs/INDEPENDENT_SERVICE.zh.md)、[验证口径](../validation/independent_gateway/README.zh.md)。
 
 ## 原共享演示环境（历史保留）
 

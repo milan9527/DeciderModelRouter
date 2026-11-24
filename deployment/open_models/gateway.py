@@ -87,7 +87,8 @@ async def decide(provider: str, payload: dict, request: Request):
                 data = response.json()
         if data.get("model") != MODEL_IDS[provider]:
             raise ValueError("Unexpected model identity")
-        data["deployment"] = "FP8 · vLLM 0.30.0 · resident" if provider == "h2o" else "BF16 · Transformers · resident"
+        h2o_precision = "FP8 W8A16 / Marlin" if os.getenv("H2O_LINEAR_BACKEND") == "marlin" else "FP8"
+        data["deployment"] = f"{h2o_precision} · vLLM 0.30.0 · resident" if provider == "h2o" else "BF16 · Transformers · resident"
         return data
     except (httpx.HTTPError, TimeoutError, ValueError) as exc:
         raise HTTPException(503, "常驻模型尚未就绪或本次调用失败；没有切换模型") from exc

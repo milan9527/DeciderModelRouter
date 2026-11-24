@@ -1,0 +1,28 @@
+{
+  "bootstrap_complete": true,
+  "services": {
+    "dmr-decider": "active",
+    "dmr-h2o": "active",
+    "dmr-liquid": "active",
+    "dmr-gateway": "active"
+  },
+  "models": {
+    "decider": {
+      "status": "ok",
+      "engine": "vllm",
+      "model": "strands-decider-2B-hobson-v19-vllm",
+      "pending_requests": 0
+    },
+    "local_models": {
+      "status": "ok",
+      "resident": true,
+      "models": {
+        "liquid": true,
+        "h2o": true
+      },
+      "per_model_concurrency": 1,
+      "instance": "i-01180cf02d12e6e31"
+    }
+  },
+  "gpu": "NVIDIA A10G, 18819 MiB, 0 %"
+}

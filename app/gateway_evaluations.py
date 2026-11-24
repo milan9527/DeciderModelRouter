@@ -156,6 +156,7 @@ class Evaluations:
                             matches=matches,
                             exact_match=all(matches.values()),
                             model=result["model"],
+                            deployment=result.get("deployment"),
                             gpu_http_ms=result["timings"]["upstream_ms"],
                             usage=result.get("usage"),
                         )

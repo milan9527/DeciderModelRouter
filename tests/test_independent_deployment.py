@@ -65,6 +65,16 @@ def test_new_gpu_bootstrap_guards_source_and_fetches_fresh_credentials_at_runtim
     assert "fetch-router-key.py" in script
     assert "/decider-model-router/gpu" in script
     assert "Cognito" not in script and "cloudformation" not in script.lower()
+    ampere = bootstrap(
+        "arn:aws:secretsmanager:us-east-1:123456789012:secret:new", "i-original", "g5.xlarge"
+    )
+    assert len(ampere.encode()) < 16 * 1024
+    ampere_script = base64.b64decode(
+        json.loads(ampere.split("\n", 1)[1])["write_files"][0]["content"]
+    ).decode()
+    assert '"g5.xlarge"=="g5.xlarge"' in ampere_script
+    assert "--linear-backend marlin" in ampere_script
+    assert "H2O_LINEAR_BACKEND=marlin" in ampere_script
 
 
 def test_gpu_proxy_rejects_requests_when_configured_key_is_missing_or_empty(tmp_path, monkeypatch):

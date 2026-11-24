@@ -3,13 +3,13 @@
   "pytest": {
     "passed": 440,
     "warnings": 1,
-    "seconds": 41.71,
+    "seconds": 41.06,
     "scope": "full repository tests; mocked upstreams",
     "log": "full-tests-final.txt"
   },
   "lint": "passed on changed application, deployment, validation and test modules",
-  "api_image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router:independent-20261124-142039",
-  "image_digest": "sha256:ff059ba6c19994bdf84e3e084eb5bab2c336ca7dce379122a51faa6e520461e0",
+  "api_image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router:independent-provenance-20261124-160808",
+  "image_digest": "sha256:2f29179eb58e7dacf8d352e963f6669a9a2a64fa14da2566ff28990c68852529",
   "app_inputs": {
     "app/vision.py": "aeb5901bf5426768efc796ac3924df2b14e44497ae049b758c09df42df75f2df",
     "app/policy.py": "16400679686bfa8d038890877b322c86debcaa4006ae0ce86b6125a8dc6289fe",
@@ -51,7 +51,7 @@
     "app/gateway_history.py": "95f8db4a0882400d8bbc18b35ff8631b6317d034ee1c5d585d829dff663b9f4f",
     "app/gateway_accounts.py": "31bc53c1d0f8e4ab277d9c57e127e5ee47141190fd6fdf3b6c19a0cd9e623176",
     "app/gateway_templates.json": "a5b28755b08f7320914ab790aee74ca075ccaee3b61bc0203720538cb01c9f9b",
-    "app/gateway_evaluations.py": "1e8c32e8ef304721aa7223648d19f175f422a65593fad83ea5b33c9dfefee166",
+    "app/gateway_evaluations.py": "52c1bc20caf98722e71ee2a00baf93d4a538aec4cf8cb725216bd8d3ad31eb7b",
     "app/gateway_main.py": "0ee3fb41090298e12689940ef998b8bc227b89fd23ebc7b3ee7170ebf6354e6f"
   },
   "current_sources_match_image": true,
@@ -59,6 +59,8 @@
   "real_model_calls": 0,
   "deployment_regression": {
     "passed": 4,
-    "after": "dedicated GPU key, log group and early boot changes"
-  }
+    "after": "dedicated GPU boot, authentication and logs; A10G Marlin configuration; persisted evaluation deployment provenance"
+  },
+  "previous_image_digest": "sha256:ff059ba6c19994bdf84e3e084eb5bab2c336ca7dce379122a51faa6e520461e0",
+  "image_smoke_scope": "image-smoke.json verifies the prior ff059 image; the current image is validated by the final AWS live reports"
 }

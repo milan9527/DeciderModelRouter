@@ -2,7 +2,7 @@
 
 独立的 Amazon Bedrock 模型网关：GPU 决策模型识别任务，后端根据同批次评测、能力约束、参考费用和账户配额选择目标模型；前端展示分类、候选、执行与性能。
 
-生产服务使用专用 **CloudFront + OAC + 私有 S3、ECS Fargate、DynamoDB、g6.xlarge GPU 和 VPC**。自建用户认证，不使用 Cognito；基础设施通过 AWS SDK 创建，不使用 CloudFormation。[打开在线工作台](https://d3eipg2g3l3an3.cloudfront.net/gateway/index.html)，当前状态和资源见 [部署记录](deployment/DEPLOYED.md)。
+生产服务使用专用 **CloudFront + OAC + 私有 S3、ECS Fargate、DynamoDB、g5.xlarge GPU 和 VPC**。自建用户认证，不使用 Cognito；基础设施通过 AWS SDK 创建，不使用 CloudFormation。[打开在线工作台](https://d3eipg2g3l3an3.cloudfront.net/gateway/index.html)，当前状态和资源见 [部署记录](deployment/DEPLOYED.md)。
 
 - **会话与历史**：按账户隔离，跨登录和容器重启保存请求、阶段事件、输出、Token、费用、错误及人工验收，可检索、复用任务和导出。
 - **性能**：按时间与会话筛选，显示路由 P50/P95、完整执行数、目标模型对比和已知费用；回放不计入性能，未知用量不按零费用处理。

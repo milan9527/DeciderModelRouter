@@ -1,0 +1,64 @@
+{
+  "url": "https://d3eipg2g3l3an3.cloudfront.net",
+  "scenario": "smoke",
+  "fixture": false,
+  "http_route": {
+    "request_id": "85999dc1eb687e1cff3f2550",
+    "decision_model": "h2oai/h2o-lightning-4b",
+    "selected_model": "google.gemma-3-4b-it",
+    "gpu_round_trip_ms": 909.045,
+    "route_ms": 1029.823,
+    "benchmark_release": "2025-04-02"
+  },
+  "browser": {
+    "request_id": "dc0df6c5a589a105f5c26d1c",
+    "model_id": "google.gemma-3-4b-it",
+    "target_ms": 601.442,
+    "usage": {
+      "inputTokens": 21,
+      "outputTokens": 31,
+      "totalTokens": 52
+    },
+    "observed_reference_cost_usd": "0.00000239",
+    "total_ms": 1329.034
+  },
+  "assets": {
+    "index.html": "5be75f0f0377bf150575a652b49f9efca1eb96005f8d762eef0a669c3e6eeb2f",
+    "mark.svg": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+    "gateway.css": "e14a28e33e7799a81d99b87978e13e1f301f94cc0123e24d716bd843f64f7f9d",
+    "gateway.js": "b8265b0e85fbdff7f60e66b80a7986053378aacebe7f10aee24fdb667a5e231e",
+    "workspace.js": "bc15eb5ca180bed8e7f58b8ab21ef151f69210121e9c472da43d5b065be849dd"
+  },
+  "zero_quota_exclusions": [
+    "moonshotai.kimi-k3",
+    "zai.glm-5.3"
+  ],
+  "mapping_coverage": {
+    "mapped_models": 60,
+    "total_models": 124,
+    "counts": {
+      "unmapped": 10,
+      "specialized": 29,
+      "reference_only": 14,
+      "capacity_variant": 11,
+      "benchmarked": 51,
+      "configuration_pending": 9
+    }
+  },
+  "duplicate_request_rejected": 409,
+  "persistence": {
+    "backend": "DynamoDB",
+    "baseline_live_requests": 0,
+    "live_requests": 2,
+    "saved_run_ids": [
+      "85999dc1eb687e1cff3f2550",
+      "dc0df6c5a589a105f5c26d1c"
+    ],
+    "survives_browser_reload": true,
+    "route_tokens_removed": true
+  },
+  "browser_errors": [],
+  "gpu_calls": 2,
+  "bedrock_target_calls": 1,
+  "status": "passed"
+}

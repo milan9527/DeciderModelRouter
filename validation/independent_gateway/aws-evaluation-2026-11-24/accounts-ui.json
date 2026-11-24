@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "admin_and_disabled_test_user_rendered": true,
+  "disabled_user_action": "启用",
+  "browser_errors": [],
+  "gpu_calls": 0,
+  "bedrock_calls": 0,
+  "scope": "Read-only recapture after awaiting the account table response"
+}
