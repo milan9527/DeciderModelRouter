@@ -1,0 +1,29 @@
+{
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "root_status": 200,
+  "redirect": false,
+  "job_id": "f263333e0db0e16e53b73a5a",
+  "status": "completed",
+  "scenario_count": 87,
+  "case_count": 87,
+  "dataset_version": "6feb4fe4b201b8a7",
+  "new_model_calls": 0,
+  "current_suite_version": "6feb4fe4b201b8a7",
+  "reload_persisted": true,
+  "export_without_receipts": true,
+  "exported_rows": 531,
+  "exported_reviewed_observations": 105,
+  "review_methods_visible": true,
+  "mobile_overflow": false,
+  "new_evaluation_default_output_cap": 16384,
+  "historical_output_cap": 16384,
+  "incomplete_distinct_from_bad_answer": true,
+  "browser_errors": [],
+  "deployed_asset_sha256": {
+    "index.html": "15c36bb7e934cabab9522094cd824bdf99e5aff28d4924910c8feae84500ea39",
+    "gateway.js": "eb5953d4de4355a220f899e9565db99620f07defdeb554e8334569e2f74667c7",
+    "gateway.css": "79b004e0bb4c6e3d24ec3ffe2d21335277844079a3154f9c9145bd7cf95dbfdd",
+    "workspace.js": "96d0b763d9fdd0038a90d61645fcb02b6406eda3ac20941a0b8f4884b87eb3f4",
+    "mark.svg": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "checked_at": "2026-11-25T04:58:33.624371+00:00",
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:7",
+  "running": 1,
+  "pending": 0,
+  "deployments": [
+    {
+      "status": "PRIMARY",
+      "rolloutState": "COMPLETED",
+      "taskDefinition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:7"
+    }
+  ],
+  "tasks": [
+    {
+      "taskArn": "arn:aws:ecs:us-east-1:632930644527:task/decider-model-router/a451d521280b423d9d41b14b3e44905c",
+      "healthStatus": "HEALTHY",
+      "image_digests": [
+        "sha256:53ff10df72c3560d9c39820553809dec2168af87cf172f4907d7797db8a51a2b"
+      ]
+    }
+  ],
+  "cloudfront": {
+    "id": "E3OCAAF3NQ1LYX",
+    "status": "Deployed",
+    "domain": "d3eipg2g3l3an3.cloudfront.net"
+  },
+  "original_service_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:36",
+  "gpu_instances": [
+    {
+      "id": "i-0ae7eb0abcb815af3",
+      "type": "g6.xlarge",
+      "state": "running",
+      "launched_at": "2026-11-24T10:16:20+00:00"
+    },
+    {
+      "id": "i-01180cf02d12e6e31",
+      "type": "g5.xlarge",
+      "state": "running",
+      "launched_at": "2026-11-24T15:32:58+00:00"
+    }
+  ],
+  "new_deployment": false,
+  "new_gpu_instance": false
+}

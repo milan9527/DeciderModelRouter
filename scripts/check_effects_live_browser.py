@@ -47,6 +47,10 @@ def main():
             page.locator("#export-effect").click()
         job = json.loads(Path(download.value.path()).read_text())
         assert job["id"] == args.job_id and len(job["dataset_version"]) == 16
+        assert len(job["results"]) == job["recorded_rows"]
+        assert len({r["id"] for r in job["results"]}) == job["recorded_rows"]
+        assert sum(r["arm"] == "routed" for r in job["results"]) == len(job["cases"]) * len(job["providers"])
+        reviewed_observations = {r["observation_id"] for r in job["results"] if r.get("review")}
         assert "route_token" not in json.dumps(job)
         expect(page.locator("#effect-result")).to_contain_text(f"本批输出上限 {job['max_output_tokens']} tokens")
         incomplete = next((r for r in job["results"] if r["arm"] == "routed" and r["status"] == "incomplete"), None)
@@ -82,6 +86,8 @@ def main():
             "dataset_version": job["dataset_version"], "new_model_calls": 0,
             "current_suite_version": suite()["version"],
             "reload_persisted": True, "export_without_receipts": True,
+            "exported_rows": job["recorded_rows"],
+            "exported_reviewed_observations": len(reviewed_observations),
             "review_methods_visible": True, "mobile_overflow": False,
             "new_evaluation_default_output_cap": 16384,
             "historical_output_cap": job["max_output_tokens"],

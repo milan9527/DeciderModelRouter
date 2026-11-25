@@ -1,0 +1,33 @@
+{
+  "method": "assistant_review",
+  "image_edit": {
+    "row_id": "0465",
+    "status": "fail",
+    "basis": "Viewed source and generated PNG on checkerboard; B bar removed and A bar largely transparent.",
+    "sha256": "029508c23b680b9adc2d54e98f44c7ff9d3b6c7c731ddc7829cc9009dc1dc48c",
+    "red_bar_center_rgba": [
+      255,
+      0,
+      0,
+      27
+    ],
+    "blue_bar_center_rgba": [
+      0,
+      0,
+      255,
+      0
+    ]
+  },
+  "video": {
+    "row_id": "0462",
+    "status": "pass",
+    "fixture_sha256": "0cd83d944a6ca7822b4a8306cecc60a36e859b041f6702c6a1ad9ead78924451",
+    "reference_frames": "../../full-effects-2026-11-25/video-contact-sheet.png",
+    "basis": "Viewed unchanged reference frames; current output describes red bud opening to expose yellow center among green leaves."
+  },
+  "tts": {
+    "row_id": "0456",
+    "status": "pending",
+    "basis": "WAV structure and duration verified; no listening/semantic quality assessment."
+  }
+}

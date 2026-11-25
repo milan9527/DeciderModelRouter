@@ -1,0 +1,22 @@
+{
+  "checked_at": "2026-11-25T04:41:41.672233+00:00",
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:7",
+  "git_commit": "37bee950e96743957fed61b726b4f7a0057524f8",
+  "cases": 87,
+  "case_version": "6feb4fe4b201b8a7",
+  "judge_version": "effect-judge-v2",
+  "default_output_cap": 16384,
+  "active_jobs": [],
+  "source_sha256": {
+    "app/gateway_effects.py": "f8e732eae74b213847fbdde7b60f2a5104b7e4f3e6a36cfa2ca1d04740ba2365",
+    "app/gateway_effect_judge.py": "fcdde1d75efbf6209185bef128d7bd56968e09907fbf171c3e14f415c84ad558",
+    "app/gateway_effect_cases.py": "89ab18b11fe0555bb0720bbfe831a7fa32295bcf866073b08e0fb17f67b973c6",
+    "app/routing.py": "859b38dc25cce4e1e4ab3b3ddc4a31c82bf324247865b92cfb0afe52ed827d9c",
+    "app/routing_profile.py": "24d7c0a8b29deec1e4ee7017ddc0bbdd343c7133691f2931c54c1d2752f59953",
+    "app/routing_selector.py": "b27611761106fdab75253f809a84452fefac07b2963b10778b40f4735beb91bb",
+    "app/routing_balance.py": "0786a714e2634bc38ee2595f73be7b9ac90eff24c31e597b67a6c18ff67e1441",
+    "app/gateway_decision.py": "9233b96b0ea8b7796fd8a4f681e013a253b9b4411518890580ef47469be8a2b1",
+    "app/media_execution.py": "6f9886b8280edada2e774f6945965893e214724b5155156716535b36d5edd953",
+    "app/routing_rankings.json": "a57dcd35734b167df46990e702896fad26a914e223bb7b7d3d9498c83898afb6"
+  }
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "row_id": "0295",
+    "observation_id": "f1f8e53e8465e1b1589dea7a",
+    "output_text_sha256": "c5a837e1ea3d7aa236b10ab8a83b1de66ca5c98e4d378bda5aa1c128472710cb",
+    "status": "pass",
+    "method": "isolated_tests",
+    "reason": "隔离容器功能测试：python-dedup；{\"tests\":103,\"passed\":103,\"failures\":[]}；source_sha256=c5a837e1ea3d7aa236b10ab8a83b1de66ca5c98e4d378bda5aa1c128472710cb；image=sha256:7f5579c524dba35ae72eaa95dc0479c33a68f1d43db7db1c26df82f7c90d0dff。公开开发回归测试，不是独立隐藏基准。"
+  },
+  {
+    "row_id": "0297",
+    "observation_id": "e422694e5f36bb47d25c48d7",
+    "output_text_sha256": "30fe2d1d40e697eaf35406f71ef26410642e204864a630183e53351ab6dda8a7",
+    "status": "pass",
+    "method": "isolated_tests",
+    "reason": "隔离容器功能测试：python-dedup；{\"tests\":103,\"passed\":103,\"failures\":[]}；source_sha256=30fe2d1d40e697eaf35406f71ef26410642e204864a630183e53351ab6dda8a7；image=sha256:7f5579c524dba35ae72eaa95dc0479c33a68f1d43db7db1c26df82f7c90d0dff。公开开发回归测试，不是独立隐藏基准。"
+  },
+  {
+    "row_id": "0301",
+    "observation_id": "0b6d34667dd786468ad1d862",
+    "output_text_sha256": "89892e48588ba54075d7402a8a7860b3c61bcf5820f77d849629495c65f7ec7b",
+    "status": "fail",
+    "method": "isolated_tests",
+    "reason": "隔离容器功能测试：python-dedup；{\"tests\":0,\"passed\":0,\"error\":\"SyntaxError\",\"detail\":\"Traceback (most recent call last):\\n  File \\\"/work/check.py\\\", line 55, in <module>\\n    result = run()\\n             ^^^^^\\n  File \\\"/work/check.py\\\", line 8, in run\\n    exec(compile(pathlib.Path(\\\"/work/answer.py\\\").read_text(), \\\"answer.py\\\", \\\"exec\\\"), scope)\\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"answer.py\\\", line 1\\n    ```python\\n    ^\\nSyntaxError: invalid syntax\\n\"}；source_sha256=89892e48588ba54075d7402a8a7860b3c61bcf5820f77d849629495c65f7ec7b；image=sha256:7f5579c524dba35ae72eaa95dc0479c33a68f1d43db7db1c26df82f7c90d0dff。公开开发回归测试，不是独立隐藏基准。本例违反明确的“不要围栏”要求，Markdown 围栏使原样执行出现 SyntaxError；不据此断言去重算法错误。"
+  },
+  {
+    "row_id": "0304",
+    "observation_id": "954879386b937795ec0b7bd8",
+    "output_text_sha256": "ca9d9393187abbe52756092c9307319621b116dc663e42421d907a32549d80d1",
+    "status": "pass",
+    "method": "isolated_tests",
+    "reason": "隔离容器功能测试：python-brackets；{\"tests\":108,\"passed\":108,\"failures\":[]}；source_sha256=ca9d9393187abbe52756092c9307319621b116dc663e42421d907a32549d80d1；image=sha256:7f5579c524dba35ae72eaa95dc0479c33a68f1d43db7db1c26df82f7c90d0dff。公开开发回归测试，不是独立隐藏基准。"
+  },
+  {
+    "row_id": "0306",
+    "observation_id": "a4bf4babaad4098d90142958",
+    "output_text_sha256": "fefe51de240b8d01e4b80a52cb4ce18b98f7f4b171bcd6bd9d4d4a32e4cc0844",
+    "status": "pass",
+    "method": "isolated_tests",
+    "reason": "隔离容器功能测试：python-brackets；{\"tests\":108,\"passed\":108,\"failures\":[]}；source_sha256=fefe51de240b8d01e4b80a52cb4ce18b98f7f4b171bcd6bd9d4d4a32e4cc0844；image=sha256:7f5579c524dba35ae72eaa95dc0479c33a68f1d43db7db1c26df82f7c90d0dff。公开开发回归测试，不是独立隐藏基准。"
+  },
+  {
+    "row_id": "0310",
+    "observation_id": "1f1fc739f7526f416e1651b8",
+    "output_text_sha256": "0038a920e9ed516fea155d67e60f191a800d1482acaf44a82ebf89f268fc5920",
+    "status": "pass",
+    "method": "isolated_tests",
+    "reason": "隔离容器功能测试：python-brackets；{\"tests\":108,\"passed\":108,\"failures\":[]}；source_sha256=0038a920e9ed516fea155d67e60f191a800d1482acaf44a82ebf89f268fc5920；image=sha256:7f5579c524dba35ae72eaa95dc0479c33a68f1d43db7db1c26df82f7c90d0dff。公开开发回归测试，不是独立隐藏基准。"
+  },
+  {
+    "row_id": "0313",
+    "observation_id": "1c9845124ab91129b7b5cf47",
+    "output_text_sha256": "66d5df7359ab3b2dbed92199e31aff3b499a95531ec29f426a3e7569a2308b9d",
+    "status": "pass",
+    "method": "isolated_tests",
+    "reason": "隔离容器功能测试：python-merge；{\"tests\":105,\"passed\":105,\"failures\":[]}；source_sha256=66d5df7359ab3b2dbed92199e31aff3b499a95531ec29f426a3e7569a2308b9d；image=sha256:7f5579c524dba35ae72eaa95dc0479c33a68f1d43db7db1c26df82f7c90d0dff。公开开发回归测试，不是独立隐藏基准。"
+  },
+  {
+    "row_id": "0315",
+    "observation_id": "91342cb87c8e6b42a675c50a",
+    "output_text_sha256": "8e85dcf8a7b981c65c03d02da0441cef667f6bee38267475353ecf1ba420b43d",
+    "status": "pass",
+    "method": "isolated_tests",
+    "reason": "隔离容器功能测试：python-merge；{\"tests\":105,\"passed\":105,\"failures\":[]}；source_sha256=8e85dcf8a7b981c65c03d02da0441cef667f6bee38267475353ecf1ba420b43d；image=sha256:7f5579c524dba35ae72eaa95dc0479c33a68f1d43db7db1c26df82f7c90d0dff。公开开发回归测试，不是独立隐藏基准。"
+  },
+  {
+    "row_id": "0319",
+    "observation_id": "84cf1f84ae20a997776ad2e4",
+    "output_text_sha256": "1293cd70d8f841195350dd6abc00fec410f10777b5534e6c1e6034dba23937cb",
+    "status": "pass",
+    "method": "isolated_tests",
+    "reason": "隔离容器功能测试：python-merge；{\"tests\":105,\"passed\":105,\"failures\":[]}；source_sha256=1293cd70d8f841195350dd6abc00fec410f10777b5534e6c1e6034dba23937cb；image=sha256:7f5579c524dba35ae72eaa95dc0479c33a68f1d43db7db1c26df82f7c90d0dff。公开开发回归测试，不是独立隐藏基准。"
+  }
+]

@@ -31,6 +31,7 @@ def main():
             unique.setdefault(row["observation_id"], row)
     known = [float(r["output"]["observed_reference_cost_usd"]) for r in unique.values()
              if r.get("output", {}).get("observed_reference_cost_usd") is not None]
+    unique_statuses = Counter(r["status"] for r in unique.values())
     families = defaultdict(list)
     for c in j["cases"]:
         families[c["family"]].append(c)
@@ -40,7 +41,8 @@ def main():
         f"{len(j['cases'])} 个场景、{len(families)} 类、{len(j['providers'])} 种决策模型；"
         f"GPU调用尝试 {j['started_gpu_calls']}/{j['planned_gpu_calls']}；"
         f"Bedrock目标调用尝试 {j['target_model_calls']}/{j['max_target_calls']}，共享目标结果 {j['reused_observations']} 次。", "",
-        f"每次目标输出上限 {j['max_output_tokens']} tokens。{j['note']}", "",
+        f"批次请求的目标输出上限 {j['max_output_tokens']} tokens；"
+        f"专用适配器可采用更低上限，以实际输出记录为准。{j['note']}", "",
         "**这是公开开发回归集，不是隐藏测试集。** 每种情况的样本量有限，"
         "共享输出也不是独立重复。以下任务通过率必须与覆盖率、未测、缺口和评审来源一起阅读。", "",
         "## 路由器对比", "",
@@ -70,6 +72,10 @@ def main():
               f"已知部分参考费用合计 **${sum(known):.6f}**。"
               "未返回结果、未知价格及GPU/ECS/存储/网络费用未补零；这不是AWS账单或完整每成功任务成本。"
               "上表三行描述不同路由方案，含共享观察，不可直接相加。", "",
+              f"包括低价/高能力对照在内，独立目标观察共有："
+              f"完整输出 {unique_statuses['completed']} 个、输出未完成 {unique_statuses['incomplete']} 个、"
+              f"调用错误 {unique_statuses['error']} 个。完整输出不等于质量通过；"
+              "对照异常不能从路由方案的零错误推断为不存在。", "",
               "延迟来自顺序执行；目标分位数仅使用返回结果中带有耗时的观察，不含无法取回耗时的失败。"
               "GPU往返含服务处理和传输，不是纯CUDA耗时。", "",
               "## 低价与高能力对照", "",

@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-11-25T05:22:28.478506+00:00",
+  "ruff": "passed: comparison, report and browser scripts",
+  "comparison_self_check": "261 identical pairs with equal summaries/costs on same-export comparison",
+  "full_run_comparison": "261 matched routed cases, identical task/fixture names, judge changes only probability and video-caption",
+  "code_observations": 9,
+  "code_pass": 8,
+  "code_assertions_passed": 845,
+  "code_failed_reason": "Explicitly prohibited Markdown fence caused SyntaxError before tests",
+  "report_includes_baseline_exception_counts": true,
+  "changed_json_and_markdown_links_valid": true,
+  "application_files_changed": false
+}

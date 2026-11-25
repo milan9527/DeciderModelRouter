@@ -1,0 +1,40 @@
+[
+  {
+    "row_id": "0456",
+    "observation_id": "954e7e4dddba4ea4f536e23d",
+    "case_id": "tts",
+    "file": "tts-0456.wav",
+    "sha256": "6c5d95aac08288c2537bb06761b92f0d87da1a0c947851b5f9ea384444d7ac4b",
+    "bytes": 130604,
+    "wav": {
+      "channels": 1,
+      "sample_rate": 24000,
+      "sample_width": 2,
+      "frames": 65280,
+      "seconds": 2.72
+    },
+    "quality_review": "pending: format checked; no listening or semantic accuracy assessment"
+  },
+  {
+    "row_id": "0465",
+    "observation_id": "ddd29d74cb0d303fc3a1aee7",
+    "case_id": "image-edit",
+    "file": "image-edit-0465.png",
+    "sha256": "029508c23b680b9adc2d54e98f44c7ff9d3b6c7c731ddc7829cc9009dc1dc48c",
+    "bytes": 24539,
+    "image": {
+      "size": [
+        512,
+        384
+      ],
+      "transparent_pixels": 180957,
+      "opaque_pixels": 1,
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    "comparison": "image-edit-0465-comparison.png",
+    "quality_review": "pending: must inspect subject retention, not alpha alone"
+  }
+]

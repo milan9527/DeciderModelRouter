@@ -1,0 +1,93 @@
+[
+  {
+    "observation_id": "5b57ebc21bb545d6c88a8d04",
+    "case_id": "security-code",
+    "first_row_id": "0352",
+    "status": "incomplete",
+    "model_id": "anthropic.claude-haiku-5-5",
+    "output": {
+      "text": "已达到 16384 输出 token 上限；模型仅返回推理内容，尚未生成最终答复。本次任务未完成，未自动重试或降低评测配置。",
+      "has_final_text": false,
+      "usage": {
+        "inputTokens": 40,
+        "outputTokens": 16384,
+        "totalTokens": 16424,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "stop_reason": "max_tokens",
+      "complete": false,
+      "model_id": "anthropic.claude-haiku-5-5",
+      "invoke_id": "us.anthropic.claude-haiku-5-5",
+      "backend_total_ms": 67099.463,
+      "timings": {
+        "queue_ms": 0.038,
+        "upstream_ms": 67099.407
+      },
+      "source": "live",
+      "ranking_version": "1d0a074a9e3a3fba",
+      "request_fields": {
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "max"
+        }
+      },
+      "strategy": "classified",
+      "evidence_version": "bedrock-classified-v3",
+      "cost_evidence": {
+        "expected_usd": "0.0000726",
+        "at_output_cap_usd": "0.0082006"
+      },
+      "observed_reference_cost_usd": "0.008196"
+    },
+    "error": null,
+    "references": [
+      {
+        "row_id": "0346",
+        "provider": "decider",
+        "arm": "low"
+      },
+      {
+        "row_id": "0349",
+        "provider": "liquid",
+        "arm": "low"
+      },
+      {
+        "row_id": "0352",
+        "provider": "h2o",
+        "arm": "low"
+      }
+    ]
+  },
+  {
+    "observation_id": "114dcb1085bfbfcbc5d0119c",
+    "case_id": "security-code",
+    "first_row_id": "0353",
+    "status": "error",
+    "model_id": "anthropic.claude-opus-5-5",
+    "output": null,
+    "error": {
+      "code": 502,
+      "message": "目标模型没有返回当前适配器支持的结果。"
+    },
+    "references": [
+      {
+        "row_id": "0347",
+        "provider": "decider",
+        "arm": "high"
+      },
+      {
+        "row_id": "0350",
+        "provider": "liquid",
+        "arm": "high"
+      },
+      {
+        "row_id": "0353",
+        "provider": "h2o",
+        "arm": "high"
+      }
+    ]
+  }
+]
