@@ -420,7 +420,8 @@
                   </details>
                   <label class="check"><input type="checkbox" id="effect-baselines" />比较低价 / 高能力策略（可能增加目标调用）</label>
                   <label>目标调用总上限<select id="effect-call-cap"><option value="24">24 次</option><option value="96" selected>96 次</option><option value="192">192 次</option><option value="0">0 次，仅检查路由</option></select></label>
-                  <label>每次输出 token 上限<select id="effect-token-cap"><option value="1024">1024</option><option value="2048">2048</option><option value="4096">4096</option><option value="8192">8192</option><option value="16384">16384</option></select></label>
+                  <label>每次输出 token 上限<select id="effect-token-cap"><option value="1024">1024</option><option value="2048">2048</option><option value="4096">4096</option><option value="8192">8192</option><option value="16384" selected>16384（默认）</option></select></label>
+                  <p class="footnote">推理与最终回答共用输出预算。默认提高到 16384，模型可以提前结束；较大上限可能增加耗时和费用。历史批次保留原上限，修改此处只影响新评测。</p>
                   <p id="effect-budget" class="form-note"></p>
                   <button id="effect-start" class="primary">开始效果评测 →</button>
                 </form>

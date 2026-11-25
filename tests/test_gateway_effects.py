@@ -99,6 +99,8 @@ def test_live_pipeline_persists_outputs_deduplicates_and_never_sends_gold(client
     sent = json.dumps(gateway_main.app.state.bedrock.converse.call_args.kwargs, ensure_ascii=False)
     assert "秘密" not in sent
     assert gateway_main.app.state.bedrock.converse.call_count == 1
+    assert job["max_output_tokens"] == 16384
+    assert gateway_main.app.state.bedrock.converse.call_args.kwargs["inferenceConfig"]["maxTokens"] == 16384
     assert client.get("/api/gateway/effects").json()["items"][0]["id"] == job["id"]
 
 
@@ -153,6 +155,47 @@ def test_custom_cases_and_call_limits_are_validated(client):
     assert client.post("/api/gateway/effects", json={"providers": ["h2o"], "case_ids": ["greeting"], "max_output_tokens": 16385}).status_code == 422
     job = finished(client, {"providers": ["h2o"], "case_ids": ["greeting"], "max_output_tokens": 16384, "max_target_calls": 0})
     assert job["results"][0]["task"]["routing_preferences"]["max_output_tokens"] == 16384
+
+
+@pytest.mark.parametrize("case_fields,expected_cap", [
+    ({"case_ids": ["greeting"]}, 16384),
+    ({"custom_cases": [{"title": "自定义", "task": {"text": "hi"}, "rubric": "回应问候"}]}, 16384),
+    ({"custom_cases": [{"title": "自定义", "task": {"text": "hi", "routing_preferences": {
+        "max_output_tokens": 2048,
+    }}, "rubric": "回应问候"}]}, 2048),
+])
+def test_new_budget_applies_without_overriding_explicit_case_limit(client, case_fields, expected_cap):
+    job = finished(client, {"providers": ["h2o"], "max_target_calls": 0, **case_fields})
+    assert job["max_output_tokens"] == 16384
+    assert job["results"][0]["task"]["routing_preferences"]["max_output_tokens"] == expected_cap
+
+
+def test_summary_separates_bad_answers_incomplete_outputs_and_call_errors():
+    def row(cid, status, grade_status, complete=None):
+        result = {"case_id": cid, "provider": "h2o", "arm": "routed", "status": status,
+                  "grade": {"status": grade_status}}
+        if complete is not None:
+            result["output"] = {"complete": complete}
+        return result
+
+    rows = [
+        row("good", "completed", "pass", True),
+        row("wrong", "completed", "fail", True),
+        row("truncated", "incomplete", "fail", False),
+        row("timeout", "error", "fail"),
+        row("review-later", "completed", "pending", True),
+        row("gap", "capability_gap", "unmeasured"),
+    ]
+    # A reviewed complete answer uses the recorded review, not its stale auto grade.
+    rows.append({**row("corrected", "completed", "fail", True), "review": {"status": "pass"}})
+    rows.append({**row("baseline", "incomplete", "fail", False), "arm": "low"})
+    result = summarize(rows, ["h2o"], 7)[0]
+    assert result["answer_failed"] == result["output_incomplete"] == result["errors"] == 1
+    assert result["quality_pass"] == 2 and result["quality_graded"] == 5
+    assert result["quality_graded"] == (
+        result["quality_pass"] + result["answer_failed"] + result["output_incomplete"] + result["errors"]
+    )
+    assert result["pending"] == result["gaps"] == 1
 
 
 def test_summary_compares_only_graded_baselines_with_known_costs():

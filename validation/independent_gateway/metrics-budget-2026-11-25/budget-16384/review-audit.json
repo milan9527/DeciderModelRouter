@@ -1,0 +1,15 @@
+[
+  {
+    "id": "0000",
+    "case_id": "custom-1",
+    "observation_id": "621194d4b4716217d36a5adf",
+    "review": {
+      "status": "pass",
+      "reason": "回答使用稳定业务入账键与持久唯一约束，明确只有插入新流水的事务增加余额，流水、原子余额增量和订单状态同事务；说明并发唯一键竞争、事务提交前回滚、提交后未确认和提交结果未知的重试边界，并在提交后确认回调。满足本题三项设计验收标准；本项为助手内容评审，未执行数据库故障注入。",
+      "method": "assistant_review",
+      "source": "account_review",
+      "reviewer": "admin",
+      "created_at": 1795581558006
+    }
+  }
+]

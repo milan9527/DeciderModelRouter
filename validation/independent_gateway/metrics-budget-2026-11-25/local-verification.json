@@ -1,0 +1,11 @@
+{
+  "software_tests_passed": 492,
+  "effect_tests_passed": 34,
+  "lint": "passed",
+  "javascript_syntax": "passed",
+  "local_browser": "passed",
+  "new_default_output_cap": 16384,
+  "explicit_lower_custom_cap_preserved": true,
+  "complete_answer_failure_separate_from_incomplete": true,
+  "original_grades_preserved": true
+}

@@ -1,0 +1,32 @@
+{
+  "checked_at": "2026-11-25T04:37:39.372347+00:00",
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:7",
+  "image_digest": "sha256:53ff10df72c3560d9c39820553809dec2168af87cf172f4907d7797db8a51a2b",
+  "rollout": "COMPLETED",
+  "running": 1,
+  "pending": 0,
+  "current_task_target": {
+    "ip": "10.146.10.172",
+    "state": "healthy"
+  },
+  "target_states": [
+    "draining",
+    "healthy"
+  ],
+  "invalidation": "Completed",
+  "original_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:36",
+  "gpu": [
+    {
+      "id": "i-0ae7eb0abcb815af3",
+      "state": "running",
+      "launch_time": "2026-11-24T10:16:20+00:00"
+    },
+    {
+      "id": "i-01180cf02d12e6e31",
+      "state": "running",
+      "launch_time": "2026-11-24T15:32:58+00:00"
+    }
+  ],
+  "new_model_calls": 0,
+  "resource_mutations": 0
+}

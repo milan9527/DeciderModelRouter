@@ -42,7 +42,7 @@ class EffectBody(StrictModel):
     custom_cases: list[CustomCase] = Field(default_factory=list, max_length=8)
     baselines: bool = False
     max_target_calls: int = Field(default=96, ge=0, le=192, strict=True)
-    max_output_tokens: int = Field(default=1024, ge=128, le=16384, strict=True)
+    max_output_tokens: int = Field(default=16384, ge=128, le=16384, strict=True)
 
     @model_validator(mode="after")
     def bounded(self):
@@ -130,7 +130,7 @@ class EffectEvaluations(Evaluations):
             await run_in_threadpool(request.app.state.media.resolve, user, c.task.attachments)
             cases.append({
                 "id": f"custom-{i + 1}", "title": c.title, "family": "自定义",
-                "task": c.task.model_dump(mode="json"), "fixture": None, "gap": None,
+                "task": c.task.model_dump(mode="json", exclude_unset=True), "fixture": None, "gap": None,
                 "allowed_workflows": [],
                 "judge": {"kind": "exact" if c.expected_text is not None else "manual",
                           "expected": c.expected_text, "rubric": c.rubric},

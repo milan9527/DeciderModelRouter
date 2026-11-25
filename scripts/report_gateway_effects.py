@@ -5,7 +5,7 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from app.gateway_effect_judge import effective_grade
+from app.gateway_effect_judge import effective_grade, summarize
 from app.gateway_store import percentile
 
 
@@ -23,6 +23,7 @@ def main():
     p.add_argument("--output", required=True, type=Path)
     args = p.parse_args()
     j = json.loads(args.evaluation.read_text())
+    j["summary"] = summarize(j["results"], j["providers"], len(j["cases"]))
     routed = [r for r in j["results"] if r["arm"] == "routed"]
     unique = {}
     for row in j["results"]:
@@ -41,17 +42,21 @@ def main():
         f"Bedrock目标调用尝试 {j['target_model_calls']}/{j['max_target_calls']}，共享目标结果 {j['reused_observations']} 次。", "",
         f"每次目标输出上限 {j['max_output_tokens']} tokens。{j['note']}", "",
         "**这是公开开发回归集，不是隐藏测试集。** 每种情况的样本量有限，"
-        "共享输出也不是独立重复。以下质量率必须与覆盖率、未测、缺口和评审来源一起阅读。", "",
+        "共享输出也不是独立重复。以下任务通过率必须与覆盖率、未测、缺口和评审来源一起阅读。", "",
         "## 路由器对比", "",
-        "| 决策模型 | 输出完成/全部场景 | 工作流相容/已查 | 质量通过/已评分 | 通过率 | 评分覆盖率 | 待评 | 无候选/缺口/未接通 | 调用失败 | 预算未测 |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        "| 决策模型 | 输出完成/全部场景 | 任务类型判断正确/已检查 | 任务通过/已判定 | 通过率 | 完整答案不合格 | 输出未完成 | 评分覆盖率 | 待评 | 无候选/缺口/未接通 | 调用失败 | 预算未测 |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for s in j["summary"]:
         lines.append(f"| {s['provider']} | {s['target_completed']}/{s['planned']} | "
                      f"{s['workflow_fit']}/{s['workflow_checked']} | {s['quality_pass']}/{s['quality_graded']} | {rate(s['quality_pass_rate'])} | "
+                     f"{s['answer_failed']} | {s['output_incomplete']} | "
                      f"{rate(s['quality_coverage'])} | {s['pending']} | {s['gaps']} | {s['errors']} | {s['budget_skipped']} |")
     lines += ["", "“无候选/缺口”包含预期的费用和输入边界拒绝，不能全部解释为分类失败；详见逐场景记录。"
               "目标调用失败计入已评分失败，未接通及未评审不会被算成通过。", "",
+              "任务类型判断正确表示识别的用途与请求匹配，例如没有把文字问候误分为语音生成；"
+              "不代表所选型号最优。任务通过要求完整输出并满足验收规则。完整答案不合格与输出未完成分别计数；"
+              "截断是该预算内未完成交付，不等于模型答错。历史原始判分不变。", "",
               "## 延迟与成本", "",
               "| 决策模型 | GPU分类往返 P50/P95 ms | 完整路由 P50/P95 ms | 有结果目标调用 P50/P95 ms | 路由方案已知参考费用 USD | 价格已知/目标观察 |",
               "|---|---:|---:|---:|---:|---:|"]
@@ -109,7 +114,11 @@ def main():
                 cells.append("尚无记录")
                 continue
             text = labels.get(effective_grade(row)["status"], effective_grade(row)["status"])
-            if row["status"] in states:
+            if row["status"] == "incomplete":
+                text = "输出未完成（含截断）"
+            elif row.get("output", {}).get("complete") and effective_grade(row)["status"] == "fail":
+                text = "完整答案不合格"
+            elif row["status"] in states:
                 text += " · " + states[row["status"]]
             if row.get("boundary_check") is not None:
                 text += " · 边界检查" + ("通过" if row["boundary_check"] else "失败")

@@ -111,6 +111,11 @@ def summarize(rows, providers, planned):
             "workflow_fit": sum(r.get("workflow_fit") is True for r in sample),
             "workflow_checked": sum(r.get("workflow_fit") is not None for r in sample),
             "target_completed": sum(r.get("output", {}).get("complete") is True for r in sample),
+            "answer_failed": sum(
+                r.get("output", {}).get("complete") is True and effective_grade(r)["status"] == "fail"
+                for r in sample
+            ),
+            "output_incomplete": sum(r["status"] == "incomplete" for r in sample),
             "quality_pass": passed, "quality_graded": graded,
             "quality_pass_rate": passed / graded if graded else None,
             "quality_coverage": graded / len(sample) if sample else None,

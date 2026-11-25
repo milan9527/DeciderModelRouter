@@ -19,7 +19,7 @@ def main():
     p.add_argument("--cases", nargs="+", help="Omit to run the entire extensible catalog")
     p.add_argument("--baselines", action="store_true")
     p.add_argument("--max-target-calls", type=int, default=192)
-    p.add_argument("--max-output-tokens", type=int, default=2048)
+    p.add_argument("--max-output-tokens", type=int, default=16384)
     p.add_argument("--resume", help="Existing job ID; performs no new model calls")
     args = p.parse_args()
     args.output.mkdir(parents=True, exist_ok=bool(args.resume))

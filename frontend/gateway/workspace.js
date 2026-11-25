@@ -193,23 +193,31 @@ export class Workspace {
     const percent = (v) => v == null ? "未测" : `${(v * 100).toFixed(1)}%`;
     const state = { pass: "通过", fail: "失败", pending: "待人工评分", unmeasured: "未测" };
     const rowStates = { capability_gap: "能力/评测缺口", execution_blocked: "执行未接通", budget_exhausted: "调用预算已用完", no_route: "无候选", error: "调用失败", completed: "输出已完成", incomplete: "输出未完成" };
+    const resultLabel = (r) => {
+      if (r.status === "incomplete") return "输出未完成（含截断）";
+      if (r.status === "error") return "调用失败";
+      const g = r.review || r.grade;
+      if (r.output?.complete && g.status === "fail") return "完整答案不合格";
+      return `${state[g.status] || g.status} · ${rowStates[r.status] || r.status}`;
+    };
     $("#effect-result").hidden = false;
     $("#effect-result").innerHTML = `<div class="panel-heading"><h2>效果结果 · ${this.esc(labels[job.status] || job.status)}</h2><button id="export-effect" class="text-button">导出完整 JSON ↓</button>${job.status === "running" ? '<button id="cancel-effect" class="text-button">停止后续评测</button>' : ""}</div>
-      <p>GPU ${job.started_gpu_calls} / ${job.planned_gpu_calls} · 目标调用尝试 ${job.target_model_calls} / ${job.max_target_calls} · 共享目标结果 ${job.reused_observations} 次 · 数据集 ${this.esc(job.dataset_version)}</p><p class="footnote">${this.esc(job.note)}</p>
+      <p>GPU ${job.started_gpu_calls} / ${job.planned_gpu_calls} · 目标调用尝试 ${job.target_model_calls} / ${job.max_target_calls} · 共享目标结果 ${job.reused_observations} 次 · 本批输出上限 ${job.max_output_tokens} tokens · 数据集 ${this.esc(job.dataset_version)}</p><p class="footnote">${this.esc(job.note)}</p>
       ${(job.reference_errata || []).map((e) => `<p class="form-note">参考勘误 · ${this.esc(e.case_id)}：${this.esc(e.corrected)} ${this.esc(e.basis)} 原始场景快照保留在导出中。</p>`).join("")}
-      <div class="table-scroll"><table><thead><tr><th>决策模型</th><th>已记录/计划</th><th>输出完成</th><th>工作流相容/已查</th><th>质量通过/已评分</th><th>评分覆盖率</th><th>待评/缺口/调用失败</th><th>路由 P50/P95</th><th>目标 P50/P95</th><th>参考费用/已知样本</th><th>可避免失败/基线配对</th></tr></thead><tbody>${job.summary.map((s) => `<tr><td>${this.esc(s.provider)}</td><td>${s.recorded}/${s.planned}</td><td>${s.target_completed}</td><td>${s.workflow_fit}/${s.workflow_checked}</td><td>${s.quality_pass}/${s.quality_graded} (${percent(s.quality_pass_rate)})</td><td>${percent(s.quality_coverage)}</td><td>${s.pending}/${s.gaps}/${s.errors}</td><td>${this.ms(s.route_p50_ms)}/${this.ms(s.route_p95_ms)}</td><td>${this.ms(s.target_p50_ms)}/${this.ms(s.target_p95_ms)}</td><td>${s.cost_known_samples ? this.usd(s.known_reference_cost_usd) : "未知"} · ${s.cost_known_samples}/${s.target_observations}</td><td>${s.avoidable_failures_vs_tested_baselines}/${s.paired_quality_cases}</td></tr>`).join("")}</tbody></table></div>
-      <p class="footnote">质量率只对已评分样本计算，必须结合覆盖率阅读。延迟来自顺序调用；共享目标结果不是重复测量。费用为各路由方案的参考用量价格，不可把三行相加作为实际账单。</p>
+      <div class="table-scroll"><table><thead><tr><th>决策模型</th><th>已记录/计划</th><th>输出完成</th><th>任务类型判断正确/已检查</th><th>任务通过/已判定</th><th>完整答案不合格/输出未完成</th><th>评分覆盖率</th><th>待评/缺口/调用失败</th><th>路由 P50/P95</th><th>目标 P50/P95</th><th>参考费用/已知样本</th><th>可避免失败/基线配对</th></tr></thead><tbody>${job.summary.map((s) => `<tr><td>${this.esc(s.provider)}</td><td>${s.recorded}/${s.planned}</td><td>${s.target_completed}</td><td>${s.workflow_fit}/${s.workflow_checked}</td><td>${s.quality_pass}/${s.quality_graded} (${percent(s.quality_pass_rate)})</td><td>${s.answer_failed ?? "—"}/${s.output_incomplete ?? "—"}</td><td>${percent(s.quality_coverage)}</td><td>${s.pending}/${s.gaps}/${s.errors}</td><td>${this.ms(s.route_p50_ms)}/${this.ms(s.route_p95_ms)}</td><td>${this.ms(s.target_p50_ms)}/${this.ms(s.target_p95_ms)}</td><td>${s.cost_known_samples ? this.usd(s.known_reference_cost_usd) : "未知"} · ${s.cost_known_samples}/${s.target_observations}</td><td>${s.avoidable_failures_vs_tested_baselines}/${s.paired_quality_cases}</td></tr>`).join("")}</tbody></table></div>
+      <p class="footnote">任务类型判断正确：识别出与请求匹配的用途，例如文字问候没有误分成语音生成；不代表所选型号最优。任务通过：完整输出且满足验收要求。完整答案不合格与输出未完成分开计数；截断表示本次预算内没有完成交付，不等于模型答错。任务通过率只对已判定样本计算，需结合评分覆盖率阅读。</p>
+      <p class="footnote">延迟来自顺序调用；共享目标结果不是重复测量。费用为各路由方案的参考用量价格，不可把三行相加作为实际账单。</p>
       <h3>逐场景证据与验收</h3>${job.results.filter((r) => r.arm === "routed").map((r) => {
         const c = job.cases.find((c) => c.id === r.case_id), g = r.review || r.grade;
         const others = job.results.filter((b) => b.case_id === r.case_id && b.provider === r.provider && b.arm !== "routed");
-        return `<details class="evaluation-row" data-effect-row="${r.id}"><summary>${this.esc(c.title)} · ${this.esc(r.provider)} · ${this.esc(state[g.status] || g.status)} · ${this.esc(rowStates[r.status] || r.status)}</summary>
+        return `<details class="evaluation-row" data-effect-row="${r.id}"><summary>${this.esc(c.title)} · ${this.esc(r.provider)} · ${this.esc(resultLabel(r))}</summary>
           <p>${this.esc(c.task.text)}</p><p class="footnote">验收：${this.esc(c.gap || job.reference_errata?.find((e) => e.case_id === c.id)?.corrected || c.judge.rubric)}${c.judge.expected !== null ? " · 参考 " + this.esc(JSON.stringify(c.judge.expected)) : ""}</p>
           <p>${this.esc(r.selected_model?.name || "无目标模型")} · ${this.esc(r.profile?.workflow || "未执行分类")} · ${this.esc(r.configuration_id || "")}</p>
           <p class="footnote">${this.esc(r.selection_reason || "")} ${this.esc(g.reason || "")}</p>${r.error ? `<p class="error">${this.esc(r.error.message)}</p>` : ""}
           ${r.profile ? `<details><summary>分类属性、选模依据与耗时</summary><pre>${this.esc(JSON.stringify({ profile: r.profile, assessed_profile: r.assessed_profile, candidate_count: r.candidate_count, cost_context: r.cost_context, classifier_timings: r.classifier_timings, route_ms: r.route_ms, target_timings: r.output?.timings, usage: r.output?.usage, reference_cost_usd: r.output?.observed_reference_cost_usd, reused: r.reused }, null, 2))}</pre></details>` : ""}
           ${mediaHTML(r.task?.attachments)}${r.output ? `<pre>${this.esc(r.output.text || "")}</pre>${mediaHTML(r.output.artifacts)}` : ""}
           ${r.review ? `<p>${{ user_review: "人工评审", assistant_review: "助手辅助评审", isolated_tests: "隔离测试" }[r.review.method] || "人工评审"}：${this.esc(r.review.reviewer)} · ${this.esc(r.review.reason)}</p>` : ""}
-          ${others.length ? `<h4>同一分类下的对照策略</h4>${others.map((b) => `<details><summary>${b.arm === "low" ? "低价" : "高能力"} · ${this.esc(b.selected_model?.name || "无候选")} · ${this.esc(state[(b.review || b.grade).status])} ${b.reused ? "· 共享结果" : ""}</summary><pre>${this.esc(b.output?.text || b.error?.message || b.status)}</pre>${b.review ? `<p>${this.esc(b.review.method)} · ${this.esc(b.review.reason)}</p>` : this.effectReviewForm(job, b)}</details>`).join("")}` : ""}
+          ${others.length ? `<h4>同一分类下的对照策略</h4>${others.map((b) => `<details><summary>${b.arm === "low" ? "低价" : "高能力"} · ${this.esc(b.selected_model?.name || "无候选")} · ${this.esc(resultLabel(b))} ${b.reused ? "· 共享结果" : ""}</summary><pre>${this.esc(b.output?.text || b.error?.message || b.status)}</pre>${b.review ? `<p>${this.esc(b.review.method)} · ${this.esc(b.review.reason)}</p>` : this.effectReviewForm(job, b)}</details>`).join("")}` : ""}
           ${this.effectReviewForm(job, r)}
         </details>`;
       }).join("")}`;

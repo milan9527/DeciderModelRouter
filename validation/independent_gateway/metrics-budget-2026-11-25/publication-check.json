@@ -1,0 +1,8 @@
+{
+  "files_scanned": 32,
+  "known_credential_leaks": 0,
+  "credential_pattern_matches": 0,
+  "sensitive_export_keys": 0,
+  "deployed_source_hashes_match": true,
+  "report_links_valid": true
+}

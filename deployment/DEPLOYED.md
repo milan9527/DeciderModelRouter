@@ -8,7 +8,9 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-最新部署为 **ECS revision 6 / Python 3.12 ARM64**，镜像 `sha256:614fb07416138116912ead1d9e8ddd1b581a66382bec19bd8fe32ef626cb448c`。新增端到端效果评测：87 个用例、25 类、低价/高能力对照、自定义任务、逐项质量与性能、数据库历史及评分来源。方法和全部场景见[评测说明](../docs/effectiveness-evaluation.zh.md)。沿用现有独立GPU与资源，未创建新EC2。CloudFront 刷新 `I9F76QCCOECTXM7I7XGDZXQOQZ` 已完成。
+最新部署为 **ECS revision 7 / Python 3.12 ARM64**，镜像 `sha256:53ff10df72c3560d9c39820553809dec2168af87cf172f4907d7797db8a51a2b`。评测指标改为“任务类型判断正确”，完整答案不合格与输出未完成分别统计；新评测默认输出上限提高到 16384 tokens，自定义用例显式较低上限保留。492 项软件测试通过，原批次 531 行结果和全部既有汇总字段逐项一致。沿用独立GPU，CloudFront 刷新 `I3FO6T15DPTNKO36YF9C53ZY9B` 已完成。[指标与预算验证](../validation/independent_gateway/metrics-budget-2026-11-25/README.zh.md)，本机审计目录 `.deployment/metrics-budget-20261125/`。
+
+前一版 **revision 6** 镜像 `sha256:614fb07416138116912ead1d9e8ddd1b581a66382bec19bd8fe32ef626cb448c` 引入端到端效果评测：87 个用例、25 类、低价/高能力对照、自定义任务、逐项质量与性能、数据库历史及评分来源。方法和全部场景见[评测说明](../docs/effectiveness-evaluation.zh.md)。CloudFront 刷新 `I9F76QCCOECTXM7I7XGDZXQOQZ` 已完成。
 
 [全面效果实测](../validation/independent_gateway/full-effects-2026-11-25/README.zh.md)：主批次 213 次 GPU 分类、166 次目标调用；另外对两个截断场景进行 2 次分类、6 次目标调用的预算补测，分开报告。保留每项输出、失败、16 个能力/评测数据缺口、参考勘误及评分来源，不把接口完成当质量通过。488 项软件测试和正式域名浏览器检查通过；两批 537 行记录可完整读取。主批次使用 revision 5，revision 6 完善读出与预算控制，分类、选模与目标调用配置源文件未变。本机审计目录 `.deployment/effects-20261125/`。
 

@@ -1,0 +1,41 @@
+{
+  "previous_job": "ff3c22292d248171f41346e9",
+  "previous_row": "0004",
+  "new_job": "a23c773ec67369c6bf5c890e",
+  "new_row": "0000",
+  "same_input_hash": "575b0370e81353a2",
+  "same_configuration_id": "c86415c8de51519ccec4266d",
+  "same_profile": true,
+  "same_invoke_id": "us.openai.gpt-6-luna",
+  "same_model_request_fields": {
+    "reasoning": {
+      "effort": "max"
+    }
+  },
+  "new_request_omitted_output_cap": true,
+  "before": {
+    "cap": 8192,
+    "status": "incomplete",
+    "tokens": 8192,
+    "ms": 64695.768,
+    "reference_cost_usd": "0.0040998"
+  },
+  "after": {
+    "cap": 16384,
+    "status": "completed",
+    "tokens": 13602,
+    "ms": 107671.426,
+    "reference_cost_usd": "0.0068048",
+    "review": {
+      "status": "pass",
+      "reason": "回答使用稳定业务入账键与持久唯一约束，明确只有插入新流水的事务增加余额，流水、原子余额增量和订单状态同事务；说明并发唯一键竞争、事务提交前回滚、提交后未确认和提交结果未知的重试边界，并在提交后确认回调。满足本题三项设计验收标准；本项为助手内容评审，未执行数据库故障注入。",
+      "method": "assistant_review",
+      "source": "account_review",
+      "reviewer": "admin",
+      "created_at": 1795581558006
+    }
+  },
+  "new_gpu_calls": 1,
+  "new_target_calls": 1,
+  "scope": "Single selected failure follow-up; no fixed generation seed or repeated samples; not a new full-suite score."
+}

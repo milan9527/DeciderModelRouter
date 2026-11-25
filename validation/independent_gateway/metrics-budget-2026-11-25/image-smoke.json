@@ -1,0 +1,8 @@
+{
+  "image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router:metrics-budget-20261125-043336",
+  "read_only": true,
+  "network": "none",
+  "default_output_cap": 16384,
+  "separate_incomplete": true,
+  "real_model_calls": 0
+}

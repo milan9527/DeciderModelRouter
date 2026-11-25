@@ -309,6 +309,7 @@ def smoke(output):
                 from app.gateway_effect_cases import suite
 
                 expect(page.locator('input[name="effect-case"]')).to_have_count(len(suite()["items"]))
+                expect(page.locator("#effect-token-cap")).to_have_value("16384")
                 page.locator("#effect-clear").click()
                 for checkbox in page.locator('input[name="effect-provider"]').all():
                     if checkbox.input_value() != "h2o":
@@ -319,6 +320,7 @@ def smoke(output):
                 expect(page.locator("#effect-result h2")).to_have_text("效果结果 · 已完成", timeout=20000)
                 expect(page.locator("#effect-result")).to_contain_text("目标调用尝试 1")
                 expect(page.locator("#effect-result")).to_contain_text("能力/评测缺口")
+                expect(page.locator("#effect-result")).to_contain_text("任务类型判断正确/已检查")
                 effect_row = page.locator("#effect-result .evaluation-row").first
                 effect_row.locator("summary").first.click()
                 review = effect_row.locator("[data-effect-review]")
@@ -331,6 +333,9 @@ def smoke(output):
                 effect = json.loads(Path(downloaded.value.path()).read_text())
                 assert effect["summary"][0]["quality_pass_rate"] == 0
                 assert effect["summary"][0]["gaps"] == 1
+                assert effect["max_output_tokens"] == 16384
+                assert effect["summary"][0]["answer_failed"] == 1
+                assert effect["summary"][0]["output_incomplete"] == 0
                 assert "route_token" not in json.dumps(effect)
                 page.screenshot(path=str(output / "effect-evaluation.png"), full_page=True)
                 page.locator('[data-page="account"]').click()

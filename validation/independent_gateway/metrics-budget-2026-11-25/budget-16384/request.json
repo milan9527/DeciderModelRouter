@@ -1,0 +1,18 @@
+{
+  "providers": [
+    "h2o"
+  ],
+  "max_target_calls": 1,
+  "custom_cases": [
+    {
+      "title": "并发幂等设计：16384默认预算验证",
+      "task": {
+        "text": "支付回调会重复且并发到达。解释如何用数据库事务和唯一键确保余额只增加一次，并说明崩溃恢复。",
+        "routing_preferences": {
+          "cost_tier": "low"
+        }
+      },
+      "rubric": "幂等键持久唯一约束；余额更新与幂等记录同事务；说明重试和崩溃边界。"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "previous_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:6",
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:7",
+  "image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router@sha256:53ff10df72c3560d9c39820553809dec2168af87cf172f4907d7797db8a51a2b",
+  "gpu_instance": "i-01180cf02d12e6e31",
+  "gpu_configured": true,
+  "started_at": 1795581263,
+  "phase": "complete",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "invalidation_id": "I3FO6T15DPTNKO36YF9C53ZY9B"
+}
