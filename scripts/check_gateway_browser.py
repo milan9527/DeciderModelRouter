@@ -68,7 +68,7 @@ def serve(role, port):
 
             def converse(self, **kwargs):
                 time.sleep(0.3)
-                task = kwargs["messages"][0]["content"][0]["text"]
+                task = kwargs["messages"][-1]["content"][0]["text"]
                 return {
                     "output": {
                         "message": {
@@ -84,6 +84,19 @@ def serve(role, port):
                     "stopReason": "max_tokens" if "INCOMPLETE" in task else "end_turn",
                     "usage": {"inputTokens": 128, "outputTokens": 64},
                 }
+
+            def converse_stream(self, **kwargs):
+                response = self.converse(**kwargs)
+
+                def stream():
+                    text = response["output"]["message"]["content"][0]["text"]
+                    for start in range(0, len(text), 24):
+                        time.sleep(0.03)
+                        yield {"contentBlockDelta": {"delta": {"text": text[start:start + 24]}}}
+                    yield {"messageStop": {"stopReason": response["stopReason"]}}
+                    yield {"metadata": {"usage": response["usage"]}}
+
+                return {"stream": stream()}
 
             def close(self):
                 pass
@@ -219,6 +232,7 @@ def smoke(output):
                 expect(page.locator(".profile-chips span")).to_have_count(7)
                 expect(page.locator(".output")).to_contain_text("本地联调测试桩")
                 expect(page.locator("#stages .completed")).to_have_count(4)
+                expect(page.locator("#conversation-state")).to_contain_text("带入 0 轮历史")
                 page.evaluate("scrollTo(0, 0)")
                 page.screenshot(path=str(output / "desktop.png"), full_page=True)
                 page.locator('[data-tab="candidates"]').click()
@@ -234,6 +248,7 @@ def smoke(output):
                 record = json.loads(Path(download.value.path()).read_text())
                 assert "route_token" not in json.dumps(record)
                 assert record["events"][-1]["data"]["status"] == "executed"
+                assert any(e["type"] == "delta" for e in record["events"])
                 chosen = next(
                     e["data"] for e in record["events"]
                     if e.get("stage") == "selection" and e.get("status") == "completed"
@@ -256,6 +271,7 @@ def smoke(output):
                 page.locator("#run").click()
                 expect(page.locator("#run")).to_be_enabled(timeout=20000)
                 expect(page.locator("#run-badge")).to_have_text("输出未完成")
+                expect(page.locator("#conversation-state")).to_contain_text("带入 1 轮历史")
                 page.locator("#mode").select_option("replay")
                 page.locator("#run").click()
                 expect(page.locator("#run")).to_be_enabled(timeout=20000)

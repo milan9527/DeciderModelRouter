@@ -37,7 +37,7 @@ export class Workspace {
     clearTimeout(this.pollTimer);
     clearTimeout(this.effectPollTimer);
     ["#history-detail", "#session-dialog"].forEach((id) => $(id).close());
-    ["#history", "#evaluation-result", "#evaluation-history", "#effect-result", "#effect-history", "#users-table", "#history-detail-content"].forEach((id) => { $(id).innerHTML = ""; });
+    ["#history", "#conversation-thread", "#evaluation-result", "#evaluation-history", "#effect-result", "#effect-history", "#users-table", "#history-detail-content"].forEach((id) => { $(id).innerHTML = ""; });
     this.effect = null;
     $("#effect-form").reset();
     $("#password-form").reset();
@@ -84,7 +84,24 @@ export class Workspace {
     sessionStorage.setItem("router-session-" + this.user.username, this.sessionId);
   }
   requestFields() {
-    return this.enabled ? { session_id: this.sessionId, client_request_id: crypto.randomUUID() } : {};
+    return this.enabled ? { session_id: this.sessionId, client_request_id: crypto.randomUUID(),
+      session: { use_history: $("#use-history").checked, stickiness: $("#use-stickiness").checked,
+        prompt_cache: $("#use-cache").checked, stream: $("#use-stream").checked,
+        fallback: $("#use-fallback").checked, max_history_turns: Number($("#history-turns").value) },
+    } : {};
+  }
+  async refreshConversation() {
+    const epoch = this.epoch, session = this.sessionId;
+    const page = await this.api("/gateway/history?session_id=" + session + "&limit=16&days=180");
+    const records = await Promise.all(page.items.map((r) => this.api("/gateway/history/" + r.id)));
+    if (epoch !== this.epoch || session !== this.sessionId) return;
+    $("#conversation-thread").innerHTML = records.reverse().map((r) => {
+      const result = r.events.find((e) => e.stage === "execution" && e.status === "completed")?.data;
+      const partial = r.events.filter((e) => e.type === "delta").map((e) => e.data.text).join("");
+      return `<article class="conversation-turn"><p><strong>你</strong> · ${this.esc(date(r.created_at))}</p><pre>${this.esc(r.request.task.text)}</pre>${mediaHTML(r.request.task.attachments)}
+        <p><strong>${this.esc(r.model || "网关")}</strong> · ${this.esc(labels[r.status] || r.status)}</p>
+        <pre>${this.esc(result?.text || partial || r.error?.message || "本轮没有完成的目标回答")}</pre>${mediaHTML(result?.artifacts)}</article>`;
+    }).join("") || '<p class="empty-copy">此会话还没有消息。</p>';
   }
   page(page) {
     if (!this.enabled) return;
@@ -108,6 +125,7 @@ export class Workspace {
     const [history, stats] = await Promise.all([
       this.api("/gateway/history?" + query), this.api("/gateway/performance?" + this.query()),
     ]);
+    await this.refreshConversation();
     if (epoch !== this.epoch || scope !== this.query().toString() || requestNumber !== this.historyRequest) return;
     this.rows = more ? [...this.rows, ...history.items] : history.items;
     this.nextCursor = history.next_cursor;
@@ -121,6 +139,10 @@ export class Workspace {
       this.metric("已知参考费用", this.usd(stats.observed_reference_cost_usd), `${stats.cost_known_samples} 次已知 · ${stats.cost_unknown_samples} 次未知`),
       this.metric("人工业务验收", `${stats.business_passes} / ${stats.business_reviews}`, "通过数 / 已验收数"),
       this.metric("处理中", stats.running, "运行详情可查看已保存阶段"),
+      this.metric("带历史 / 沿用模型", `${stats.context_requests || 0} / ${stats.sticky_requests || 0}`, "真实请求数，仍逐轮分类"),
+      this.metric("缓存命中", stats.cache_hit_requests || 0, `${stats.cache_observed_requests || 0} 次收到缓存用量；读 ${stats.cache_read_tokens || 0} / 写 ${stats.cache_write_tokens || 0} Token`),
+      this.metric("目标首字 P50", this.ms(stats.ttft_p50_ms), "从目标请求发起至首个文本片段"),
+      this.metric("发生回退", stats.fallback_requests || 0, "未收到输出且遇到可回退错误"),
     ].join("");
     $("#performance-note").textContent = stats.note + (stats.truncated ? " 当前统计达到 5000 条上限，请缩小时间范围。" : " 小样本分位数仅描述当前样本。");
     const peak = Math.max(1, ...stats.models.map((m) => m.requests));

@@ -1,0 +1,372 @@
+{
+  "scope": "live gateway integration; not a model-quality benchmark",
+  "cases": [
+    {
+      "case": "memory-first",
+      "run_id": "332c432fc42e003b6583d604",
+      "session_id": "09182a559d585a489c051f93",
+      "terminal": {
+        "type": "completed",
+        "request_id": "332c432fc42e003b6583d604",
+        "sequence": 14,
+        "elapsed_ms": 1212.249,
+        "data": {
+          "status": "executed",
+          "route_ms": 680.885,
+          "backend_total_ms": 1212.238
+        }
+      },
+      "text": "ACK.",
+      "context": {
+        "policy_version": "gateway-session-v1",
+        "source": "session",
+        "parent_run_id": null,
+        "history_turns": 0,
+        "trimmed_turns": 0,
+        "text_bytes": 52,
+        "limit_bytes": 48000,
+        "max_history_turns": 8,
+        "note": "只带入完整成功的对话；按完整轮次裁剪。文本字节是保守估算，不是模型 tokenizer。"
+      },
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 16,
+        "total_input_tokens": 16,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 4,
+        "totalTokens": 20,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 16
+      },
+      "timings": {
+        "queue_ms": 0.035,
+        "upstream_ms": 301.686,
+        "ttft_ms": 273.539
+      },
+      "delta_events": 1,
+      "first_delta_client_ms": 1272.147,
+      "last_delta_client_ms": 1272.147,
+      "client_total_ms": 1345.285
+    },
+    {
+      "case": "memory-followup",
+      "run_id": "e4af272eccc4fd7d28db43f9",
+      "session_id": "09182a559d585a489c051f93",
+      "terminal": {
+        "type": "completed",
+        "request_id": "e4af272eccc4fd7d28db43f9",
+        "sequence": 15,
+        "elapsed_ms": 1107.969,
+        "data": {
+          "status": "executed",
+          "route_ms": 673.65,
+          "backend_total_ms": 1107.958
+        }
+      },
+      "text": "ORBIT-742",
+      "context": {
+        "policy_version": "gateway-session-v1",
+        "source": "session",
+        "parent_run_id": "332c432fc42e003b6583d604",
+        "history_turns": 1,
+        "trimmed_turns": 0,
+        "text_bytes": 118,
+        "limit_bytes": 48000,
+        "max_history_turns": 8,
+        "note": "只带入完整成功的对话；按完整轮次裁剪。文本字节是保守估算，不是模型 tokenizer。"
+      },
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "b606463b8b1cd7890c9f3ffc",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 2,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 16,
+        "write_tokens": 3,
+        "total_input_tokens": 38,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "usage": {
+        "inputTokens": 19,
+        "outputTokens": 7,
+        "totalTokens": 45,
+        "cacheReadInputTokens": 16,
+        "cacheWriteInputTokens": 3
+      },
+      "timings": {
+        "queue_ms": 0.026,
+        "upstream_ms": 268.418,
+        "ttft_ms": 228.731
+      },
+      "delta_events": 2,
+      "first_delta_client_ms": 1149.809,
+      "last_delta_client_ms": 1169.107,
+      "client_total_ms": 1247.507
+    },
+    {
+      "case": "cache-first",
+      "run_id": "ea65fd71ac9619a49ef1672a",
+      "session_id": "ac2dca1d36c63e26c6f1b2f8",
+      "terminal": {
+        "type": "completed",
+        "request_id": "ea65fd71ac9619a49ef1672a",
+        "sequence": 15,
+        "elapsed_ms": 1300.787,
+        "data": {
+          "status": "executed",
+          "route_ms": 800.332,
+          "backend_total_ms": 1300.776
+        }
+      },
+      "text": "ORBIT-742",
+      "context": {
+        "policy_version": "gateway-session-v1",
+        "source": "explicit",
+        "parent_run_id": null,
+        "history_turns": 1,
+        "trimmed_turns": 0,
+        "text_bytes": 7824,
+        "limit_bytes": 48000,
+        "max_history_turns": 8,
+        "note": "只带入完整成功的对话；按完整轮次裁剪。文本字节是保守估算，不是模型 tokenizer。"
+      },
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 2,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 2104,
+        "total_input_tokens": 2118,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 7,
+        "totalTokens": 2125,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 2104
+      },
+      "timings": {
+        "queue_ms": 0.032,
+        "upstream_ms": 342.909,
+        "ttft_ms": 271.847
+      },
+      "delta_events": 2,
+      "first_delta_client_ms": 1303.414,
+      "last_delta_client_ms": 1353.593,
+      "client_total_ms": 1430.318
+    },
+    {
+      "case": "cache-followup",
+      "run_id": "7370e0c2ab8f49a227fdea8d",
+      "session_id": "ac2dca1d36c63e26c6f1b2f8",
+      "terminal": {
+        "type": "completed",
+        "request_id": "7370e0c2ab8f49a227fdea8d",
+        "sequence": 15,
+        "elapsed_ms": 1329.622,
+        "data": {
+          "status": "executed",
+          "route_ms": 845.891,
+          "backend_total_ms": 1329.611
+        }
+      },
+      "text": "ORBIT-742",
+      "context": {
+        "policy_version": "gateway-session-v1",
+        "source": "session",
+        "parent_run_id": "ea65fd71ac9619a49ef1672a",
+        "history_turns": 2,
+        "trimmed_turns": 0,
+        "text_bytes": 7879,
+        "limit_bytes": 48000,
+        "max_history_turns": 8,
+        "note": "只带入完整成功的对话；按完整轮次裁剪。文本字节是保守估算，不是模型 tokenizer。"
+      },
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "b606463b8b1cd7890c9f3ffc",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 3,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 2109,
+        "write_tokens": 18,
+        "total_input_tokens": 2139,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 7,
+        "totalTokens": 2146,
+        "cacheReadInputTokens": 2109,
+        "cacheWriteInputTokens": 18
+      },
+      "timings": {
+        "queue_ms": 0.03,
+        "upstream_ms": 318.245,
+        "ttft_ms": 261.968
+      },
+      "delta_events": 2,
+      "first_delta_client_ms": 1341.899,
+      "last_delta_client_ms": 1375.55,
+      "client_total_ms": 1446.409
+    },
+    {
+      "case": "new-session",
+      "run_id": "8cbeb7b26223adbea682523e",
+      "session_id": "ec4a3035f4ac970b6d93f284",
+      "terminal": {
+        "type": "completed",
+        "request_id": "8cbeb7b26223adbea682523e",
+        "sequence": 14,
+        "elapsed_ms": 1102.903,
+        "data": {
+          "status": "executed",
+          "route_ms": 693.051,
+          "backend_total_ms": 1102.891
+        }
+      },
+      "text": "NEW",
+      "context": {
+        "policy_version": "gateway-session-v1",
+        "source": "session",
+        "parent_run_id": null,
+        "history_turns": 0,
+        "trimmed_turns": 0,
+        "text_bytes": 15,
+        "limit_bytes": 48000,
+        "max_history_turns": 8,
+        "note": "只带入完整成功的对话；按完整轮次裁剪。文本字节是保守估算，不是模型 tokenizer。"
+      },
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 4,
+        "total_input_tokens": 4,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 2,
+        "totalTokens": 6,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 4
+      },
+      "timings": {
+        "queue_ms": 0.021,
+        "upstream_ms": 251.386,
+        "ttft_ms": 229.039
+      },
+      "delta_events": 1,
+      "first_delta_client_ms": 1154.873,
+      "last_delta_client_ms": 1154.873,
+      "client_total_ms": 1225.559
+    }
+  ],
+  "memory_pass": true,
+  "history_pass": true,
+  "sticky_observed": true,
+  "cache_read_observed": true,
+  "cache_write_observed": true,
+  "new_session_empty": true,
+  "cross_user_history_status": 404,
+  "statistics": {
+    "days": 30,
+    "scope": "selected_session",
+    "total_records": 2,
+    "live_requests": 2,
+    "replays": 0,
+    "completed": 2,
+    "failed": 0,
+    "running": 0,
+    "gpu_p50_ms": 683.35,
+    "route_p50_ms": 800.332,
+    "route_p95_ms": 845.891,
+    "ttft_p50_ms": 261.968,
+    "context_requests": 2,
+    "sticky_requests": 1,
+    "fallback_requests": 0,
+    "cache_observed_requests": 2,
+    "cache_hit_requests": 1,
+    "cache_read_tokens": 2109,
+    "cache_write_tokens": 2122,
+    "total_p95_ms": 1329.611,
+    "observed_reference_cost_usd": null,
+    "cost_known_samples": 0,
+    "cost_unknown_samples": 2,
+    "business_reviews": 0,
+    "business_passes": 0,
+    "models": [
+      {
+        "model_id": "amazon.nova-micro-v1:0",
+        "requests": 2,
+        "completed": 2,
+        "target_p50_ms": 359.69,
+        "target_p95_ms": 381.15,
+        "latency_samples": 2
+      }
+    ],
+    "truncated": false,
+    "note": "回放不计入性能；完整输出不代表业务通过。参考费用不含 GPU，未知费用不按零计。"
+  },
+  "cache_result": "hit"
+}

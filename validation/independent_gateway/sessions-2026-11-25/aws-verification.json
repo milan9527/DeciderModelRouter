@@ -1,0 +1,54 @@
+{
+  "url": "https://d3eipg2g3l3an3.cloudfront.net",
+  "root_status": 200,
+  "root_redirect": false,
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:9",
+  "image_digest": "sha256:0bf8665ec1bb233f0d351570fbf939f1199ad41c630ba2946e022e59345f5cbe",
+  "cloudfront_invalidation": "IBGGC2FUX1K7ILTCRSW75LRHIT",
+  "invalidation_status": "Completed",
+  "assets": [
+    {
+      "name": "gateway.js",
+      "sha256": "9a5ca4ff238da02ce627c473d26336b7f56f9675e89de7396a06028c1e3c15f1",
+      "matched": true
+    },
+    {
+      "name": "workspace.js",
+      "sha256": "3d1088d2b09fcbbfb526a57e48889f6946518094e5ad2c674de4254955546dec",
+      "matched": true
+    },
+    {
+      "name": "gateway.css",
+      "sha256": "8368f0eec2dbaee639ef6fd4dddfc6893c0fc2431dac71a634d6e11c3c001c9f",
+      "matched": true
+    },
+    {
+      "name": "index.html",
+      "sha256": "3a12b68984bad4b1965dcb3e6ced929a0a97cb9f6e69f2582ccd1931066fc599",
+      "matched": true
+    },
+    {
+      "name": "mark.svg",
+      "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+      "matched": true
+    }
+  ],
+  "anonymous_s3_status": 403,
+  "gpu_instances_unchanged": true,
+  "gpu": [
+    {
+      "InstanceId": "i-0ae7eb0abcb815af3",
+      "InstanceType": "g6.xlarge",
+      "LaunchTime": "2026-11-24 10:16:20+00:00",
+      "PrivateIpAddress": "172.31.33.164"
+    },
+    {
+      "InstanceId": "i-01180cf02d12e6e31",
+      "InstanceType": "g5.xlarge",
+      "LaunchTime": "2026-11-24 15:32:58+00:00",
+      "PrivateIpAddress": "10.146.14.77"
+    }
+  ],
+  "original_service_unchanged": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:36",
+  "historical_evaluation_sha256": "187b310813a31fe8b762d605351d27692af667e9c1a9eda269fda1cfde62d6b3"
+}

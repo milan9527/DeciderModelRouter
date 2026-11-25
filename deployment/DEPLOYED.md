@@ -8,7 +8,9 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-最新部署为 **ECS revision 8 / Python 3.12 ARM64**，镜像 `sha256:d30c558f3606df134ae171f41a6a3f2c53f0b3793f50ab7f42d681859b8a3c8d`。主指标更新为“整体验收通过/全部场景”，使用统一计划分母；错误路由计入未通过，预设边界正确拦截单列计入通过，待评与未测保留在分母。最新批次 Decider / Liquid / H2O 为 **47/87、58/87、57/87**，原“44/50、55/60、54/60”保留为已评分答案的辅助指标。501项软件测试通过，两批历史共1062行原始结果、评审和旧汇总字段逐项一致，未新增模型调用。CloudFront 刷新 `I3MMLUEH0LCCAWQKVTCB3OVX4L` 已完成，沿用独立GPU与数据库；原服务 revision 36 和原GPU未改变。[口径、报告与发布验证](../validation/independent_gateway/overall-metrics-2026-11-25/README.zh.md)，本机审计目录 `.deployment/overall-metrics-20261125/`。
+最新部署为 **ECS revision 9 / Python 3.12 ARM64**，镜像 `sha256:0bf8665ec1bb233f0d351570fbf939f1199ad41c630ba2946e022e59345f5cbe`。新增多轮上下文、会话粘性、原生提示词缓存、ConverseStream、受约束回退及对应历史与性能展示。513项全量软件测试、后续26项定向回归和浏览器验证通过；线上五次 H2O 分类、五次 Nova Micro 执行全部完成，连续追问沿用配置，长前缀追问实际读取2,109缓存tokens。CloudFront 刷新 `IBGGC2FUX1K7ILTCRSW75LRHIT` 已完成，根路径无跳转，五个公网静态文件匹配本地；独立GPU、原GPU及原服务 revision 36 未变。[机制与边界](../docs/SESSION_ROUTING.zh.md)、[实测报告](../validation/independent_gateway/sessions-2026-11-25/README.zh.md)，本机审计目录 `.deployment/session-release-20261125/`。
+
+前一版 **ECS revision 8**，镜像 `sha256:d30c558f3606df134ae171f41a6a3f2c53f0b3793f50ab7f42d681859b8a3c8d`。主指标更新为“整体验收通过/全部场景”，使用统一计划分母；错误路由计入未通过，预设边界正确拦截单列计入通过，待评与未测保留在分母。最新全量效果批次 Decider / Liquid / H2O 为 **47/87、58/87、57/87**，原“44/50、55/60、54/60”保留为已评分答案的辅助指标。501项软件测试通过，两批历史共1062行原始结果、评审和旧汇总字段逐项一致，未新增模型调用。CloudFront 刷新 `I3MMLUEH0LCCAWQKVTCB3OVX4L` 已完成，沿用独立GPU与数据库；原服务 revision 36 和原GPU未改变。[口径、报告与发布验证](../validation/independent_gateway/overall-metrics-2026-11-25/README.zh.md)，本机审计目录 `.deployment/overall-metrics-20261125/`。
 
 前一版 **revision 7** 镜像 `sha256:53ff10df72c3560d9c39820553809dec2168af87cf172f4907d7797db8a51a2b`：指标改名“任务类型判断正确”，完整答案不合格与输出未完成分别统计；新评测默认输出上限为16384 tokens，自定义用例显式较低上限保留。492项软件测试通过，原批次531行结果和全部既有汇总字段保留。CloudFront 刷新 `I3FO6T15DPTNKO36YF9C53ZY9B` 已完成。[指标与预算验证](../validation/independent_gateway/metrics-budget-2026-11-25/README.zh.md)，本机审计目录 `.deployment/metrics-budget-20261125/`。
 

@@ -95,8 +95,13 @@
               <label>当前会话<select id="session-select" aria-label="当前会话"></select></label>
               <button id="new-session" class="secondary" type="button">＋ 新建会话</button>
               <button id="rename-session" class="text-button" type="button">重命名</button>
-              <span class="muted">请求和结果自动保存，重新登录后可继续查看。</span>
+              <span class="muted">在当前会话继续追问；新建会话可开始新的话题。</span>
             </div>
+            <section class="panel conversation-panel" data-persistent hidden>
+              <details><summary>当前会话对话记录</summary>
+                <div id="conversation-thread" class="conversation-thread" aria-live="polite"></div>
+              </details>
+            </section>
             <div class="workspace-grid">
               <section class="panel request-panel">
                 <div class="panel-heading">
@@ -104,6 +109,16 @@
                   <span class="tiny">REQUEST</span>
                 </div>
                 <form id="request-form">
+                  <fieldset class="session-options" data-persistent hidden>
+                    <legend>会话与调用</legend>
+                    <label><input type="checkbox" id="use-history" checked /> 带入历史</label>
+                    <label><input type="checkbox" id="use-stickiness" checked /> 尽量沿用模型</label>
+                    <label><input type="checkbox" id="use-cache" checked /> 复用提示词缓存</label>
+                    <label><input type="checkbox" id="use-stream" checked /> 边生成边显示</label>
+                    <label><input type="checkbox" id="use-fallback" checked /> 限流时尝试其他候选</label>
+                    <label>历史轮数上限 <input type="number" id="history-turns" value="8" min="1" max="16" /></label>
+                  </fieldset>
+                  <p id="conversation-state" class="footnote" aria-live="polite"></p>
                   <label
                     >任务内容 <span class="muted" id="char-count">0 / 1400</span
                     ><textarea

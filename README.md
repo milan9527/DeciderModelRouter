@@ -12,8 +12,10 @@
 
 GPU负责判断七项任务属性，后端负责依据证据选型。文本/向量当前使用公开榜单分项与参考费用；多模态按能力和适配器过滤后采用固定型号顺序。87项效果评测已有真实结果，但尚未自动接入在线业务校准，报告更新不会直接改变模型选择。
 
-- **会话与历史**：按账户隔离，跨登录和容器重启保存请求、阶段事件、输出、Token、费用、错误及人工验收，可检索、复用任务和导出。
-- **性能**：按时间与会话筛选，显示路由 P50/P95、完整执行数、目标模型对比和已知费用；回放不计入性能，未知用量不按零费用处理。
+- **多轮会话与粘性**：下一轮真正带入完整成功的历史对话，支持显式角色消息、轮次裁剪、会话并发保护和私有附件复用。每轮仍进行分类与约束检查，符合质量和成本范围时沿用原模型配置。[OpenRouter 对照、决策流程与 API](docs/SESSION_ROUTING.zh.md)。
+- **缓存、流式与回退**：对已核验型号启用 Bedrock 原生提示词缓存，展示真实读写 Token；目标回答逐步显示。限流等明确错误且尚未输出时，在满足原约束的同批候选中最多尝试三个端点；部分输出或超时不自动重试。
+- **会话与历史**：按账户隔离，跨登录和容器重启保存对话、阶段事件、输出、Token、费用、错误及人工验收，可检索、复用任务和导出。
+- **性能**：按时间与会话筛选，显示路由 P50/P95、目标首字 P50、上下文/沿用模型次数、缓存命中、回退次数、完整执行数、目标模型对比和已知费用；回放不计入性能，缓存费用未知时不猜测节省比例。
 - **自由输入与 35 个模板**：问候、日常对话、客服、代码、翻译、推理及媒体任务；模板只填写示例，不参与匹配。GPU 读取实际请求、附件类型和输出要求。
 - **多模态**：图片/视频理解、音频转写、英语语音生成、图片编辑和文档重排；附件及生成结果私有保存，可从历史播放、预览和下载。当前区域无可用纯文生图或视频生成型号，页面明确提示。媒体按能力选型，质量与完整费用仍待测。
 - **端到端效果评测**：87 个用例、25 类场景，支持自定义任务；实际运行分类、选模与目标模型，对比低价/高能力策略，保存输出、质量、耗时、费用和缺口。明确答案自动校验，开放答案区分用户/助手评审，代码用隔离功能测试；未测与未知价格不补零。[方法](docs/effectiveness-evaluation.zh.md) · [完整场景](docs/effectiveness-scenarios.zh.md) · [16384-token 全量复测](validation/independent_gateway/full-effects-16384-2026-11-25/README.zh.md) · [2048-token 原报告](validation/independent_gateway/full-effects-2026-11-25/README.zh.md)。
@@ -27,9 +29,13 @@ GPU负责判断七项任务属性，后端负责依据证据选型。文本/向�
 
 [独立服务架构、开发与部署](docs/INDEPENDENT_SERVICE.zh.md) · [路由机制与评测标准](docs/BEDROCK_CLASSIFIED_ROUTING.zh.md) · [独立服务验证](validation/independent_gateway/README.zh.md) · [评测映射来源](validation/routing_mappings/README.zh.md)
 
+最新[会话功能实测](validation/independent_gateway/sessions-2026-11-25/README.zh.md)：五次真实分类与目标调用全部完成，连续追问保留信息且沿用模型，长前缀追问实际读取 **2,109 缓存 tokens**。结果已在会话历史与性能页面展示；这是功能验收，不是全场景效果提升或费用节省比例。
+
 ## 分类场景通过率
 
 以下为2026-11-25的16384-token批次 `f263333e0db0e16e53b73a5a`，验收口径 `end-to-end-v1`，分组版本 `task-modality-v1`。**通过率 = 该类验收通过数 / 该类全部计划场景数**；待评、未测保留在分母，不等于已判错。按原始任务意图分类，文字问候误路由成语音仍计入文本，文生图和文生语音计入多模态。
+
+该批次早于新增的多轮、粘性和缓存功能；表内“多轮与长上下文未测”等历史标记保留，不将后续软件验证混入原模型效果分数。新增机制及验证入口见[会话路由说明](docs/SESSION_ROUTING.zh.md)。
 
 这些比例衡量使用对应决策模型的完整路由方案，包含后端选型与目标模型输出，不能直接解释成GPU分类准确率。表内每格为“通过数/场景数（通过率）”。
 
@@ -107,7 +113,7 @@ SERVE_FRONTEND=false .venv/bin/uvicorn app.gateway_main:app --host 127.0.0.1 --p
 # 浏览器验证额外需要 Playwright 和 Chromium
 uv pip install playwright
 .venv/bin/python -m playwright install chromium
-.venv/bin/python scripts/check_gateway_browser.py --output .deployment/browser-check
+.venv/bin/python -m scripts.check_gateway_browser --output .deployment/browser-check
 ```
 
 浏览器脚本使用合成服务，只验证交互与集成，不生成模型性能结论。真实 AWS 验证另存于 [validation/independent_gateway](validation/independent_gateway/README.zh.md)。

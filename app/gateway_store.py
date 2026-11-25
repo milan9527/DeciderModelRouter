@@ -125,6 +125,55 @@ class Records:
             ).fetchone()
         return unpack(row[0]) if row else None
 
+    def acquire_lease(self, pk, sk, owner, seconds=600):
+        """One active writer per session, including across ECS workers."""
+        now = int(time.time())
+        item = {"owner": owner, "expires_at": now + seconds}
+        if self.table:
+            from botocore.exceptions import ClientError
+
+            try:
+                self.db.put_item(
+                    TableName=self.table,
+                    Item={"pk": {"S": pk}, "sk": {"S": sk}, "owner": {"S": owner},
+                          "payload": {"B": pack(item)}, "expires_at": {"N": str(now + seconds)}},
+                    ConditionExpression="attribute_not_exists(pk) OR expires_at <= :now",
+                    ExpressionAttributeValues={":now": {"N": str(now)}},
+                )
+            except ClientError as exc:
+                if exc.response["Error"]["Code"] == "ConditionalCheckFailedException":
+                    raise HTTPException(409, "当前会话仍有请求处理中，请完成后继续或新建会话。") from exc
+                raise
+        else:
+            with self.connect() as db:
+                db.execute("BEGIN IMMEDIATE")
+                row = db.execute("SELECT expires FROM records WHERE pk=? AND sk=?", (pk, sk)).fetchone()
+                if row and row[0] > now:
+                    raise HTTPException(409, "当前会话仍有请求处理中，请完成后继续或新建会话。")
+                db.execute("INSERT OR REPLACE INTO records VALUES (?, ?, ?, ?)",
+                           (pk, sk, pack(item), now + seconds))
+
+    def release_lease(self, pk, sk, owner):
+        if self.table:
+            from botocore.exceptions import ClientError
+
+            try:
+                self.db.delete_item(
+                    TableName=self.table, Key={"pk": {"S": pk}, "sk": {"S": sk}},
+                    ConditionExpression="#owner = :owner",
+                    ExpressionAttributeNames={"#owner": "owner"},
+                    ExpressionAttributeValues={":owner": {"S": owner}},
+                )
+            except ClientError as exc:
+                if exc.response["Error"]["Code"] != "ConditionalCheckFailedException":
+                    raise
+        else:
+            with self.connect() as db:
+                db.execute("BEGIN IMMEDIATE")
+                row = db.execute("SELECT payload FROM records WHERE pk=? AND sk=?", (pk, sk)).fetchone()
+                if row and unpack(row[0])["owner"] == owner:
+                    db.execute("DELETE FROM records WHERE pk=? AND sk=?", (pk, sk))
+
     def query(self, pk, prefix, *, limit=50, cursor=None, lower=None, upper=None, reverse=True):
         if not 1 <= limit <= 5000:
             raise ValueError("Invalid page size")
@@ -271,7 +320,7 @@ class History:
         return item
 
     def summary_rows(self, user, item):
-        summary = {k: v for k, v in item.items() if k != "request"}
+        summary = {k: v for k, v in item.items() if k not in {"request", "conversation", "session_routing"}}
         key = f"RUN#{item['created_at']:013d}#{item['id']}"
         return [
             (self.run_key(user, item["id"]), "META", item),
@@ -287,6 +336,14 @@ class History:
         if event.get("stage"):
             item["last_stage"] = event["stage"]
         data = event.get("data", {})
+        if event["type"] == "context":
+            item["context"] = data
+        if event["type"] == "attempt":
+            item.setdefault("attempts", []).append(data)
+            item["fallback_count"] = max(item.get("fallback_count", 0), data["number"] - 1)
+            if data["status"] == "started":
+                item.update(model_id=data["model_id"], model=data.get("model_name", data["model_id"]),
+                            configuration_id=data["configuration_id"])
         if event.get("stage") == "classification" and event.get("status") == "completed":
             item.update(
                 profile=data.get("profile"), gpu_ms=(data.get("timings") or {}).get("upstream_ms")
@@ -297,6 +354,7 @@ class History:
                 model_id=model.get("id"),
                 model=model.get("name"),
                 configuration_id=data.get("choice"),
+                stickiness=data.get("selection", {}).get("stickiness"),
             )
         if event["type"] == "route":
             item["route_ms"] = data.get("route_total_ms")
@@ -307,6 +365,12 @@ class History:
                 reference_cost=data.get("observed_reference_cost_usd"),
                 output_complete=data.get("complete"),
                 stop_reason=data.get("stop_reason"),
+                model_id=data.get("model_id", item.get("model_id")),
+                model=data.get("model_name", item.get("model")),
+                configuration_id=data.get("configuration_id", item.get("configuration_id")),
+                cache=data.get("cache"),
+                ttft_ms=(data.get("timings") or {}).get("ttft_ms"),
+                fallback_count=data.get("fallback_count", 0),
             )
         if event["type"] == "completed":
             item.update(status=data["status"], total_ms=data.get("backend_total_ms"))
@@ -317,10 +381,12 @@ class History:
                 failed_stage=event.get("stage"),
                 total_ms=event["elapsed_ms"] if item["mode"] == "live" else None,
             )
-        self.records.put_many(
-            self.summary_rows(user, item)
-            + [(self.run_key(user, item["id"]), f"EVENT#{event['sequence']:06d}", event)]
-        )
+        rows = self.summary_rows(user, item) + [
+            (self.run_key(user, item["id"]), f"EVENT#{event['sequence']:06d}", event)
+        ]
+        if event["type"] == "completed" and item["status"] == "executed" and item.get("session_routing"):
+            rows.append((self.user_key(user), "ROUTING#" + item["session_id"], item["session_routing"]))
+        self.records.put_many(rows)
         original.update(item)
 
     def interrupted(self, user, item, stage):
@@ -407,6 +473,14 @@ class History:
             "gpu_p50_ms": percentile([r.get("gpu_ms") for r in live], 0.5),
             "route_p50_ms": percentile([r.get("route_ms") for r in live], 0.5),
             "route_p95_ms": percentile([r.get("route_ms") for r in live], 0.95),
+            "ttft_p50_ms": percentile([r.get("ttft_ms") for r in live], 0.5),
+            "context_requests": sum(bool((r.get("context") or {}).get("history_turns")) for r in live),
+            "sticky_requests": sum((r.get("stickiness") or {}).get("retained", False) for r in live),
+            "fallback_requests": sum(bool(r.get("fallback_count")) for r in live),
+            "cache_observed_requests": sum((r.get("cache") or {}).get("observed", False) for r in live),
+            "cache_hit_requests": sum((r.get("cache") or {}).get("read_tokens", 0) > 0 for r in live),
+            "cache_read_tokens": sum((r.get("cache") or {}).get("read_tokens", 0) for r in live),
+            "cache_write_tokens": sum((r.get("cache") or {}).get("write_tokens", 0) for r in live),
             "total_p95_ms": percentile([r.get("total_ms") for r in live], 0.95),
             "observed_reference_cost_usd": format(sum(costs), ".9f") if costs else None,
             "cost_known_samples": len(costs),

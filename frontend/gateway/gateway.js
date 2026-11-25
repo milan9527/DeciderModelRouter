@@ -114,6 +114,7 @@ function resetRun() {
   lastBrowserMs = null;
   terminalSeen = false;
   $("#request-error").hidden = true;
+  $("#conversation-state").textContent = "";
   $("#response").innerHTML =
     '<p class="empty-copy">执行后，模型的实际输出将显示在这里。</p>';
   $("#decision").innerHTML =
@@ -485,7 +486,8 @@ function renderOutput() {
   if (!execution) return;
   const usage = execution.usage;
   $("#response").innerHTML =
-    `<div class="output-meta"><span>${execution.complete ? "已返回完整输出" : "输出未完成"}</span><span>停止原因：${esc(execution.stop_reason || "—")}</span><span>${esc(usage?.inputTokens ?? usage?.input_tokens ?? "未知")} 输入 / ${esc(usage?.outputTokens ?? usage?.output_tokens ?? "未知")} 输出 Token</span></div>
+    `<div class="output-meta"><span>${execution.complete ? "已返回完整输出" : "输出未完成"}</span><span>停止原因：${esc(execution.stop_reason || "—")}</span><span>${esc(execution.cache?.total_input_tokens ?? usage?.inputTokens ?? usage?.input_tokens ?? "未知")} 总输入 / ${esc(usage?.outputTokens ?? usage?.output_tokens ?? "未知")} 输出 Token</span></div>
+    ${execution.cache ? `<p class="footnote">缓存${execution.cache.observed ? `：读 ${execution.cache.read_tokens} / 写 ${execution.cache.write_tokens} Token` : "：尚未收到缓存用量，不能认定命中"} · 首字 ${ms(execution.timings?.ttft_ms)} · 回退 ${execution.fallback_count || 0} 次 · 实际模型 ${esc(execution.model_id)}</p>` : ""}
     <pre class="output">${esc(execution.text ?? JSON.stringify(execution, null, 2))}</pre>
     ${mediaHTML(execution.artifacts)}
     ${execution.media_job ? `<p id="media-job-state">视频任务：${esc(execution.media_job.status)}</p><div id="media-job-output"></div>` : ""}
@@ -510,6 +512,8 @@ function receive(event) {
     if (event.status === "completed") {
       if (event.stage === "classification") flow = event.data;
       if (event.stage === "selection") selection = event.data;
+      if (event.stage === "selection" && event.data.selection?.stickiness)
+        $("#conversation-state").textContent += " " + event.data.selection.stickiness.reason;
       if (event.stage === "execution") {
         execution = event.data;
         renderOutput();
@@ -517,6 +521,20 @@ function receive(event) {
     }
   } else if (event.type === "route") {
     route = event.data;
+  } else if (event.type === "context") {
+    $("#conversation-state").textContent = `带入 ${event.data.history_turns} 轮历史，裁剪 ${event.data.trimmed_turns} 轮。`;
+  } else if (event.type === "attempt") {
+    if (event.data.status === "started")
+      $("#conversation-state").textContent += ` 第 ${event.data.number} 次调用：${event.data.model_id}。`;
+    if (event.data.will_fallback)
+      $("#conversation-state").textContent += ` ${event.data.error_code}，正在尝试下一候选。`;
+  } else if (event.type === "delta") {
+    let output = $("#stream-output");
+    if (!output) {
+      $("#response").innerHTML = '<p class="muted">正在生成…</p><pre id="stream-output" class="output" aria-live="polite"></pre>';
+      output = $("#stream-output");
+    }
+    output.textContent += event.data.text;
   } else if (event.type === "completed") {
     terminalSeen = true;
     completed = {
@@ -544,7 +562,7 @@ function showError(message) {
 function setBusy(value) {
   busy = value;
   $$(
-    "#request-form input, #request-form textarea, #request-form select, #request-form button",
+    "#request-form input, #request-form textarea, #request-form select, #request-form button, #session-select, #new-session, #rename-session",
   ).forEach((el) => {
     el.disabled = value;
   });

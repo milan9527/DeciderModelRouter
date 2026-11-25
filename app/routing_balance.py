@@ -76,6 +76,9 @@ def money(value):
 def observed_reference_cost(benchmark, usage, workflow):
     """Price reported usage at the snapshot rates, without claiming a billed cost."""
     usage = usage or {}
+    if usage.get("cacheReadInputTokens", 0) or usage.get("cacheWriteInputTokens", 0):
+        # Flat reference prices do not describe native cache read/write rates.
+        return None
     inputs = usage.get("inputTokens", usage.get("input_tokens"))
     outputs = (
         0 if workflow == "embedding" else usage.get("outputTokens", usage.get("output_tokens"))

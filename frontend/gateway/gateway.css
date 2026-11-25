@@ -1287,3 +1287,11 @@ dialog::backdrop { background: #10152b88; backdrop-filter: blur(3px); }
 .media-artifact figcaption { margin-top: 8px; font-size: 12px; }
 #media-capabilities { margin-top: 16px; }
 #media-capabilities td { max-width: 460px; overflow-wrap: anywhere; }
+.session-options { display: flex; flex-wrap: wrap; gap: 10px 16px; border: 1px solid var(--line, #dce4ed); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+.session-options label { display: flex; gap: 6px; align-items: center; font-size: 12px; }
+.session-options input[type="checkbox"] { width: auto; margin: 0; }
+.session-options input[type="number"] { width: 60px; }
+.conversation-panel { margin-bottom: 16px; padding: 16px; }
+.conversation-thread { max-height: 440px; overflow: auto; }
+.conversation-turn { padding: 12px 0; border-bottom: 1px solid var(--line, #dce4ed); }
+.conversation-turn pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: 13px; }

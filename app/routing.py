@@ -462,12 +462,21 @@ async def infer_profile(body, request, payload):
         raise HTTPException(502, "任务分类结果不完整或不符合候选协议。") from exc
 
 
-def auto_selection(task, profile, data, rankings, calibration):
+def auto_selection(task, profile, data, rankings, calibration, runtime=None):
     from app.routing_media import MEDIA_WORKFLOWS, choose_media
 
     if profile.workflow in MEDIA_WORKFLOWS or task.attachments:
-        return choose_media(task, profile, data, rankings, calibration, exclusion)
+        selection = choose_media(task, profile, data, rankings, calibration, exclusion)
+        if runtime:
+            selection = runtime.filter_pool(selection, task)
+            if selection["selected_candidate_id"] not in {r["candidate_id"] for r in selection["candidates"]}:
+                first = next(iter(selection["candidates"]), None)
+                selection["selected_candidate_id"] = first["candidate_id"] if first else None
+                selection["reason"] = "按已支持的媒体会话适配器筛选。" if first else "没有支持本次会话的媒体适配器。"
+        return selection
     pool = configurations(data, rankings, task, profile.workflow, exclusion)
+    if runtime:
+        pool = runtime.filter_pool(pool, task)
     return choose(task, profile, pool, rankings, calibration)
 
 
@@ -491,6 +500,9 @@ async def run_classified_route(body, request, *, infer=None, emit=None):
         raise HTTPException(409, "分类选型策略已更新，请刷新。")
     await progress("catalog", "completed", {"model_count": len(data["models"])})
     payload = profile_payload(body.task)
+    runtime = getattr(request.state, "gateway_runtime", None)
+    if runtime:
+        payload = runtime.classify(payload)
     await progress("classification", "started")
     if body.mode == "replay":
         profile = replay_profile(body.task, replay_choice(body.task))
@@ -532,7 +544,12 @@ async def run_classified_route(body, request, *, infer=None, emit=None):
     await progress("classification", "completed", flow)
     await progress("selection", "started")
     selection_started = perf_counter()
-    selection = auto_selection(body.task, profile, data, rankings, calibration)
+    selection = auto_selection(body.task, profile, data, rankings, calibration, runtime)
+    if runtime:
+        selection = runtime.select(selection, profile, body.task, {
+            "catalog": data["version"], "ranking": rankings["version"],
+            "calibration": calibration["version"], "policy": SELECTOR_VERSION,
+        })
     policy_ms = round((perf_counter() - selection_started) * 1000, 3)
     chosen = next(
         (
@@ -562,6 +579,9 @@ async def run_classified_route(body, request, *, infer=None, emit=None):
                         "catalog_version": data["version"],
                         "ranking_version": rankings["version"],
                         "calibration_version": calibration["version"],
+                        **({"gateway_run_id": runtime.run_id,
+                            "conversation_hash": fingerprint(runtime.messages)}
+                           if runtime else {}),
                     }
                 ),
             },
@@ -645,7 +665,18 @@ async def auto_execute(body: AutoExecute, request: Request):
     ):
         raise HTTPException(409, "路由策略或业务评测已更新，请重新分类。")
     task, profile = Task(**record["task"]), RequestProfile(**record["profile"])
-    selection = auto_selection(task, profile, data, rankings, calibration)
+    runtime = getattr(request.state, "gateway_runtime", None)
+    if record.get("gateway_run_id") and (
+        not runtime or runtime.run_id != record["gateway_run_id"]
+        or fingerprint(runtime.messages) != record["conversation_hash"]
+    ):
+        raise HTTPException(409, "会话执行票据仅可用于创建它的网关请求。")
+    selection = auto_selection(task, profile, data, rankings, calibration, runtime)
+    if runtime:
+        selection = runtime.select(selection, profile, task, {
+            "catalog": data["version"], "ranking": rankings["version"],
+            "calibration": calibration["version"], "policy": SELECTOR_VERSION,
+        })
     if selection["selected_candidate_id"] != record["configuration_id"]:
         raise HTTPException(409, "所选配置已不满足当前路由策略，请重新分类。")
     row = next(
@@ -655,6 +686,10 @@ async def auto_execute(body: AutoExecute, request: Request):
         raise HTTPException(422, selection["execution_notice"])
     if profile.tools == "yes" or profile.structured_output == "yes":
         raise HTTPException(422, "已选型；当前执行演示尚未提供工具或结构化输出参数。")
+    if runtime:
+        from app.gateway_execution import execute
+
+        return await execute(request, row, task, profile.workflow, rankings["version"], runtime)
     return await execute_selected(
         request, row, task, profile.workflow, "classified", SELECTOR_VERSION, rankings["version"]
     )
@@ -857,7 +892,13 @@ async def execute_selected(
         async with asyncio.timeout(TARGET_READ_TIMEOUT_SECONDS + 10):
             async with request.app.state.bedrock_slots:
                 invoked_at = perf_counter()
-                if row.get("adapter"):
+                runtime = getattr(request.state, "gateway_runtime", None)
+                if runtime and (not row.get("adapter") and workflow in {"general_text", "customer_support", "coding", "reasoning"}
+                                or row.get("adapter") == "converse_media"):
+                    from app.gateway_adapter import converse
+
+                    result = await converse(request, client, row, task, runtime)
+                elif row.get("adapter"):
                     from app.media_execution import execute_media
 
                     result = await execute_media(request, client, row, task, workflow)
@@ -874,6 +915,7 @@ async def execute_selected(
             "timings": {
                 "queue_ms": round((invoked_at - started) * 1000, 3),
                 "upstream_ms": round((returned_at - invoked_at) * 1000, 3),
+                **({"ttft_ms": result["ttft_ms"]} if result.get("ttft_ms") is not None else {}),
             },
             "source": "live",
             "ranking_version": ranking_version,

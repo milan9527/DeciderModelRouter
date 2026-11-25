@@ -15,6 +15,7 @@ from pydantic import Field, model_validator
 from starlette.concurrency import run_in_threadpool
 
 from app import routing
+from app.gateway_conversation import Conversation, Message, SessionOptions, validate_messages
 from app.gateway_templates import load_templates
 from app.routing_inventory import inventory
 from app.routing_media import capability_catalog
@@ -36,11 +37,17 @@ class GatewayRun(StrictModel):
     session_id: str | None = Field(None, pattern=r"^[a-f0-9]{24}$")
     template_id: str | None = Field(None, max_length=80)
     client_request_id: str | None = Field(None, pattern=r"^[a-zA-Z0-9-]{16,64}$")
+    session: SessionOptions = Field(default_factory=SessionOptions)
+    history: list[Message] | None = Field(default=None, max_length=32)
 
     @model_validator(mode="after")
     def replay_cannot_execute(self):
         if self.mode == "replay" and self.execute_target:
             raise ValueError("回放不能执行目标模型")
+        if self.history is not None:
+            validate_messages(self.history)
+            if self.session.use_history:
+                raise ValueError("显式 history 与自动会话历史不能同时启用，请设置 session.use_history=false")
         return self
 
 
@@ -70,6 +77,11 @@ def catalog(request: Request):
         "examples": load_templates()["items"],
         "templates_version": load_templates()["version"],
         "persistent_history": hasattr(request.app.state, "history"),
+        "session_features": {
+            "multi_turn": True, "stickiness": True, "prompt_cache": "bedrock_native",
+            "streaming": "converse_stream", "fallback_max_attempts": 3,
+            "real_time_search": False,
+        } if hasattr(request.app.state, "history") else None,
         "decision_service": request.app.state.gateway_decision.public_config(),
         "media": media,
         "bedrock_configured": request.app.state.bedrock is not None,
@@ -96,6 +108,7 @@ async def event_stream(body, request, *, run_id=None, record=None):
     storage_failed = False
     history = getattr(request.app.state, "history", None)
     user = request.state.user["username"] if history and record else None
+    runtime = getattr(getattr(request, "state", None), "gateway_runtime", None)
 
     async def send(event_type, data=None, **fields):
         nonlocal sequence, storage_failed
@@ -138,9 +151,12 @@ async def event_stream(body, request, *, run_id=None, record=None):
                     "history_saved": bool(record),
                 },
             )
+            if runtime:
+                runtime.send = send
+                await send("context", runtime.context)
             route_body = routing.AutoRoute(
                 **body.model_dump(
-                    exclude={"execute_target", "session_id", "template_id", "client_request_id"}
+                    exclude={"execute_target", "session_id", "template_id", "client_request_id", "session", "history"}
                 )
             )
             route = await routing.run_classified_route(
@@ -157,6 +173,8 @@ async def event_stream(body, request, *, run_id=None, record=None):
                 executed = await routing.auto_execute(
                     routing.AutoExecute(route_token=route["steps"][1]["route_token"]), request
                 )
+                if runtime:
+                    await run_in_threadpool(runtime.save_success, record, executed)
                 await progress(stage, "completed", executed)
             await send(
                 "completed",
@@ -204,10 +222,17 @@ async def event_stream(body, request, *, run_id=None, record=None):
         if history and record and record["status"] == "running":
             with contextlib.suppress(Exception):
                 await asyncio.shield(run_in_threadpool(history.interrupted, user, record, stage))
+        if runtime:
+            with contextlib.suppress(Exception):
+                await asyncio.shield(run_in_threadpool(
+                    history.records.release_lease, runtime.pk, "LEASE#" + runtime.session_id, request_id,
+                ))
 
 
 @router.post("/runs")
 async def run(body: GatewayRun, request: Request):
+    if body.history is not None and not hasattr(request.app.state, "history"):
+        raise HTTPException(422, "此入口尚未启用多轮会话，请使用独立模型网关。")
     body = body.model_copy(
         update={"provider": body.provider or request.app.state.gateway_decision.default_provider}
     )
@@ -229,18 +254,38 @@ async def run(body: GatewayRun, request: Request):
     run_id = secrets.token_hex(12)
     record = None
     if history := getattr(request.app.state, "history", None):
+        lease = None
         try:
+            if body.mode == "live":
+                user = request.state.user["username"]
+                if body.session_id:
+                    await run_in_threadpool(history.session, user, body.session_id)
+                else:
+                    session = await run_in_threadpool(history.create_session, user, "未命名会话")
+                    body = body.model_copy(update={"session_id": session["id"]})
+                pk, sk = history.user_key(user), "LEASE#" + body.session_id
+                await run_in_threadpool(history.records.acquire_lease, pk, sk, run_id)
+                lease = (pk, sk)
+                runtime = await run_in_threadpool(Conversation, body, history, user, run_id)
+                task = runtime.task(body.task)
+                if task.attachments:
+                    await run_in_threadpool(request.app.state.media.resolve, user, task.attachments)
+                request.state.gateway_runtime = runtime
             record = await run_in_threadpool(
                 history.begin,
                 request.state.user["username"],
                 body,
                 run_id,
             )
-        except HTTPException:
-            raise
         except Exception as exc:
+            if lease:
+                await run_in_threadpool(history.records.release_lease, *lease, run_id)
+            if isinstance(exc, HTTPException):
+                raise
             logger.exception("Cannot create persisted run")
             raise HTTPException(503, "历史数据库不可用，尚未调用模型。") from exc
+        if body.mode == "live":
+            body = body.model_copy(update={"task": task})
     return StreamingResponse(
         event_stream(body, request, run_id=run_id, record=record),
         media_type="application/x-ndjson",

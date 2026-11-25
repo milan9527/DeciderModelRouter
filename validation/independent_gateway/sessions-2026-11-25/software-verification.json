@@ -1,0 +1,15 @@
+{
+  "full_suite": {
+    "passed": 513,
+    "command": ".venv/bin/pytest -q"
+  },
+  "after_atomic_session_state_change": {
+    "passed": 26,
+    "command": ".venv/bin/pytest -q tests/test_gateway_conversation.py tests/test_gateway_persistence.py"
+  },
+  "lint": "passed",
+  "browser_fixture_real_model_calls": 0,
+  "live_gpu_calls": 5,
+  "live_target_calls": 5,
+  "live_fault_injection": false
+}
