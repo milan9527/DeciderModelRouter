@@ -42,6 +42,7 @@ def main():
         expect(page.locator("#effect-result")).to_contain_text("任务类型判断正确/已检查")
         expect(page.locator("#effect-result")).to_contain_text("完整答案不合格/输出未完成")
         page.locator("#effect-result").scroll_into_view_if_needed()
+        page.locator("#effect-overall").screenshot(path=str(args.output / "effects-overall.png"))
         page.screenshot(path=str(args.output / "effects-desktop.png"), full_page=True)
         with page.expect_download() as download:
             page.locator("#export-effect").click()
@@ -52,6 +53,16 @@ def main():
         assert sum(r["arm"] == "routed" for r in job["results"]) == len(job["cases"]) * len(job["providers"])
         reviewed_observations = {r["observation_id"] for r in job["results"] if r.get("review")}
         assert "route_token" not in json.dumps(job)
+        assert job["overall_metric_version"] == "end-to-end-v1"
+        for s in job["summary"]:
+            assert s["overall_total"] == len(job["cases"])
+            assert sum(s[k] for k in ("overall_pass", "overall_fail", "overall_pending", "overall_unmeasured")) == s["overall_total"]
+            expect(page.locator(f'[data-overall-provider="{s["provider"]}"]')).to_contain_text(
+                f"{s['overall_pass']}/{s['overall_total']} ({s['overall_pass_rate']:.1%})"
+            )
+        for kind, label in (("routing_failed", "整体未通过"), ("expected_boundary", "整体验收通过 · 正确拦截")):
+            row = next(r for r in job["results"] if r["arm"] == "routed" and r["overall"]["kind"] == kind)
+            expect(page.locator(f'[data-effect-row="{row["id"]}"] > summary')).to_contain_text(label)
         expect(page.locator("#effect-result")).to_contain_text(f"本批输出上限 {job['max_output_tokens']} tokens")
         incomplete = next((r for r in job["results"] if r["arm"] == "routed" and r["status"] == "incomplete"), None)
         if incomplete:
@@ -92,6 +103,9 @@ def main():
             "new_evaluation_default_output_cap": 16384,
             "historical_output_cap": job["max_output_tokens"],
             "incomplete_distinct_from_bad_answer": True,
+            "overall_metric_version": job["overall_metric_version"],
+            "overall_summary": [{k: v for k, v in s.items() if k == "provider" or k.startswith("overall_")} for s in job["summary"]],
+            "routing_failures_and_expected_boundaries_distinguished": True,
             "browser_errors": errors, "deployed_asset_sha256": assets,
         }
         (args.output / "verification.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")

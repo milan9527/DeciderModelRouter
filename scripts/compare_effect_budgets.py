@@ -6,7 +6,12 @@ from collections import Counter
 from decimal import Decimal
 from pathlib import Path
 
-from app.gateway_effect_judge import effective_grade, summarize
+from app.gateway_effect_judge import (
+    OVERALL_METRIC_VERSION,
+    effective_grade,
+    overall_outcome,
+    summarize,
+)
 
 
 def observations(job):
@@ -33,6 +38,7 @@ def row_outcome(row):
     return {
         "row_id": row["id"], "execution_status": row["status"],
         "grade": effective_grade(row)["status"],
+        "overall": overall_outcome(row),
         "review_method": row.get("review", {}).get("method"),
         "selected_model": (row.get("selected_model") or {}).get("id"),
         "configuration_id": row.get("configuration_id"),
@@ -85,6 +91,7 @@ def main():
     }
     summaries = [summarize(j["results"], j["providers"], len(j["cases"])) for j in (old, new)]
     result = {
+        "overall_metric_version": OVERALL_METRIC_VERSION,
         "previous_job": old["id"], "current_job": new["id"],
         "previous_output_cap": old["max_output_tokens"], "current_output_cap": new["max_output_tokens"],
         "versions": {
@@ -95,6 +102,13 @@ def main():
         "costs": {"before": observations(old), "after": observations(new)},
         "summaries": {"before": summaries[0], "after": summaries[1]},
         "transitions": transitions, "pairs": pairs,
+        "overall_transitions": {
+            provider: dict(Counter(
+                f"{p['before']['overall']['status']} -> {p['after']['overall']['status']}"
+                for p in pairs if p["provider"] == provider
+            ))
+            for provider in new["providers"]
+        },
         "limitations": (
             "Visible development cases, single sequential pass per budget, no fixed target generation seed; "
             "shared outputs are not independent replicates. Changed judge definitions and model configurations "
@@ -108,19 +122,22 @@ def main():
         f"本批 `{new['id']}`：{new['max_output_tokens']} tokens。", "",
         "同一场景目录和三个决策模型分别重新运行；以下为路由方案的配对结果，"
         "共享目标输出不构成独立重复。旧自动分数及追加评审保留。", "",
-        "| 决策模型 | 类型判断正确：前→后 | 任务通过/已判定：前→后 | 完整答案不合格：前→后 | 输出未完成：前→后 | 调用错误：前→后 | 评分覆盖率：前→后 |",
+        f"整体验收按 `{OVERALL_METRIC_VERSION}` 从两批原始证据重新汇总，原输出、自动评分和追加评审未改写。"
+        "分母固定为全部计划场景，通过包括答案通过与预设边界正确拦截；无候选等非预期路由失败计入未通过，"
+        "待评和缺口仍留在分母。", "",
+        "| 决策模型 | 整体验收通过/全部场景：前→后 | 通过率：前→后 | 已评分答案通过（辅助）：前→后 | 完整答案不合格：前→后 | 输出未完成：前→后 | 调用错误：前→后 |",
         "|---|---:|---:|---:|---:|---:|---:|",
     ]
     for current in summaries[1]:
         previous = next(s for s in summaries[0] if s["provider"] == current["provider"])
         lines.append(
-            f"| {current['provider']} | {previous['workflow_fit']}/{previous['workflow_checked']} → "
-            f"{current['workflow_fit']}/{current['workflow_checked']} | "
+            f"| {current['provider']} | {previous['overall_pass']}/{previous['overall_total']} → "
+            f"{current['overall_pass']}/{current['overall_total']} | "
+            f"{previous['overall_pass_rate']:.1%} → {current['overall_pass_rate']:.1%} | "
             f"{previous['quality_pass']}/{previous['quality_graded']} → {current['quality_pass']}/{current['quality_graded']} | "
             f"{previous['answer_failed']} → {current['answer_failed']} | "
             f"{previous['output_incomplete']} → {current['output_incomplete']} | "
-            f"{previous['errors']} → {current['errors']} | "
-            f"{previous['quality_coverage']:.1%} → {current['quality_coverage']:.1%} |"
+            f"{previous['errors']} → {current['errors']} |"
         )
     lines += ["", "## 顺序调用延迟", "",
               "| 决策模型 | 完整路由 P50 ms：前→后 | 完整路由 P95 ms：前→后 | 有结果目标 P50 ms：前→后 | 有结果目标 P95 ms：前→后 |",
@@ -139,9 +156,12 @@ def main():
     labels = {"pass": "通过", "fail": "未通过", "pending": "待评", "unmeasured": "未测"}
     for pair in pairs:
         before, after = pair["before"], pair["after"]
-        if (before["execution_status"], before["grade"]) == (after["execution_status"], after["grade"]):
+        if (before["execution_status"], before["overall"]["status"]) == (after["execution_status"], after["overall"]["status"]):
             continue
-        transition = f"{labels[before['grade']]}（{before['execution_status']}）→ {labels[after['grade']]}（{after['execution_status']}）"
+        transition = (
+            f"{labels[before['overall']['status']]}（{before['execution_status']}）→ "
+            f"{labels[after['overall']['status']]}（{after['execution_status']}）"
+        )
         lines.append(f"| {pair['title']} | {pair['provider']} | {transition} | "
                      f"{'是' if pair['same_selected_configuration'] else '否或无目标'} |")
     lines += ["", "## 实际调用及参考费用", "",

@@ -8,9 +8,11 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-最新部署为 **ECS revision 7 / Python 3.12 ARM64**，镜像 `sha256:53ff10df72c3560d9c39820553809dec2168af87cf172f4907d7797db8a51a2b`。评测指标改为“任务类型判断正确”，完整答案不合格与输出未完成分别统计；新评测默认输出上限提高到 16384 tokens，自定义用例显式较低上限保留。492 项软件测试通过，原批次 531 行结果和全部既有汇总字段逐项一致。沿用独立GPU，CloudFront 刷新 `I3FO6T15DPTNKO36YF9C53ZY9B` 已完成。[指标与预算验证](../validation/independent_gateway/metrics-budget-2026-11-25/README.zh.md)，本机审计目录 `.deployment/metrics-budget-20261125/`。
+最新部署为 **ECS revision 8 / Python 3.12 ARM64**，镜像 `sha256:d30c558f3606df134ae171f41a6a3f2c53f0b3793f50ab7f42d681859b8a3c8d`。主指标更新为“整体验收通过/全部场景”，使用统一计划分母；错误路由计入未通过，预设边界正确拦截单列计入通过，待评与未测保留在分母。最新批次 Decider / Liquid / H2O 为 **47/87、58/87、57/87**，原“44/50、55/60、54/60”保留为已评分答案的辅助指标。501项软件测试通过，两批历史共1062行原始结果、评审和旧汇总字段逐项一致，未新增模型调用。CloudFront 刷新 `I3MMLUEH0LCCAWQKVTCB3OVX4L` 已完成，沿用独立GPU与数据库；原服务 revision 36 和原GPU未改变。[口径、报告与发布验证](../validation/independent_gateway/overall-metrics-2026-11-25/README.zh.md)，本机审计目录 `.deployment/overall-metrics-20261125/`。
 
-[16384-token 全量复测](../validation/independent_gateway/full-effects-16384-2026-11-25/README.zh.md)已在 revision 7 完成：87 个用例、213 次分类、166 次目标调用，531 行结果及评审保存到历史数据库。任务通过为 Decider 44/50、Liquid 55/60、H2O 54/60，分别披露路由结果、对照异常、费用和未测缺口。此次仅运行测试、保存评审和发布报告，没有更新 ECS/CloudFront 或新建 GPU。本机审计目录 `.deployment/full-effects-16384-20261125/`。
+前一版 **revision 7** 镜像 `sha256:53ff10df72c3560d9c39820553809dec2168af87cf172f4907d7797db8a51a2b`：指标改名“任务类型判断正确”，完整答案不合格与输出未完成分别统计；新评测默认输出上限为16384 tokens，自定义用例显式较低上限保留。492项软件测试通过，原批次531行结果和全部既有汇总字段保留。CloudFront 刷新 `I3FO6T15DPTNKO36YF9C53ZY9B` 已完成。[指标与预算验证](../validation/independent_gateway/metrics-budget-2026-11-25/README.zh.md)，本机审计目录 `.deployment/metrics-budget-20261125/`。
+
+[16384-token 全量复测原报告](../validation/independent_gateway/full-effects-16384-2026-11-25/README.zh.md)在 revision 7 完成：87个用例、213次分类、166次目标调用，531行结果及评审保存到历史数据库。已评分答案子集为 Decider 44/50、Liquid 55/60、H2O 54/60，分别披露路由结果、对照异常、费用和未测缺口。该次实际复测仅运行测试、保存评审和发布报告，没有更新 ECS/CloudFront 或新建GPU；之后的指标发布见上文。本机审计目录 `.deployment/full-effects-16384-20261125/`。
 
 前一版 **revision 6** 镜像 `sha256:614fb07416138116912ead1d9e8ddd1b581a66382bec19bd8fe32ef626cb448c` 引入端到端效果评测：87 个用例、25 类、低价/高能力对照、自定义任务、逐项质量与性能、数据库历史及评分来源。方法和全部场景见[评测说明](../docs/effectiveness-evaluation.zh.md)。CloudFront 刷新 `I9F76QCCOECTXM7I7XGDZXQOQZ` 已完成。
 

@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-11-25T05:57:55.629389+00:00",
+  "metric_version": "end-to-end-v1",
+  "source_exports": [
+    {
+      "path": "validation/independent_gateway/full-effects-2026-11-25/evaluation.json",
+      "sha256": "3ea1931f406a1f8c38e80dbab501ba29b90713432915ee556c83a18de836693c",
+      "job_id": "e4b68284d372843309817a6d",
+      "rows": 531,
+      "cases": 87
+    },
+    {
+      "path": "validation/independent_gateway/full-effects-16384-2026-11-25/evaluation.json",
+      "sha256": "d6b78a19bc921328107d1b219db64b4cc9e94eb0782f497dab6c927140ace795",
+      "job_id": "f263333e0db0e16e53b73a5a",
+      "rows": 531,
+      "cases": 87
+    }
+  ],
+  "new_model_calls": 0
+}

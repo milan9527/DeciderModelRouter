@@ -1,0 +1,32 @@
+{
+  "checked_at": "2026-11-25T06:00:14.296146+00:00",
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:8",
+  "image_digest": "sha256:d30c558f3606df134ae171f41a6a3f2c53f0b3793f50ab7f42d681859b8a3c8d",
+  "rollout": "COMPLETED",
+  "running": 1,
+  "pending": 0,
+  "task_health": "HEALTHY",
+  "target_health": "healthy",
+  "invalidation": "Completed",
+  "invalidation_id": "I3MMLUEH0LCCAWQKVTCB3OVX4L",
+  "root_object": "gateway/index.html",
+  "oac_preserved": true,
+  "original_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:36",
+  "gpu": [
+    {
+      "id": "i-0ae7eb0abcb815af3",
+      "state": "running",
+      "launch_time": "2026-11-24T10:16:20+00:00",
+      "type": "g6.xlarge"
+    },
+    {
+      "id": "i-01180cf02d12e6e31",
+      "state": "running",
+      "launch_time": "2026-11-24T15:32:58+00:00",
+      "type": "g5.xlarge"
+    }
+  ],
+  "new_gpu_instances": 0,
+  "new_model_calls": 0,
+  "verification_read_only": true
+}

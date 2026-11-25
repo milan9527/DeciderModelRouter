@@ -6,6 +6,8 @@ import re
 from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 
+OVERALL_METRIC_VERSION = "end-to-end-v1"
+
 
 def grade(case, output):
     if not output.get("complete"):
@@ -72,12 +74,45 @@ def effective_grade(row):
     return row.get("review") or row.get("grade", {"status": "unmeasured"})
 
 
+def overall_outcome(row):
+    """Derived acceptance result; never replace the original output grade or review."""
+    status = row["status"]
+    if row.get("boundary_check") is True and status in {"no_route", "execution_blocked"}:
+        return {"status": "pass", "kind": "expected_boundary", "reason": "按预先定义的输入或费用约束正确拦截"}
+    if row.get("boundary_check") is False:
+        return {"status": "fail", "kind": "boundary_violation", "reason": "未满足预先定义的输入或费用边界要求"}
+    if status in {"no_route", "execution_blocked"}:
+        return {"status": "fail", "kind": "routing_failed", "reason": "未找到可执行路由或执行受阻，任务未交付"}
+    if status == "error":
+        return {"status": "fail", "kind": "call_error", "reason": "路由或目标调用失败，任务未交付"}
+    if status == "incomplete" or status == "completed" and not (row.get("output") or {}).get("complete"):
+        return {"status": "fail", "kind": "output_incomplete", "reason": "输出未完成（含截断），任务未交付"}
+    if status == "capability_gap":
+        return {"status": "unmeasured", "kind": "capability_gap", "reason": "预登记能力或评测数据缺口；仍计入全部场景"}
+    if status == "budget_exhausted":
+        return {"status": "unmeasured", "kind": "budget_exhausted", "reason": "调用预算不足未执行；仍计入全部场景"}
+    if status == "completed":
+        grade_status = effective_grade(row)["status"]
+        if grade_status == "pass":
+            return {"status": "pass", "kind": "answer_pass", "reason": "完整答复满足该场景的验收要求"}
+        if grade_status == "fail":
+            return {"status": "fail", "kind": "answer_failed", "reason": "完整答复未满足该场景的验收要求"}
+        return {"status": "pending", "kind": "quality_pending", "reason": "输出已完成，质量尚无判定；仍计入全部场景"}
+    return {"status": "unmeasured", "kind": "not_evaluated", "reason": "尚无可判定结果；仍计入全部场景"}
+
+
 def summarize(rows, providers, planned):
+    from collections import Counter
+
     from app.gateway_store import percentile
 
     summaries = []
     for provider in providers:
         sample = [r for r in rows if r["provider"] == provider and r["arm"] == "routed"]
+        overall = [overall_outcome(r) for r in sample]
+        outcomes = Counter(r["status"] for r in overall)
+        kinds = Counter(r["kind"] for r in overall)
+        not_recorded = max(0, planned - len(sample))
         passed = sum(effective_grade(r)["status"] == "pass" for r in sample)
         graded = sum(effective_grade(r)["status"] in {"pass", "fail"} for r in sample)
         measured_costs = [
@@ -107,6 +142,17 @@ def summarize(rows, providers, planned):
                 cost_pairs.append((float(cost), min(passing)))
         summaries.append({
             "provider": provider, "recorded": len(sample), "planned": planned,
+            "overall_metric_version": OVERALL_METRIC_VERSION,
+            "overall_pass": outcomes["pass"], "overall_total": planned,
+            "overall_pass_rate": outcomes["pass"] / planned if planned else None,
+            "overall_fail": outcomes["fail"], "overall_pending": outcomes["pending"],
+            "overall_unmeasured": outcomes["unmeasured"] + not_recorded,
+            "overall_coverage": (outcomes["pass"] + outcomes["fail"]) / planned if planned else None,
+            "overall_answer_pass": kinds["answer_pass"],
+            "overall_boundary_pass": kinds["expected_boundary"],
+            "overall_routing_failed": kinds["routing_failed"],
+            "overall_boundary_failed": kinds["boundary_violation"],
+            "capability_gaps": kinds["capability_gap"], "not_recorded": not_recorded,
             "route_selected": sum(r.get("route_status") == "selected" for r in sample),
             "workflow_fit": sum(r.get("workflow_fit") is True for r in sample),
             "workflow_checked": sum(r.get("workflow_fit") is not None for r in sample),

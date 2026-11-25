@@ -1,0 +1,19 @@
+{
+  "software_tests_passed": 501,
+  "effect_tests_passed": 43,
+  "lint": "passed",
+  "javascript_syntax": "passed",
+  "local_browser": "passed",
+  "image_smoke": {
+    "image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router:overall-metrics-20261125",
+    "architecture": "arm64",
+    "read_only": true,
+    "network": "none",
+    "startup_health": "passed",
+    "fixed_denominator_check": "passed"
+  },
+  "historical_full_runs_checked": 2,
+  "raw_grades_preserved": true,
+  "legacy_summary_fields_preserved": true,
+  "real_model_calls": 0
+}

@@ -5,7 +5,12 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from app.gateway_effect_judge import effective_grade, summarize
+from app.gateway_effect_judge import (
+    OVERALL_METRIC_VERSION,
+    effective_grade,
+    overall_outcome,
+    summarize,
+)
 from app.gateway_store import percentile
 
 
@@ -44,9 +49,29 @@ def main():
         f"批次请求的目标输出上限 {j['max_output_tokens']} tokens；"
         f"专用适配器可采用更低上限，以实际输出记录为准。{j['note']}", "",
         "**这是公开开发回归集，不是隐藏测试集。** 每种情况的样本量有限，"
-        "共享输出也不是独立重复。以下任务通过率必须与覆盖率、未测、缺口和评审来源一起阅读。", "",
-        "## 路由器对比", "",
-        "| 决策模型 | 输出完成/全部场景 | 任务类型判断正确/已检查 | 任务通过/已判定 | 通过率 | 完整答案不合格 | 输出未完成 | 评分覆盖率 | 待评 | 无候选/缺口/未接通 | 调用失败 | 预算未测 |",
+        "共享输出也不是独立重复。整体验收比例必须与待评、未测和评审来源一起阅读。", "",
+        f"## 整体验收（{OVERALL_METRIC_VERSION}）", "",
+        "| 决策模型 | 整体验收通过/全部场景 | 通过率 | 答案通过 | 正确拦截 | 未通过 | 待评 | 未测 | 已判定覆盖率 |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for s in j["summary"]:
+        lines.append(f"| {s['provider']} | {s['overall_pass']}/{s['overall_total']} | {rate(s['overall_pass_rate'])} | "
+                     f"{s['overall_answer_pass']} | {s['overall_boundary_pass']} | {s['overall_fail']} | "
+                     f"{s['overall_pending']} | {s['overall_unmeasured']} | {rate(s['overall_coverage'])} |")
+    lines += [
+        "", "统一使用全部计划场景作分母，包括待评、预登记缺口、预算未执行和尚无记录。"
+        "四类互斥：通过 + 未通过 + 待评 + 未测 = 全部场景。通过包括完整答案通过及预设边界正确拦截；"
+        "错误路由无候选/执行受阻计入未通过。待评与缺口没有被判错，也不当作已通过。"
+        "正确拦截只依据冻结用例的 boundary_check，不因一次无路由而临时认定合理。", "",
+        "| 决策模型 | 非预期无路由/执行受阻 | 边界违约 | 预登记缺口 | 预算未执行 | 尚无记录 |",
+        "|---|---:|---:|---:|---:|---:|",
+    ]
+    for s in j["summary"]:
+        lines.append(f"| {s['provider']} | {s['overall_routing_failed']} | {s['overall_boundary_failed']} | "
+                     f"{s['capability_gaps']} | {s['budget_skipped']} | {s['not_recorded']} |")
+    lines += [
+        "", "## 答案质量与分类诊断（辅助）", "",
+        "| 决策模型 | 输出完成/全部场景 | 任务类型判断正确/已检查 | 已评分答案通过（辅助） | 子集通过率 | 完整答案不合格 | 输出未完成 | 答案评分覆盖率 | 待评 | 无候选/缺口/未接通（旧字段） | 调用失败 | 预算未测 |",
         "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for s in j["summary"]:
@@ -54,10 +79,10 @@ def main():
                      f"{s['workflow_fit']}/{s['workflow_checked']} | {s['quality_pass']}/{s['quality_graded']} | {rate(s['quality_pass_rate'])} | "
                      f"{s['answer_failed']} | {s['output_incomplete']} | "
                      f"{rate(s['quality_coverage'])} | {s['pending']} | {s['gaps']} | {s['errors']} | {s['budget_skipped']} |")
-    lines += ["", "“无候选/缺口”包含预期的费用和输入边界拒绝，不能全部解释为分类失败；详见逐场景记录。"
-              "目标调用失败计入已评分失败，未接通及未评审不会被算成通过。", "",
+    lines += ["", "已评分答案是辅助指标，各模型分母可能不同，不用于整体排名。旧字段“无候选/缺口”"
+              "保留兼容性，包含预期拒绝；新主指标已经区分正确拦截、路由失败及预登记缺口。", "",
               "任务类型判断正确表示识别的用途与请求匹配，例如没有把文字问候误分为语音生成；"
-              "不代表所选型号最优。任务通过要求完整输出并满足验收规则。完整答案不合格与输出未完成分别计数；"
+              "这是诊断项，不因内部标签不同而否决已通过的完整答案，也不代表所选型号最优。完整答案不合格与输出未完成分别计数；"
               "截断是该预算内未完成交付，不等于模型答错。历史原始判分不变。", "",
               "## 延迟与成本", "",
               "| 决策模型 | GPU分类往返 P50/P95 ms | 完整路由 P50/P95 ms | 有结果目标调用 P50/P95 ms | 路由方案已知参考费用 USD | 价格已知/目标观察 |",
@@ -119,11 +144,12 @@ def main():
             if not row:
                 cells.append("尚无记录")
                 continue
-            text = labels.get(effective_grade(row)["status"], effective_grade(row)["status"])
+            outcome = overall_outcome(row)
+            text = "整体" + labels[outcome["status"]]
             if row["status"] == "incomplete":
-                text = "输出未完成（含截断）"
+                text += " · 输出未完成（含截断）"
             elif row.get("output", {}).get("complete") and effective_grade(row)["status"] == "fail":
-                text = "完整答案不合格"
+                text += " · 完整答案不合格"
             elif row["status"] in states:
                 text += " · " + states[row["status"]]
             if row.get("boundary_check") is not None:

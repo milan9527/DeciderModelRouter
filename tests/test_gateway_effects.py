@@ -2,6 +2,8 @@ import asyncio
 import hashlib
 import json
 import time
+from copy import deepcopy
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
@@ -11,7 +13,7 @@ from fastapi import HTTPException
 from app import gateway_main
 from app.auth import save_user
 from app.gateway_effect_cases import REFERENCE_ERRATA, suite
-from app.gateway_effect_judge import grade, summarize
+from app.gateway_effect_judge import OVERALL_METRIC_VERSION, grade, overall_outcome, summarize
 from app.gateway_effects import ASSETS, EffectEvaluations, execution_key
 from app.routing import Task
 from tests.test_gateway_persistence import client as client
@@ -115,6 +117,10 @@ def test_gaps_budget_and_intentional_no_route_not_semantic_passes(client):
     assert job["summary"][0]["quality_pass_rate"] is None
     assert job["summary"][0]["boundary_pass"] == 1
     assert job["summary"][0]["cost_known_samples"] == 0
+    assert job["summary"][0]["overall_pass"] == 1
+    assert job["summary"][0]["overall_total"] == 3
+    assert job["summary"][0]["overall_unmeasured"] == 2
+    assert job["results"][-1]["overall"]["kind"] == "expected_boundary"
     assert not gateway_main.app.state.bedrock.converse.called
 
 
@@ -139,6 +145,9 @@ def test_reviews_preserve_automatic_grade_and_are_user_scoped(client):
     assert saved["results"][0]["grade"]["status"] == "pending"
     assert saved["results"][0]["review"]["status"] == "fail"
     assert saved["summary"][0]["quality_graded"] == 1
+    assert job["summary"][0]["overall_pending"] == 1
+    assert saved["summary"][0]["overall_fail"] == 1
+    assert saved["results"][0]["overall"]["kind"] == "answer_failed"
     save_user(gateway_main.app.state.auth.store, "another", "other-long-password")
     client.post("/api/auth/logout")
     client.post("/api/auth/login", json={"username": "another", "password": "other-long-password"})
@@ -213,6 +222,75 @@ def test_summary_compares_only_graded_baselines_with_known_costs():
     assert summary["avoidable_failures_vs_tested_baselines"] == 1
     assert summary["lower_cost_passing_alternative_cases"] == 1
     assert summary["reference_cost_above_tested_passing_alternative_usd"] == .01
+
+
+def test_overall_keeps_unroutable_pending_and_missing_cases_in_fixed_denominator():
+    rows = [
+        {"case_id": "answer", "status": "completed", "output": {"complete": True},
+         "grade": {"status": "pass"}, "workflow_fit": False},
+        {"case_id": "bad-route", "status": "no_route"},
+        {"case_id": "blocked", "status": "execution_blocked"},
+        {"case_id": "expected-rejection", "status": "no_route", "boundary_check": True},
+        {"case_id": "violated-budget", "status": "completed", "boundary_check": False,
+         "output": {"complete": True}, "grade": {"status": "pass"}},
+        {"case_id": "pending", "status": "completed", "output": {"complete": True},
+         "grade": {"status": "pending"}},
+        {"case_id": "gap", "status": "capability_gap"},
+        {"case_id": "budget", "status": "budget_exhausted"},
+        {"case_id": "truncated", "status": "incomplete", "output": {"complete": False},
+         "grade": {"status": "fail"}},
+    ]
+    rows = [{**r, "provider": "h2o", "arm": "routed"} for r in rows]
+    rows.append({**rows[0], "arm": "low"})
+    before = deepcopy(rows)
+    s = summarize(rows, ["h2o", "liquid"], 10)
+    assert (s[0]["overall_pass"], s[0]["overall_fail"], s[0]["overall_pending"], s[0]["overall_unmeasured"]) == (2, 4, 1, 3)
+    assert s[0]["overall_total"] == 10 and s[0]["overall_pass_rate"] == .2
+    assert s[0]["overall_coverage"] == .6
+    assert s[0]["overall_routing_failed"] == 2 and s[0]["overall_boundary_failed"] == 1
+    assert s[0]["overall_answer_pass"] == s[0]["overall_boundary_pass"] == 1
+    assert s[0]["not_recorded"] == 1
+    assert s[1]["overall_unmeasured"] == 10 and s[1]["overall_pass_rate"] == 0
+    assert summarize([], ["h2o"], 0)[0]["overall_pass_rate"] is None
+    assert rows == before
+
+
+@pytest.mark.parametrize("status,complete,review,expected", [
+    ("completed", True, "pass", "pass"),
+    ("completed", True, "fail", "fail"),
+    ("completed", False, "pass", "fail"),
+    ("incomplete", False, "pass", "fail"),
+    ("error", False, "pass", "fail"),
+    ("no_route", False, "pass", "fail"),
+])
+def test_overall_review_cannot_override_missing_delivery(status, complete, review, expected):
+    row = {"status": status, "output": {"complete": complete},
+           "grade": {"status": "pending"}, "review": {"status": review}}
+    assert overall_outcome(row)["status"] == expected
+
+
+@pytest.mark.parametrize("folder,passes", [
+    ("full-effects-2026-11-25", [43, 53, 52]),
+    ("full-effects-16384-2026-11-25", [47, 58, 57]),
+])
+def test_historical_read_derives_overall_without_rewriting_evidence(folder, passes):
+    path = Path(__file__).resolve().parents[1] / "validation/independent_gateway" / folder / "evaluation.json"
+    frozen = json.loads(path.read_text())
+    before = deepcopy(frozen)
+    effects = EffectEvaluations(None, None)
+    effects.header = lambda *args: {k: deepcopy(v) for k, v in frozen.items() if k != "results"}
+    effects.rows = lambda *args: frozen["results"]
+    job = effects.get("alice", frozen["id"])
+    assert job["overall_metric_version"] == OVERALL_METRIC_VERSION
+    assert [s["overall_pass"] for s in job["summary"]] == passes
+    for s, old in zip(job["summary"], frozen["summary"], strict=True):
+        assert s["overall_total"] == 87
+        assert sum(s[k] for k in ("overall_pass", "overall_fail", "overall_pending", "overall_unmeasured")) == 87
+        assert s["overall_pending"] == 3 and s["overall_unmeasured"] == 16
+        assert s["overall_boundary_pass"] == 3
+        assert all(s[k] == v for k, v in old.items())
+    assert all("overall" in r for r in job["results"])
+    assert frozen == before
 
 
 def test_cancellation_retains_started_attempt_and_stops_future_calls(client, monkeypatch):

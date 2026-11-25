@@ -321,6 +321,8 @@ def smoke(output):
                 expect(page.locator("#effect-result")).to_contain_text("目标调用尝试 1")
                 expect(page.locator("#effect-result")).to_contain_text("能力/评测缺口")
                 expect(page.locator("#effect-result")).to_contain_text("任务类型判断正确/已检查")
+                expect(page.locator("#effect-overall")).to_contain_text("整体验收通过/全部场景")
+                expect(page.locator("#effect-overall")).to_contain_text("0/2 (0.0%)")
                 effect_row = page.locator("#effect-result .evaluation-row").first
                 effect_row.locator("summary").first.click()
                 review = effect_row.locator("[data-effect-review]")
@@ -336,6 +338,11 @@ def smoke(output):
                 assert effect["max_output_tokens"] == 16384
                 assert effect["summary"][0]["answer_failed"] == 1
                 assert effect["summary"][0]["output_incomplete"] == 0
+                assert effect["overall_metric_version"] == "end-to-end-v1"
+                assert effect["summary"][0]["overall_fail"] == 1
+                assert effect["summary"][0]["overall_unmeasured"] == 1
+                assert effect["summary"][0]["overall_total"] == 2
+                expect(effect_row.locator("summary").first).to_contain_text("整体未通过")
                 assert "route_token" not in json.dumps(effect)
                 page.screenshot(path=str(output / "effect-evaluation.png"), full_page=True)
                 page.locator('[data-page="account"]').click()

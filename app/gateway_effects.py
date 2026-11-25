@@ -16,7 +16,7 @@ from starlette.concurrency import run_in_threadpool
 
 from app import routing
 from app.gateway_effect_cases import REFERENCE_ERRATA, suite
-from app.gateway_effect_judge import grade, summarize
+from app.gateway_effect_judge import OVERALL_METRIC_VERSION, grade, overall_outcome, summarize
 from app.gateway_evaluations import Evaluations
 from app.gateway_store import clean
 from app.routing_balance import preferences
@@ -99,6 +99,8 @@ class EffectEvaluations(Evaluations):
         job = self.header(user, job_id)
         job["results"] = self.rows(user, job_id)
         job["summary"] = summarize(job["results"], job["providers"], len(job["cases"]))
+        job["overall_metric_version"] = OVERALL_METRIC_VERSION
+        job["results"] = [{**row, "overall": overall_outcome(row)} for row in job["results"]]
         job["reference_errata"] = [
             entry for entry in REFERENCE_ERRATA if entry["affected_version"] == job["dataset_version"]
         ]
