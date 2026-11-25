@@ -142,6 +142,8 @@ sequenceDiagram
 
 独立的[端到端效果评测](effectiveness-evaluation.zh.md)覆盖87项、25类：实际执行分类、选型和目标调用，并保存低价/高能力对照、完整输出及验收证据。当前主指标按全部计划场景计算，答案评分与边界拦截分别展示。已有真实结果，但尚未形成启用中的业务校准表；[失败原因分析](../validation/independent_gateway/overall-metrics-2026-11-25/failure-analysis.zh.md)记录多模态、通用路由问题，以及3项尚未修复的边界标记不一致问题。
 
+[文本与多模态指标报告](../validation/independent_gateway/overall-metrics-2026-11-25/modality-breakdown/README.zh.md)按原始任务意图拆分64项文本、16项多模态、2项复杂文件和5项约束/系统场景，给出分组通过率和各类验收方法。GPU原始类型匹配与后端调整后的 `workflow_fit` 分开计算；输出完成、答案通过、待评和未测分别展示。报告来自既有导出，不额外调用模型。
+
 ## 登录与用户管理
 
 密码使用 scrypt 哈希；认证使用服务端保存的随机会话及 `Secure / HttpOnly / SameSite` Cookie，默认 8 小时。写操作检查同源和客户端请求头，登录有速率限制。密码修改、管理员重置/禁用会更新账户版本，使已有登录失效；账户页的并发修改使用版本条件，重置密码保留账户的禁用状态。

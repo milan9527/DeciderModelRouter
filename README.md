@@ -19,7 +19,8 @@ GPU负责判断七项任务属性，后端负责依据证据选型。文本/向�
 - **端到端效果评测**：87 个用例、25 类场景，支持自定义任务；实际运行分类、选模与目标模型，对比低价/高能力策略，保存输出、质量、耗时、费用和缺口。明确答案自动校验，开放答案区分用户/助手评审，代码用隔离功能测试；未测与未知价格不补零。[方法](docs/effectiveness-evaluation.zh.md) · [完整场景](docs/effectiveness-scenarios.zh.md) · [16384-token 全量复测](validation/independent_gateway/full-effects-16384-2026-11-25/README.zh.md) · [2048-token 原报告](validation/independent_gateway/full-effects-2026-11-25/README.zh.md)。
 - **分类诊断**：保留 Decider / Liquid / H2O 七项分类参考一致率。24 个有标签的开发样本，每次最多选 16 个；分类标签一致率不等于业务正确率。
 - **整体验收（主指标）**：统一以全部计划场景为分母，错误路由计入未通过；待评、未测单列并留在分母。最新全量批次 Decider **47/87（54.0%）**、Liquid **58/87（66.7%）**、H2O **57/87（65.5%）**，分别为44、55、54个答案通过加3次预设边界正确拦截。原“44/50”等仅作已评分答案的辅助指标，历史输出与评审保留。[口径与验证](validation/independent_gateway/overall-metrics-2026-11-25/README.zh.md)。
-- **评测诊断**：“任务类型判断正确”检查用途标签是否匹配；完整答案不合格、输出未完成和调用错误分开统计。新效果评测默认输出上限为 16384 tokens，历史结果显示当时预算。[指标与预算调整](validation/independent_gateway/metrics-budget-2026-11-25/README.zh.md)。
+- **文本与多模态分项**：文本、代码与检索64项，通过数分别为41、52、51；多模态16项均为3通过、7未通过、1待评、5未测。另列2项复杂文件和5项约束/系统测试，分组加总仍为87项。[通过率、分类诊断与各模态指标说明](validation/independent_gateway/overall-metrics-2026-11-25/modality-breakdown/README.zh.md)。
+- **评测诊断**：“任务类型判断正确”检查后端调整后的用途标签；GPU原始类型匹配在分组报告中另列。完整答案不合格、输出未完成和调用错误分开统计。新效果评测默认输出上限为 16384 tokens，历史结果显示当时预算。[指标与预算调整](validation/independent_gateway/metrics-budget-2026-11-25/README.zh.md)。
 - **失败原因与优化结论**：区分多模态内容质量、格式要求、能力未接通及通用路由误判；记录3项能力边界用例的指标归类问题，明确尚未修复。[完整分析与改进顺序](validation/independent_gateway/overall-metrics-2026-11-25/failure-analysis.zh.md)。
 - **账户管理**：管理员创建、禁用、恢复和重置用户；用户修改密码；密码使用 scrypt，认证会话保存在专用数据库。
 - **目标模型证据**：124 个 Bedrock 型号，60 个有公开评测映射，其中 9 个配置待核验。配置未核验的不参与自动路由，业务校准仍为 `uncalibrated`。
