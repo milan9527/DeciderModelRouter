@@ -175,7 +175,7 @@ def test_task_clone_preserves_roles_secrets_gpu_and_sidecars():
     env = {e["name"]: e["value"] for e in api["environment"]}
     assert env["OPEN_MODELS_URL"] == "http://private-gpu:18124"
     assert env["AUTH_TABLE"] == "existing-auth"
-    assert env["SERVE_FRONTEND"] == "false" and env["GATEWAY_DECISION_PROVIDER"] == "h2o"
+    assert env["SERVE_FRONTEND"] == "false" and env["GATEWAY_DECISION_PROVIDER"] == "liquid"
     assert env["GATEWAY_DECIDER_MODEL"] == "strands-decider-2B-hobson-v19-vllm"
     assert not any(k in new for k in ("taskDefinitionArn", "revision", "status"))
     assert api["image"] == IMAGE + "@" + DIGEST

@@ -8,7 +8,9 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-最新部署为 **ECS revision 9 / Python 3.12 ARM64**，镜像 `sha256:0bf8665ec1bb233f0d351570fbf939f1199ad41c630ba2946e022e59345f5cbe`。新增多轮上下文、会话粘性、原生提示词缓存、ConverseStream、受约束回退及对应历史与性能展示。513项全量软件测试、后续26项定向回归和浏览器验证通过；线上五次 H2O 分类、五次 Nova Micro 执行全部完成，连续追问沿用配置，长前缀追问实际读取2,109缓存tokens。CloudFront 刷新 `IBGGC2FUX1K7ILTCRSW75LRHIT` 已完成，根路径无跳转，五个公网静态文件匹配本地；独立GPU、原GPU及原服务 revision 36 未变。[机制与边界](../docs/SESSION_ROUTING.zh.md)、[实测报告](../validation/independent_gateway/sessions-2026-11-25/README.zh.md)，本机审计目录 `.deployment/session-release-20261125/`。
+最新部署为 **ECS revision 10 / Python 3.12 ARM64**，镜像 `sha256:a5c4449aee029e4c4be10996d7bd78d21683c253c96acd2900ad4ab86846afa3`。默认决策模型改为 **Liquid d1-2B**，前端刷新后自动选中；未传 `provider` 的API请求也使用Liquid，仍可显式选择Decider/H2O。43项相关软件测试通过；正式域名一次Liquid分类、一次Nova Micro执行完成，历史保存及浏览器默认选项验证通过。CloudFront刷新 `I16K1IVRTND7WSDWOK3JTD88W7` 已完成。沿用GPU，原服务revision 36保持不变。[验证记录](../validation/independent_gateway/liquid-default-2026-11-25/README.zh.md)，本机审计目录 `.deployment/liquid-default-20261125/`。
+
+前一版 **ECS revision 9**，镜像 `sha256:0bf8665ec1bb233f0d351570fbf939f1199ad41c630ba2946e022e59345f5cbe`。新增多轮上下文、会话粘性、原生提示词缓存、ConverseStream、受约束回退及对应历史与性能展示。513项全量软件测试、后续26项定向回归和浏览器验证通过；线上五次 H2O 分类、五次 Nova Micro 执行全部完成，连续追问沿用配置，长前缀追问实际读取2,109缓存tokens。CloudFront 刷新 `IBGGC2FUX1K7ILTCRSW75LRHIT` 已完成，根路径无跳转，五个公网静态文件匹配本地；独立GPU、原GPU及原服务 revision 36 未变。[机制与边界](../docs/SESSION_ROUTING.zh.md)、[实测报告](../validation/independent_gateway/sessions-2026-11-25/README.zh.md)，本机审计目录 `.deployment/session-release-20261125/`。
 
 前一版 **ECS revision 8**，镜像 `sha256:d30c558f3606df134ae171f41a6a3f2c53f0b3793f50ab7f42d681859b8a3c8d`。主指标更新为“整体验收通过/全部场景”，使用统一计划分母；错误路由计入未通过，预设边界正确拦截单列计入通过，待评与未测保留在分母。最新全量效果批次 Decider / Liquid / H2O 为 **47/87、58/87、57/87**，原“44/50、55/60、54/60”保留为已评分答案的辅助指标。501项软件测试通过，两批历史共1062行原始结果、评审和旧汇总字段逐项一致，未新增模型调用。CloudFront 刷新 `I3MMLUEH0LCCAWQKVTCB3OVX4L` 已完成，沿用独立GPU与数据库；原服务 revision 36 和原GPU未改变。[口径、报告与发布验证](../validation/independent_gateway/overall-metrics-2026-11-25/README.zh.md)，本机审计目录 `.deployment/overall-metrics-20261125/`。
 

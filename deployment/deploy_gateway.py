@@ -87,7 +87,7 @@ def task_revision(definition, image, container, provider, allowed_keys):
     chosen = (
         provider
         or env.get("GATEWAY_DECISION_PROVIDER")
-        or ("h2o" if env.get("OPEN_MODELS_URL") else "decider")
+        or "liquid"
     )
     if chosen not in ("decider", "liquid", "h2o"):
         raise ValueError("Only the configured GPU decision services may classify requests")

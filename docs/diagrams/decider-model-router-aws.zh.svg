@@ -173,7 +173,7 @@
     <text x="833" y="1002" font-size="24" fill="#232f3e" font-weight="600" text-anchor="start">Amazon EC2 · g5.xlarge</text>
     <text x="833" y="1036" font-size="20" fill="#526171" font-weight="400" text-anchor="start">A10G 24GB · 独立 GPU 服务</text>
     <text x="833" y="1065" font-size="20" fill="#526171" font-weight="400" text-anchor="start">Decider / Liquid / H2O</text>
-    <text x="833" y="1094" font-size="20" fill="#526171" font-weight="400" text-anchor="start">每次调用一个分类器 · 默认 H2O</text>
+    <text x="833" y="1094" font-size="20" fill="#526171" font-weight="400" text-anchor="start">每次调用一个分类器 · 默认 Liquid</text>
     <text x="390" y="1002" font-size="21" fill="#232f3e" font-weight="600" text-anchor="start">GPU 仅识别任务属性</text>
     <text x="390" y="1038" font-size="19" fill="#526171" font-weight="400" text-anchor="start">输入：文字、附件类型、输出要求</text>
     <text x="390" y="1072" font-size="19" fill="#526171" font-weight="400" text-anchor="start">不传媒体字节、型号或价格</text>

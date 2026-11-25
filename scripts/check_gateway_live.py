@@ -59,7 +59,12 @@ def main():
         status = client.get("/api/gateway/status").json()
         save("status.json", status)
         assert status["decision"]["connected"], status
-        assert catalog["decision_service"]["default_provider"] == "h2o"
+        default_provider = catalog["decision_service"]["default_provider"]
+        default_model = next(
+            p["model"] for p in catalog["decision_service"]["providers"]
+            if p["id"] == default_provider
+        )
+        assert status["decision"]["provider"] == default_provider
         checksums = {}
         for asset in (ROOT / "frontend/gateway").iterdir():
             if asset.is_file():
@@ -89,7 +94,6 @@ def main():
             assert {"moonshotai.kimi-k3", "zai.glm-5.3"} <= blocked
         payload = {
             "task": {"text": task_text, "routing_preferences": prefs},
-            "provider": "h2o",
             "mode": "live",
             "execute_target": False,
             **{k: catalog[k] for k in ("catalog_version", "ranking_version", "policy_version")},
@@ -116,7 +120,7 @@ def main():
         route = next(e["data"] for e in events if e["type"] == "route")
         profile, selected = route["steps"]
         assert profile["source"] == "live" and profile["assessment_count"] == 7
-        assert profile["model"] == "h2oai/h2o-lightning-4b"
+        assert profile["model"] == default_model
         assert selected["selected_model"]["id"] in {m["id"] for m in catalog["models"]}
         assert selected["selected_model"]["id"] not in blocked
         for mid in blocked:
@@ -154,6 +158,7 @@ def main():
         page.locator("#login-submit").click()
         expect(page.locator("#app")).to_be_visible(timeout=30000)
         expect(page.locator("#health")).to_have_class("status ready", timeout=30000)
+        expect(page.locator("#provider")).to_have_value(default_provider)
         if code_scenario:
             expect(page.locator("#task")).to_have_value(task_text)
             expect(page.locator("#max-output")).to_have_value(str(prefs["max_output_tokens"]))

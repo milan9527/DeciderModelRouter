@@ -1,0 +1,61 @@
+{
+  "checked_at": "2026-11-25T14:05:48.951806+00:00",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net",
+  "fixture": false,
+  "requested_provider_omitted": true,
+  "decision_service": {
+    "default_provider": "liquid",
+    "providers": [
+      {
+        "id": "decider",
+        "model": "strands-decider-2B-hobson-v19-vllm",
+        "configured": true
+      },
+      {
+        "id": "liquid",
+        "model": "LiquidAI/d1-2B",
+        "configured": true
+      },
+      {
+        "id": "h2o",
+        "model": "h2oai/h2o-lightning-4b",
+        "configured": true
+      }
+    ]
+  },
+  "status": {
+    "api": "ready",
+    "decision": {
+      "provider": "liquid",
+      "connected": true,
+      "check_ms": 9.053,
+      "message": "GPU 决策服务可连接"
+    },
+    "bedrock_configured": true
+  },
+  "live": {
+    "request_id": "8c16088c2cfe42787d96964d",
+    "decision_model": "LiquidAI/d1-2B",
+    "gpu_http_ms": 95.639,
+    "target_model": "amazon.nova-micro-v1:0",
+    "target_complete": true,
+    "target_output": "Hello!",
+    "backend_total_ms": 710.168,
+    "persisted_history": true,
+    "gpu_calls": 1,
+    "target_calls": 1
+  },
+  "browser": {
+    "root_status": 200,
+    "root_url": "https://d3eipg2g3l3an3.cloudfront.net/",
+    "default_provider": "liquid",
+    "default_evaluation_provider": "liquid",
+    "available_providers": [
+      "decider",
+      "liquid",
+      "h2o"
+    ],
+    "page_errors": [],
+    "additional_model_calls": 0
+  }
+}

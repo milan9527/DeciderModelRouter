@@ -218,7 +218,7 @@ def build():
         500,
         165,
         "Amazon EC2 · g5.xlarge",
-        ["A10G 24GB · 独立 GPU 服务", "Decider / Liquid / H2O", "每次调用一个分类器 · 默认 H2O"],
+        ["A10G 24GB · 独立 GPU 服务", "Decider / Liquid / H2O", "每次调用一个分类器 · 默认 Liquid"],
     )
     text(390, 1002, "GPU 仅识别任务属性", 21, weight="600")
     text(390, 1038, "输入：文字、附件类型、输出要求", 19, MUTED)

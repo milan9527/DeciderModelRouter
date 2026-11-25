@@ -14,7 +14,7 @@
 
 新增覆盖 Nova、Llama、Gemma、Claude 4.5、Devstral、MiniMax、Qwen 等型号。另有 14 个型号只具备核验过的外部资料和参考价，11 个是未独立评测的容量变体，29 个需要专用任务或模态评测，10 个未找到接入范围内的公开成绩。逐型号状态和来源见[覆盖记录](../validation/routing_mappings/coverage.json)；这些类别互斥，不将参考资料计作评测。
 
-独立服务默认分类器为专用 GPU 上的 H2O Lightning 4B，也可选择 Decider/Liquid。原比较入口还支持 Bedrock GPT-6 Sol 等对照；无论选哪一个分类器，下游目标池都来自同一个 Bedrock 目录。
+独立服务默认分类器为专用 GPU 上的 Liquid d1-2B，也可选择 Decider/H2O。原比较入口还支持 Bedrock GPT-6 Sol 等对照；无论选哪一个分类器，下游目标池都来自同一个 Bedrock 目录。
 
 已经完成并保存真实端到端评测，但其结果尚未整理为可用业务校准快照。[当前校准文件](../app/routing_calibration.json)仍为 `uncalibrated`、`cohorts={}`。文本/向量运行基于榜单分项的初始策略，不能将评测已经完成解释为线上选型已按业务成功率校准。
 
@@ -235,7 +235,7 @@ flowchart TB
     "text": "编写具有验签、幂等和并发保护的支付 webhook",
     "routing_preferences": {"cost_tier": "medium"}
   },
-  "provider": "h2o",
+  "provider": "liquid",
   "mode": "live",
   "execute_target": true,
   "catalog_version": "<GET /api/gateway/catalog 返回的 catalog_version>",
@@ -244,7 +244,7 @@ flowchart TB
 }
 ```
 
-`provider` 可为 `decider`、`liquid`、`h2o`，省略时使用服务端默认H2O。`execute_target=false`只分析路由，仍会调用真实GPU；`mode=replay`不调用GPU，也不能执行目标。示例中的版本必须使用目录接口实际返回值。
+`provider` 可为 `decider`、`liquid`、`h2o`，省略时使用服务端默认Liquid。`execute_target=false`只分析路由，仍会调用真实GPU；`mode=replay`不调用GPU，也不能执行目标。示例中的版本必须使用目录接口实际返回值。
 
 响应采用逐行JSON事件，依次包含 `accepted`、各阶段 `stage`、`route` 和 `completed`，异常产生 `error`。分类与 `deterministic_policy` 选型分别可审计：返回实际分类输入、原始与有效属性、候选、排除原因、非劣集合、选择原因、成本口径及版本。流式阶段事件不代表Bedrock最终答案按Token实时输出。
 

@@ -41,9 +41,7 @@ class GatewayDecisionService:
                 for provider, model in LOCAL_ROUTERS.items()
             },
         }
-        self.default_provider = os.getenv(
-            "GATEWAY_DECISION_PROVIDER", "h2o" if local else "decider"
-        )
+        self.default_provider = os.getenv("GATEWAY_DECISION_PROVIDER", "liquid")
         if self.default_provider not in self.services:
             raise RuntimeError("GATEWAY_DECISION_PROVIDER must be decider, liquid or h2o")
         self.slots = {provider: asyncio.Semaphore(2) for provider in self.services}
