@@ -111,12 +111,44 @@
                       rows="8"
                       maxlength="1400"
                       required
-                      placeholder="描述你要完成的任务，网关将自动分类并选择合适的模型。"
+                      placeholder="可以直接打招呼、提问，或描述任务。无需选择模板，网关会按实际内容选择模型。"
                     ></textarea>
                   </label>
+                  <div class="field-row">
+                    <label>输出类型<select id="output-modality">
+                      <option value="auto">自动判断</option>
+                      <option value="text">文字答复 / 理解附件</option>
+                      <option value="image">图片生成 / 编辑</option>
+                      <option value="audio">语音回复</option>
+                      <option value="video">视频生成</option>
+                      <option value="embedding">检索向量</option>
+                      <option value="rerank">文档重排</option>
+                    </select></label>
+                    <label id="image-options" hidden>图片操作<select id="image-operation">
+                      <option value="generate">文生图</option>
+                      <option value="remove_background">移除背景</option>
+                      <option value="upscale">快速放大</option>
+                      <option value="creative_upscale">创意放大</option>
+                      <option value="conservative_upscale">保真放大</option>
+                      <option value="sketch">草图生成</option>
+                      <option value="structure">结构引导</option>
+                      <option value="inpaint">局部重绘（原图 + 遮罩）</option>
+                    </select></label>
+                    <label id="voice-options" hidden>音色<select id="speech-voice">
+                      <option value="tiffany">Tiffany</option><option value="matthew">Matthew</option>
+                      <option value="amy">Amy</option><option value="lupe">Lupe</option>
+                      <option value="carlos">Carlos</option>
+                    </select></label>
+                  </div>
+                  <label id="rerank-options" hidden>候选文档（每行一条，最多 20 条）<textarea id="rerank-documents" rows="4"></textarea></label>
+                  <label>添加图片、录音或视频<input id="media-upload" type="file" multiple
+                    accept="image/png,image/jpeg,image/webp,audio/wav,audio/mpeg,video/mp4,video/webm" /></label>
+                  <p class="footnote">图片 ≤ 3.5 MB，录音 ≤ 10 MB，视频 ≤ 20 MB。语音回复的录音输入需 16kHz / 16 位 / 单声道 WAV，最长 30 秒。文件按账户私有保存。</p>
+                  <div id="media-inputs"></div>
+                  <p id="media-notice" class="footnote" role="status"></p>
                   <div class="field-row template-search">
                     <label>场景分类<select id="template-category"><option value="all">全部场景</option></select></label>
-                    <label>搜索模板<input id="template-search" type="search" placeholder="验签、对账、摘要…" /></label>
+                    <label>搜索模板<input id="template-search" type="search" placeholder="问候、解释、写作、代码…" /></label>
                   </div>
                   <div
                     id="examples"
@@ -315,6 +347,11 @@
             </div>
           </section>
           <section data-view="models" hidden>
+            <section class="panel padded-panel">
+              <h2>多模态能力覆盖</h2>
+              <p class="muted">可用模型、执行接口与质量评测分别核验。目录无可用模型时明确显示原因。</p>
+              <div id="media-capabilities" class="table-scroll"></div>
+            </section>
             <div class="page-heading">
               <div>
                 <p class="eyebrow">MODEL INVENTORY</p>

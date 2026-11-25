@@ -1,0 +1,199 @@
+{
+  "version": "bedrock-media-v1",
+  "scenarios": [
+    {
+      "workflow": "vision",
+      "label": "图片理解",
+      "output_modality": "auto",
+      "image_operation": "generate",
+      "model_ids": [
+        "amazon.nova-2-lite-v1:0",
+        "amazon.nova-lite-v1:0",
+        "amazon.nova-pro-v1:0",
+        "anthropic.claude-fable-5",
+        "anthropic.claude-fable-5-1",
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-5-5",
+        "anthropic.claude-opus-4-5-20251101-v1:0",
+        "anthropic.claude-opus-4-6-v1",
+        "anthropic.claude-opus-4-7",
+        "anthropic.claude-opus-4-8",
+        "anthropic.claude-opus-5",
+        "anthropic.claude-opus-5-5",
+        "anthropic.claude-sonnet-4-6",
+        "anthropic.claude-sonnet-5",
+        "anthropic.claude-sonnet-5-5",
+        "google.gemma-3-12b-it",
+        "google.gemma-3-27b-it",
+        "google.gemma-3-4b-it",
+        "meta.llama4-maverick-17b-instruct-v1:0",
+        "meta.llama4-scout-17b-instruct-v1:0",
+        "mistral.pixtral-large-2502-v1:0"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": "请上传图片后执行。"
+    },
+    {
+      "workflow": "video_understanding",
+      "label": "视频理解",
+      "output_modality": "auto",
+      "image_operation": "generate",
+      "model_ids": [
+        "amazon.nova-2-lite-v1:0",
+        "amazon.nova-lite-v1:0",
+        "amazon.nova-pro-v1:0"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": "请上传视频后执行。"
+    },
+    {
+      "workflow": "audio_understanding",
+      "label": "音频转写与理解",
+      "output_modality": "auto",
+      "image_operation": "generate",
+      "model_ids": [
+        "mistral.voxtral-mini-3b-2507",
+        "mistral.voxtral-small-24b-2507"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": "请上传音频后执行。"
+    },
+    {
+      "workflow": "speech",
+      "label": "语音生成与回复",
+      "output_modality": "audio",
+      "image_operation": "generate",
+      "model_ids": [
+        "amazon.nova-2-sonic-v1:0"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": null
+    },
+    {
+      "workflow": "image",
+      "label": "文字生成图片",
+      "output_modality": "image",
+      "image_operation": "generate",
+      "model_ids": [],
+      "status": "unavailable",
+      "quality_evaluated": false,
+      "needs": null
+    },
+    {
+      "workflow": "image",
+      "label": "移除图片背景",
+      "output_modality": "image",
+      "image_operation": "remove_background",
+      "model_ids": [
+        "stability.stable-image-remove-background-v1:0"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": "此图片编辑操作需要上传原图。"
+    },
+    {
+      "workflow": "image",
+      "label": "图片放大",
+      "output_modality": "image",
+      "image_operation": "upscale",
+      "model_ids": [
+        "stability.stable-fast-upscale-v1:0"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": "此图片编辑操作需要上传原图。"
+    },
+    {
+      "workflow": "image",
+      "label": "创意放大",
+      "output_modality": "image",
+      "image_operation": "creative_upscale",
+      "model_ids": [
+        "stability.stable-creative-upscale-v1:0"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": "此图片编辑操作需要上传原图。"
+    },
+    {
+      "workflow": "image",
+      "label": "保真放大",
+      "output_modality": "image",
+      "image_operation": "conservative_upscale",
+      "model_ids": [
+        "stability.stable-conservative-upscale-v1:0"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": "此图片编辑操作需要上传原图。"
+    },
+    {
+      "workflow": "image",
+      "label": "草图生成图片",
+      "output_modality": "image",
+      "image_operation": "sketch",
+      "model_ids": [
+        "stability.stable-image-control-sketch-v1:0"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": "此图片编辑操作需要上传原图。"
+    },
+    {
+      "workflow": "image",
+      "label": "结构引导生成",
+      "output_modality": "image",
+      "image_operation": "structure",
+      "model_ids": [
+        "stability.stable-image-control-structure-v1:0"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": "此图片编辑操作需要上传原图。"
+    },
+    {
+      "workflow": "image",
+      "label": "图片局部重绘",
+      "output_modality": "image",
+      "image_operation": "inpaint",
+      "model_ids": [
+        "stability.stable-image-inpaint-v1:0"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": "此图片编辑操作需要上传原图。"
+    },
+    {
+      "workflow": "video",
+      "label": "视频生成",
+      "output_modality": "video",
+      "image_operation": "generate",
+      "model_ids": [],
+      "status": "unavailable",
+      "quality_evaluated": false,
+      "needs": null
+    },
+    {
+      "workflow": "rerank",
+      "label": "文档重排",
+      "output_modality": "rerank",
+      "image_operation": "generate",
+      "model_ids": [
+        "cohere.rerank-v3-5:0"
+      ],
+      "status": "available",
+      "quality_evaluated": false,
+      "needs": "请提供需要重排的候选文档。"
+    }
+  ],
+  "note": "可用表示目录、账户和执行接口匹配；不表示已完成质量评测或保证实时配额。",
+  "upload_limits_mb": {
+    "image": 3.5,
+    "audio": 10,
+    "video": 20
+  }
+}

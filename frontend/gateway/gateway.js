@@ -60,6 +60,7 @@ let history = [],
   lastBrowserMs = null,
   terminalSeen = false;
 let activeTemplateId = null;
+let mediaInputs = [], uploadBusy = false, mediaEpoch = 0, mediaJobTimer;
 const workspace = new Workspace({
   api, esc, ms, usd, signedOut: showLogin,
   reuse: (request) => {
@@ -74,6 +75,12 @@ const workspace = new Workspace({
     $("#benchmark-release").value = p.benchmark_release || "auto";
     $("#cross-region").checked = request.task.allow_cross_region !== false;
     activeTemplateId = request.template_id;
+    mediaInputs = (request.task.attachments || []).map((a) => ({ ...a }));
+    $("#output-modality").value = request.task.output_modality || "auto";
+    $("#image-operation").value = request.task.media_options?.image_operation || "generate";
+    $("#speech-voice").value = request.task.media_options?.voice || "tiffany";
+    $("#rerank-documents").value = (request.task.media_options?.documents || []).join("\n");
+    renderMediaInputs(); updateMediaOptions();
     $("#char-count").textContent = `${$("#task").value.length} / 1400`;
     updateMode();
   },
@@ -100,6 +107,7 @@ async function api(path, body) {
   return response.json();
 }
 function resetRun() {
+  clearTimeout(mediaJobTimer);
   events = [];
   stages = {};
   flow = selection = route = execution = completed = null;
@@ -116,6 +124,10 @@ function resetRun() {
   render();
 }
 function showLogin() {
+  mediaEpoch++;
+  mediaInputs = [];
+  clearTimeout(mediaJobTimer);
+  renderMediaInputs();
   controller?.abort();
   workspace.reset();
   history = [];
@@ -124,6 +136,7 @@ function showLogin() {
 }
 async function enter(user) {
   catalog = await api("/gateway/catalog");
+  renderMediaCapabilities();
   history = [];
   resetRun();
   $("#username").textContent = user.username;
@@ -158,7 +171,6 @@ async function enter(user) {
   renderModels();
   renderHistory();
   updateMode();
-  if (!$("#task").value) setExample("code");
   await workspace.enter(user, catalog);
   checkHealth();
 }
@@ -214,6 +226,9 @@ function setExample(id) {
   $("#max-output").value = example.routing_preferences.max_output_tokens;
   $("#char-count").textContent = `${$("#task").value.length} / 1400`;
   activeTemplateId = id;
+  $("#output-modality").value = example.output_modality || "auto";
+  $("#image-operation").value = example.media_options?.image_operation || "generate";
+  updateMediaOptions();
   $("#template-rubric").textContent = "验收参考：" + (example.rubric || []).join("；");
 }
 function renderTemplates() {
@@ -225,6 +240,67 @@ function renderTemplates() {
   $("#examples").innerHTML = templates.map((e) =>
     `<button type="button" data-example="${esc(e.id)}" title="${esc(e.description)}">${esc(e.title)} ↗</button>`).join("") ||
     '<p class="footnote">没有符合条件的模板。</p>';
+}
+function updateMediaOptions() {
+  const output = $("#output-modality").value;
+  $("#image-options").hidden = output !== "image";
+  $("#voice-options").hidden = output !== "audio";
+  $("#rerank-options").hidden = output !== "rerank";
+  const scenario = catalog?.media?.scenarios.find((s) =>
+    s.output_modality === output && (output !== "image" || s.image_operation === $("#image-operation").value));
+  $("#media-notice").textContent = scenario?.status === "unavailable"
+    ? "当前区域没有此操作的可执行模型；仍可分析路由并查看原因。"
+    : output === "audio" ? "Nova 2 Sonic 支持英语、西班牙语等语音；本次已验证英语，暂不支持中文语音。每次生成一段回复。"
+    : "可直接自由输入，也可结合附件提问。模板只提供示例。";
+}
+function renderMediaInputs() {
+  $("#media-inputs").innerHTML = mediaInputs.map((a, i) =>
+    `<div class="media-input"><span>${esc({ image: "图片", audio: "录音", video: "视频" }[a.kind])} · ${esc(a.id.slice(0, 8))}${a.size ? ` · ${(a.size / 1000).toFixed(0)} KB` : ""}</span><button type="button" class="text-button" data-remove-media="${i}">移除</button></div>`).join("");
+}
+function renderMediaCapabilities() {
+  const scenarios = catalog.media?.scenarios || [];
+  $("#media-capabilities").innerHTML = `<table><thead><tr><th>能力</th><th>执行状态</th><th>匹配型号</th><th>输入要求</th></tr></thead><tbody>${scenarios.map((s) =>
+    `<tr><td>${esc(s.label)}</td><td>${s.status === "available" ? "接口已接入 · 质量待评测" : "当前区域无可用模型"}</td><td>${s.model_ids.map(esc).join("<br>") || "—"}</td><td>${esc(s.needs || "文字或适配的媒体输入")}</td></tr>`).join("")}</tbody></table><p class="footnote">${esc(catalog.media?.note || "")}</p>`;
+}
+async function uploadMedia() {
+  if (busy || uploadBusy) return;
+  const files = [...$("#media-upload").files], epoch = mediaEpoch;
+  if (files.length + mediaInputs.length > 4) { showError("每次请求最多四个附件。"); return; }
+  uploadBusy = true;
+  $("#media-upload").disabled = true;
+  $("#media-notice").textContent = "正在上传到私有媒体存储…";
+  try {
+    for (const file of files) {
+      const limit = file.type.startsWith("image/") ? 3500000 : file.type.startsWith("audio/") ? 10000000 : 20000000;
+      if (!file.size || file.size > limit) throw new Error("文件为空或超过对应格式的上传上限。");
+      const response = await fetch("/api/gateway/media", {
+        method: "POST", credentials: "same-origin",
+        headers: { "X-Decider-Client": "web", "Content-Type": file.type || "application/octet-stream" },
+        body: file,
+      });
+      const data = await response.json();
+      if (epoch !== mediaEpoch) return;
+      if (!response.ok) throw new Error(errorMessage(data));
+      mediaInputs.push(data); renderMediaInputs();
+    }
+    if (!$("#task").value.trim()) $("#task").value = "请分析上传的内容并用中文说明。";
+    updateMediaOptions();
+  } catch (error) {
+    if (epoch === mediaEpoch) { showError(error.message); $("#media-notice").textContent = error.message; }
+  } finally {
+    uploadBusy = false; $("#media-upload").disabled = false; $("#media-upload").value = "";
+  }
+}
+async function pollMediaJob(job, epoch) {
+  try {
+    const result = await api("/gateway/media/jobs/" + encodeURIComponent(job.id));
+    if (epoch !== mediaEpoch || execution?.media_job?.id !== job.id) return;
+    $("#media-job-state").textContent = `视频任务：${{ running: "处理中", completed: "已完成", failed: "失败" }[result.status] || result.status}`;
+    $("#media-job-output").innerHTML = mediaHTML(result.artifacts);
+    if (result.status === "running") mediaJobTimer = setTimeout(() => pollMediaJob(job, epoch), 10000);
+  } catch (error) {
+    if (epoch === mediaEpoch && $("#media-job-state")) $("#media-job-state").textContent = error.message;
+  }
 }
 function updateMode() {
   const replay = $("#mode").value === "replay";
@@ -324,7 +400,8 @@ function renderDecision() {
     <code>${esc(model?.id || (selection ? "NO ELIGIBLE MODEL" : flow.model || "流程回放"))}</code>
     <small>${esc(s?.selected_benchmark?.benchmark_configuration || "等待策略筛选")}</small></div></div>
     <div class="profile-chips">${chips.map(([k, v]) => `<span>${esc(k)} · ${esc(v)}</span>`).join("")}</div>
-    ${s ? `<div class="reason">${esc(s.tier_reason)} ${esc(s.reason)}</div><div class="selection-meta"><span>${s.candidate_count} 个合格配置</span><span>${s.frontier.length} 个非劣候选</span><span>${s.evidence_mode === "business_validation" ? "业务验证数据" : "榜单能力代理 · 待业务校准"}</span></div>${s.benchmark_group ? `<p class="footnote">本轮评测：${esc(s.benchmark_group.source)} ${esc(s.benchmark_group.release || "")} · ${s.benchmark_group.metrics.map(esc).join(" / ")}。其他批次分别比较。</p>` : ""}` : ""}
+    ${flow.profile_adjustment ? `<p class="footnote">${esc(flow.profile_adjustment)} GPU 原始类别：${esc(flow.assessed_profile?.workflow)}。</p>` : ""}
+    ${s ? `<div class="reason">${esc(s.tier_reason)} ${esc(s.reason)}</div><div class="selection-meta"><span>${s.candidate_count} 个合格配置</span><span>${s.frontier.length} 个${s.evidence_mode === "capability_only" ? "能力匹配" : "非劣"}候选</span><span>${s.evidence_mode === "business_validation" ? "业务验证数据" : s.evidence_mode === "capability_only" ? "官方模态支持 · 质量和费用待测" : "榜单能力代理 · 待业务校准"}</span></div>${s.benchmark_group ? `<p class="footnote">本轮评测：${esc(s.benchmark_group.source)} ${esc(s.benchmark_group.release || "")} · ${s.benchmark_group.metrics.map(esc).join(" / ")}。其他批次分别比较。</p>` : ""}` : ""}
     </div>`;
 }
 function renderCandidates() {
@@ -340,7 +417,7 @@ function renderCandidates() {
       Number(a.candidate_id === s.selected_candidate_id),
   );
   $("#candidates").innerHTML =
-    `<p class="footnote">本轮依据：${esc(s.evidence_mode)} · ${esc(s.cost_mode || "暂无可比费用")} · ${esc(s.benchmark_group?.release || "")}。非劣候选表示没有另一配置同时在所有比较项更好。能力分项不是业务成功率。</p>
+    `<p class="footnote">本轮依据：${esc(s.evidence_mode)} · ${esc(s.cost_mode || "暂无可比费用")} · ${esc(s.benchmark_group?.release || "")}。${s.evidence_mode === "capability_only" ? "仅按输入输出能力与执行接口匹配；未使用文本榜单，也未将未知媒体费用按零计算。" : "非劣候选表示没有另一配置同时在所有比较项更好。能力分项不是业务成功率。"}</p>
     <div class="table-scroll"><table class="candidate-table"><thead><tr><th>模型 / 实测配置</th><th>预计参考费用</th><th>能力分项</th><th>策略结果</th></tr></thead><tbody>
     ${rows
       .map(
@@ -351,10 +428,10 @@ function renderCandidates() {
             .map(([k, v]) => `${esc(k)} ${Number(v).toFixed(2)}`)
             .join(
               "<br>",
-            )}</td><td>${r.candidate_id === s.selected_candidate_id ? "✓ 已选择" : s.frontier.includes(r.candidate_id) ? "非劣候选" : "被其他配置支配"}</td></tr>`,
+            ) || "未评测"}</td><td>${r.candidate_id === s.selected_candidate_id ? "✓ 已选择" : s.evidence_mode === "capability_only" ? "能力匹配" : s.frontier.includes(r.candidate_id) ? "非劣候选" : "被其他配置支配"}</td></tr>`,
       )
       .join("")}
-    </tbody></table></div><p class="footnote">输入估计 ${s.cost_context.input_tokens} Token（${s.cost_context.input_token_source === "utf8_bytes_proxy" ? "UTF-8 字节代理，并非模型分词" : "调用方估计"}）；期望输出 ${s.cost_context.expected_output_tokens}，上限 ${s.cost_context.max_output_tokens}。费用按快照参考价计算，不含 GPU、缓存和平台折扣。</p>
+    </tbody></table></div><p class="footnote">${s.evidence_mode === "capability_only" ? "图片、音频、视频的用量与计价口径取决于型号；当前费用未知，不能用文字 Token 估算替代。" : `输入估计 ${s.cost_context.input_tokens} Token（${s.cost_context.input_token_source === "utf8_bytes_proxy" ? "UTF-8 字节代理，并非模型分词" : "调用方估计"}）；期望输出 ${s.cost_context.expected_output_tokens}，上限 ${s.cost_context.max_output_tokens}。费用按快照参考价计算，不含 GPU、缓存和平台折扣。`}</p>
     <details class="excluded"><summary>查看排除记录（${Object.keys(s.excluded).length}）</summary>${Object.entries(
       s.excluded,
     )
@@ -410,7 +487,10 @@ function renderOutput() {
   $("#response").innerHTML =
     `<div class="output-meta"><span>${execution.complete ? "已返回完整输出" : "输出未完成"}</span><span>停止原因：${esc(execution.stop_reason || "—")}</span><span>${esc(usage?.inputTokens ?? usage?.input_tokens ?? "未知")} 输入 / ${esc(usage?.outputTokens ?? usage?.output_tokens ?? "未知")} 输出 Token</span></div>
     <pre class="output">${esc(execution.text ?? JSON.stringify(execution, null, 2))}</pre>
+    ${mediaHTML(execution.artifacts)}
+    ${execution.media_job ? `<p id="media-job-state">视频任务：${esc(execution.media_job.status)}</p><div id="media-job-output"></div>` : ""}
     <p class="footnote">此状态描述输出是否完整，业务正确性尚需验证。</p>`;
+  if (execution.media_job) pollMediaJob(execution.media_job, mediaEpoch);
 }
 function receive(event) {
   if (terminalSeen) throw new Error("网关在结束后返回了额外事件。");
@@ -473,7 +553,7 @@ function setBusy(value) {
   $("#logout").disabled = value;
 }
 async function start(executeTarget) {
-  if (busy || !$("#request-form").reportValidity()) return;
+  if (busy || uploadBusy || !$("#request-form").reportValidity()) return;
   const replay = $("#mode").value === "replay";
   const preferences = {
     cost_tier: $('input[name="tier"]:checked').value,
@@ -503,6 +583,12 @@ async function start(executeTarget) {
       text: $("#task").value,
       allow_cross_region: $("#cross-region").checked,
       routing_preferences: preferences,
+      attachments: mediaInputs.map(({ id, kind }) => ({ id, kind })),
+      output_modality: $("#output-modality").value,
+      media_options: {
+        image_operation: $("#image-operation").value, voice: $("#speech-voice").value,
+        documents: $("#rerank-documents").value.split("\n").map((v) => v.trim()).filter(Boolean),
+      },
     },
     provider: $("#provider").value,
     mode: replay ? "replay" : "live",
@@ -731,8 +817,16 @@ $("#mode").addEventListener("change", updateMode);
 $("#category").addEventListener("change", renderModels);
 $("#evidence-filter").addEventListener("change", renderModels);
 $("#model-search").addEventListener("input", renderModels);
+$("#output-modality").addEventListener("change", updateMediaOptions);
+$("#image-operation").addEventListener("change", updateMediaOptions);
+$("#media-upload").addEventListener("change", uploadMedia);
+$("#media-inputs").addEventListener("click", (event) => {
+  const index = event.target.dataset.removeMedia;
+  if (index !== undefined && !busy) { mediaInputs.splice(Number(index), 1); renderMediaInputs(); }
+});
 $("#task").addEventListener("input", () => {
   activeTemplateId = null;
+  $("#template-rubric").textContent = "自由输入按实际内容分类，无需匹配场景模板。";
   $("#char-count").textContent = `${$("#task").value.length} / 1400`;
 });
 $("#template-category").addEventListener("change", renderTemplates);
@@ -771,4 +865,4 @@ api("/auth/me")
     if (!error.message.includes("登录"))
       $("#login-error").textContent = error.message;
   });
-import { Workspace } from "./workspace.js";
+import { Workspace, mediaHTML } from "./workspace.js";

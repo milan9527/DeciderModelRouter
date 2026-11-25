@@ -1,0 +1,110 @@
+[
+  {
+    "id": "hi",
+    "profile": {
+      "workflow": "general_text",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "other"
+    }
+  },
+  {
+    "id": "hello",
+    "profile": {
+      "workflow": "general_text",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "other"
+    }
+  },
+  {
+    "id": "audio-topic",
+    "profile": {
+      "workflow": "general_text",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "zh"
+    }
+  },
+  {
+    "id": "picture",
+    "profile": {
+      "workflow": "vision",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "other"
+    }
+  },
+  {
+    "id": "video",
+    "profile": {
+      "workflow": "video_understanding",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "other"
+    }
+  },
+  {
+    "id": "audio",
+    "profile": {
+      "workflow": "audio_understanding",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "other"
+    }
+  },
+  {
+    "id": "voice",
+    "profile": {
+      "workflow": "speech",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "en"
+    }
+  },
+  {
+    "id": "image-edit",
+    "profile": {
+      "workflow": "image",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "other"
+    }
+  },
+  {
+    "id": "video-generate",
+    "profile": {
+      "workflow": "video",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "zh"
+    }
+  }
+]

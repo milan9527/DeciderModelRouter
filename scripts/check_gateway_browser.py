@@ -197,7 +197,8 @@ def smoke(output):
                 page.locator("#login-submit").click()
                 expect(page.locator("#app")).to_be_visible()
                 expect(page.locator("#health")).to_have_class("status ready")
-                expect(page.locator("#max-output")).to_have_value("16384")
+                expect(page.locator("#max-output")).to_have_value("4096")
+                expect(page.locator("#task")).to_have_value("")
                 page.locator("#max-cost").fill("0.05")
                 page.locator('[data-example="support"]').click()
                 expect(page.locator("#max-output")).to_have_value("4096")
@@ -291,7 +292,9 @@ def smoke(output):
                 expect(page.locator("#examples button")).to_have_count(1)
                 page.locator("#template-search").fill("")
                 page.locator("#template-category").select_option("all")
-                expect(page.locator("#examples button")).to_have_count(20)
+                expect(page.locator("#examples button")).to_have_count(
+                    len(json.loads((ROOT / "app/gateway_templates.json").read_text()))
+                )
                 page.locator('[data-page="evaluations"]').click()
                 for checkbox in page.locator('input[name="eval-case"]').all():
                     if checkbox.is_checked():
@@ -382,7 +385,7 @@ def smoke(output):
                     "database persistence after reload and relogin",
                     "user history isolation and admin-only user management",
                     "session creation and rename",
-                    "twenty searchable task templates",
+                    "searchable general-purpose and multimodal task templates",
                     "persisted classifier evaluation with two synthetic calls",
                     "independent human business review",
                     "stream before inference completes",

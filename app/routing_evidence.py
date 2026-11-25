@@ -18,10 +18,10 @@ FOCUS = {
         "guidance": "For implementation and tests, compare Coding and Agentic Coding evidence against the actual requested work. Overall scores do not certify signature checks, idempotency or concurrency correctness.",
     },
     "reasoning": {
-        "label": "结算：推理、数学与数据分析",
+        "label": "分析：推理、数学与数据分析",
         "categories": ["Reasoning", "Mathematics", "Data Analysis"],
         "explanation": "分别提供推理、数学和数据分析分数，不合成为程序推荐分。",
-        "guidance": "For reconciliation, consider reasoning, mathematics and data-analysis evidence separately. A strong coding score is not evidence of correct financial reconciliation.",
+        "guidance": "For reasoning and analysis, consider reasoning, mathematics and data-analysis evidence separately. A strong coding score does not establish reasoning correctness.",
     },
     "embedding": {
         "label": "检索：英语与中文分项",

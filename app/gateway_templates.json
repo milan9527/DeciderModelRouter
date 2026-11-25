@@ -1,5 +1,197 @@
 [
   {
+    "id": "greeting-en",
+    "title": "英文问候",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "hi",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    },
+    "expected_profile": {
+      "workflow": "general_text",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "en"
+    }
+  },
+  {
+    "id": "greeting-zh",
+    "title": "中文问候",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "你好",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    },
+    "expected_profile": {
+      "workflow": "general_text",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "zh"
+    }
+  },
+  {
+    "id": "everyday-question",
+    "title": "日常知识",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "为什么天空是蓝色的？请用通俗中文解释。",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    },
+    "expected_profile": {
+      "workflow": "general_text",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "zh"
+    }
+  },
+  {
+    "id": "creative-writing",
+    "title": "自由写作",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "写一个关于迷路小猫的温暖小故事。",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    },
+    "expected_profile": {
+      "workflow": "general_text",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "zh"
+    }
+  },
+  {
+    "id": "clarify-request",
+    "title": "澄清需求",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "我需要一点帮助",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    },
+    "expected_profile": {
+      "workflow": "general_text",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "zh"
+    }
+  },
+  {
+    "id": "everyday-advice",
+    "title": "生活建议",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "请给我三个整理书桌的小建议。",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    },
+    "expected_profile": {
+      "workflow": "general_text",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "zh"
+    }
+  },
+  {
+    "id": "text-about-audio",
+    "title": "语音话题的文字问答",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "用文字解释播客是什么，不要生成音频。",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    },
+    "expected_profile": {
+      "workflow": "general_text",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "zh"
+    }
+  },
+  {
+    "id": "thanks",
+    "title": "简短对话",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "Thanks!",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    },
+    "expected_profile": {
+      "workflow": "general_text",
+      "difficulty": "simple",
+      "stronger_model_benefit": "low",
+      "latency": "normal",
+      "tools": "no",
+      "structured_output": "no",
+      "languages": "en"
+    }
+  },
+  {
     "id": "support",
     "title": "支付客服",
     "description": "沿用现有场景，支持调整预算后执行。",
@@ -456,6 +648,139 @@
       "tools": "no",
       "structured_output": "no",
       "languages": "zh"
+    }
+  },
+  {
+    "id": "understand-image",
+    "title": "图片理解",
+    "description": "根据实际附件、输出能力和当前 Bedrock 目录选择模型。",
+    "task": "请描述上传图片中的主要物体、颜色和布局。",
+    "category": "多模态理解",
+    "output_modality": "text",
+    "media_options": {
+      "image_operation": "generate"
+    },
+    "rubric": [
+      "核对输出与原始媒体或生成要求一致",
+      "无可用模型时应显示具体原因，不返回虚构结果"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "understand-video",
+    "title": "视频理解",
+    "description": "根据实际附件、输出能力和当前 Bedrock 目录选择模型。",
+    "task": "请按时间顺序概括上传视频的画面变化。",
+    "category": "多模态理解",
+    "output_modality": "text",
+    "media_options": {
+      "image_operation": "generate"
+    },
+    "rubric": [
+      "核对输出与原始媒体或生成要求一致",
+      "无可用模型时应显示具体原因，不返回虚构结果"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "understand-audio",
+    "title": "录音转写",
+    "description": "根据实际附件、输出能力和当前 Bedrock 目录选择模型。",
+    "task": "请转写上传录音中的原话。",
+    "category": "多模态理解",
+    "output_modality": "text",
+    "media_options": {
+      "image_operation": "generate"
+    },
+    "rubric": [
+      "核对输出与原始媒体或生成要求一致",
+      "无可用模型时应显示具体原因，不返回虚构结果"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "speak-text",
+    "title": "语音回复",
+    "description": "根据实际附件、输出能力和当前 Bedrock 目录选择模型。",
+    "task": "Please say: Hello, welcome to the model gateway.",
+    "category": "语音生成",
+    "output_modality": "audio",
+    "media_options": {
+      "image_operation": "generate"
+    },
+    "rubric": [
+      "核对输出与原始媒体或生成要求一致",
+      "无可用模型时应显示具体原因，不返回虚构结果"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "edit-background",
+    "title": "图片去背景",
+    "description": "根据实际附件、输出能力和当前 Bedrock 目录选择模型。",
+    "task": "移除上传图片的背景，保留主体。",
+    "category": "图片编辑",
+    "output_modality": "image",
+    "media_options": {
+      "image_operation": "remove_background"
+    },
+    "rubric": [
+      "核对输出与原始媒体或生成要求一致",
+      "无可用模型时应显示具体原因，不返回虚构结果"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "generate-image",
+    "title": "文字生成图片",
+    "description": "根据实际附件、输出能力和当前 Bedrock 目录选择模型。",
+    "task": "生成一张暖色调的小猫插画。",
+    "category": "图片生成",
+    "output_modality": "image",
+    "media_options": {
+      "image_operation": "generate"
+    },
+    "rubric": [
+      "核对输出与原始媒体或生成要求一致",
+      "无可用模型时应显示具体原因，不返回虚构结果"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "generate-video",
+    "title": "文字生成视频",
+    "description": "根据实际附件、输出能力和当前 Bedrock 目录选择模型。",
+    "task": "生成一段海边日落的六秒视频。",
+    "category": "视频生成",
+    "output_modality": "video",
+    "media_options": {
+      "image_operation": "generate"
+    },
+    "rubric": [
+      "核对输出与原始媒体或生成要求一致",
+      "无可用模型时应显示具体原因，不返回虚构结果"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
     }
   }
 ]

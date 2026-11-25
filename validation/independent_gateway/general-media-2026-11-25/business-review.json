@@ -1,0 +1,43 @@
+{
+  "scope": "Five visible functional fixtures with manually checked semantic criteria; not an independent quality benchmark. Other scenarios are transport/completion checks only.",
+  "passed": 4,
+  "total": 5,
+  "reviews": [
+    {
+      "case": "hi",
+      "request_id": "ccbcb99db0a2522be4166a88",
+      "passed": true,
+      "rubric": "输入 hi，应作普通问候回复并询问用户需求。",
+      "notes": "实际返回 Hi! How can I help you today?；仅验收本条。"
+    },
+    {
+      "case": "everyday",
+      "request_id": "5f3064f745e21c1c55956d5b",
+      "passed": true,
+      "rubric": "用一句中文解释天空为什么是蓝色，应提到空气对蓝光的散射更强。",
+      "notes": "实际一句话说明大气分子更强烈散射短波蓝光。"
+    },
+    {
+      "case": "image",
+      "request_id": "1712511025274b902d06f54d",
+      "passed": false,
+      "rubric": "输入为 256×256 的纯红色 PNG，应识别为红色画面，不能说是纯黑色。",
+      "notes": "Nova 2 Lite 返回 completely black，与输入颜色不符。接口执行完整不代表视觉答案正确；不据此单样本改写模型能力分或路由阈值。"
+    },
+    {
+      "case": "audio",
+      "request_id": "d0cb4527e760b4b7ff0e6e74",
+      "passed": true,
+      "rubric": "转写测试 WAV，应得到 Hello, welcome to the model gateway.",
+      "notes": "实际文本逐字一致。"
+    },
+    {
+      "case": "rerank",
+      "request_id": "a1db7362d6a61db5779b32bf",
+      "passed": true,
+      "rubric": "查询哪种动物会吠叫，应把 Dogs bark. 排在 Cats meow. 和 Birds sing. 前。",
+      "notes": "索引 0 排名第一。"
+    }
+  ],
+  "calibration_changed": false
+}

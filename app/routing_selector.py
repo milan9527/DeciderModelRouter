@@ -9,9 +9,9 @@ from pathlib import Path
 from app.routing_balance import balanced_pool, preferences
 from app.routing_calibration import verify_snapshot
 from app.routing_evidence import finite, task_metrics
-from app.routing_policy import WORKFLOWS
+from app.routing_workflows import WORKFLOWS
 
-SELECTOR_VERSION = "bedrock-classified-v2"
+SELECTOR_VERSION = "bedrock-classified-v3"
 CALIBRATION_PATH = Path(__file__).with_name("routing_calibration.json")
 
 

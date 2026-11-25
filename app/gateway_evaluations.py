@@ -14,7 +14,7 @@ from starlette.concurrency import run_in_threadpool
 from app.gateway_store import percentile
 from app.gateway_templates import evaluation_cases, load_templates
 from app.routing import Task
-from app.routing_profile import parse_profile, profile_payload
+from app.routing_profile import PROFILE_VERSION, parse_profile, profile_payload
 from app.schemas import StrictModel
 
 router = APIRouter(prefix="/api/gateway/evaluations", tags=["Classifier evaluations"])
@@ -81,6 +81,7 @@ class Evaluations:
                 "providers": body.providers,
                 "case_ids": body.case_ids,
                 "dataset_version": load_templates()["version"],
+                "profile_version": PROFILE_VERSION,
                 "dataset_scope": "visible_development_reference_not_heldout",
                 "cases": [
                     {k: cases[c][k] for k in ("id", "title", "task", "expected_profile")}

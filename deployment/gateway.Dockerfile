@@ -1,4 +1,4 @@
-FROM python:3.11-slim-bookworm
+FROM python:3.12-slim-bookworm
 ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 SERVE_FRONTEND=false
 WORKDIR /srv
 COPY deployment/api-requirements.txt /tmp/requirements.txt

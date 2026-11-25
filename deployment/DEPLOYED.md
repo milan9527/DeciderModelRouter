@@ -1,12 +1,18 @@
 # 已部署环境
 
-最近发布日期：2026-11-24。
+最近发布日期：2026-11-25。
 
-## DeciderModelRouter 独立服务（2026-11-24）
+## DeciderModelRouter 独立服务（2026-11-25）
 
 **访问地址：https://d3eipg2g3l3an3.cloudfront.net/**
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
+
+最新部署为 **ECS revision 4 / Python 3.12 ARM64**，镜像 `sha256:2ec944a2f47d05440e4071835c269de32c93a96a6878b9ec81e0f5f62409416b`，CloudFront 刷新 `I1ADIRWKMEW6C5HH753VAGD9Z2` 已完成。通用输入无需选模板，`hi` 已真实选模并回复；35 个模板、24 个带标签参考任务（每次最多 16 个）。
+
+已接入图片/视频理解、音频转写、英语语音生成、图片编辑、文档重排和图片向量接口。附件与生成文件保存至独立私有媒体桶，支持历史预览、播放和下载。当前区域无可用纯文生图、视频生成型号；媒体质量与完整费用尚未校准，能力匹配不代表成本或质量最优。
+
+[最新验收与已知问题](../validation/independent_gateway/general-media-2026-11-25/README.zh.md)：458 项软件测试；正式域名 10 次 GPU 分类、8 次 Bedrock 调用，链路状态与预期一致。五条独立语义检查中四条通过；Nova 2 Lite 对纯红色图片描述错误，已保存为人工验收不通过，不将完整执行算作业务正确。
 
 [根域名验收](../validation/independent_gateway/root-entry-2026-11-24/verification.json)通过：HTTP 200、无 HTTP 或 HTML 跳转，五个静态文件与发布内容一致；登录、20 个模板、历史刷新、已保存评测和账户管理正常，浏览器无错误。本次未调用模型推理，ECS 保持 revision 3。前端刷新 `IEVT4HF56ZWINOCB87TMY2G1BG`、默认首页切换后的根路径刷新 `I7A8QBUMTOGR106KQCNZPB59W2` 均已完成。
 
@@ -18,6 +24,7 @@ API 文档：https://d3eipg2g3l3an3.cloudfront.net/api/docs（需登录）。
 | --- | --- |
 | CloudFront | `E3OCAAF3NQ1LYX` |
 | S3 | `decider-model-router-632930644527-us-east-1` |
+| 私有媒体 S3 | `decider-model-router-media-632930644527-us-east-1` |
 | OAC / VPC Origin | `E3FP5MHA6YE62X` / `vo_ICO9DXxf2dTCwLlQB2ZqlA` |
 | VPC | `vpc-05ac5abdb873adec9` |
 | ECS 集群 / 服务 | `decider-model-router` |
@@ -28,7 +35,7 @@ API 文档：https://d3eipg2g3l3an3.cloudfront.net/api/docs（需登录）。
 | GPU 服务密钥 | Secrets Manager `DeciderModelRouter/gpu-service-key` |
 | 独立 GPU | `i-01180cf02d12e6e31` · `g5.xlarge` · A10G 24GB · `us-east-1f` · 无公网 IP |
 
-当前 ECS revision **3** 已完成部署，Decider、Liquid、H2O 三个独立 GPU 服务均健康。新实例使用专用私有 AMI，未重启原 GPU；G6 多可用区容量不足后选用 G5。H2O 在 A10G 上使用 FP8 W8A16 / Marlin，结果保存实际部署配置。完整服务初次发布的 CloudFront 刷新 `IBPO9SQ94XXVRED1B1P48THQN3` 已完成；最新根域名发布记录见上文。
+首版 ECS revision **3** 发布时，Decider、Liquid、H2O 三个独立 GPU 服务均健康；此次更新沿用这三个服务。新实例使用专用私有 AMI，未重启原 GPU；G6 多可用区容量不足后选用 G5。H2O 在 A10G 上使用 FP8 W8A16 / Marlin，结果保存实际部署配置。完整服务初次发布的 CloudFront 刷新 `IBPO9SQ94XXVRED1B1P48THQN3` 已完成；最新发布记录见上文。
 
 [真实路由验收](../validation/independent_gateway/aws-smoke-2026-11-24/verification.json)通过：两次 H2O 分类、一次 Bedrock 调用；重复请求在再次调用 GPU 前返回 409。Gemma 3 4B 完整返回 21 输入 / 31 输出 Token，目标耗时 601.442ms、后端总耗时 1329.034ms，参考费用 $0.00000239。两条真实记录保存到 DynamoDB，刷新后可读，无浏览器错误。
 
@@ -36,7 +43,7 @@ API 文档：https://d3eipg2g3l3an3.cloudfront.net/api/docs（需登录）。
 
 [容器替换与隔离验收](../validation/independent_gateway/aws-evaluation-2026-11-24/verification.json)通过：ECS 替换前后 Task ARN 不同，原登录继续有效，两条运行与完整评测记录逐字段一致；跨用户历史/评测访问返回 404，普通用户管理接口返回 403，禁用后旧会话返回 401。S3 匿名访问为 403，原服务 revision 36 与原 GPU 未改变。
 
-两张表启用按需容量、TTL 和 PITR，业务历史按账户保存 180 天。构建镜像固定为 `sha256:2f29179eb58e7dacf8d352e963f6669a9a2a64fa14da2566ff28990c68852529`，本机审计目录 `.deployment/independent-20261124-140400/`。**440 项软件测试通过**，最终本地浏览器联调通过；[架构与运维](../docs/INDEPENDENT_SERVICE.zh.md)、[验证口径](../validation/independent_gateway/README.zh.md)。
+两张表启用按需容量、TTL 和 PITR，业务历史按账户保存 180 天。首版镜像为 `sha256:2f29179eb58e7dacf8d352e963f6669a9a2a64fa14da2566ff28990c68852529`，资源检查点目录 `.deployment/independent-20261124-140400/`，本次发布审计目录 `.deployment/general-routing-20261124/`。首版 440 项软件测试与本地浏览器联调通过；[架构与运维](../docs/INDEPENDENT_SERVICE.zh.md)、[验证口径](../validation/independent_gateway/README.zh.md)。
 
 ## 原共享演示环境（历史保留）
 

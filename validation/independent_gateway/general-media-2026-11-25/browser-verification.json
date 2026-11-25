@@ -1,0 +1,20 @@
+{
+  "blank_free_input": true,
+  "browser_upload": true,
+  "saved_audio_metadata": true,
+  "saved_image_preview": true,
+  "saved_video_metadata": true,
+  "hi_model_visible_in_history": true,
+  "history_after_reload": true,
+  "mobile_no_overflow": true,
+  "assets": {
+    "index.html": "055a851ba3eb3438ec1f8748a980f674daf775d6f51a46b6058f9f9ce3718791",
+    "gateway.js": "eb5953d4de4355a220f899e9565db99620f07defdeb554e8334569e2f74667c7",
+    "gateway.css": "79b004e0bb4c6e3d24ec3ffe2d21335277844079a3154f9c9145bd7cf95dbfdd",
+    "workspace.js": "2fc1fafc095bbaa7f18f23590c094895345631c6b56d10c051c4ac77b4d2f85f",
+    "mark.svg": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb"
+  },
+  "browser_errors": [],
+  "real_model_calls": 0,
+  "passed": true
+}

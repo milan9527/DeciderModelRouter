@@ -3,10 +3,10 @@
 import json
 from typing import Literal
 
-from app.routing_policy import WORKFLOWS
+from app.routing_workflows import WORKFLOWS
 from app.schemas import StrictModel
 
-PROFILE_VERSION = "task-profile-v1"
+PROFILE_VERSION = "task-profile-v2"
 
 
 class RequestProfile(StrictModel):
@@ -17,6 +17,8 @@ class RequestProfile(StrictModel):
         "embedding",
         "general_text",
         "vision",
+        "video_understanding",
+        "audio_understanding",
         "image",
         "video",
         "speech",
@@ -32,7 +34,11 @@ class RequestProfile(StrictModel):
 
 QUESTIONS = {
     "workflow": (
-        "Classify the requested deliverable. Do not perform the task.",
+        "Classify what the user needs from an assistant, including casual conversation. "
+        "The request arrives as typed text. Use general_text for greetings, ordinary questions "
+        "or unclear messages needing clarification. Select a media workflow only when actual "
+        "image, video or audio processing is explicitly requested, not merely mentioned. "
+        "Do not perform the task.",
         {key: value["description"] for key, value in WORKFLOWS.items()},
     ),
     "difficulty": (
@@ -59,11 +65,20 @@ QUESTIONS = {
         },
     ),
     "tools": (
-        "Must the model invoke external tools in THIS request? Writing code that uses an API, "
-        "describing a webhook or discussing a tool does not require tool invocation.",
+        "Does the user explicitly require access to an EXTERNAL system, such as live web search, "
+        "a database, weather service or sending email? The selected model can directly read supplied "
+        "images, recordings and videos and produce speech or images through its native API. "
+        "Those native model abilities do not count as external tools.",
         {
-            "no": "Can produce the requested output from supplied information.",
-            "yes": "Must actually look up external/current information or invoke a tool.",
+            "no": (
+                "No external system access is explicitly requested. Includes reading uploaded "
+                "images/videos, transcribing recordings, speaking aloud, editing or generating "
+                "media, ordinary answers, and writing code."
+            ),
+            "yes": (
+                "The user explicitly requests access to an external website, live information, "
+                "a database or an action such as sending an email. Excludes native media processing."
+            ),
         },
     ),
     "structured_output": (
@@ -75,7 +90,9 @@ QUESTIONS = {
         },
     ),
     "languages": (
-        "Which languages must the output or retrieval model support? For embeddings, "
+        "Which languages must the output or retrieval model support? Unless another output "
+        "language is requested, respond in the language of the user's message, including "
+        "short greetings. For embeddings, "
         "use the languages of the indexed documents/query, not just the instruction language.",
         {
             "en": "English only.",
@@ -89,7 +106,17 @@ QUESTIONS = {
 
 def profile_payload(task):
     return {
-        "state": json.dumps({"request": task.text}, ensure_ascii=False),
+        "state": json.dumps(
+            {
+                "request": task.text,
+                "input_modality": "text",
+                "attachments": [{"kind": item.kind} for item in task.attachments],
+                "requested_output": task.output_modality,
+                "media_operation": task.media_options.image_operation
+                if task.output_modality == "image" else None,
+            },
+            ensure_ascii=False,
+        ),
         "questions": {
             key: {
                 "type": "choice",

@@ -35,6 +35,8 @@ def profile():
 @pytest.fixture
 def client(tmp_path, monkeypatch, auth_config):
     monkeypatch.setenv("GATEWAY_DB_PATH", str(tmp_path / "history.sqlite3"))
+    monkeypatch.setenv("GATEWAY_MEDIA_DIR", str(tmp_path / "media"))
+    monkeypatch.delenv("GATEWAY_MEDIA_BUCKET", raising=False)
     monkeypatch.delenv("GATEWAY_DATA_TABLE", raising=False)
     monkeypatch.setenv("OPEN_MODELS_URL", "http://private-gpu.test")
     monkeypatch.setenv("GATEWAY_DECISION_PROVIDER", "h2o")
@@ -90,6 +92,46 @@ def body(session_id=None, **overrides):
         "session_id": session_id,
         **overrides,
     }
+
+
+def test_uploaded_image_runs_with_real_reference_and_is_saved_without_binary(client):
+    raw = b"\x89PNG\r\n\x1a\nprivate-png-test"
+    uploaded = client.post("/api/gateway/media", content=raw, headers={"Content-Type": "image/png"})
+    assert uploaded.status_code == 200
+    asset = uploaded.json()
+    response = client.get(asset["url"])
+    assert response.content == raw and "no-store" in response.headers["cache-control"]
+    events = execute(client, task={
+        "text": "Describe this picture", "attachments": [{"id": asset["id"], "kind": "image"}],
+        "output_modality": "text",
+    })
+    classification = next(e["data"] for e in events if e.get("stage") == "classification" and e.get("status") == "completed")
+    assert classification["profile"]["workflow"] == "vision"
+    assert classification["assessed_profile"]["workflow"] == "general_text"
+    call = gateway_main.app.state.bedrock.converse.call_args.kwargs
+    assert call["messages"][0]["content"][1]["image"]["source"]["bytes"] == raw
+    record = client.get("/api/gateway/history/" + events[0]["request_id"]).json()
+    assert record["request"]["task"]["attachments"] == [{"id": asset["id"], "kind": "image"}]
+    assert "private-png-test" not in json.dumps(record)
+
+
+def test_other_account_cannot_download_or_route_an_uploaded_asset(client):
+    from unittest.mock import AsyncMock
+
+    asset = client.post("/api/gateway/media", content=b"\x89PNG\r\n\x1a\nprivate",
+                        headers={"Content-Type": "image/png"}).json()
+    auth = gateway_main.app.state.auth.store
+    save_user(auth, "mediareader", "other-user-long-password", role="user")
+    client.post("/api/auth/logout")
+    assert client.post("/api/auth/login", json={"username": "mediareader", "password": "other-user-long-password"}).status_code == 200
+    infer = AsyncMock()
+    gateway_main.app.state.gateway_decision.infer = infer
+    assert client.get(asset["url"]).status_code == 404
+    result = client.post("/api/gateway/runs", json=body(task={
+        "text": "Read this", "attachments": [{"id": asset["id"], "kind": "image"}],
+    }))
+    assert result.status_code == 404
+    infer.assert_not_called()
 
 
 def execute(client, **overrides):

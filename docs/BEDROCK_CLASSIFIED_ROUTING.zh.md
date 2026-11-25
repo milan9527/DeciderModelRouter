@@ -1,6 +1,6 @@
 # Bedrock 分类选型：任务评估与程序策略
 
-2026-11-24。此版本落实“任务评估 → 按类别选择 Bedrock 模型与配置”。[首版调研](ROUTING_OPTIMIZATION.zh.md)保留此前的选型依据；本文描述当前新增实现。
+更新于 2026-11-25。此版本落实“任务评估 → 按类别选择 Bedrock 模型与配置”。[首版调研](ROUTING_OPTIMIZATION.zh.md)保留此前的选型依据。
 
 ## 范围与现有证据
 
@@ -8,17 +8,17 @@
 
 新增覆盖 Nova、Llama、Gemma、Claude 4.5、Devstral、MiniMax、Qwen 等型号。另有 14 个型号只具备核验过的外部资料和参考价，11 个是未独立评测的容量变体，29 个需要专用任务或模态评测，10 个未找到接入范围内的公开成绩。逐型号状态和来源见[覆盖记录](../validation/routing_mappings/coverage.json)；这些类别互斥，不将参考资料计作评测。
 
-默认分类器也使用目录内的 Bedrock GPT-6 Sol US inference profile、low 档。已有 Strands/Jev/Liquid/H2O 可以作为分类器对照；无论选哪一个分类器，下游目标池都来自同一个 Bedrock 目录。
+独立服务默认分类器为专用 GPU 上的 H2O Lightning 4B，也可选择 Decider/Liquid。原比较入口还支持 Bedrock GPT-6 Sol 等对照；无论选哪一个分类器，下游目标池都来自同一个 Bedrock 目录。
 
 当前没有新增真实业务结果，校准文件明确为 `uncalibrated`。系统可以运行基于榜单分项的初始策略，不能把这个状态解释为业务质量已校准、生产延迟有保证或已经节约费用。
 
 ## 一次分类请求，七个结构化属性
 
-分类器接收原始任务和固定候选标签，不接收待选型号、价格或预设答案：
+分类器接收原始任务、附件类型、明确输出要求和固定候选标签，不接收待选型号、价格或预设答案。模板不参与匹配；问候、日常问题、创作和不明确的输入都可进入通用文本能力：
 
 | 字段 | 含义 | 如何用于选型 |
 | --- | --- | --- |
-| `workflow` | 客服、代码、核算、向量、文本，以及视觉、图像、视频、语音、重排 | 模态过滤、选择对应能力分项 |
+| `workflow` | 通用文本、客服、代码、推理、向量、图片/视频/音频理解、图片/视频/语音生成、重排，共 12 类 | 模态过滤、选择对应能力分项或原生适配器 |
 | `difficulty` | simple / moderate / complex | 调整均衡档的取舍 |
 | `stronger_model_benefit` | low / medium / high | 与难度共同决定是否值得优先能力 |
 | `latency` | normal / sensitive | 有同端点业务测量时，纳入延迟维度 |
@@ -44,7 +44,7 @@ uv run python -m scripts.refresh_routing_catalog --quotas-only
 
 采集在部署环境执行，API 不需要新增 Service Quotas 权限或网络出口。之后按[网关发布步骤](MODEL_GATEWAY.zh.md#ecs-后端)构建并部署 API 镜像。映射缺失或采集失败时不会覆盖已有记录；完整模型目录刷新也会采集已映射配额。映射仅验证了当前 `us-east-1`，其他区域需先核对。
 
-当前执行演示接收文本，支持文本 Converse 和 Titan/Cohere 文本向量。其余类别仍在目录中展示；如果没有该类别的可比评测，返回具体排除原因，不借用文本分数选图像/视频模型。
+独立服务已接入真实图片、音频和视频上传及原生执行，详见[多模态能力与边界](INDEPENDENT_SERVICE.zh.md#多模态执行)。文本/向量继续使用可比评测策略；媒体使用 `bedrock-media-v1` 能力过滤，缺少可比质量和完整费用时如实显示未知，按稳定型号顺序选择。当前纯文生图与视频生成无可用目录型号，返回明确原因；不借用文本分数。执行策略版本为 `bedrock-classified-v3`。
 
 候选单位为 **型号＋测试配置＋请求参数**。当前大多数型号只有一个已测档位。每个候选有稳定 `configuration_id`，执行沿用对应的 `request_fields`。
 

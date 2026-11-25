@@ -21,6 +21,7 @@ from app.bedrock import TARGET_READ_TIMEOUT_SECONDS
 from app.bedrock import decide as bedrock_decide
 from app.crypto import fingerprint
 from app.jev import JevError
+from app.media_types import MediaOptions, MediaRef, OutputModality
 from app.routing_balance import (
     BALANCE_VERSION,
     TEXT_WORKFLOWS,
@@ -45,6 +46,7 @@ from app.routing_policy import (
     model_payload,
 )
 from app.routing_profile import (
+    PROFILE_VERSION,
     RequestProfile,
     bedrock_profile,
     parse_profile,
@@ -59,6 +61,7 @@ from app.routing_selector import (
     configurations,
     load_calibration,
 )
+from app.routing_workflows import WORKFLOWS as CLASSIFIED_WORKFLOWS
 from app.schemas import StrictModel
 
 router = APIRouter(prefix="/api/routing", tags=["Model routing comparison"])
@@ -100,6 +103,8 @@ TaskType = Literal[
     "embedding",
     "general_text",
     "vision",
+    "video_understanding",
+    "audio_understanding",
     "image",
     "video",
     "speech",
@@ -112,6 +117,9 @@ class Task(StrictModel):
     allow_cross_region: bool = True
     include_legacy: bool = False
     routing_preferences: RoutingPreferences | None = None
+    attachments: list[MediaRef] = Field(default_factory=list, max_length=4)
+    output_modality: OutputModality = "auto"
+    media_options: MediaOptions = Field(default_factory=MediaOptions)
 
     @field_validator("text")
     @classmethod
@@ -455,6 +463,10 @@ async def infer_profile(body, request, payload):
 
 
 def auto_selection(task, profile, data, rankings, calibration):
+    from app.routing_media import MEDIA_WORKFLOWS, choose_media
+
+    if profile.workflow in MEDIA_WORKFLOWS or task.attachments:
+        return choose_media(task, profile, data, rankings, calibration, exclusion)
     pool = configurations(data, rankings, task, profile.workflow, exclusion)
     return choose(task, profile, pool, rankings, calibration)
 
@@ -494,18 +506,26 @@ async def run_classified_route(body, request, *, infer=None, emit=None):
             profile = parse_profile(result)
         except (ValueError, KeyError, TypeError) as exc:
             raise HTTPException(502, "任务分类未返回完整有效属性。") from exc
+    from app.routing_media import resolve_workflow
+
+    assessed_profile = profile.model_dump()
+    effective_workflow, adjustment = resolve_workflow(body.task, profile)
+    profile = profile.model_copy(update={"workflow": effective_workflow})
     flow = {
         **result,
         "profile": profile.model_dump(),
+        "profile_version": PROFILE_VERSION,
+        "assessed_profile": assessed_profile,
+        "profile_adjustment": adjustment if effective_workflow != assessed_profile["workflow"] else None,
         "stage": "workflow",
         "source": "rule_replay" if body.mode == "replay" else "live",
         "strategy": "classified",
         "choice": profile.workflow,
-        "label": WORKFLOWS[profile.workflow]["label"],
-        "workflow": {"id": profile.workflow, **WORKFLOWS[profile.workflow]},
+        "label": CLASSIFIED_WORKFLOWS[profile.workflow]["label"],
+        "workflow": {"id": profile.workflow, **CLASSIFIED_WORKFLOWS[profile.workflow]},
         "model_input": payload,
         "input_hash": fingerprint(payload),
-        "candidate_count": len(WORKFLOWS),
+        "candidate_count": len(CLASSIFIED_WORKFLOWS),
         "selected_model": None,
         "assessment_count": len(payload["questions"]),
     }
@@ -631,6 +651,8 @@ async def auto_execute(body: AutoExecute, request: Request):
     row = next(
         r for r in selection["candidates"] if r["candidate_id"] == record["configuration_id"]
     )
+    if not selection.get("execution_ready", True):
+        raise HTTPException(422, selection["execution_notice"])
     if profile.tools == "yes" or profile.structured_output == "yes":
         raise HTTPException(422, "已选型；当前执行演示尚未提供工具或结构化输出参数。")
     return await execute_selected(
@@ -835,14 +857,14 @@ async def execute_selected(
         async with asyncio.timeout(TARGET_READ_TIMEOUT_SECONDS + 10):
             async with request.app.state.bedrock_slots:
                 invoked_at = perf_counter()
-                result = await run_in_threadpool(
-                    execute_target,
-                    client,
-                    model,
-                    task,
-                    workflow,
-                    row["benchmark"],
-                )
+                if row.get("adapter"):
+                    from app.media_execution import execute_media
+
+                    result = await execute_media(request, client, row, task, workflow)
+                else:
+                    result = await run_in_threadpool(
+                        execute_target, client, model, task, workflow, row["benchmark"],
+                    )
                 returned_at = perf_counter()
         return {
             **result,

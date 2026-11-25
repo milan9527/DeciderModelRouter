@@ -19,6 +19,8 @@ from app.gateway_decision import GatewayDecisionService
 from app.gateway_evaluations import Evaluations
 from app.gateway_evaluations import router as evaluations_router
 from app.gateway_history import router as history_router
+from app.gateway_media import MediaStore
+from app.gateway_media import router as media_router
 from app.gateway_store import History
 
 
@@ -26,6 +28,7 @@ from app.gateway_store import History
 async def lifespan(app):
     app.state.auth = Auth()
     app.state.history = History()
+    app.state.media = MediaStore(app.state.history.records)
     app.state.bedrock = create_client()
     app.state.bedrock_target = create_client(read_timeout=TARGET_READ_TIMEOUT_SECONDS)
     app.state.bedrock_slots = asyncio.Semaphore(2)
@@ -51,7 +54,7 @@ app = FastAPI(
     openapi_url="/api/openapi.json",
     redoc_url=None,
 )
-for router in (auth_router, gateway_router, history_router, evaluations_router, accounts_router):
+for router in (auth_router, gateway_router, history_router, evaluations_router, accounts_router, media_router):
     app.include_router(router)
 
 

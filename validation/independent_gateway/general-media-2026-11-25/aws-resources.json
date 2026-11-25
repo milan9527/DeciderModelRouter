@@ -1,0 +1,60 @@
+{
+  "checked_at": "2026-11-25T00:12:08.981924+00:00",
+  "distribution": {
+    "id": "E3OCAAF3NQ1LYX",
+    "domain": "d3eipg2g3l3an3.cloudfront.net",
+    "default_root": "gateway/index.html",
+    "status": "Deployed"
+  },
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:4",
+  "media_bucket": "decider-model-router-media-632930644527-us-east-1",
+  "public_access_block": {
+    "BlockPublicAcls": true,
+    "IgnorePublicAcls": true,
+    "BlockPublicPolicy": true,
+    "RestrictPublicBuckets": true
+  },
+  "encryption": {
+    "Rules": [
+      {
+        "ApplyServerSideEncryptionByDefault": {
+          "SSEAlgorithm": "AES256"
+        },
+        "BucketKeyEnabled": false,
+        "BlockedEncryptionTypes": {
+          "EncryptionType": [
+            "SSE-C"
+          ]
+        }
+      }
+    ]
+  },
+  "versioning": "Enabled",
+  "gpu_instances": [
+    {
+      "InstanceId": "i-0ae7eb0abcb815af3",
+      "InstanceType": "g6.xlarge",
+      "VpcId": "vpc-0c036c30b82b3703f",
+      "State": {
+        "Code": 16,
+        "Name": "running"
+      },
+      "PublicIpAddress": "174.129.189.193"
+    },
+    {
+      "InstanceId": "i-01180cf02d12e6e31",
+      "InstanceType": "g5.xlarge",
+      "VpcId": "vpc-05ac5abdb873adec9",
+      "State": {
+        "Code": 16,
+        "Name": "running"
+      },
+      "PublicIpAddress": null
+    }
+  ],
+  "anonymous_s3_media_status": 403,
+  "ecs_rollout_complete": true,
+  "new_task_error_log_events": 0,
+  "invalidation_id": "I1ADIRWKMEW6C5HH753VAGD9Z2",
+  "invalidation_status": "Completed"
+}

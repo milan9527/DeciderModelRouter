@@ -17,6 +17,7 @@ from starlette.concurrency import run_in_threadpool
 from app import routing
 from app.gateway_templates import load_templates
 from app.routing_inventory import inventory
+from app.routing_media import capability_catalog
 from app.routing_selector import SELECTOR_VERSION, categories, load_calibration
 from app.schemas import StrictModel
 
@@ -47,6 +48,14 @@ class GatewayRun(StrictModel):
 def catalog(request: Request):
     data, rankings = routing.load_catalog(), routing.load_rankings()
     calibration = load_calibration()
+    media = capability_catalog(data, routing.exclusion)
+    grouped = categories(data, rankings, routing.Task(text="gateway catalog"), routing.exclusion)
+    for workflow in {s["workflow"] for s in media["scenarios"]}:
+        ids = sorted({mid for s in media["scenarios"] if s["workflow"] == workflow for mid in s["model_ids"]})
+        grouped[workflow].update(
+            available_model_ids=ids, available_model_count=len(ids),
+            configuration_count=len(ids), evidence_mode="capability_only",
+        )
     return {
         "catalog_version": data["version"],
         "ranking_version": rankings["version"],
@@ -57,13 +66,12 @@ def catalog(request: Request):
         "captured_at": data.get("captured_at"),
         "models": data["models"],
         "evidence_inventory": inventory(data, rankings),
-        "categories": categories(
-            data, rankings, routing.Task(text="gateway catalog"), routing.exclusion
-        ),
+        "categories": grouped,
         "examples": load_templates()["items"],
         "templates_version": load_templates()["version"],
         "persistent_history": hasattr(request.app.state, "history"),
         "decision_service": request.app.state.gateway_decision.public_config(),
+        "media": media,
         "bedrock_configured": request.app.state.bedrock is not None,
     }
 
@@ -208,6 +216,12 @@ async def run(body: GatewayRun, request: Request):
     routing.check_ranking_version(routing.load_rankings(), body.ranking_version)
     if body.policy_version != SELECTOR_VERSION:
         raise HTTPException(409, "分类选型策略已更新，请刷新。")
+    if body.task.attachments:
+        if not hasattr(request.app.state, "media"):
+            raise HTTPException(503, "当前服务尚未配置媒体存储。")
+        await run_in_threadpool(
+            request.app.state.media.resolve, request.state.user["username"], body.task.attachments,
+        )
     if body.mode == "live":
         request.app.state.gateway_decision.service(body.provider)
         if body.execute_target and request.app.state.bedrock is None:

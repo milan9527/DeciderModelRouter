@@ -14,6 +14,7 @@ flowchart LR
     ALB --> API[ECS Fargate · 独立 FastAPI]
     API --> AUTH[DynamoDB · 账户和认证会话]
     API --> DATA[DynamoDB · 业务会话/运行/评测]
+    API --> MEDIA[专用私有 S3 · 上传与生成媒体]
     API -->|私网 HTTP + Bearer| GPU[新 g5.xlarge · A10G 24GB]
     GPU --> D[Decider / Liquid / H2O]
     API --> BR[Amazon Bedrock 目标模型]
@@ -29,7 +30,30 @@ flowchart LR
 
 一次 GPU 请求识别七项任务属性，再由确定性策略过滤能力、目录、评测配置、配额和预算，在同一可比评测组内平衡质量与成本。只调用 Bedrock 支持目录中的目标执行标识。具体公式、映射、推理配置和证据见 [分类路由说明](BEDROCK_CLASSIFIED_ROUTING.zh.md)。
 
-20 个模板提供任务、分类、验收说明和 Token 预算，覆盖原四场景及退款、事故摘要、翻译、提取、改写、金额计算、SQL、HMAC、并发、严格 JSON、实时信息、注入文本等。能力边界任务可以返回“无可用路由”；没有已核验证据时不强行选模。代码模板显式使用期望 8192、最大 16384 Token，可在运行前调整。
+35 个模板提供任务、验收说明和 Token 预算，包括问候、日常提问、创作、澄清、代码、翻译、推理及多模态任务。模板只用于填入示例，不参与分类匹配。登录后任务框为空，`hi` 等任意文字直接进入一次真实 GPU 属性判断。分类使用 `task-profile-v2` 与 12 个通用能力类别，原比较实验的分类定义保持冻结。代码模板显式使用期望 8192、最大 16384 Token，可在运行前调整。
+
+GPU 输入包含原始文字、附件类型、明确的输出类型和图片操作，不含媒体字节或存储地址。用户指定的输出类型优先，上传内容要求目标支持相应输入；原始 GPU 属性和必要的流程调整都写入记录。分类模型仍可能判断错误，分类参考评测不等于通用准确率。
+
+## 多模态执行
+
+| 任务 | 当前接入接口 | 输入与输出 |
+| --- | --- | --- |
+| 图片、视频理解 | Bedrock Converse：Nova 等支持的型号 | 图片/视频与文字 → 文字 |
+| 音频转写与理解 | Voxtral InvokeModel | WAV/MP3 与文字 → 文字 |
+| 语音生成或回复 | Nova 2 Sonic 双向流 | 文字或录音 → WAV 与文字 |
+| 图片编辑 | Stability 专用 InvokeModel | 去背景、放大、草图/结构引导、局部重绘 |
+| 文档重排 | Cohere Rerank | 查询和最多 20 条候选 → 排序及相关度 |
+| 图片向量 | Cohere Embed v4 | 单张图片 → 向量维度和预览 |
+
+目录能力、账户可用性、调用端点、实际输入/输出模态与已接入适配器共同过滤。媒体候选不套用文本 LiveBench 分数；目前按稳定型号顺序选型，质量、P95 和完整媒体费用没有测量时显示未知。指定无法核验的费用、成功率、延迟或上下文硬约束会阻止选择。模型价格档位不能解释为已经验证的媒体成本优化。
+
+截至 2026-11-25，当前 `us-east-1` 目录没有可调用的纯文生图或视频生成型号；对应入口给出无可用模型，不改用视频理解模型冒充生成。已保留 Canvas/Titan 图片与 Nova Reel 异步视频适配器，后续需更新真实目录并验收后才能使用。异步视频完成由单独任务状态表示，原始运行保留提交时状态。
+
+语音为一次有界回复，不是浏览器实时通话。已验证 Nova 2 Sonic 英语；该型号不支持中文语音。录音回复输入要求 16kHz、16 位、单声道 WAV，最长 30 秒；文本输出上限最多 1024 Token，返回实际生效值。音频理解可用 WAV/MP3。每次最多四个附件，图片 3.5MB、音频 10MB、视频 20MB；当前音视频执行一次一个文件，局部重绘要求原图和遮罩两张图。
+
+媒体保存到 `GATEWAY_MEDIA_BUCKET` 指向的专用私有 S3，默认保留 180 天。API 校验账户、类型、长度和 SHA-256；历史仅存不可执行的媒体引用，文件必须经登录后的 API 下载。该桶没有 CloudFront 直读权限。输出支持图片预览、音频/视频播放及历史回看；本地目录由 `GATEWAY_MEDIA_DIR` 指定。
+
+接口依据：[Bedrock 模型模态目录](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html)、[Stability 图片服务参数](https://docs.aws.amazon.com/bedrock/latest/userguide/stable-image-services.html)、[Nova Sonic 跨模态输入](https://docs.aws.amazon.com/nova/latest/nova2-userguide/sonic-cross-modal.html)。接入时另做真实调用验收；目录支持不代表已经测得质量、配额余量或完整价格。
 
 ## 数据持久化与性能口径
 
@@ -43,7 +67,7 @@ flowchart LR
 - “完整执行”仅表示模型返回完整输出；人工业务验收另记，通过比例不自动作为路由校准。参考费用不含常驻 GPU、ECS、NAT 等基础设施费用；未知用量不按零计。
 - 浏览器断开、容器重启会中断在途工作，已返回事件保留；执行已提交但未收到返回时显示结果及用量未知。历史持久化不意味着后台推理可跨重启继续。超过 10 分钟的陈旧运行会在读取时标记中断。
 
-本地使用 SQLite，默认 `.data/auth.sqlite3`、`.data/gateway.sqlite3`，文件权限 0600。生产 API 使用只读容器文件系统，所有业务状态写入 DynamoDB。
+本地使用 SQLite，默认 `.data/auth.sqlite3`、`.data/gateway.sqlite3`，文件权限 0600。生产 API 使用只读容器文件系统，业务记录写入 DynamoDB，媒体字节写入私有 S3。
 
 ## 决策模型评测
 
@@ -51,7 +75,7 @@ flowchart LR
 
 保存数据集版本、任务、模型服务返回的部署配置（未提供则为空）、预期/实际七项属性、逐字段一致情况、全字段一致率、失败、模型和时延。失败计入一致率分母；HTTP P50/P95 包含排队与校验，GPU 往返单独记录。进程退出会保留已完成样本并标记中断，不自动重跑。当前评测并发限制在进程内实现：每账户一项、总计最多两项；滚动发布期间不保证跨容器全局限流。
 
-这 16 个样本属于**可见的开发参考集**，既非独立保留测试集，也非 Bedrock 生成质量评测。公开 LiveBench/MTEB 映射、分类参考一致、人工业务验收三者分别展示。生产业务校准仍为 `uncalibrated`；新评测结果不会偷偷替换阈值或训练模型。需要业务校准时，应冻结独立业务题集与验收规则、执行候选目标模型并记录成本/质量，再通过既有校准流程验证发布。
+当前 24 个带标签样本属于**可见的开发参考集**，每次最多选择 16 个，既非独立保留测试集，也非 Bedrock 生成质量评测。新增媒体模板需要真实附件，不计入文字参考集。记录还保存属性提示词版本；历史旧版本成绩保持原样。公开 LiveBench/MTEB 映射、分类参考一致、人工业务验收三者分别展示。生产业务校准仍为 `uncalibrated`；新评测结果不会偷偷替换阈值或训练模型。需要业务校准时，应冻结独立业务题集与验收规则、执行候选目标模型并记录成本/质量，再通过既有校准流程验证发布。
 
 ## 登录与用户管理
 
@@ -88,12 +112,19 @@ python -m deployment.independent_gpu \
   --output .deployment/independent-YYYYMMDD \
   --source-instance SOURCE_RUNTIME_INSTANCE_ID
 
-# 3. 构建 ARM64 镜像到本次 ECR；每次使用新标签
+# 3. 建立私有媒体桶与最小权限，更新同一资源检查点
+python -m deployment.independent_media \
+  --resources .deployment/independent-YYYYMMDD/resources.json
+
+# 4. 导出包含语音 SDK 的依赖；API 镜像使用 Python 3.12
+uv export --locked --no-dev --no-hashes --no-emit-project --extra speech \
+  -o deployment/api-requirements.txt
+# 构建 ARM64 镜像到本次 ECR；每次使用新标签
 docker build --platform linux/arm64 -f deployment/gateway.Dockerfile \
   -t ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/decider-model-router:UNIQUE_TAG .
 docker push ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/decider-model-router:UNIQUE_TAG
 
-# 4. 固定镜像摘要，部署 ECS，初始化管理员并发布五个前端文件
+# 5. 固定镜像摘要，部署 ECS，初始化管理员并发布五个前端文件
 python -m deployment.release_independent \
   --resources .deployment/independent-YYYYMMDD/resources.json \
   --gpu .deployment/independent-YYYYMMDD/gpu.json \

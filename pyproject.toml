@@ -11,6 +11,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+speech = [
+    "aws-sdk-bedrock-runtime[awscrt]==0.13.1; python_version >= '3.12'",
+]
 model = [
     "strands-decider @ https://github.com/strands-labs/strands-decider/archive/63d24ae286e50105fba0bd1db15b0e243aea4650.tar.gz",
     "torch==2.7.1",

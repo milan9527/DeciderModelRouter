@@ -3,6 +3,15 @@ const $$ = (s) => [...document.querySelectorAll(s)];
 const date = (v) => new Date(v).toLocaleString("zh-CN", { hour12: false });
 const labels = { running: "处理中", executed: "已完成", selected: "已选模", no_route: "无候选", incomplete: "输出未完成", error: "失败", interrupted: "已中断", completed: "已完成" };
 
+export function mediaHTML(items = []) {
+  return items.filter((a) => /^[a-f0-9]{32}$/.test(a.id) && ["image", "audio", "video"].includes(a.kind)).map((a) => {
+    const url = `/api/gateway/media/${a.id}`;
+    const preview = a.kind === "image" ? `<img src="${url}" alt="任务图片" loading="lazy" />` :
+      `<${a.kind} controls preload="metadata" src="${url}"></${a.kind}>`;
+    return `<figure class="media-artifact">${preview}<figcaption><a href="${url}" download>下载${{ image: "图片", audio: "音频", video: "视频" }[a.kind]}</a></figcaption></figure>`;
+  }).join("");
+}
+
 export class Workspace {
   constructor({ api, esc, ms, usd, reuse, signedOut }) {
     Object.assign(this, { api, esc, ms, usd, reuse, signedOut, enabled: false, epoch: 0, historyRequest: 0 });
@@ -120,6 +129,13 @@ export class Workspace {
     const result = record.events.find((e) => e.stage === "execution" && e.status === "completed")?.data;
     const fields = record.profile ? Object.entries(record.profile).map(([k, v]) => `${k}: ${v}`).join(" · ") : "尚未获得完整分类";
     $("#history-detail-content").innerHTML = `<p class="muted">${this.esc(date(record.created_at))} · ${this.esc(labels[record.status] || record.status)} · ${this.esc(record.id)}</p><h3>任务</h3><pre>${this.esc(record.request.task.text)}</pre><h3>分类与选模</h3><p>${this.esc(fields)}</p><p>${this.esc(record.model_id || "未选出目标模型")}</p><p>GPU ${this.ms(record.gpu_ms)} · 路由 ${this.ms(record.route_ms)} · 目标 ${this.ms(record.target_ms)} · 参考费用 ${this.usd(record.reference_cost)}</p><h3>输出</h3><pre>${this.esc(result?.text || (result?.dimensions ? `向量维度：${result.dimensions}` : record.error?.message || "没有已保存的目标输出"))}</pre>${record.execution_outcome_unknown ? '<p class="error">连接中断时执行已提交，最终结果和用量未知；不能据此认定未产生费用。</p>' : ""}<details><summary>查看已保存的 ${record.events.length} 个事件</summary><pre>${this.esc(JSON.stringify(record.events, null, 2))}</pre></details>`;
+    $("#history-detail-content").insertAdjacentHTML("beforeend",
+      mediaHTML(result?.artifacts) + (record.request.task.attachments?.length ? "<h3>输入附件</h3>" + mediaHTML(record.request.task.attachments) : ""));
+    if (result?.media_job?.id) {
+      const job = await this.api("/gateway/media/jobs/" + encodeURIComponent(result.media_job.id));
+      if (epoch !== this.epoch) return;
+      $("#history-detail-content").insertAdjacentHTML("beforeend", `<p>视频任务：${this.esc(job.status)}</p>${mediaHTML(job.artifacts)}`);
+    }
     $("#review-form").hidden = record.mode !== "live" || !record.execute_target || !["executed", "incomplete", "error"].includes(record.status);
     const template = this.catalog.examples.find((c) => c.id === record.template_id);
     $("#review-rubric").value = record.review?.rubric || template?.rubric?.join("\n") || "根据原始任务约束和独立业务标准逐项核验";
@@ -140,8 +156,8 @@ export class Workspace {
   }
   budget() {
     const providers = $$('input[name="eval-provider"]:checked').length, cases = $$('input[name="eval-case"]:checked').length;
-    $("#evaluation-budget").textContent = `${providers} 个决策模型 × ${cases} 个任务 = ${providers * cases} 次 GPU 调用尝试；Bedrock 目标模型调用为 0。`;
-    $("#evaluation-start").disabled = !providers || !cases;
+    $("#evaluation-budget").textContent = `${providers} 个决策模型 × ${cases} 个任务 = ${providers * cases} 次 GPU 调用尝试；Bedrock 目标模型调用为 0。每次最多选择 16 个任务。`;
+    $("#evaluation-start").disabled = !providers || !cases || cases > 16;
   }
   async refreshEvaluations() {
     const epoch = this.epoch, page = await this.api("/gateway/evaluations");

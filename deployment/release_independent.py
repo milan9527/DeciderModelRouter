@@ -21,6 +21,7 @@ def task_definition(resources, gpu, image):
         "SERVE_FRONTEND": "false",
         "AUTH_TABLE": resources["auth_table"],
         "GATEWAY_DATA_TABLE": resources["data_table"],
+        "GATEWAY_MEDIA_BUCKET": resources.get("media_bucket", ""),
         "AUTH_COOKIE_SECURE": "true",
         "AUTH_ORIGIN": origin,
         "GPU_PROVIDER": "vllm",
