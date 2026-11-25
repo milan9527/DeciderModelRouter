@@ -4,21 +4,29 @@
 
 直接访问 https://d3eipg2g3l3an3.cloudfront.net/ 即可打开工作台。CloudFront 以 `gateway/index.html` 为默认首页，在内部读取 S3 对象，不跳转浏览器地址；样式、脚本和图标位于 `/gateway/`，API 位于 `/api/`。前端发布同时刷新根路径缓存。
 
-## 服务边界
+## 已部署服务架构
 
 ```mermaid
-flowchart LR
-    U[浏览器] --> CF[专用 CloudFront]
-    CF -->|OAC| S3[专用私有 S3 · 静态前端]
-    CF -->|VPC Origin · /api/* 不缓存| ALB[专用内网 ALB]
-    ALB --> API[ECS Fargate · 独立 FastAPI]
-    API --> AUTH[DynamoDB · 账户和认证会话]
-    API --> DATA[DynamoDB · 业务会话/运行/评测]
-    API --> MEDIA[专用私有 S3 · 上传与生成媒体]
-    API -->|私网 HTTP + Bearer| GPU[新 g5.xlarge · A10G 24GB]
-    GPU --> D[Decider / Liquid / H2O]
-    API --> BR[Amazon Bedrock 目标模型]
+flowchart TB
+    U["浏览器：登录、任务、过程与历史"] -->|HTTPS| CF["专用 CloudFront"]
+    CF -->|"OAC：根页面及 /gateway/*"| STATIC["私有 S3：静态前端"]
+    CF -->|"VPC Origin：/api/* 不缓存"| ALB["内网 ALB"]
+    ALB --> API["私有 ECS Fargate / FastAPI<br/>认证、分类调用、选型与执行"]
+    SNAP["ECS 镜像内 JSON 快照<br/>目录、榜单、价格、校准配置"] -->|"选型时读取"| API
+    API <-->|"私网 HTTP + Bearer<br/>任务描述与七项属性"| GPU["私有 g5.xlarge<br/>A10G 24GB<br/>Decider / Liquid / H2O"]
+    API -->|"账户及执行凭据"| AUTH[("DynamoDB<br/>认证表")]
+    API -->|"会话、事件与评测"| DATA[("DynamoDB<br/>业务表")]
+    API -->|"上传与生成文件"| MEDIA[("私有 S3<br/>媒体桶")]
+    API <-->|"IAM 授权<br/>真实任务、附件与结果"| BR["Amazon Bedrock<br/>目标模型"]
 ```
+
+内网ALB、ECS和GPU均在专用VPC中。图中只有一个独立API服务；分类传输、选型规则和目标适配器都是该服务中的模块。GPU运行独立HTTP服务，每次请求只调用选定的一个分类器，默认H2O；不会同时让三个分类器投票。浏览器通过CloudFront调用API，GPU没有浏览器直连入口。
+
+GPU只接收任务文字、附件类型及输出要求，不接收图片/音视频字节、文件地址、候选型号、价格或验收答案。后端根据GPU返回的属性执行选型，目标模型才处理真实附件。媒体桶通过登录后的API访问，与由OAC读取的静态前端桶分开。
+
+用于选型的目录、榜单和校准数据来自部署镜像中的版本化快照。DynamoDB里的87项效果评测及人工/助手评审用于展示、追溯和离线分析，当前不会自动更新这些快照，也不会自动训练GPU模型。证据流转与选型步骤见[决策流程](BEDROCK_CLASSIFIED_ROUTING.zh.md#决策流程总览)和[评测证据如何进入选型](BEDROCK_CLASSIFIED_ROUTING.zh.md#评测证据如何进入选型)。
+
+## 服务边界
 
 专用 VPC、子网、安全组、NAT、ECS 集群/服务/角色、ALB、CloudFront、S3、两张 DynamoDB 表、GPU 实例和密钥。GPU 从现有已验证运行环境创建私有镜像再启动新实例，镜像创建使用 `NoReboot=True`，原实例继续运行；新实例使用独立角色和轮换后的密钥。镜像用于复制运行环境，线上请求不依赖原 GPU。
 
@@ -28,11 +36,55 @@ flowchart LR
 
 ## 路由与模板
 
-一次 GPU 请求识别七项任务属性，再由确定性策略过滤能力、目录、评测配置、配额和预算，在同一可比评测组内平衡质量与成本。只调用 Bedrock 支持目录中的目标执行标识。具体公式、映射、推理配置和证据见 [分类路由说明](BEDROCK_CLASSIFIED_ROUTING.zh.md)。
+一次GPU请求识别七项任务属性，再由后端应用能力、目录、配额和用户约束。文本/向量在可比评测组内平衡能力与参考费用；媒体按模态和适配器筛选，当前缺少按实测质量排序的逻辑。只调用Bedrock支持目录中的目标执行标识。具体公式、映射、推理配置和证据见[分类路由说明](BEDROCK_CLASSIFIED_ROUTING.zh.md)。
 
 35 个模板提供任务、验收说明和 Token 预算，包括问候、日常提问、创作、澄清、代码、翻译、推理及多模态任务。模板只用于填入示例，不参与分类匹配。登录后任务框为空，`hi` 等任意文字直接进入一次真实 GPU 属性判断。分类使用 `task-profile-v2` 与 12 个通用能力类别，原比较实验的分类定义保持冻结。代码模板显式使用期望 8192、最大 16384 Token，可在运行前调整。
 
 GPU 输入包含原始文字、附件类型、明确的输出类型和图片操作，不含媒体字节或存储地址。用户指定的输出类型优先，上传内容要求目标支持相应输入；原始 GPU 属性和必要的流程调整都写入记录。分类模型仍可能判断错误，分类参考评测不等于通用准确率。
+
+## 一次请求的调用顺序
+
+下图是已登录、`mode=live` 的独立网关请求。浏览器经CloudFront和ALB访问API，图中省略这两层转发。事件响应采用逐行JSON（NDJSON），先保存事件，再发送到前端；阶段进度流不等于目标模型逐Token流。
+
+```mermaid
+sequenceDiagram
+    participant UI as 浏览器
+    participant API as ECS 网关 API
+    participant DB as DynamoDB
+    participant GPU as 选定的 GPU 分类服务
+    participant SEL as API 内的选型模块
+    participant BR as Bedrock 目标模型
+    UI->>API: POST /api/gateway/runs：任务、版本、是否执行目标
+    API->>API: 检查登录、版本、附件引用和配置
+    API->>DB: 创建运行记录；保存 accepted 事件
+    API-->>UI: accepted
+    API->>GPU: 请求文字、附件类型、输出要求、七项分类说明
+    GPU-->>API: 任务属性及分类耗时
+    API->>API: 校验七项属性；按明确输出要求和实际附件调整流程
+    API->>DB: 保存 classification 事件和原始分类
+    API-->>UI: classification 事件
+    API->>SEL: 任务属性、目录、评测与校准快照、用户约束
+    SEL-->>API: 候选、排除原因、选择结果及证据模式
+    API->>DB: 保存 selection 和 route 事件
+    API-->>UI: selection 和 route 事件
+    alt 无候选
+        API-->>UI: completed：no_route，附具体原因
+    else 仅分析路由
+        API-->>UI: completed：selected，不调用目标
+    else 需要执行目标
+        API->>API: 从用户绑定凭据恢复任务；复核版本、候选及执行条件
+        alt 凭据、附件或执行参数不满足条件
+            API-->>UI: error：记录执行受阻的原因
+        else 可以执行
+            API->>BR: 所选配置、原始任务与实际附件
+            BR-->>API: 完整或未完成输出、用量；也可能返回错误
+            API->>DB: 保存执行结果、媒体引用、耗时、费用与最终状态
+            API-->>UI: execution / completed；调用异常则发送 error
+        end
+    end
+```
+
+无候选和错误事件也会保存。分类超时、无效属性、目标限流及输出未完成均保留原始状态，不自动切换模型或重试。仅分析模式会运行真实分类与选型；`mode=replay`不调用GPU和目标模型，回放数据不进入真实性能统计。前端断开会取消当前网关工作；已提交给目标但未取回的结果仍可能未知。
 
 ## 多模态执行
 
@@ -76,6 +128,8 @@ GPU 输入包含原始文字、附件类型、明确的输出类型和图片操�
 保存数据集版本、任务、模型服务返回的部署配置（未提供则为空）、预期/实际七项属性、逐字段一致情况、全字段一致率、失败、模型和时延。失败计入一致率分母；HTTP P50/P95 包含排队与校验，GPU 往返单独记录。进程退出会保留已完成样本并标记中断，不自动重跑。当前评测并发限制在进程内实现：每账户一项、总计最多两项；滚动发布期间不保证跨容器全局限流。
 
 当前 24 个带标签样本属于**可见的开发参考集**，每次最多选择 16 个，既非独立保留测试集，也非 Bedrock 生成质量评测。新增媒体模板需要真实附件，不计入文字参考集。记录还保存属性提示词版本；历史旧版本成绩保持原样。公开 LiveBench/MTEB 映射、分类参考一致、人工业务验收三者分别展示。生产业务校准仍为 `uncalibrated`；新评测结果不会偷偷替换阈值或训练模型。需要业务校准时，应冻结独立业务题集与验收规则、执行候选目标模型并记录成本/质量，再通过既有校准流程验证发布。
+
+独立的[端到端效果评测](effectiveness-evaluation.zh.md)覆盖87项、25类：实际执行分类、选型和目标调用，并保存低价/高能力对照、完整输出及验收证据。当前主指标按全部计划场景计算，答案评分与边界拦截分别展示。已有真实结果，但尚未形成启用中的业务校准表；[失败原因分析](../validation/independent_gateway/overall-metrics-2026-11-25/failure-analysis.zh.md)记录多模态、通用路由问题，以及3项尚未修复的边界标记不一致问题。
 
 ## 登录与用户管理
 
