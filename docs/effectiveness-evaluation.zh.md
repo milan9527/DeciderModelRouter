@@ -43,6 +43,8 @@
 
 API 保留全部旧汇总字段、输出和原始评分；读取历史任务时派生 `overall_metric_version`、逐行 `overall` 与汇总 `overall_*`，不重评或改写数据库历史证据。指标版本与冻结的场景版本、评分器版本分别保存。最新全量批次按新口径为 Decider **47/87**、Liquid **58/87**、H2O **57/87**，均含3次正确拦截；原答案通过数仍为44、55、54。
 
+**已知口径问题，尚未修复：** `tts-zh`、`image-generate`、`video-generate` 的文字验收允许明确报告能力缺口，但冻结用例缺少 `expected_boundary_statuses`，结果没有 `boundary_check` 标记。因此当前程序仍将其无候选归为失败；`overall_routing_failed` 的15、5、5项不能全部解释为分类错误。需要统一“媒体能否交付”和“缺口是否正确处理”的测试意图，再版本化修正。具体证据、全部失败分组和改进建议见[结论分析](../validation/independent_gateway/overall-metrics-2026-11-25/failure-analysis.zh.md)；这次文档补充没有改写历史评分或线上指标。
+
 ## 成本与性能是否平衡
 
 每个场景可对比：
