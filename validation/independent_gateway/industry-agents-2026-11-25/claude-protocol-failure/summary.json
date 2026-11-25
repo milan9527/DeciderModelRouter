@@ -1,0 +1,93 @@
+{
+  "started_at": "2026-11-25T14:34:58.558838+00:00",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net",
+  "fixture": false,
+  "data_source": "synthetic_business_records",
+  "scope": "industry_agent_four_turns",
+  "quality_scoring": "manual_review_required",
+  "results": [
+    {
+      "scenario_id": "retail",
+      "turn": 1,
+      "job_id": "7759e088b8c8022bfc78f01f",
+      "status": "error",
+      "session_id": "0414c24376577834efcb79db",
+      "models": [
+        null
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "retail-turn-1.json"
+    },
+    {
+      "scenario_id": "manufacturing",
+      "turn": 1,
+      "job_id": "c09771aa8e0fca2266b7329f",
+      "status": "error",
+      "session_id": "2c07d771f825104a4252ba0b",
+      "models": [
+        null
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "manufacturing-turn-1.json"
+    },
+    {
+      "scenario_id": "finance",
+      "turn": 1,
+      "job_id": "089316be40957fc5a264ca9f",
+      "status": "error",
+      "session_id": "96af9f0cce2bd399e20c9814",
+      "models": [
+        null
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "finance-turn-1.json"
+    },
+    {
+      "scenario_id": "insurance",
+      "turn": 1,
+      "job_id": "7285c490e6c989703e54b104",
+      "status": "error",
+      "session_id": "9e4aa21964ab7f669eaf974e",
+      "models": [
+        null
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "insurance-turn-1.json"
+    }
+  ],
+  "dataset_version": "dae0d4382fc67060",
+  "planned_turns": 48,
+  "scenarios": [
+    "retail",
+    "manufacturing",
+    "finance",
+    "insurance",
+    "healthcare",
+    "logistics",
+    "energy",
+    "saas",
+    "telecom",
+    "public-services",
+    "education",
+    "legal"
+  ],
+  "completed_turns": 0,
+  "finished_at": "2026-11-25T14:35:11.823361+00:00",
+  "status": "stopped_for_claude_tool_discriminator_compatibility_fix"
+}

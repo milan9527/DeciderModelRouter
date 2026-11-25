@@ -1,0 +1,504 @@
+{
+  "id": "95b0026de401d115d99faef9",
+  "session_id": "70ae03ada4d01d72987f6137",
+  "scenario_id": "retail",
+  "title": "大促缺货与履约补救",
+  "industry": "零售电商",
+  "prompt": "查询订单和库存，列出SKU A缺口与已超24小时的订单，先给运营交接摘要。",
+  "status": "completed",
+  "created_at": 1795616901749,
+  "turn": 1,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 4096,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795616911402,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-b8dc7eabc1b7841b9d07e2d74d1314cb5278b3ada2ecd8dfde17e1adee28a243",
+  "answer": "<thinking>现在我已经掌握了订单和库存数据。我将结合这些数据，列出SKU A的缺口与已超24小时的订单。SKU A的缺口是库存数据中的SKU A的可用量减去SKU A的订单总量。已超24小时的订单是订单数据中的SKU A的订单，且late_hours大于24。</thinking>\n\nSKU A的缺口和已超24小时的订单列表如下：\n\n- SKU A的缺口：库存数据中SKU A的可用量为35，订单数据中SKU A的订单总量为50（O101的30 + O103的20）。因此，SKU A的缺口为35 - 50 = -15。\n- 已超24小时的订单：订单数据中SKU A的订单中，只有O103的late_hours大于24。\n\n因此，SKU A的缺口为-15，已超24小时的订单为O103。",
+  "finished_at": 1795616911383,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "5fcec62ab2cbddc6300d0f5e",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "customer_support",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-lite-v1:0",
+      "configuration_id": "a36698ff80c0b7a80094a40b",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 98.187,
+      "target_ms": 1047.195,
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 143,
+        "totalTokens": 2793,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 2650
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 2650,
+        "total_input_tokens": 2650,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "tool_use",
+      "tool_call_count": 1
+    },
+    {
+      "step": 2,
+      "run_id": "d4823142c11c72f0d77647f0",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-lite-v1:0",
+      "configuration_id": "a36698ff80c0b7a80094a40b",
+      "previous_model_id": "amazon.nova-lite-v1:0",
+      "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 115.647,
+      "target_ms": 804.685,
+      "usage": {
+        "inputTokens": 184,
+        "outputTokens": 85,
+        "totalTokens": 1288,
+        "cacheReadInputTokens": 1019,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 1019,
+        "write_tokens": 0,
+        "total_input_tokens": 1203,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "tool_use",
+      "tool_call_count": 1
+    },
+    {
+      "step": 3,
+      "run_id": "2ff8a17a3542e1c927d7868c",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-lite-v1:0",
+      "configuration_id": "a36698ff80c0b7a80094a40b",
+      "previous_model_id": "amazon.nova-lite-v1:0",
+      "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 147.226,
+      "target_ms": 2133.127,
+      "usage": {
+        "inputTokens": 625,
+        "outputTokens": 288,
+        "totalTokens": 1695,
+        "cacheReadInputTokens": 782,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 782,
+        "write_tokens": 0,
+        "total_input_tokens": 1407,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "retail",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795616907028
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795616907044
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "5fcec62ab2cbddc6300d0f5e",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "customer_support",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-lite-v1:0",
+      "configuration_id": "a36698ff80c0b7a80094a40b",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 98.187,
+      "target_ms": 1047.195,
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 143,
+        "totalTokens": 2793,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 2650
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 2650,
+        "total_input_tokens": 2650,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "tool_use",
+      "tool_call_count": 1,
+      "sequence": 3,
+      "recorded_at": 1795616907062
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "orders"
+      },
+      "sequence": 4,
+      "recorded_at": 1795616907079
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "orders"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "orders",
+        "records": [
+          {
+            "id": "O101",
+            "sku": "A",
+            "quantity": 30,
+            "amount": 6000,
+            "late_hours": 26
+          },
+          {
+            "id": "O102",
+            "sku": "B",
+            "quantity": 12,
+            "amount": 3600,
+            "late_hours": 4
+          },
+          {
+            "id": "O103",
+            "sku": "A",
+            "quantity": 20,
+            "amount": 4000,
+            "late_hours": 30
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.014,
+      "sequence": 5,
+      "recorded_at": 1795616908627
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 6,
+      "recorded_at": 1795616908643
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "d4823142c11c72f0d77647f0",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-lite-v1:0",
+      "configuration_id": "a36698ff80c0b7a80094a40b",
+      "previous_model_id": "amazon.nova-lite-v1:0",
+      "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 115.647,
+      "target_ms": 804.685,
+      "usage": {
+        "inputTokens": 184,
+        "outputTokens": 85,
+        "totalTokens": 1288,
+        "cacheReadInputTokens": 1019,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 1019,
+        "write_tokens": 0,
+        "total_input_tokens": 1203,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "tool_use",
+      "tool_call_count": 1,
+      "sequence": 7,
+      "recorded_at": 1795616908661
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "inventory"
+      },
+      "sequence": 8,
+      "recorded_at": 1795616908676
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "inventory"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "inventory",
+        "records": [
+          {
+            "sku": "A",
+            "available": 35,
+            "incoming": 20,
+            "lead_hours": 48,
+            "unit_margin": 45
+          },
+          {
+            "sku": "B",
+            "available": 20,
+            "incoming": 0,
+            "lead_hours": 0,
+            "unit_margin": 80
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.015,
+      "sequence": 9,
+      "recorded_at": 1795616911322
+    },
+    {
+      "type": "model_started",
+      "step": 3,
+      "model": "model-router",
+      "sequence": 10,
+      "recorded_at": 1795616911337
+    },
+    {
+      "type": "model_completed",
+      "step": 3,
+      "run_id": "2ff8a17a3542e1c927d7868c",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-lite-v1:0",
+      "configuration_id": "a36698ff80c0b7a80094a40b",
+      "previous_model_id": "amazon.nova-lite-v1:0",
+      "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 147.226,
+      "target_ms": 2133.127,
+      "usage": {
+        "inputTokens": 625,
+        "outputTokens": 288,
+        "totalTokens": 1695,
+        "cacheReadInputTokens": 782,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 782,
+        "write_tokens": 0,
+        "total_input_tokens": 1407,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 11,
+      "recorded_at": 1795616911351
+    },
+    {
+      "type": "completed",
+      "answer": "<thinking>现在我已经掌握了订单和库存数据。我将结合这些数据，列出SKU A的缺口与已超24小时的订单。SKU A的缺口是库存数据中的SKU A的可用量减去SKU A的订单总量。已超24小时的订单是订单数据中的SKU A的订单，且late_hours大于24。</thinking>\n\nSKU A的缺口和已超24小时的订单列表如下：\n\n- SKU A的缺口：库存数据中SKU A的可用量为35，订单数据中SKU A的订单总量为50（O101的30 + O103的20）。因此，SKU A的缺口为35 - 50 = -15。\n- 已超24小时的订单：订单数据中SKU A的订单中，只有O103的late_hours大于24。\n\n因此，SKU A的缺口为-15，已超24小时的订单为O103。",
+      "model_calls": 3,
+      "sequence": 12,
+      "recorded_at": 1795616911383
+    }
+  ],
+  "metrics": {
+    "model_calls": 3,
+    "tool_calls": 2,
+    "model_switches": 0,
+    "retained_calls": 1,
+    "cache_read_tokens": 1801
+  }
+}

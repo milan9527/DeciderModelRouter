@@ -1,0 +1,347 @@
+{
+  "id": "1497e3f91c7d4cae8314572e",
+  "session_id": "820fa6319b4d77f556c1d6cd",
+  "scenario_id": "finance",
+  "title": "支付对账差异与幂等修复",
+  "industry": "银行与支付",
+  "prompt": "设计Python对账函数和SQL唯一约束，覆盖乱序退款、重复回调、并发写入和金额冲突，并给出测试样例。",
+  "status": "completed",
+  "created_at": 1795618379871,
+  "turn": 3,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 16384,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795618412816,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-68b9467c1af3b95c70b0f1a3f5013f5eedf34e09c800a746611d50c45648b59b",
+  "answer": "## 对账系统设计方案\n\n### 1️⃣ **SQL唯一约束与幂等性设计**\n\n```sql\n-- ==================== 表结构 ====================\n\n-- 账本表（订单&网关交易）\nCREATE TABLE ledger (\n    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n    transaction_id VARCHAR(32) NOT NULL UNIQUE,\n    order_id VARCHAR(32) NOT NULL,\n    amount BIGINT NOT NULL COMMENT '金额(分)',\n    status ENUM('captured', 'settled', 'refunded', 'cancelled') NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n    INDEX idx_order_id (order_id),\n    INDEX idx_status_created (status, created_at)\n);\n\n-- 结算记录表（资金转账）\nCREATE TABLE settlements (\n    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n    transaction_id VARCHAR(32) NOT NULL,\n    event_id VARCHAR(64) NOT NULL COMMENT '幂等key',\n    amount BIGINT NOT NULL COMMENT '金额(分)',\n    callback_time TIMESTAMP NOT NULL,\n    -- 核心约束：同一event仅处理一次（去重）\n    UNIQUE KEY uk_event_idempotent (event_id),\n    -- 交易粒度跟踪：同一交易同一金额仅入账一次\n    UNIQUE KEY uk_txn_amount_settled (transaction_id, amount, DATE(callback_time)),\n    INDEX idx_transaction_id (transaction_id),\n    INDEX idx_callback_time (callback_time),\n    CONSTRAINT fk_settlements_ledger \n        FOREIGN KEY (transaction_id) REFERENCES ledger(transaction_id)\n);\n\n-- 对账结果表（原子化记录）\nCREATE TABLE reconciliation_records (\n    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n    batch_id VARCHAR(64) NOT NULL COMMENT '对账批次号',\n    transaction_id VARCHAR(32) NOT NULL,\n    ledger_amount BIGINT,\n    settlement_amount BIGINT,\n    status ENUM('matched', 'mismatch', 'duplicate', 'pending', 'missing') NOT NULL,\n    discrepancy BIGINT COMMENT '差异金额',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    UNIQUE KEY uk_batch_txn (batch_id, transaction_id),\n    INDEX idx_batch_status (batch_id, status)\n);\n\n-- 重复投递日志（审计追踪）\nCREATE TABLE duplicate_logs (\n    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n    event_id VARCHAR(64) NOT NULL,\n    transaction_id VARCHAR(32),\n    amount BIGINT,\n    duplicate_count INT DEFAULT 1,\n    detected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    resolved BOOLEAN DEFAULT FALSE,\n    UNIQUE KEY uk_event_duplicate (event_id)\n);\n```\n\n---\n\n### 2️⃣ **Python对账核心函数**\n\n```python\nfrom datetime import datetime\nfrom typing import List, Dict, Tuple, Optional\nfrom dataclasses import dataclass\nfrom enum import Enum\nimport hashlib\nfrom collections import defaultdict\n\n# ==================== 数据模型 ====================\n\nclass TransactionStatus(Enum):\n    \"\"\"交易状态\"\"\"\n    CAPTURED = \"captured\"      # 已授权\n    SETTLED = \"settled\"        # 已结算\n    REFUNDED = \"refunded\"      # 已退款\n    CANCELLED = \"cancelled\"    # 已撤销\n\nclass ReconcileStatus(Enum):\n    \"\"\"对账状态\"\"\"\n    MATCHED = \"matched\"        # 金额一致\n    MISMATCH = \"mismatch\"      # 金额不一致\n    DUPLICATE = \"duplicate\"    # 重复投递\n    PENDING = \"pending\"        # 待结算\n    MISSING = \"missing\"        # 缺失记录\n\n@dataclass\nclass LedgerRecord:\n    \"\"\"账本记录\"\"\"\n    transaction_id: str\n    order_id: str\n    amount: int  # 分为单位\n    status: TransactionStatus\n    created_at: datetime\n\n@dataclass\nclass SettlementRecord:\n    \"\"\"结算记录\"\"\"\n    transaction_id: str\n    event_id: str  # 幂等key\n    amount: int    # 分为单位\n    callback_time: datetime\n\n@dataclass\nclass ReconcileResult:\n    \"\"\"对账结果\"\"\"\n    transaction_id: str\n    ledger_amount: Optional[int]\n    settlement_amount: Optional[int]\n    status: ReconcileStatus\n    discrepancy: int = 0\n    details: str = \"\"\n\n# ==================== 核心对账引擎 ====================\n\nclass ReconciliationEngine:\n    \"\"\"支付对账核心引擎 - 处理乱序、重复、并发、冲突\"\"\"\n    \n    def __init__(self, batch_id: str):\n        self.batch_id = batch_id\n        self.results: List[ReconcileResult] = []\n        self.duplicates: Dict[str, List[SettlementRecord]] = defaultdict(list)\n        self.ledger_map: Dict[str, LedgerRecord] = {}\n        self.settlement_map: Dict[str, List[SettlementRecord]] = defaultdict(list)\n    \n    def load_ledger(self, records: List[LedgerRecord]) -> None:\n        \"\"\"加载账本，处理并发写入冲突\"\"\"\n        for record in records:\n            # 冲突检测：同一交易多条记录以最新为准\n            if record.transaction_id in self.ledger_map:\n                existing = self.ledger_map[record.transaction_id]\n                # 时间戳最新的记录覆盖\n                if record.created_at > existing.created_at:\n                    self.ledger_map[record.transaction_id] = record\n            else:\n                self.ledger_map[record.transaction_id] = record\n    \n    def load_settlements(self, records: List[SettlementRecord]) -> None:\n        \"\"\"加载结算记录，去重处理\"\"\"\n        event_seen = {}  # 幂等key去重\n        \n        for record in records:\n            # 核心去重逻辑：同一event_id仅保留首次记录\n            if record.event_id in event_seen:\n                self.duplicates[record.event_id].append(record)\n                continue\n            \n            event_seen[record.event_id] = True\n            self.settlement_map[record.transaction_id].append(record)\n    \n    def reconcile(self) -> List[ReconcileResult]:\n        \"\"\"\n        三层对账逻辑：\n        1. 交易状态分层（已结算/待结算）\n        2. 金额匹配（含退款负数）\n        3. 重复与冲突检测\n        \"\"\"\n        \n        all_txns = set(self.ledger_map.keys()) | set(self.settlement_map.keys())\n        \n        for txn_id in all_txns:\n            result = self._reconcile_single(txn_id)\n            self.results.append(result)\n        \n        return self.results\n    \n    def _reconcile_single(self, txn_id: str) -> ReconcileResult:\n        \"\"\"单笔交易对账\"\"\"\n        ledger = self.ledger_map.get(txn_id)\n        settlements = self.settlement_map.get(txn_id, [])\n        \n        # 情况1：待结算交易（无对应结算记录）\n        if ledger and ledger.status == TransactionStatus.CAPTURED:\n            if not settlements:\n                return ReconcileResult(\n                    transaction_id=txn_id,\n                    ledger_amount=ledger.amount,\n                    settlement_amount=None,\n                    status=ReconcileStatus.PENDING,\n                    details=\"交易已授权，本批次未结算，在途监控\"\n                )\n        \n        # 情况2：已结算交易无账本记录（结算漂移）\n        if not ledger and settlements:\n            settlement_sum = sum(s.amount for s in settlements)\n            return ReconcileResult(\n                transaction_id=txn_id,\n                ledger_amount=None,\n                settlement_amount=settlement_sum,\n                status=ReconcileStatus.MISSING,\n                discrepancy=settlement_sum,\n                details=\"结算记录无对应账本，可能是异常回调\"\n            )\n        \n        # 情况3：账本和结算都存在\n        if ledger and settlements:\n            settlement_sum = sum(s.amount for s in settlements)\n            \n            # 子场景3.1：金额一致（含退款负数）\n            if ledger.amount == settlement_sum:\n                # 检查是否有重复投递被去重\n                has_duplicates = any(\n                    s.event_id in self.duplicates for s in settlements\n                )\n                if has_duplicates:\n                    return ReconcileResult(\n                        transaction_id=txn_id,\n                        ledger_amount=ledger.amount,\n                        settlement_amount=settlement_sum,\n                        status=ReconcileStatus.DUPLICATE,\n                        details=\"金额匹配但存在重复投递(已去重)\"\n                    )\n                return ReconcileResult(\n                    transaction_id=txn_id,\n                    ledger_amount=ledger.amount,\n                    settlement_amount=settlement_sum,\n                    status=ReconcileStatus.MATCHED,\n                    details=f\"正常{ledger.status}，金额一致\"\n                )\n            \n            # 子场景3.2：金额冲突（乱序退款、部分结算等）\n            else:\n                return ReconcileResult(\n                    transaction_id=txn_id,\n                    ledger_amount=ledger.amount,\n                    settlement_amount=settlement_sum,\n                    status=ReconcileStatus.MISMATCH,\n                    discrepancy=settlement_sum - ledger.amount,\n                    details=self._analyze_conflict(ledger, settlements)\n                )\n        \n        # 情况4：都不存在（不应发生）\n        return ReconcileResult(\n            transaction_id=txn_id,\n            ledger_amount=None,\n            settlement_amount=None,\n            status=ReconcileStatus.MISSING,\n            details=\"账本和结算均无记录\"\n        )\n    \n    def _analyze_conflict(self, ledger: LedgerRecord, \n                         settlements: List[SettlementRecord]) -> str:\n        \"\"\"冲突分析\"\"\"\n        settlement_sum = sum(s.amount for s in settlements)\n        \n        # 识别场景：乱序退款、部分退款等\n        if ledger.status == TransactionStatus.REFUNDED and settlement_sum < 0:\n            if abs(settlement_sum) == ledger.amount:\n                return \"退款金额一致，可能乱序处理\"\n            else:\n                return f\"部分退款：账本{ledger.amount}分，结算{settlement_sum}分\"\n        \n        if settlement_sum < 0 and ledger.amount > 0:\n            return f\"异常：收入账本但负数结算（可能是乱序退款）\"\n        \n        return f\"金额冲突：账本{ledger.amount}分 vs 结算{settlement_sum}分\"\n    \n    def get_summary(self) -> Dict:\n        \"\"\"对账总结\"\"\"\n        matched = [r for r in self.results if r.status == ReconcileStatus.MATCHED]\n        duplicates = [r for r in self.results if r.status == ReconcileStatus.DUPLICATE]\n        pending = [r for r in self.results if r.status == ReconcileStatus.PENDING]\n        mismatches = [r for r in self.results if r.status == ReconcileStatus.MISMATCH]\n        missing = [r for r in self.results if r.status == ReconcileStatus.MISSING]\n        \n        matched_amount = sum(r.ledger_amount for r in matched if r.ledger_amount)\n        pending_amount = sum(r.ledger_amount for r in pending if r.ledger_amount)\n        discrepancy_total = sum(r.discrepancy for r in mismatches + missing)\n        \n        return {\n            \"batch_id\": self.batch_id,\n            \"total_transactions\": len(self.results),\n            \"matched\": len(matched),\n            \"matched_amount\": matched_amount,\n            \"duplicates\": len(duplicates),\n            \"duplicate_records\": len(self.duplicates),\n            \"pending\": len(pending),\n            \"pending_amount\": pending_amount,\n            \"mismatches\": len(mismatches),\n            \"missing\": len(missing),\n            \"total_discrepancy\": discrepancy_total,\n            \"timestamp\": datetime.now().isoformat()\n        }\n\n# ==================== 辅助函数 ====================\n\ndef generate_idempotent_key(txn_id: str, event_time: datetime, \n                           amount: int) -> str:\n    \"\"\"生成幂等key，用于结算去重\"\"\"\n    key_str = f\"{txn_id}#{event_time.isoformat()}#{amount}\"\n    return hashlib.sha256(key_str.encode()).hexdigest()[:16]\n\ndef detect_concurrent_writes(records: List[LedgerRecord]) -> List[str]:\n    \"\"\"检测并发写入冲突\"\"\"\n    conflicts = []\n    txn_groups = defaultdict(list)\n    \n    for record in records:\n        txn_groups[record.transaction_id].append(record)\n    \n    for txn_id, group in txn_groups.items():\n        if len(group) > 1:\n            # 同一交易有多条记录\n            amounts = set(r.amount for r in group)\n            statuses = set(r.status for r in group)\n            if len(amounts) > 1 or len(statuses) > 1:\n                conflicts.append(\n                    f\"交易{txn_id}存在并发写入冲突：{len(group)}条记录，\"\n                    f\"金额{amounts}，状态{[s.value for s in statuses]}\"\n                )\n    \n    return conflicts\n```\n\n---\n\n### 3️⃣ **完整测试用例**\n\n```python\n# ==================== 测试套件 ====================\n\ndef test_normal_settlement():\n    \"\"\"测试用例1：正常结算（金额一致）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_001\")\n    \n    ledger_records = [\n        LedgerRecord(\"P11\", \"M11\", 12500, TransactionStatus.SETTLED, \n                    datetime(2024, 1, 15, 10, 0)),\n    ]\n    \n    settlement_records = [\n        SettlementRecord(\"P11\", \"E1_001\", 12500, \n                        datetime(2024, 1, 15, 10, 30)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.MATCHED\n    assert results[0].ledger_amount == 12500\n    assert results[0].settlement_amount == 12500\n    print(\"✓ 测试1通过：正常结算\")\n\n\ndef test_duplicate_callback():\n    \"\"\"测试用例2：重复回调（同event_id投递2次）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_002\")\n    \n    ledger_records = [\n        LedgerRecord(\"P11\", \"M11\", 12500, TransactionStatus.SETTLED,\n                    datetime(2024, 1, 15, 10, 0)),\n    ]\n    \n    # 重复回调：相同event_id\n    settlement_records = [\n        SettlementRecord(\"P11\", \"E1_REPEAT\", 12500, \n                        datetime(2024, 1, 15, 10, 30)),\n        SettlementRecord(\"P11\", \"E1_REPEAT\", 12500,  # 重复\n                        datetime(2024, 1, 15, 10, 31)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.DUPLICATE\n    assert results[0].settlement_amount == 12500  # 去重后仅12500\n    assert len(engine.duplicates) == 1  # 记录1条重复\n    print(\"✓ 测试2通过：重复回调被正确去重\")\n\n\ndef test_refund_disorder():\n    \"\"\"测试用例3：乱序退款（先收后退）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_003\")\n    \n    ledger_records = [\n        LedgerRecord(\"P13\", \"M13\", 20000, TransactionStatus.REFUNDED,\n                    datetime(2024, 1, 15, 10, 0)),\n    ]\n    \n    # 乱序：结算中退款记录先到（负数）\n    settlement_records = [\n        SettlementRecord(\"P13\", \"E3_REF\", -20000,\n                        datetime(2024, 1, 15, 10, 30)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.MATCHED  # -20000 == -20000（退款）\n    print(\"✓ 测试3通过：乱序退款正确匹配\")\n\n\ndef test_concurrent_write_conflict():\n    \"\"\"测试用例4：并发写入冲突\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_004\")\n    \n    # 同一交易并发写入不同金额\n    ledger_records = [\n        LedgerRecord(\"P12\", \"M12\", 8300, TransactionStatus.CAPTURED,\n                    datetime(2024, 1, 15, 10, 0, 1)),\n        LedgerRecord(\"P12\", \"M12\", 8350, TransactionStatus.CAPTURED,  # 冲突\n                    datetime(2024, 1, 15, 10, 0, 2)),\n    ]\n    \n    settlement_records = [\n        SettlementRecord(\"P12\", \"E2_001\", 8300,\n                        datetime(2024, 1, 15, 10, 30)),\n    ]\n    \n    # 检测并发冲突\n    conflicts = detect_concurrent_writes(ledger_records)\n    assert len(conflicts) > 0\n    print(f\"  ⚠ 检测到冲突: {conflicts[0]}\")\n    \n    # 以最新记录为准\n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    # 应选择时间戳最新的记录(8350)\n    assert results[0].ledger_amount == 8350\n    print(\"✓ 测试4通过：并发冲突以最新记录为准\")\n\n\ndef test_amount_mismatch():\n    \"\"\"测试用例5：金额不匹配（异常冲突）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_005\")\n    \n    ledger_records = [\n        LedgerRecord(\"P14\", \"M14\", 10000, TransactionStatus.SETTLED,\n                    datetime(2024, 1, 15, 10, 0)),\n    ]\n    \n    settlement_records = [\n        SettlementRecord(\"P14\", \"E4_001\", 9999,  # 少1分\n                        datetime(2024, 1, 15, 10, 30)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.MISMATCH\n    assert results[0].discrepancy == -1  # 结算少1分\n    print(\"✓ 测试5通过：金额不匹配被标记\")\n\n\ndef test_pending_unsettled():\n    \"\"\"测试用例6：待结算交易（captured无结算）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_006\")\n    \n    ledger_records = [\n        LedgerRecord(\"P12\", \"M12\", 8300, TransactionStatus.CAPTURED,\n                    datetime(2024, 1, 15, 10, 0)),\n    ]\n    \n    # 无对应结算记录\n    settlement_records = []\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.PENDING\n    assert results[0].settlement_amount is None\n    print(\"✓ 测试6通过：待结算交易在途监控\")\n\n\ndef test_settlement_drift():\n    \"\"\"测试用例7：结算漂移（结算无账本）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_007\")\n    \n    ledger_records = []  # 无账本记录\n    \n    # 异常结算回调（无对应账本）\n    settlement_records = [\n        SettlementRecord(\"P99\", \"E99_DRIFT\", 5000,\n                        datetime(2024, 1, 15, 10, 30)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.MISSING\n    assert results[0].discrepancy == 5000\n    print(\"✓ 测试7通过：结算漂移被标记为缺失\")\n\n\ndef test_comprehensive_scenario():\n    \"\"\"测试用例8：综合场景（包含所有异常类型）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_COMPREHENSIVE\")\n    \n    ledger_records = [\n        # 正常收入\n        LedgerRecord(\"P11\", \"M11\", 12500, TransactionStatus.SETTLED,\n                    datetime(2024, 1, 15, 10, 0)),\n        # 待结算\n        LedgerRecord(\"P12\", \"M12\", 8300, TransactionStatus.CAPTURED,\n                    datetime(2024, 1, 15, 10, 1)),\n        # 退款\n        LedgerRecord(\"P13\", \"M13\", 20000, TransactionStatus.REFUNDED,\n                    datetime(2024, 1, 15, 10, 2)),\n        # 金额冲突\n        LedgerRecord(\"P14\", \"M14\", 10000, TransactionStatus.SETTLED,\n                    datetime(2024, 1, 15, 10, 3)),\n    ]\n    \n    settlement_records = [\n        # P11: 重复回调（相同event）\n        SettlementRecord(\"P11\", \"E1\", 12500,\n                        datetime(2024, 1, 15, 10, 30)),\n        SettlementRecord(\"P11\", \"E1\", 12500,  # 重复\n                        datetime(2024, 1, 15, 10, 31)),\n        # P12: 无结算（待处理）\n        # P13: 退款\n        SettlementRecord(\"P13\", \"E3\", -20000,\n                        datetime(2024, 1, 15, 10, 32)),\n        # P14: 金额不匹配\n        SettlementRecord(\"P14\", \"E4\", 9999,\n                        datetime(2024, 1, 15, 10, 33)),\n        # P99: 漂移（无账本）\n        SettlementRecord(\"P99\", \"E99\", 5000,\n                        datetime(2024, 1, 15, 10, 34)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    summary = engine.get_summary()\n    \n    print(\"\\n\" + \"=\"*60)\n    print(\"综合对账结果：\")\n    print(\"=\"*60)\n    for result in results:\n        status_icon = {\n            ReconcileStatus.MATCHED: \"✓\",\n            ReconcileStatus.DUPLICATE: \"⚠\",\n            ReconcileStatus.PENDING: \"⏳\",\n            ReconcileStatus.MISMATCH: \"✗\",\n            ReconcileStatus.MISSING: \"⚠\"\n        }\n        icon = status_icon.get(result.status, \"?\")\n        print(f\"{icon} {result.transaction_id:4} | {result.status.value:10} | \"\n              f\"账本:{result.ledger_amount:>6} | 结算:{result.settlement_amount:>6} | \"\n              f\"{result.details}\")\n    \n    print(\"\\n\" + \"=\"*60)\n    print(\"对账汇总：\")\n    print(\"=\"*60)\n    print(f\"总交易数：        {summary['total_transactions']}\")\n    print(f\"匹配：            {summary['matched']}笔 ({summary['matched_amount']}分)\")\n    print(f\"重复投递：        {summary['duplicate_records']}笔\")\n    print(f\"待结算：          {summary['pending']}笔 ({summary['pending_amount']}分)\")\n    print(f\"金额冲突：        {summary['mismatches']}笔\")\n    print(f\"缺失记录：        {summary['missing']}笔\")\n    print(f\"差异总额：        {summary['total_discrepancy']}分\")\n    print(\"=\"*60)\n    \n    # 验证\n    assert summary['matched'] == 1  # P11（去重后）\n    assert summary['duplicate_records'] == 1  # P11重复\n    assert summary['pending'] == 1  # P12\n    assert summary['mismatches'] == 1  # P14\n    assert summary['missing'] == 1  # P99\n    \n    print(\"\\n✓ 测试8通过：综合场景处理完整\")\n\n\n# ==================== 运行测试 ====================\n\nif __name__ == \"__main__\":\n    print(\"\\n🧪 支付对账系统测试套件\\n\")\n    \n    test_normal_settlement()\n    test_duplicate_callback()\n    test_refund_disorder()\n    test_concurrent_write_conflict()\n    test_amount_mismatch()\n    test_pending_unsettled()\n    test_settlement_drift()\n    test_comprehensive_scenario()\n    \n    print(\"\\n✅ 全部测试通过！\")\n```\n\n---\n\n### 4️⃣ **SQL幂等性与约束说明**\n\n```sql\n-- ==================== 插入操作幂等性 ====================\n\n-- 结算记录幂等插入（去重）\n-- 场景：重复回调同一笔结算\nINSERT INTO settlements (transaction_id, event_id, amount, callback_time)\nVALUES ('P11', 'E1_CALLBACK_001', 12500, '2024-01-15 10:30:00')\nON DUPLICATE KEY UPDATE\n    id = id;  -- 无操作，幂等性保证\n\n-- 在重复投递日志中记录\nINSERT INTO duplicate_logs (event_id, transaction_id, amount)\nVALUES ('E1_CALLBACK_001', 'P11', 12500)\nON DUPLICATE KEY UPDATE\n    duplicate_count = duplicate_count + 1;\n\n-- ==================== 对账查询 ====================\n\n-- 查询已匹配交易\nSELECT \n    l.transaction_id,\n    l.amount AS ledger_amount,\n    SUM(s.amount) AS settlement_amount,\n    CASE \n        WHEN l.amount = SUM(s.amount) THEN 'MATCHED'\n        ELSE 'MISMATCH'\n    END AS status\nFROM ledger l\nLEFT JOIN settlements s ON l.transaction_id = s.transaction_id\nWHERE l.status IN ('settled', 'refunded')\nGROUP BY l.transaction_id\nHAVING ledger_amount = settlement_amount;\n\n-- 查询待结算交易\nSELECT \n    transaction_id,\n    order_id,\n    amount,\n    status,\n    created_at\nFROM ledger\nWHERE status = 'captured'\nAND transaction_id NOT IN (\n    SELECT DISTINCT transaction_id FROM settlements\n);\n\n-- 查询重复投递\nSELECT \n    event_id,\n    COUNT(*) AS event_count,\n    GROUP_CONCAT(transaction_id) AS txn_ids,\n    SUM(amount) AS total_duplicate_amount\nFROM settlements\nGROUP BY event_id\nHAVING COUNT(*) > 1;\n\n-- 查询对账汇总（去重后）\nSELECT \n    COUNT(DISTINCT l.transaction_id) AS total_matched,\n    SUM(CASE WHEN l.amount = s.settlement_sum THEN l.amount ELSE 0 END) AS matched_amount,\n    COUNT(DISTINCT CASE WHEN l.status = 'captured' THEN l.transaction_id END) AS pending_count,\n    SUM(CASE WHEN l.status = 'captured' THEN l.amount ELSE 0 END) AS pending_amount\nFROM ledger l\nLEFT JOIN (\n    SELECT transaction_id, SUM(amount) AS settlement_sum\n    FROM settlements\n    GROUP BY transaction_id\n) s ON l.transaction_id = s.transaction_id;\n```\n\n---\n\n### 5️⃣ **关键特性对照表**\n\n| 场景 | Python函数处理 | SQL约束 | 效果 |\n|------|----------------|--------|------|\n| **重复回调** | `event_id` 去重 | `UNIQUE uk_event_idempotent` | 相同event仅入账一次 |\n| **乱序退款** | 负数金额匹配 | 允许负数，外键约束 | 收入与退款正确抵消 |\n| **并发写入** | 时间戳最新优先 | `UNIQUE uk_txn_amount_settled` | 同交易同金额同日期仅一次 |\n| **金额冲突** | `_analyze_conflict()` | 检查约束 | 标记为MISMATCH，记录差异 |\n| **待结算** | 状态判断 | 无对应结算允许 | PENDING标记，分离跟踪 |\n| **结算漂移** | 外键检查 | `FOREIGN KEY` | 异常漂移标记为MISSING |\n\n---\n\n## 🎯 **部署建议**\n\n1. **数据库层**：先执行SQL建表，启用约束\n2. **应用层**：使用Python引擎做业务逻辑校验\n3. **异步化**：结算回调通过消息队列保证幂等性\n4. **监控**：duplicate_logs表持续告警重复率\n5. **审计**：reconciliation_records表保存每次对账快照",
+  "finished_at": 1795618412729,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "f5c3b02da354b4f8c4d773b4",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 175.748,
+      "target_ms": 806.012,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 65,
+        "totalTokens": 4249,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 4181,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 4181
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 4181,
+        "total_input_tokens": 4184,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "tool_use",
+      "tool_call_count": 1
+    },
+    {
+      "step": 2,
+      "run_id": "38c5637d6c9b164e3bd42ca0",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "other"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 168.256,
+      "target_ms": 29097.79,
+      "usage": {
+        "inputTokens": 5,
+        "outputTokens": 8284,
+        "totalTokens": 12612,
+        "cacheReadInputTokens": 4181,
+        "cacheWriteInputTokens": 142,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 142
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 4181,
+        "write_tokens": 142,
+        "total_input_tokens": 4328,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "finance",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795618382870
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795618382885
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "f5c3b02da354b4f8c4d773b4",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 175.748,
+      "target_ms": 806.012,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 65,
+        "totalTokens": 4249,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 4181,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 4181
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 4181,
+        "total_input_tokens": 4184,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "tool_use",
+      "tool_call_count": 1,
+      "sequence": 3,
+      "recorded_at": 1795618382912
+    },
+    {
+      "type": "tool_started",
+      "name": "read_policy",
+      "arguments": {},
+      "sequence": 4,
+      "recorded_at": 1795618382930
+    },
+    {
+      "type": "tool_result",
+      "name": "read_policy",
+      "arguments": {},
+      "status": "success",
+      "result": {
+        "policy": "相同event重复视为重复投递；P12本批次未结算，不等于资金丢失；退款以负数表示；不得发起资金划转或修改账目。",
+        "source": "synthetic_business_policy"
+      },
+      "elapsed_ms": 0.01,
+      "sequence": 5,
+      "recorded_at": 1795618412655
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 6,
+      "recorded_at": 1795618412676
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "38c5637d6c9b164e3bd42ca0",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "other"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 168.256,
+      "target_ms": 29097.79,
+      "usage": {
+        "inputTokens": 5,
+        "outputTokens": 8284,
+        "totalTokens": 12612,
+        "cacheReadInputTokens": 4181,
+        "cacheWriteInputTokens": 142,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 142
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 4181,
+        "write_tokens": 142,
+        "total_input_tokens": 4328,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 7,
+      "recorded_at": 1795618412693
+    },
+    {
+      "type": "completed",
+      "answer": "## 对账系统设计方案\n\n### 1️⃣ **SQL唯一约束与幂等性设计**\n\n```sql\n-- ==================== 表结构 ====================\n\n-- 账本表（订单&网关交易）\nCREATE TABLE ledger (\n    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n    transaction_id VARCHAR(32) NOT NULL UNIQUE,\n    order_id VARCHAR(32) NOT NULL,\n    amount BIGINT NOT NULL COMMENT '金额(分)',\n    status ENUM('captured', 'settled', 'refunded', 'cancelled') NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n    INDEX idx_order_id (order_id),\n    INDEX idx_status_created (status, created_at)\n);\n\n-- 结算记录表（资金转账）\nCREATE TABLE settlements (\n    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n    transaction_id VARCHAR(32) NOT NULL,\n    event_id VARCHAR(64) NOT NULL COMMENT '幂等key',\n    amount BIGINT NOT NULL COMMENT '金额(分)',\n    callback_time TIMESTAMP NOT NULL,\n    -- 核心约束：同一event仅处理一次（去重）\n    UNIQUE KEY uk_event_idempotent (event_id),\n    -- 交易粒度跟踪：同一交易同一金额仅入账一次\n    UNIQUE KEY uk_txn_amount_settled (transaction_id, amount, DATE(callback_time)),\n    INDEX idx_transaction_id (transaction_id),\n    INDEX idx_callback_time (callback_time),\n    CONSTRAINT fk_settlements_ledger \n        FOREIGN KEY (transaction_id) REFERENCES ledger(transaction_id)\n);\n\n-- 对账结果表（原子化记录）\nCREATE TABLE reconciliation_records (\n    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n    batch_id VARCHAR(64) NOT NULL COMMENT '对账批次号',\n    transaction_id VARCHAR(32) NOT NULL,\n    ledger_amount BIGINT,\n    settlement_amount BIGINT,\n    status ENUM('matched', 'mismatch', 'duplicate', 'pending', 'missing') NOT NULL,\n    discrepancy BIGINT COMMENT '差异金额',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    UNIQUE KEY uk_batch_txn (batch_id, transaction_id),\n    INDEX idx_batch_status (batch_id, status)\n);\n\n-- 重复投递日志（审计追踪）\nCREATE TABLE duplicate_logs (\n    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n    event_id VARCHAR(64) NOT NULL,\n    transaction_id VARCHAR(32),\n    amount BIGINT,\n    duplicate_count INT DEFAULT 1,\n    detected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    resolved BOOLEAN DEFAULT FALSE,\n    UNIQUE KEY uk_event_duplicate (event_id)\n);\n```\n\n---\n\n### 2️⃣ **Python对账核心函数**\n\n```python\nfrom datetime import datetime\nfrom typing import List, Dict, Tuple, Optional\nfrom dataclasses import dataclass\nfrom enum import Enum\nimport hashlib\nfrom collections import defaultdict\n\n# ==================== 数据模型 ====================\n\nclass TransactionStatus(Enum):\n    \"\"\"交易状态\"\"\"\n    CAPTURED = \"captured\"      # 已授权\n    SETTLED = \"settled\"        # 已结算\n    REFUNDED = \"refunded\"      # 已退款\n    CANCELLED = \"cancelled\"    # 已撤销\n\nclass ReconcileStatus(Enum):\n    \"\"\"对账状态\"\"\"\n    MATCHED = \"matched\"        # 金额一致\n    MISMATCH = \"mismatch\"      # 金额不一致\n    DUPLICATE = \"duplicate\"    # 重复投递\n    PENDING = \"pending\"        # 待结算\n    MISSING = \"missing\"        # 缺失记录\n\n@dataclass\nclass LedgerRecord:\n    \"\"\"账本记录\"\"\"\n    transaction_id: str\n    order_id: str\n    amount: int  # 分为单位\n    status: TransactionStatus\n    created_at: datetime\n\n@dataclass\nclass SettlementRecord:\n    \"\"\"结算记录\"\"\"\n    transaction_id: str\n    event_id: str  # 幂等key\n    amount: int    # 分为单位\n    callback_time: datetime\n\n@dataclass\nclass ReconcileResult:\n    \"\"\"对账结果\"\"\"\n    transaction_id: str\n    ledger_amount: Optional[int]\n    settlement_amount: Optional[int]\n    status: ReconcileStatus\n    discrepancy: int = 0\n    details: str = \"\"\n\n# ==================== 核心对账引擎 ====================\n\nclass ReconciliationEngine:\n    \"\"\"支付对账核心引擎 - 处理乱序、重复、并发、冲突\"\"\"\n    \n    def __init__(self, batch_id: str):\n        self.batch_id = batch_id\n        self.results: List[ReconcileResult] = []\n        self.duplicates: Dict[str, List[SettlementRecord]] = defaultdict(list)\n        self.ledger_map: Dict[str, LedgerRecord] = {}\n        self.settlement_map: Dict[str, List[SettlementRecord]] = defaultdict(list)\n    \n    def load_ledger(self, records: List[LedgerRecord]) -> None:\n        \"\"\"加载账本，处理并发写入冲突\"\"\"\n        for record in records:\n            # 冲突检测：同一交易多条记录以最新为准\n            if record.transaction_id in self.ledger_map:\n                existing = self.ledger_map[record.transaction_id]\n                # 时间戳最新的记录覆盖\n                if record.created_at > existing.created_at:\n                    self.ledger_map[record.transaction_id] = record\n            else:\n                self.ledger_map[record.transaction_id] = record\n    \n    def load_settlements(self, records: List[SettlementRecord]) -> None:\n        \"\"\"加载结算记录，去重处理\"\"\"\n        event_seen = {}  # 幂等key去重\n        \n        for record in records:\n            # 核心去重逻辑：同一event_id仅保留首次记录\n            if record.event_id in event_seen:\n                self.duplicates[record.event_id].append(record)\n                continue\n            \n            event_seen[record.event_id] = True\n            self.settlement_map[record.transaction_id].append(record)\n    \n    def reconcile(self) -> List[ReconcileResult]:\n        \"\"\"\n        三层对账逻辑：\n        1. 交易状态分层（已结算/待结算）\n        2. 金额匹配（含退款负数）\n        3. 重复与冲突检测\n        \"\"\"\n        \n        all_txns = set(self.ledger_map.keys()) | set(self.settlement_map.keys())\n        \n        for txn_id in all_txns:\n            result = self._reconcile_single(txn_id)\n            self.results.append(result)\n        \n        return self.results\n    \n    def _reconcile_single(self, txn_id: str) -> ReconcileResult:\n        \"\"\"单笔交易对账\"\"\"\n        ledger = self.ledger_map.get(txn_id)\n        settlements = self.settlement_map.get(txn_id, [])\n        \n        # 情况1：待结算交易（无对应结算记录）\n        if ledger and ledger.status == TransactionStatus.CAPTURED:\n            if not settlements:\n                return ReconcileResult(\n                    transaction_id=txn_id,\n                    ledger_amount=ledger.amount,\n                    settlement_amount=None,\n                    status=ReconcileStatus.PENDING,\n                    details=\"交易已授权，本批次未结算，在途监控\"\n                )\n        \n        # 情况2：已结算交易无账本记录（结算漂移）\n        if not ledger and settlements:\n            settlement_sum = sum(s.amount for s in settlements)\n            return ReconcileResult(\n                transaction_id=txn_id,\n                ledger_amount=None,\n                settlement_amount=settlement_sum,\n                status=ReconcileStatus.MISSING,\n                discrepancy=settlement_sum,\n                details=\"结算记录无对应账本，可能是异常回调\"\n            )\n        \n        # 情况3：账本和结算都存在\n        if ledger and settlements:\n            settlement_sum = sum(s.amount for s in settlements)\n            \n            # 子场景3.1：金额一致（含退款负数）\n            if ledger.amount == settlement_sum:\n                # 检查是否有重复投递被去重\n                has_duplicates = any(\n                    s.event_id in self.duplicates for s in settlements\n                )\n                if has_duplicates:\n                    return ReconcileResult(\n                        transaction_id=txn_id,\n                        ledger_amount=ledger.amount,\n                        settlement_amount=settlement_sum,\n                        status=ReconcileStatus.DUPLICATE,\n                        details=\"金额匹配但存在重复投递(已去重)\"\n                    )\n                return ReconcileResult(\n                    transaction_id=txn_id,\n                    ledger_amount=ledger.amount,\n                    settlement_amount=settlement_sum,\n                    status=ReconcileStatus.MATCHED,\n                    details=f\"正常{ledger.status}，金额一致\"\n                )\n            \n            # 子场景3.2：金额冲突（乱序退款、部分结算等）\n            else:\n                return ReconcileResult(\n                    transaction_id=txn_id,\n                    ledger_amount=ledger.amount,\n                    settlement_amount=settlement_sum,\n                    status=ReconcileStatus.MISMATCH,\n                    discrepancy=settlement_sum - ledger.amount,\n                    details=self._analyze_conflict(ledger, settlements)\n                )\n        \n        # 情况4：都不存在（不应发生）\n        return ReconcileResult(\n            transaction_id=txn_id,\n            ledger_amount=None,\n            settlement_amount=None,\n            status=ReconcileStatus.MISSING,\n            details=\"账本和结算均无记录\"\n        )\n    \n    def _analyze_conflict(self, ledger: LedgerRecord, \n                         settlements: List[SettlementRecord]) -> str:\n        \"\"\"冲突分析\"\"\"\n        settlement_sum = sum(s.amount for s in settlements)\n        \n        # 识别场景：乱序退款、部分退款等\n        if ledger.status == TransactionStatus.REFUNDED and settlement_sum < 0:\n            if abs(settlement_sum) == ledger.amount:\n                return \"退款金额一致，可能乱序处理\"\n            else:\n                return f\"部分退款：账本{ledger.amount}分，结算{settlement_sum}分\"\n        \n        if settlement_sum < 0 and ledger.amount > 0:\n            return f\"异常：收入账本但负数结算（可能是乱序退款）\"\n        \n        return f\"金额冲突：账本{ledger.amount}分 vs 结算{settlement_sum}分\"\n    \n    def get_summary(self) -> Dict:\n        \"\"\"对账总结\"\"\"\n        matched = [r for r in self.results if r.status == ReconcileStatus.MATCHED]\n        duplicates = [r for r in self.results if r.status == ReconcileStatus.DUPLICATE]\n        pending = [r for r in self.results if r.status == ReconcileStatus.PENDING]\n        mismatches = [r for r in self.results if r.status == ReconcileStatus.MISMATCH]\n        missing = [r for r in self.results if r.status == ReconcileStatus.MISSING]\n        \n        matched_amount = sum(r.ledger_amount for r in matched if r.ledger_amount)\n        pending_amount = sum(r.ledger_amount for r in pending if r.ledger_amount)\n        discrepancy_total = sum(r.discrepancy for r in mismatches + missing)\n        \n        return {\n            \"batch_id\": self.batch_id,\n            \"total_transactions\": len(self.results),\n            \"matched\": len(matched),\n            \"matched_amount\": matched_amount,\n            \"duplicates\": len(duplicates),\n            \"duplicate_records\": len(self.duplicates),\n            \"pending\": len(pending),\n            \"pending_amount\": pending_amount,\n            \"mismatches\": len(mismatches),\n            \"missing\": len(missing),\n            \"total_discrepancy\": discrepancy_total,\n            \"timestamp\": datetime.now().isoformat()\n        }\n\n# ==================== 辅助函数 ====================\n\ndef generate_idempotent_key(txn_id: str, event_time: datetime, \n                           amount: int) -> str:\n    \"\"\"生成幂等key，用于结算去重\"\"\"\n    key_str = f\"{txn_id}#{event_time.isoformat()}#{amount}\"\n    return hashlib.sha256(key_str.encode()).hexdigest()[:16]\n\ndef detect_concurrent_writes(records: List[LedgerRecord]) -> List[str]:\n    \"\"\"检测并发写入冲突\"\"\"\n    conflicts = []\n    txn_groups = defaultdict(list)\n    \n    for record in records:\n        txn_groups[record.transaction_id].append(record)\n    \n    for txn_id, group in txn_groups.items():\n        if len(group) > 1:\n            # 同一交易有多条记录\n            amounts = set(r.amount for r in group)\n            statuses = set(r.status for r in group)\n            if len(amounts) > 1 or len(statuses) > 1:\n                conflicts.append(\n                    f\"交易{txn_id}存在并发写入冲突：{len(group)}条记录，\"\n                    f\"金额{amounts}，状态{[s.value for s in statuses]}\"\n                )\n    \n    return conflicts\n```\n\n---\n\n### 3️⃣ **完整测试用例**\n\n```python\n# ==================== 测试套件 ====================\n\ndef test_normal_settlement():\n    \"\"\"测试用例1：正常结算（金额一致）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_001\")\n    \n    ledger_records = [\n        LedgerRecord(\"P11\", \"M11\", 12500, TransactionStatus.SETTLED, \n                    datetime(2024, 1, 15, 10, 0)),\n    ]\n    \n    settlement_records = [\n        SettlementRecord(\"P11\", \"E1_001\", 12500, \n                        datetime(2024, 1, 15, 10, 30)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.MATCHED\n    assert results[0].ledger_amount == 12500\n    assert results[0].settlement_amount == 12500\n    print(\"✓ 测试1通过：正常结算\")\n\n\ndef test_duplicate_callback():\n    \"\"\"测试用例2：重复回调（同event_id投递2次）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_002\")\n    \n    ledger_records = [\n        LedgerRecord(\"P11\", \"M11\", 12500, TransactionStatus.SETTLED,\n                    datetime(2024, 1, 15, 10, 0)),\n    ]\n    \n    # 重复回调：相同event_id\n    settlement_records = [\n        SettlementRecord(\"P11\", \"E1_REPEAT\", 12500, \n                        datetime(2024, 1, 15, 10, 30)),\n        SettlementRecord(\"P11\", \"E1_REPEAT\", 12500,  # 重复\n                        datetime(2024, 1, 15, 10, 31)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.DUPLICATE\n    assert results[0].settlement_amount == 12500  # 去重后仅12500\n    assert len(engine.duplicates) == 1  # 记录1条重复\n    print(\"✓ 测试2通过：重复回调被正确去重\")\n\n\ndef test_refund_disorder():\n    \"\"\"测试用例3：乱序退款（先收后退）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_003\")\n    \n    ledger_records = [\n        LedgerRecord(\"P13\", \"M13\", 20000, TransactionStatus.REFUNDED,\n                    datetime(2024, 1, 15, 10, 0)),\n    ]\n    \n    # 乱序：结算中退款记录先到（负数）\n    settlement_records = [\n        SettlementRecord(\"P13\", \"E3_REF\", -20000,\n                        datetime(2024, 1, 15, 10, 30)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.MATCHED  # -20000 == -20000（退款）\n    print(\"✓ 测试3通过：乱序退款正确匹配\")\n\n\ndef test_concurrent_write_conflict():\n    \"\"\"测试用例4：并发写入冲突\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_004\")\n    \n    # 同一交易并发写入不同金额\n    ledger_records = [\n        LedgerRecord(\"P12\", \"M12\", 8300, TransactionStatus.CAPTURED,\n                    datetime(2024, 1, 15, 10, 0, 1)),\n        LedgerRecord(\"P12\", \"M12\", 8350, TransactionStatus.CAPTURED,  # 冲突\n                    datetime(2024, 1, 15, 10, 0, 2)),\n    ]\n    \n    settlement_records = [\n        SettlementRecord(\"P12\", \"E2_001\", 8300,\n                        datetime(2024, 1, 15, 10, 30)),\n    ]\n    \n    # 检测并发冲突\n    conflicts = detect_concurrent_writes(ledger_records)\n    assert len(conflicts) > 0\n    print(f\"  ⚠ 检测到冲突: {conflicts[0]}\")\n    \n    # 以最新记录为准\n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    # 应选择时间戳最新的记录(8350)\n    assert results[0].ledger_amount == 8350\n    print(\"✓ 测试4通过：并发冲突以最新记录为准\")\n\n\ndef test_amount_mismatch():\n    \"\"\"测试用例5：金额不匹配（异常冲突）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_005\")\n    \n    ledger_records = [\n        LedgerRecord(\"P14\", \"M14\", 10000, TransactionStatus.SETTLED,\n                    datetime(2024, 1, 15, 10, 0)),\n    ]\n    \n    settlement_records = [\n        SettlementRecord(\"P14\", \"E4_001\", 9999,  # 少1分\n                        datetime(2024, 1, 15, 10, 30)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.MISMATCH\n    assert results[0].discrepancy == -1  # 结算少1分\n    print(\"✓ 测试5通过：金额不匹配被标记\")\n\n\ndef test_pending_unsettled():\n    \"\"\"测试用例6：待结算交易（captured无结算）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_006\")\n    \n    ledger_records = [\n        LedgerRecord(\"P12\", \"M12\", 8300, TransactionStatus.CAPTURED,\n                    datetime(2024, 1, 15, 10, 0)),\n    ]\n    \n    # 无对应结算记录\n    settlement_records = []\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.PENDING\n    assert results[0].settlement_amount is None\n    print(\"✓ 测试6通过：待结算交易在途监控\")\n\n\ndef test_settlement_drift():\n    \"\"\"测试用例7：结算漂移（结算无账本）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_007\")\n    \n    ledger_records = []  # 无账本记录\n    \n    # 异常结算回调（无对应账本）\n    settlement_records = [\n        SettlementRecord(\"P99\", \"E99_DRIFT\", 5000,\n                        datetime(2024, 1, 15, 10, 30)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    assert len(results) == 1\n    assert results[0].status == ReconcileStatus.MISSING\n    assert results[0].discrepancy == 5000\n    print(\"✓ 测试7通过：结算漂移被标记为缺失\")\n\n\ndef test_comprehensive_scenario():\n    \"\"\"测试用例8：综合场景（包含所有异常类型）\"\"\"\n    engine = ReconciliationEngine(batch_id=\"BATCH_20240115_COMPREHENSIVE\")\n    \n    ledger_records = [\n        # 正常收入\n        LedgerRecord(\"P11\", \"M11\", 12500, TransactionStatus.SETTLED,\n                    datetime(2024, 1, 15, 10, 0)),\n        # 待结算\n        LedgerRecord(\"P12\", \"M12\", 8300, TransactionStatus.CAPTURED,\n                    datetime(2024, 1, 15, 10, 1)),\n        # 退款\n        LedgerRecord(\"P13\", \"M13\", 20000, TransactionStatus.REFUNDED,\n                    datetime(2024, 1, 15, 10, 2)),\n        # 金额冲突\n        LedgerRecord(\"P14\", \"M14\", 10000, TransactionStatus.SETTLED,\n                    datetime(2024, 1, 15, 10, 3)),\n    ]\n    \n    settlement_records = [\n        # P11: 重复回调（相同event）\n        SettlementRecord(\"P11\", \"E1\", 12500,\n                        datetime(2024, 1, 15, 10, 30)),\n        SettlementRecord(\"P11\", \"E1\", 12500,  # 重复\n                        datetime(2024, 1, 15, 10, 31)),\n        # P12: 无结算（待处理）\n        # P13: 退款\n        SettlementRecord(\"P13\", \"E3\", -20000,\n                        datetime(2024, 1, 15, 10, 32)),\n        # P14: 金额不匹配\n        SettlementRecord(\"P14\", \"E4\", 9999,\n                        datetime(2024, 1, 15, 10, 33)),\n        # P99: 漂移（无账本）\n        SettlementRecord(\"P99\", \"E99\", 5000,\n                        datetime(2024, 1, 15, 10, 34)),\n    ]\n    \n    engine.load_ledger(ledger_records)\n    engine.load_settlements(settlement_records)\n    results = engine.reconcile()\n    \n    summary = engine.get_summary()\n    \n    print(\"\\n\" + \"=\"*60)\n    print(\"综合对账结果：\")\n    print(\"=\"*60)\n    for result in results:\n        status_icon = {\n            ReconcileStatus.MATCHED: \"✓\",\n            ReconcileStatus.DUPLICATE: \"⚠\",\n            ReconcileStatus.PENDING: \"⏳\",\n            ReconcileStatus.MISMATCH: \"✗\",\n            ReconcileStatus.MISSING: \"⚠\"\n        }\n        icon = status_icon.get(result.status, \"?\")\n        print(f\"{icon} {result.transaction_id:4} | {result.status.value:10} | \"\n              f\"账本:{result.ledger_amount:>6} | 结算:{result.settlement_amount:>6} | \"\n              f\"{result.details}\")\n    \n    print(\"\\n\" + \"=\"*60)\n    print(\"对账汇总：\")\n    print(\"=\"*60)\n    print(f\"总交易数：        {summary['total_transactions']}\")\n    print(f\"匹配：            {summary['matched']}笔 ({summary['matched_amount']}分)\")\n    print(f\"重复投递：        {summary['duplicate_records']}笔\")\n    print(f\"待结算：          {summary['pending']}笔 ({summary['pending_amount']}分)\")\n    print(f\"金额冲突：        {summary['mismatches']}笔\")\n    print(f\"缺失记录：        {summary['missing']}笔\")\n    print(f\"差异总额：        {summary['total_discrepancy']}分\")\n    print(\"=\"*60)\n    \n    # 验证\n    assert summary['matched'] == 1  # P11（去重后）\n    assert summary['duplicate_records'] == 1  # P11重复\n    assert summary['pending'] == 1  # P12\n    assert summary['mismatches'] == 1  # P14\n    assert summary['missing'] == 1  # P99\n    \n    print(\"\\n✓ 测试8通过：综合场景处理完整\")\n\n\n# ==================== 运行测试 ====================\n\nif __name__ == \"__main__\":\n    print(\"\\n🧪 支付对账系统测试套件\\n\")\n    \n    test_normal_settlement()\n    test_duplicate_callback()\n    test_refund_disorder()\n    test_concurrent_write_conflict()\n    test_amount_mismatch()\n    test_pending_unsettled()\n    test_settlement_drift()\n    test_comprehensive_scenario()\n    \n    print(\"\\n✅ 全部测试通过！\")\n```\n\n---\n\n### 4️⃣ **SQL幂等性与约束说明**\n\n```sql\n-- ==================== 插入操作幂等性 ====================\n\n-- 结算记录幂等插入（去重）\n-- 场景：重复回调同一笔结算\nINSERT INTO settlements (transaction_id, event_id, amount, callback_time)\nVALUES ('P11', 'E1_CALLBACK_001', 12500, '2024-01-15 10:30:00')\nON DUPLICATE KEY UPDATE\n    id = id;  -- 无操作，幂等性保证\n\n-- 在重复投递日志中记录\nINSERT INTO duplicate_logs (event_id, transaction_id, amount)\nVALUES ('E1_CALLBACK_001', 'P11', 12500)\nON DUPLICATE KEY UPDATE\n    duplicate_count = duplicate_count + 1;\n\n-- ==================== 对账查询 ====================\n\n-- 查询已匹配交易\nSELECT \n    l.transaction_id,\n    l.amount AS ledger_amount,\n    SUM(s.amount) AS settlement_amount,\n    CASE \n        WHEN l.amount = SUM(s.amount) THEN 'MATCHED'\n        ELSE 'MISMATCH'\n    END AS status\nFROM ledger l\nLEFT JOIN settlements s ON l.transaction_id = s.transaction_id\nWHERE l.status IN ('settled', 'refunded')\nGROUP BY l.transaction_id\nHAVING ledger_amount = settlement_amount;\n\n-- 查询待结算交易\nSELECT \n    transaction_id,\n    order_id,\n    amount,\n    status,\n    created_at\nFROM ledger\nWHERE status = 'captured'\nAND transaction_id NOT IN (\n    SELECT DISTINCT transaction_id FROM settlements\n);\n\n-- 查询重复投递\nSELECT \n    event_id,\n    COUNT(*) AS event_count,\n    GROUP_CONCAT(transaction_id) AS txn_ids,\n    SUM(amount) AS total_duplicate_amount\nFROM settlements\nGROUP BY event_id\nHAVING COUNT(*) > 1;\n\n-- 查询对账汇总（去重后）\nSELECT \n    COUNT(DISTINCT l.transaction_id) AS total_matched,\n    SUM(CASE WHEN l.amount = s.settlement_sum THEN l.amount ELSE 0 END) AS matched_amount,\n    COUNT(DISTINCT CASE WHEN l.status = 'captured' THEN l.transaction_id END) AS pending_count,\n    SUM(CASE WHEN l.status = 'captured' THEN l.amount ELSE 0 END) AS pending_amount\nFROM ledger l\nLEFT JOIN (\n    SELECT transaction_id, SUM(amount) AS settlement_sum\n    FROM settlements\n    GROUP BY transaction_id\n) s ON l.transaction_id = s.transaction_id;\n```\n\n---\n\n### 5️⃣ **关键特性对照表**\n\n| 场景 | Python函数处理 | SQL约束 | 效果 |\n|------|----------------|--------|------|\n| **重复回调** | `event_id` 去重 | `UNIQUE uk_event_idempotent` | 相同event仅入账一次 |\n| **乱序退款** | 负数金额匹配 | 允许负数，外键约束 | 收入与退款正确抵消 |\n| **并发写入** | 时间戳最新优先 | `UNIQUE uk_txn_amount_settled` | 同交易同金额同日期仅一次 |\n| **金额冲突** | `_analyze_conflict()` | 检查约束 | 标记为MISMATCH，记录差异 |\n| **待结算** | 状态判断 | 无对应结算允许 | PENDING标记，分离跟踪 |\n| **结算漂移** | 外键检查 | `FOREIGN KEY` | 异常漂移标记为MISSING |\n\n---\n\n## 🎯 **部署建议**\n\n1. **数据库层**：先执行SQL建表，启用约束\n2. **应用层**：使用Python引擎做业务逻辑校验\n3. **异步化**：结算回调通过消息队列保证幂等性\n4. **监控**：duplicate_logs表持续告警重复率\n5. **审计**：reconciliation_records表保存每次对账快照",
+      "model_calls": 2,
+      "sequence": 8,
+      "recorded_at": 1795618412730
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 1,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 4181
+  }
+}

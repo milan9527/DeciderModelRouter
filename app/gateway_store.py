@@ -20,7 +20,7 @@ def clean(value):
         return {
             k: clean(v)
             for k, v in value.items()
-            if k.lower() not in {"route_token", "password", "authorization", "cookie"}
+            if k.lower() not in {"route_token", "password", "authorization", "cookie", "callback_token"}
         }
     if isinstance(value, list):
         return [clean(v) for v in value]

@@ -176,7 +176,7 @@ async function enter(user) {
   checkHealth();
 }
 function setPage() {
-  const page = ["workspace", "models", "performance", "evaluations", "account"].includes(
+  const page = ["workspace", "agents", "models", "performance", "evaluations", "account"].includes(
     location.hash.slice(1),
   )
     ? location.hash.slice(1)
@@ -189,6 +189,7 @@ function setPage() {
   );
   $("#page-title").textContent = {
     workspace: "网关工作台",
+    agents: "行业 Agent",
     models: "Bedrock 模型",
     performance: "历史与性能",
     evaluations: "决策模型评测",

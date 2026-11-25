@@ -1,0 +1,84 @@
+{
+  "checked_at": "2026-11-25T15:17:07.906699+00:00",
+  "services": {
+    "decider-model-router": {
+      "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:16",
+      "running": 1,
+      "pending": 0,
+      "rollout": "COMPLETED"
+    },
+    "strands-decider-demo": {
+      "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:36",
+      "running": 1,
+      "pending": 0,
+      "rollout": "COMPLETED"
+    }
+  },
+  "api_image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router@sha256:f0293af24d4a48cf46a93014fba527503bc2ce9abd541f75d4d350d98edc4842",
+  "runtime": {
+    "agentRuntimeArn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+    "agentRuntimeId": "decider_model_router_industry-Fg8vWeEOIs",
+    "agentRuntimeVersion": "3",
+    "platformVersion": "V2",
+    "status": "READY",
+    "roleArn": "arn:aws:iam::632930644527:role/decider-model-router-agent",
+    "networkConfiguration": {
+      "networkMode": "PUBLIC"
+    },
+    "agentRuntimeArtifact": {
+      "containerConfiguration": {
+        "containerUri": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router-agent@sha256:db83453019721a43a38143465a0937b873a572a0afb88a8c6a4f1801d7cca7c7"
+      }
+    }
+  },
+  "runtime_endpoint": {
+    "liveVersion": "3",
+    "agentRuntimeEndpointArn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs/runtime-endpoint/DEFAULT",
+    "agentRuntimeArn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+    "status": "READY",
+    "name": "DEFAULT",
+    "id": "DEFAULT"
+  },
+  "cloudfront": {
+    "distribution_id": "E3OCAAF3NQ1LYX",
+    "invalidation_id": "IAKJYU5KLC1NK7QZ31J0MF6W2V",
+    "status": "Completed"
+  },
+  "root": {
+    "status": 200,
+    "redirect": false
+  },
+  "assets": {
+    "gateway.css": "0f324df3f2e363112f712bc08c2b03472c58c418b867510cae1083bd0e0ce086",
+    "gateway.js": "712110b6c6ab631a2b1b9ae06a8bbe328ffb79314107063d0f85891f01dda3c7",
+    "workspace.js": "5336b128b20530530f3c01b224be402f9efe7092febc6fc9bbc0b3e27add7c40",
+    "agents.js": "72fd4b33c6485e188e46a313eafe7175d7983826c0b193b2eb3d6c47822642dc",
+    "mark.svg": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+    "index.html": "631ec93073440a887e868b6e1efbe1a8021ccbb5af9f8690a7de78f22b250803"
+  },
+  "unauthenticated_api_denied": true,
+  "s3_public_access_block": {
+    "BlockPublicAcls": true,
+    "IgnorePublicAcls": true,
+    "BlockPublicPolicy": true,
+    "RestrictPublicBuckets": true
+  },
+  "gpu_instances": [
+    {
+      "id": "i-0ae7eb0abcb815af3",
+      "type": "g6.xlarge",
+      "state": "running",
+      "launch_time": "2026-11-24T10:16:20+00:00"
+    },
+    {
+      "id": "i-01180cf02d12e6e31",
+      "type": "g5.xlarge",
+      "state": "running",
+      "launch_time": "2026-11-24T15:32:58+00:00"
+    }
+  ],
+  "gpu_changes_by_this_release": {
+    "new_instances": 0,
+    "restarts": 0
+  }
+}

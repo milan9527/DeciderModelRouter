@@ -1,0 +1,198 @@
+{
+  "id": "7573cf13516dbe3560098af8",
+  "session_id": "a5966f3ddec50ead45725f77",
+  "scenario_id": "saas",
+  "title": "租户故障定位与幂等补偿",
+  "industry": "软件与云服务",
+  "prompt": "请用一段120字以内的中文总结你上一条回答，只保留主要结论和限制条件，不添加任何新事实，不调用工具。",
+  "status": "completed",
+  "created_at": 1795619901439,
+  "turn": 6,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "protocol_version": "native-stream-v1",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 16384,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "trimmed_turns": 0,
+  "context_messages": 6,
+  "context_bytes": 21472,
+  "max_model_calls": 6,
+  "updated_at": 1795619904791,
+  "runtime_session_id": "dmr-native-stream-v1-b046aa5b28b9902f000df2eb7a37d1107c6cc0743c0e9cabe6d2fdb1d3d3b9e1",
+  "answer": "## 跨区域幂等扣款方案总结\n\n**核心机制：** 通过PostgreSQL SERIALIZABLE隔离级别 + inbox状态机 + 幂等键(tenant:event_id:hash)实现至多一次扣款。线性化点在事务提交处，ledger是账务真源。退款可早于扣款，通过pending状态处理；网络分区导致的金额冲突需人工解决。\n\n**关键限制：** 单唯一索引无法保证外部支付幂等，需事务+状态机配合。跨区域强一致性在分区时无法同时保证可用性。故障注入测试和不停服迁移已设计但需严格执行。T2事件修复需先查询生产inbox表确认根因，再通过值班批准执行回滚。",
+  "finished_at": 1795619904775,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "b6e7cb2711a9c1a7361f9f85",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "complex",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-opus-4-5-20251101-v1:0",
+      "previous_configuration_id": "6422ec449838477670832830",
+      "model_changed": true,
+      "configuration_changed": true,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "6422ec449838477670832830",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 192.309,
+      "target_ms": 2457.742,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 240,
+        "totalTokens": 8315,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 8072,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 8072
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 8072,
+        "total_input_tokens": 8075,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "saas",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795619904715
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795619904729
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "b6e7cb2711a9c1a7361f9f85",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "complex",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-opus-4-5-20251101-v1:0",
+      "previous_configuration_id": "6422ec449838477670832830",
+      "model_changed": true,
+      "configuration_changed": true,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "6422ec449838477670832830",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 192.309,
+      "target_ms": 2457.742,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 240,
+        "totalTokens": 8315,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 8072,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 8072
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 8072,
+        "total_input_tokens": 8075,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795619904742
+    },
+    {
+      "type": "completed",
+      "answer": "## 跨区域幂等扣款方案总结\n\n**核心机制：** 通过PostgreSQL SERIALIZABLE隔离级别 + inbox状态机 + 幂等键(tenant:event_id:hash)实现至多一次扣款。线性化点在事务提交处，ledger是账务真源。退款可早于扣款，通过pending状态处理；网络分区导致的金额冲突需人工解决。\n\n**关键限制：** 单唯一索引无法保证外部支付幂等，需事务+状态机配合。跨区域强一致性在分区时无法同时保证可用性。故障注入测试和不停服迁移已设计但需严格执行。T2事件修复需先查询生产inbox表确认根因，再通过值班批准执行回滚。",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795619904775
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 1,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

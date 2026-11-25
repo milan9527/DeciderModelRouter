@@ -1,0 +1,74 @@
+{
+  "id": "e7a5e35e4b9b7f0435cd6769",
+  "session_id": "a5966f3ddec50ead45725f77",
+  "scenario_id": "saas",
+  "title": "租户故障定位与幂等补偿",
+  "industry": "软件与云服务",
+  "prompt": "针对刚才T2重复计费，设计可落地的跨区域幂等方案：PostgreSQL是账务真源，Kafka至少一次投递，消费者可能在扣款提交后、ACK前崩溃。两个区域在网络分区时都可接收请求，相同tenant+event可能携带冲突金额，退款事件可早于扣款，旧事件在30天后重放，租户迁移期间有双写。明确线性化点、事务边界、隔离级别、outbox/inbox状态机与恢复顺序。证明任何故障交错下至多扣款一次且不会遗漏合法退款；说明不能同时保证的性质、如何检测和人工解决冲突。提供核心伪代码、两条反例执行轨迹、故障注入测试矩阵和不停止服务的迁移回滚方案。不要声称单个唯一索引就能保证外部支付exactly once。",
+  "status": "error",
+  "created_at": 1795618553682,
+  "turn": 3,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 16384,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795618613961,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-b046aa5b28b9902f000df2eb7a37d1107c6cc0743c0e9cabe6d2fdb1d3d3b9e1",
+  "error": "Model Router调用未完成（HTTP 504），请查看网关步骤历史",
+  "finished_at": 1795618613940,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "61c05dca811a11ba788940f7",
+      "status": "started"
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "saas",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795618613905
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795618613923
+    },
+    {
+      "type": "error",
+      "message": "Model Router调用未完成（HTTP 504），请查看网关步骤历史",
+      "sequence": 3,
+      "recorded_at": 1795618613940
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

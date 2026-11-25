@@ -1,0 +1,181 @@
+{
+  "id": "b351935bf650a84306d67732",
+  "session_id": "4e6ddb623656c9676ff44acc",
+  "scenario_id": "manufacturing",
+  "title": "产线质量异常与批次追溯",
+  "industry": "制造业",
+  "prompt": "编写Python异常批次检测函数及测试，明确分母为零、缺失温度、重复批次如何处理。",
+  "status": "completed",
+  "created_at": 1795616949270,
+  "turn": 3,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 4096,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795616957149,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-229c4cab0594a6d8ef6bf300f516e3ddb0a921a86802b169a6559282c994d396",
+  "answer": "<thinking> 我需要编写一个Python函数来检测异常批次，并处理分母为零、缺失温度和重复批次的情况。首先，我需要定义函数的输入参数和输出结果。然后，我需要编写函数体，并处理各种异常情况。</thinking>\n\n以下是Python函数的代码：\n\n```python\ndef detect_abnormal_batches(batches, checks):\n    abnormal_batches = []\n    \n    for batch in batches:\n        batch_id = batch[\"batch\"]\n        produced = batch[\"produced\"]\n        defects = batch[\"defects\"]\n        supplier = batch[\"supplier\"]\n        line = batch[\"line\"]\n        \n        # 检查分母为零\n        if produced == 0:\n            continue\n        \n        # 计算不良率\n        defect_rate = defects / produced\n        \n        # 查找对应的温度\n        temperature = None\n        for check in checks:\n            if check[\"batch\"] == batch_id:\n                temperature = check[\"temperature\"]\n                break\n        \n        # 检查缺失温度\n        if temperature is None:\n            continue\n        \n        # 检查重复批次\n        if batch_id in [b[\"batch\"] for b in abnormal_batches]:\n            continue\n        \n        # 比较不良率与阈值\n        threshold = 0.03\n        if defect_rate > threshold:\n            abnormal_batches.append({\n                \"batch\": batch_id,\n                \"defect_rate\": defect_rate,\n                \"supplier\": supplier,\n                \"line\": line,\n                \"temperature\": temperature\n            })\n    \n    return abnormal_batches\n\n# 测试\nbatches = [\n    {\"batch\": \"B701\", \"line\": \"L1\", \"supplier\": \"S1\", \"produced\": 1200, \"defects\": 18},\n    {\"batch\": \"B702\", \"line\": \"L2\", \"supplier\": \"S1\", \"produced\": 800, \"defects\": 40},\n    {\"batch\": \"B703\", \"line\": \"L2\", \"supplier\": \"S2\", \"produced\": 1000, \"defects\": 12},\n    {\"batch\": \"B704\", \"line\": \"L1\", \"supplier\": \"S1\", \"produced\": 0, \"defects\": 5},\n    {\"batch\": \"B705\", \"line\": \"L2\", \"supplier\": \"S2\", \"produced\": 1000, \"defects\": 12},\n    {\"batch\": \"B706\", \"line\": \"L2\", \"supplier\": \"S2\", \"produced\": 1000, \"defects\": 12}\n]\n\nchecks = [\n    {\"batch\": \"B701\", \"temperature\": 180, \"sample\": 50, \"failed\": 1},\n    {\"batch\": \"B702\", \"temperature\": 196, \"sample\": 50, \"failed\": 5},\n    {\"batch\": \"B703\", \"temperature\": 181, \"sample\": 50, \"failed\": 0},\n    {\"batch\": \"B705\", \"temperature\": 181, \"sample\": 50, \"failed\": 0}\n]\n\nabnormal_batches = detect_abnormal_batches(batches, checks)\nprint(abnormal_batches)\n```\n\n这个函数检查异常批次，并处理分母为零、缺失温度和重复批次的情况。函数的输入参数为`batches`和`checks`，分别表示批次和检查记录。输出结果为一个包含异常批次的列表。\n\n在函数中，首先遍历每个批次，并检查分母为零的情况。如果分母为零，则跳过该批次。然后，计算不良率。查找对应的温度，如果缺失温度，则跳过该批次。检查重复批次，如果已经存在于异常批次列表中，则跳过该批次。最后，比较不良率与阈值，如果不良率超过阈值，则将该批次添加到异常批次列表中。\n\n在测试中，我创建了一些示例数据，并调用函数来检测异常批次。函数返回了一个包含异常批次的列表，其中包含批次ID、不良率、供应商、产线和温度信息。",
+  "finished_at": 1795616957132,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "92386016b2fd537320f1d947",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "other"
+      },
+      "model_id": "amazon.nova-lite-v1:0",
+      "configuration_id": "a36698ff80c0b7a80094a40b",
+      "previous_model_id": "amazon.nova-micro-v1:0",
+      "previous_configuration_id": "13043f5e2865142ea68b1f10",
+      "model_changed": true,
+      "configuration_changed": true,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "13043f5e2865142ea68b1f10",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 192.23,
+      "target_ms": 6928.772,
+      "usage": {
+        "inputTokens": 3773,
+        "outputTokens": 1111,
+        "totalTokens": 5401,
+        "cacheReadInputTokens": 517,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 517,
+        "write_tokens": 0,
+        "total_input_tokens": 4290,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "manufacturing",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795616957061
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795616957080
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "92386016b2fd537320f1d947",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "other"
+      },
+      "model_id": "amazon.nova-lite-v1:0",
+      "configuration_id": "a36698ff80c0b7a80094a40b",
+      "previous_model_id": "amazon.nova-micro-v1:0",
+      "previous_configuration_id": "13043f5e2865142ea68b1f10",
+      "model_changed": true,
+      "configuration_changed": true,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "13043f5e2865142ea68b1f10",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 192.23,
+      "target_ms": 6928.772,
+      "usage": {
+        "inputTokens": 3773,
+        "outputTokens": 1111,
+        "totalTokens": 5401,
+        "cacheReadInputTokens": 517,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 517,
+        "write_tokens": 0,
+        "total_input_tokens": 4290,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795616957095
+    },
+    {
+      "type": "completed",
+      "answer": "<thinking> 我需要编写一个Python函数来检测异常批次，并处理分母为零、缺失温度和重复批次的情况。首先，我需要定义函数的输入参数和输出结果。然后，我需要编写函数体，并处理各种异常情况。</thinking>\n\n以下是Python函数的代码：\n\n```python\ndef detect_abnormal_batches(batches, checks):\n    abnormal_batches = []\n    \n    for batch in batches:\n        batch_id = batch[\"batch\"]\n        produced = batch[\"produced\"]\n        defects = batch[\"defects\"]\n        supplier = batch[\"supplier\"]\n        line = batch[\"line\"]\n        \n        # 检查分母为零\n        if produced == 0:\n            continue\n        \n        # 计算不良率\n        defect_rate = defects / produced\n        \n        # 查找对应的温度\n        temperature = None\n        for check in checks:\n            if check[\"batch\"] == batch_id:\n                temperature = check[\"temperature\"]\n                break\n        \n        # 检查缺失温度\n        if temperature is None:\n            continue\n        \n        # 检查重复批次\n        if batch_id in [b[\"batch\"] for b in abnormal_batches]:\n            continue\n        \n        # 比较不良率与阈值\n        threshold = 0.03\n        if defect_rate > threshold:\n            abnormal_batches.append({\n                \"batch\": batch_id,\n                \"defect_rate\": defect_rate,\n                \"supplier\": supplier,\n                \"line\": line,\n                \"temperature\": temperature\n            })\n    \n    return abnormal_batches\n\n# 测试\nbatches = [\n    {\"batch\": \"B701\", \"line\": \"L1\", \"supplier\": \"S1\", \"produced\": 1200, \"defects\": 18},\n    {\"batch\": \"B702\", \"line\": \"L2\", \"supplier\": \"S1\", \"produced\": 800, \"defects\": 40},\n    {\"batch\": \"B703\", \"line\": \"L2\", \"supplier\": \"S2\", \"produced\": 1000, \"defects\": 12},\n    {\"batch\": \"B704\", \"line\": \"L1\", \"supplier\": \"S1\", \"produced\": 0, \"defects\": 5},\n    {\"batch\": \"B705\", \"line\": \"L2\", \"supplier\": \"S2\", \"produced\": 1000, \"defects\": 12},\n    {\"batch\": \"B706\", \"line\": \"L2\", \"supplier\": \"S2\", \"produced\": 1000, \"defects\": 12}\n]\n\nchecks = [\n    {\"batch\": \"B701\", \"temperature\": 180, \"sample\": 50, \"failed\": 1},\n    {\"batch\": \"B702\", \"temperature\": 196, \"sample\": 50, \"failed\": 5},\n    {\"batch\": \"B703\", \"temperature\": 181, \"sample\": 50, \"failed\": 0},\n    {\"batch\": \"B705\", \"temperature\": 181, \"sample\": 50, \"failed\": 0}\n]\n\nabnormal_batches = detect_abnormal_batches(batches, checks)\nprint(abnormal_batches)\n```\n\n这个函数检查异常批次，并处理分母为零、缺失温度和重复批次的情况。函数的输入参数为`batches`和`checks`，分别表示批次和检查记录。输出结果为一个包含异常批次的列表。\n\n在函数中，首先遍历每个批次，并检查分母为零的情况。如果分母为零，则跳过该批次。然后，计算不良率。查找对应的温度，如果缺失温度，则跳过该批次。检查重复批次，如果已经存在于异常批次列表中，则跳过该批次。最后，比较不良率与阈值，如果不良率超过阈值，则将该批次添加到异常批次列表中。\n\n在测试中，我创建了一些示例数据，并调用函数来检测异常批次。函数返回了一个包含异常批次的列表，其中包含批次ID、不良率、供应商、产线和温度信息。",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795616957132
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 1,
+    "retained_calls": 0,
+    "cache_read_tokens": 517
+  }
+}

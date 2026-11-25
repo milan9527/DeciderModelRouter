@@ -1,0 +1,181 @@
+{
+  "id": "7a385bd850c464cc49805be8",
+  "session_id": "ca428015292eccd05f06f1c3",
+  "scenario_id": "energy",
+  "title": "需量电费与移峰方案",
+  "industry": "能源与园区",
+  "prompt": "编写分时电价与移峰测算函数，测试零可移峰、负电量、损耗超过收益和小数精度。",
+  "status": "completed",
+  "created_at": 1795617784801,
+  "turn": 3,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617804363,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-7f22b806a644f77c6fc76829a37fa822f3194fa6f3d1fa4ee3b10fbece7c892d",
+  "answer": "我为您编写分时电价与移峰测算函数，涵盖边界条件测试。\n\n```python\nfrom decimal import Decimal, ROUND_HALF_UP\nfrom typing import Dict, List, Tuple, Optional\n\nclass PeakShiftingCalculator:\n    \"\"\"\n    分时电价与移峰测算类\n    - 支持多时段电价\n    - 计算移峰节省与额外耗电\n    - 精确小数运算（保留2位）\n    \"\"\"\n    \n    def __init__(self, precision: int = 2):\n        \"\"\"\n        初始化计算器\n        \n        Args:\n            precision: 小数位数，默认2位（人民币元）\n        \"\"\"\n        self.precision = precision\n        self.test_results = []\n    \n    def calculate_period_cost(self, kwh: float, price: float) -> Decimal:\n        \"\"\"\n        计算单个时段电费\n        \n        Args:\n            kwh: 电量(kWh)\n            price: 电价(元/kWh)\n        \n        Returns:\n            Decimal: 电费(元)，精确到小数位数\n        \"\"\"\n        result = Decimal(str(kwh)) * Decimal(str(price))\n        return result.quantize(\n            Decimal(10) ** -self.precision,\n            rounding=ROUND_HALF_UP\n        )\n    \n    def calculate_total_cost(self, loads: List[Dict]) -> Decimal:\n        \"\"\"\n        计算总电费\n        \n        Args:\n            loads: [{\"period\": str, \"kwh\": float, \"price\": float}, ...]\n        \n        Returns:\n            Decimal: 总电费(元)\n        \"\"\"\n        total = Decimal('0')\n        for load in loads:\n            cost = self.calculate_period_cost(load['kwh'], load['price'])\n            total += cost\n        return total\n    \n    def validate_shift_params(self, \n                              shiftable_kwh: float,\n                              loss_rate: float,\n                              from_price: float,\n                              to_price: float) -> Tuple[bool, str]:\n        \"\"\"\n        验证移峰参数合理性\n        \n        Args:\n            shiftable_kwh: 可移峰电量(kWh)\n            loss_rate: 损耗率(0-1)\n            from_price: 源时段电价(元/kWh)\n            to_price: 目标时段电价(元/kWh)\n        \n        Returns:\n            Tuple[bool, str]: (是否有效, 错误信息)\n        \"\"\"\n        errors = []\n        \n        # 检查零可移峰\n        if shiftable_kwh <= 0:\n            errors.append(f\"[零可移峰] 可移峰电量={shiftable_kwh}kWh ≤ 0，无移峰空间\")\n        \n        # 检查负电量\n        if shiftable_kwh < 0:\n            errors.append(f\"[负电量] 可移峰电量={shiftable_kwh}kWh < 0，不合法\")\n        \n        # 检查损耗率\n        if not (0 <= loss_rate < 1):\n            errors.append(f\"[损耗率越界] loss_rate={loss_rate}，应在[0, 1)\")\n        \n        # 检查电价\n        if from_price <= 0 or to_price < 0:\n            errors.append(f\"[电价无效] from_price={from_price}, to_price={to_price}\")\n        \n        # 检查移峰是否从低价到高价（无意义）\n        if from_price <= to_price and shiftable_kwh > 0:\n            errors.append(\n                f\"[无收益移峰] 源价格({from_price}元/kWh) ≤ 目标价格({to_price}元/kWh)，\"\n                f\"移峰无经济效益\"\n            )\n        \n        return (len(errors) == 0, \" | \".join(errors) if errors else \"\")\n    \n    def calculate_shifting(self,\n                          shiftable_kwh: float,\n                          loss_rate: float,\n                          from_period: Dict,\n                          to_period: Dict) -> Dict:\n        \"\"\"\n        计算移峰效果\n        \n        Args:\n            shiftable_kwh: 可移峰电量(kWh)\n            loss_rate: 损耗率(0-1)\n            from_period: {\"kwh\": float, \"price\": float}（源时段）\n            to_period: {\"kwh\": float, \"price\": float}（目标时段）\n        \n        Returns:\n            Dict: 移峰详细结果\n        \"\"\"\n        # 验证参数\n        is_valid, error_msg = self.validate_shift_params(\n            shiftable_kwh,\n            loss_rate,\n            from_period['price'],\n            to_period['price']\n        )\n        \n        if not is_valid:\n            return {\n                'status': 'invalid',\n                'error': error_msg,\n                'net_saving': Decimal('0'),\n                'breakdown': {}\n            }\n        \n        # 移峰前成本\n        from_cost_before = self.calculate_period_cost(\n            from_period['kwh'],\n            from_period['price']\n        )\n        to_cost_before = self.calculate_period_cost(\n            to_period['kwh'],\n            to_period['price']\n        )\n        total_before = from_cost_before + to_cost_before\n        \n        # 移峰后计算\n        actual_kwh = Decimal(str(shiftable_kwh)) * (Decimal('1') - Decimal(str(loss_rate)))\n        loss_kwh = Decimal(str(shiftable_kwh)) - actual_kwh\n        \n        # 移峰后成本\n        from_kwh_after = Decimal(str(from_period['kwh'])) - Decimal(str(shiftable_kwh))\n        to_kwh_after = Decimal(str(to_period['kwh'])) + actual_kwh\n        \n        from_cost_after = self.calculate_period_cost(\n            float(from_kwh_after),\n            from_period['price']\n        )\n        to_cost_after = self.calculate_period_cost(\n            float(to_kwh_after),\n            to_period['price']\n        )\n        total_after = from_cost_after + to_cost_after\n        \n        # 损耗成本\n        loss_cost = self.calculate_period_cost(\n            float(loss_kwh),\n            to_period['price']\n        )\n        \n        # 净节省\n        gross_saving = from_cost_before - from_cost_after + to_cost_before - to_cost_after\n        net_saving = gross_saving - loss_cost\n        \n        # 检查损耗超过收益\n        if loss_cost > gross_saving:\n            status = 'loss_exceeds_benefit'\n            status_msg = f\"[损耗超收益] 损耗成本({loss_cost}元) > 毛节省({gross_saving}元)\"\n        else:\n            status = 'success'\n            status_msg = \"移峰有效\"\n        \n        result = {\n            'status': status,\n            'message': status_msg,\n            'breakdown': {\n                '移峰前': {\n                    '源时段成本': float(from_cost_before),\n                    '目标时段成本': float(to_cost_before),\n                    '小计': float(total_before)\n                },\n                '移峰后': {\n                    '源时段电量': float(from_kwh_after),\n                    '源时段成本': float(from_cost_after),\n                    '目标时段电量(含损耗)': float(to_kwh_after),\n                    '目标时段成本': float(to_cost_after),\n                    '小计': float(total_after)\n                },\n                '移峰影响': {\n                    '可移峰电量': shiftable_kwh,\n                    '损耗率': loss_rate,\n                    '损耗电量': float(loss_kwh),\n                    '实际到达电量': float(actual_kwh),\n                    '损耗成本': float(loss_cost)\n                },\n                '经济效果': {\n                    '毛节省': float(gross_saving),\n                    '损耗成本': float(loss_cost),\n                    '净节省': float(net_saving),\n                    '节省率': f\"{(net_saving/total_before*100):.2f}%\" if total_before > 0 else \"N/A\"\n                }\n            },\n            'net_saving': net_saving\n        }\n        \n        return result\n    \n    def run_test_suite(self):\n        \"\"\"运行完整测试套件\"\"\"\n        \n        print(\"=\" * 80)\n        print(\"分时电价与移峰测算函数 - 测试套件\")\n        print(\"=\" * 80)\n        \n        # 测试用例1：正常移峰（基准案例）\n        print(\"\\n【测试1】正常移峰 - 从高峰(1.2元)移至低谷(0.3元)\")\n        print(\"-\" * 80)\n        result1 = self.calculate_shifting(\n            shiftable_kwh=300,\n            loss_rate=0.05,\n            from_period={'kwh': 1800, 'price': 1.2},\n            to_period={'kwh': 1000, 'price': 0.3}\n        )\n        self._print_result(result1)\n        self.test_results.append(('正常移峰', result1))\n        \n        # 测试用例2：零可移峰\n        print(\"\\n【测试2】零可移峰 - 冷却工序无可移峰容量\")\n        print(\"-\" * 80)\n        result2 = self.calculate_shifting(\n            shiftable_kwh=0,\n            loss_rate=0.05,\n            from_period={'kwh': 1800, 'price': 1.2},\n            to_period={'kwh': 1000, 'price': 0.3}\n        )\n        self._print_result(result2)\n        self.test_results.append(('零可移峰', result2))\n        \n        # 测试用例3：负电量\n        print(\"\\n【测试3】负电量 - 可移峰电量为负数（非法输入）\")\n        print(\"-\" * 80)\n        result3 = self.calculate_shifting(\n            shiftable_kwh=-100,\n            loss_rate=0.05,\n            from_period={'kwh': 1800, 'price': 1.2},\n            to_period={'kwh': 1000, 'price': 0.3}\n        )\n        self._print_result(result3)\n        self.test_results.append(('负电量', result3))\n        \n        # 测试用例4：损耗超过收益\n        print(\"\\n【测试4】损耗超过收益 - 高损耗率导致无收益\")\n        print(\"-\" * 80)\n        result4 = self.calculate_shifting(\n            shiftable_kwh=300,\n            loss_rate=0.95,  # 95%损耗率\n            from_period={'kwh': 1800, 'price': 1.2},\n            to_period={'kwh': 1000, 'price': 0.3}\n        )\n        self._print_result(result4)\n        self.test_results.append(('损耗超收益', result4))\n        \n        # 测试用例5：小数精度 - 高精度需求\n        print(\"\\n【测试5】小数精度 - 验证舍入精度（保留2位）\")\n        print(\"-\" * 80)\n        result5 = self.calculate_shifting(\n            shiftable_kwh=333.333,  # 非整数\n            loss_rate=0.0333,  # 3.33%损耗\n            from_period={'kwh': 1800, 'price': 1.235},  # 非整数价格\n            to_period={'kwh': 1000, 'price': 0.287}\n        )\n        self._print_result(result5)\n        self.test_results.append(('小数精度', result5))\n        \n        # 测试用例6：无收益移峰（低价→高价）\n        print(\"\\n【测试6】无收益移峰 - 从低谷(0.3元)移至高峰(1.2元)\")\n        print(\"-\" * 80)\n        result6 = self.calculate_shifting(\n            shiftable_kwh=100,\n            loss_rate=0.05,\n            from_period={'kwh': 1000, 'price': 0.3},  # 源：低价\n            to_period={'kwh': 1800, 'price': 1.2}     # 目标：高价\n        )\n        self._print_result(result6)\n        self.test_results.append(('无收益移峰', result6))\n        \n        # 测试用例7：极限精度 - 长小数\n        print(\"\\n【测试7】极限精度 - 长小数处理\")\n        print(\"-\" * 80)\n        result7 = self.calculate_shifting(\n            shiftable_kwh=100.123456,\n            loss_rate=0.123456,\n            from_period={'kwh': 1800.5, 'price': 1.23456},\n            to_period={'kwh': 1000.7, 'price': 0.3456}\n        )\n        self._print_result(result7)\n        self.test_results.append(('极限精度', result7))\n        \n        # 测试用例8：边界条件 - 零损耗\n        print(\"\\n【测试8】边界条件 - 零损耗率\")\n        print(\"-\" * 80)\n        result8 = self.calculate_shifting(\n            shiftable_kwh=300,\n            loss_rate=0.0,  # 完全无损\n            from_period={'kwh': 1800, 'price': 1.2},\n            to_period={'kwh': 1000, 'price': 0.3}\n        )\n        self._print_result(result8)\n        self.test_results.append(('零损耗', result8))\n        \n        self._print_summary()\n    \n    def _print_result(self, result: Dict):\n        \"\"\"打印单个测试结果\"\"\"\n        print(f\"状态: {result['status']}\")\n        print(f\"消息: {result['message']}\")\n        \n        if result['status'] == 'invalid':\n            print(f\"错误详情: {result['error']}\")\n        else:\n            bd = result['breakdown']\n            print(f\"\\n移峰前:\")\n            print(f\"  源时段: {bd['移峰前']['源时段成本']:.2f}元\")\n            print(f\"  目标时段: {bd['移峰前']['目标时段成本']:.2f}元\")\n            print(f\"  小计: {bd['移峰前']['小计']:.2f}元\")\n            \n            print(f\"\\n移峰后:\")\n            print(f\"  源时段: 电量{bd['移峰后']['源时段电量']:.2f}kWh, 成本{bd['移峰后']['源时段成本']:.2f}元\")\n            print(f\"  目标时段: 电量{bd['移峰后']['目标时段电量(含损耗)']:.2f}kWh, 成本{bd['移峰后']['目标时段成本']:.2f}元\")\n            print(f\"  小计: {bd['移峰后']['小计']:.2f}元\")\n            \n            print(f\"\\n移峰影响:\")\n            print(f\"  可移峰电量: {bd['移峰影响']['可移峰电量']}kWh\")\n            print(f\"  损耗率: {bd['移峰影响']['损耗率']*100:.2f}%\")\n            print(f\"  损耗电量: {bd['移峰影响']['损耗电量']:.2f}kWh\")\n            print(f\"  实际到达: {bd['移峰影响']['实际到达电量']:.2f}kWh\")\n            print(f\"  损耗成本: {bd['移峰影响']['损耗成本']:.2f}元\")\n            \n            print(f\"\\n经济效果:\")\n            print(f\"  毛节省: {bd['经济效果']['毛节省']:.2f}元\")\n            print(f\"  损耗成本: {bd['经济效果']['损耗成本']:.2f}元\")\n            print(f\"  净节省: {bd['经济效果']['净节省']:.2f}元\")\n            print(f\"  节省率: {bd['经济效果']['节省率']}\")\n    \n    def _print_summary(self):\n        \"\"\"打印测试总结\"\"\"\n        print(\"\\n\" + \"=\" * 80)\n        print(\"测试总结\")\n        print(\"=\" * 80)\n        \n        success_count = sum(1 for _, r in self.test_results if r['status'] != 'invalid')\n        invalid_count = sum(1 for _, r in self.test_results if r['status'] == 'invalid')\n        loss_exceed_count = sum(1 for _, r in self.test_results if r['status'] == 'loss_exceeds_benefit')\n        \n        print(f\"\\n总测试数: {len(self.test_results)}\")\n        print(f\"有效移峰: {success_count}个\")\n        print(f\"无效输入: {invalid_count}个\")\n        print(f\"损耗超收益: {loss_exceed_count}个\")\n        \n        print(f\"\\n各测试项:\")\n        for name, result in self.test_results:\n            status_icon = \"✓\" if result['status'] != 'invalid' else \"✗\"\n            net_saving = result['net_saving']\n            print(f\"  {status_icon} {name:20s} | 净节省: {float(net_saving):8.2f}元 | 状态: {result['status']}\")\n\n\nif __name__ == \"__main__\":\n    # 创建计算器并运行测试\n    calc = PeakShiftingCalculator(precision=2)\n    calc.run_test_suite()\n```\n\n---\n\n## 测试用例说明\n\n| 测试 | 场景 | 验证内容 |\n|-----|------|--------|\n| **1. 正常移峰** | 300kWh从1.2元→0.3元，5%损耗 | 基准案例，对应实际数据 |\n| **2. 零可移峰** | shiftable_kwh=0 | 无移峰空间的识别 |\n| **3. 负电量** | shiftable_kwh=-100 | 非法负数的拦截 |\n| **4. 损耗超收益** | 95%损耗率 | 损耗成本 > 毛节省的检测 |\n| **5. 小数精度** | 333.333 kWh, 1.235 元/kWh | 保留2位精度的正确舍入 |\n| **6. 无收益移峰** | 从0.3→1.2元（反向） | 低价→高价的无意义检测 |\n| **7. 极限精度** | 长小数串 | Decimal精度边界 |\n| **8. 零损耗** | loss_rate=0.0 | 完全无损的理想情况 |\n\n---\n\n## 核心设计特点\n\n1. **Decimal精确运算**：避免浮点舍入错误，确保人民币计算精度\n2. **多层参数验证**：捕获零可移峰、负电量、损耗率越界\n3. **损耗超收益判断**：自动识别损耗成本 > 毛节省的低效案例\n4. **详细拆解**：移峰前后、损耗影响、经济效果分层输出\n5. **可复核性**：每步计算可追溯，便于审计\n\n---\n\n## 使用建议\n\n```python\n# 实际调用示例\ncalc = PeakShiftingCalculator(precision=2)\n\n# 单次计算\nresult = calc.calculate_shifting(\n    shiftable_kwh=300,\n    loss_rate=0.05,\n    from_period={'kwh': 1800, 'price': 1.2},\n    to_period={'kwh': 1000, 'price': 0.3}\n)\n\nprint(f\"净节省: {result['net_saving']}元\")\n# 输出: 净节省: 270.00元\n```\n\n此代码**可起草但不能执行**，需要在您的Python环境中运行验证。",
+  "finished_at": 1795617804342,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "a5abd537587f51fa44471e46",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 153.405,
+      "target_ms": 18557.733,
+      "usage": {
+        "inputTokens": 3564,
+        "outputTokens": 5634,
+        "totalTokens": 9198,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 3564,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.031734",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "energy",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617804257
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617804280
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "a5abd537587f51fa44471e46",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 153.405,
+      "target_ms": 18557.733,
+      "usage": {
+        "inputTokens": 3564,
+        "outputTokens": 5634,
+        "totalTokens": 9198,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 3564,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.031734",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795617804299
+    },
+    {
+      "type": "completed",
+      "answer": "我为您编写分时电价与移峰测算函数，涵盖边界条件测试。\n\n```python\nfrom decimal import Decimal, ROUND_HALF_UP\nfrom typing import Dict, List, Tuple, Optional\n\nclass PeakShiftingCalculator:\n    \"\"\"\n    分时电价与移峰测算类\n    - 支持多时段电价\n    - 计算移峰节省与额外耗电\n    - 精确小数运算（保留2位）\n    \"\"\"\n    \n    def __init__(self, precision: int = 2):\n        \"\"\"\n        初始化计算器\n        \n        Args:\n            precision: 小数位数，默认2位（人民币元）\n        \"\"\"\n        self.precision = precision\n        self.test_results = []\n    \n    def calculate_period_cost(self, kwh: float, price: float) -> Decimal:\n        \"\"\"\n        计算单个时段电费\n        \n        Args:\n            kwh: 电量(kWh)\n            price: 电价(元/kWh)\n        \n        Returns:\n            Decimal: 电费(元)，精确到小数位数\n        \"\"\"\n        result = Decimal(str(kwh)) * Decimal(str(price))\n        return result.quantize(\n            Decimal(10) ** -self.precision,\n            rounding=ROUND_HALF_UP\n        )\n    \n    def calculate_total_cost(self, loads: List[Dict]) -> Decimal:\n        \"\"\"\n        计算总电费\n        \n        Args:\n            loads: [{\"period\": str, \"kwh\": float, \"price\": float}, ...]\n        \n        Returns:\n            Decimal: 总电费(元)\n        \"\"\"\n        total = Decimal('0')\n        for load in loads:\n            cost = self.calculate_period_cost(load['kwh'], load['price'])\n            total += cost\n        return total\n    \n    def validate_shift_params(self, \n                              shiftable_kwh: float,\n                              loss_rate: float,\n                              from_price: float,\n                              to_price: float) -> Tuple[bool, str]:\n        \"\"\"\n        验证移峰参数合理性\n        \n        Args:\n            shiftable_kwh: 可移峰电量(kWh)\n            loss_rate: 损耗率(0-1)\n            from_price: 源时段电价(元/kWh)\n            to_price: 目标时段电价(元/kWh)\n        \n        Returns:\n            Tuple[bool, str]: (是否有效, 错误信息)\n        \"\"\"\n        errors = []\n        \n        # 检查零可移峰\n        if shiftable_kwh <= 0:\n            errors.append(f\"[零可移峰] 可移峰电量={shiftable_kwh}kWh ≤ 0，无移峰空间\")\n        \n        # 检查负电量\n        if shiftable_kwh < 0:\n            errors.append(f\"[负电量] 可移峰电量={shiftable_kwh}kWh < 0，不合法\")\n        \n        # 检查损耗率\n        if not (0 <= loss_rate < 1):\n            errors.append(f\"[损耗率越界] loss_rate={loss_rate}，应在[0, 1)\")\n        \n        # 检查电价\n        if from_price <= 0 or to_price < 0:\n            errors.append(f\"[电价无效] from_price={from_price}, to_price={to_price}\")\n        \n        # 检查移峰是否从低价到高价（无意义）\n        if from_price <= to_price and shiftable_kwh > 0:\n            errors.append(\n                f\"[无收益移峰] 源价格({from_price}元/kWh) ≤ 目标价格({to_price}元/kWh)，\"\n                f\"移峰无经济效益\"\n            )\n        \n        return (len(errors) == 0, \" | \".join(errors) if errors else \"\")\n    \n    def calculate_shifting(self,\n                          shiftable_kwh: float,\n                          loss_rate: float,\n                          from_period: Dict,\n                          to_period: Dict) -> Dict:\n        \"\"\"\n        计算移峰效果\n        \n        Args:\n            shiftable_kwh: 可移峰电量(kWh)\n            loss_rate: 损耗率(0-1)\n            from_period: {\"kwh\": float, \"price\": float}（源时段）\n            to_period: {\"kwh\": float, \"price\": float}（目标时段）\n        \n        Returns:\n            Dict: 移峰详细结果\n        \"\"\"\n        # 验证参数\n        is_valid, error_msg = self.validate_shift_params(\n            shiftable_kwh,\n            loss_rate,\n            from_period['price'],\n            to_period['price']\n        )\n        \n        if not is_valid:\n            return {\n                'status': 'invalid',\n                'error': error_msg,\n                'net_saving': Decimal('0'),\n                'breakdown': {}\n            }\n        \n        # 移峰前成本\n        from_cost_before = self.calculate_period_cost(\n            from_period['kwh'],\n            from_period['price']\n        )\n        to_cost_before = self.calculate_period_cost(\n            to_period['kwh'],\n            to_period['price']\n        )\n        total_before = from_cost_before + to_cost_before\n        \n        # 移峰后计算\n        actual_kwh = Decimal(str(shiftable_kwh)) * (Decimal('1') - Decimal(str(loss_rate)))\n        loss_kwh = Decimal(str(shiftable_kwh)) - actual_kwh\n        \n        # 移峰后成本\n        from_kwh_after = Decimal(str(from_period['kwh'])) - Decimal(str(shiftable_kwh))\n        to_kwh_after = Decimal(str(to_period['kwh'])) + actual_kwh\n        \n        from_cost_after = self.calculate_period_cost(\n            float(from_kwh_after),\n            from_period['price']\n        )\n        to_cost_after = self.calculate_period_cost(\n            float(to_kwh_after),\n            to_period['price']\n        )\n        total_after = from_cost_after + to_cost_after\n        \n        # 损耗成本\n        loss_cost = self.calculate_period_cost(\n            float(loss_kwh),\n            to_period['price']\n        )\n        \n        # 净节省\n        gross_saving = from_cost_before - from_cost_after + to_cost_before - to_cost_after\n        net_saving = gross_saving - loss_cost\n        \n        # 检查损耗超过收益\n        if loss_cost > gross_saving:\n            status = 'loss_exceeds_benefit'\n            status_msg = f\"[损耗超收益] 损耗成本({loss_cost}元) > 毛节省({gross_saving}元)\"\n        else:\n            status = 'success'\n            status_msg = \"移峰有效\"\n        \n        result = {\n            'status': status,\n            'message': status_msg,\n            'breakdown': {\n                '移峰前': {\n                    '源时段成本': float(from_cost_before),\n                    '目标时段成本': float(to_cost_before),\n                    '小计': float(total_before)\n                },\n                '移峰后': {\n                    '源时段电量': float(from_kwh_after),\n                    '源时段成本': float(from_cost_after),\n                    '目标时段电量(含损耗)': float(to_kwh_after),\n                    '目标时段成本': float(to_cost_after),\n                    '小计': float(total_after)\n                },\n                '移峰影响': {\n                    '可移峰电量': shiftable_kwh,\n                    '损耗率': loss_rate,\n                    '损耗电量': float(loss_kwh),\n                    '实际到达电量': float(actual_kwh),\n                    '损耗成本': float(loss_cost)\n                },\n                '经济效果': {\n                    '毛节省': float(gross_saving),\n                    '损耗成本': float(loss_cost),\n                    '净节省': float(net_saving),\n                    '节省率': f\"{(net_saving/total_before*100):.2f}%\" if total_before > 0 else \"N/A\"\n                }\n            },\n            'net_saving': net_saving\n        }\n        \n        return result\n    \n    def run_test_suite(self):\n        \"\"\"运行完整测试套件\"\"\"\n        \n        print(\"=\" * 80)\n        print(\"分时电价与移峰测算函数 - 测试套件\")\n        print(\"=\" * 80)\n        \n        # 测试用例1：正常移峰（基准案例）\n        print(\"\\n【测试1】正常移峰 - 从高峰(1.2元)移至低谷(0.3元)\")\n        print(\"-\" * 80)\n        result1 = self.calculate_shifting(\n            shiftable_kwh=300,\n            loss_rate=0.05,\n            from_period={'kwh': 1800, 'price': 1.2},\n            to_period={'kwh': 1000, 'price': 0.3}\n        )\n        self._print_result(result1)\n        self.test_results.append(('正常移峰', result1))\n        \n        # 测试用例2：零可移峰\n        print(\"\\n【测试2】零可移峰 - 冷却工序无可移峰容量\")\n        print(\"-\" * 80)\n        result2 = self.calculate_shifting(\n            shiftable_kwh=0,\n            loss_rate=0.05,\n            from_period={'kwh': 1800, 'price': 1.2},\n            to_period={'kwh': 1000, 'price': 0.3}\n        )\n        self._print_result(result2)\n        self.test_results.append(('零可移峰', result2))\n        \n        # 测试用例3：负电量\n        print(\"\\n【测试3】负电量 - 可移峰电量为负数（非法输入）\")\n        print(\"-\" * 80)\n        result3 = self.calculate_shifting(\n            shiftable_kwh=-100,\n            loss_rate=0.05,\n            from_period={'kwh': 1800, 'price': 1.2},\n            to_period={'kwh': 1000, 'price': 0.3}\n        )\n        self._print_result(result3)\n        self.test_results.append(('负电量', result3))\n        \n        # 测试用例4：损耗超过收益\n        print(\"\\n【测试4】损耗超过收益 - 高损耗率导致无收益\")\n        print(\"-\" * 80)\n        result4 = self.calculate_shifting(\n            shiftable_kwh=300,\n            loss_rate=0.95,  # 95%损耗率\n            from_period={'kwh': 1800, 'price': 1.2},\n            to_period={'kwh': 1000, 'price': 0.3}\n        )\n        self._print_result(result4)\n        self.test_results.append(('损耗超收益', result4))\n        \n        # 测试用例5：小数精度 - 高精度需求\n        print(\"\\n【测试5】小数精度 - 验证舍入精度（保留2位）\")\n        print(\"-\" * 80)\n        result5 = self.calculate_shifting(\n            shiftable_kwh=333.333,  # 非整数\n            loss_rate=0.0333,  # 3.33%损耗\n            from_period={'kwh': 1800, 'price': 1.235},  # 非整数价格\n            to_period={'kwh': 1000, 'price': 0.287}\n        )\n        self._print_result(result5)\n        self.test_results.append(('小数精度', result5))\n        \n        # 测试用例6：无收益移峰（低价→高价）\n        print(\"\\n【测试6】无收益移峰 - 从低谷(0.3元)移至高峰(1.2元)\")\n        print(\"-\" * 80)\n        result6 = self.calculate_shifting(\n            shiftable_kwh=100,\n            loss_rate=0.05,\n            from_period={'kwh': 1000, 'price': 0.3},  # 源：低价\n            to_period={'kwh': 1800, 'price': 1.2}     # 目标：高价\n        )\n        self._print_result(result6)\n        self.test_results.append(('无收益移峰', result6))\n        \n        # 测试用例7：极限精度 - 长小数\n        print(\"\\n【测试7】极限精度 - 长小数处理\")\n        print(\"-\" * 80)\n        result7 = self.calculate_shifting(\n            shiftable_kwh=100.123456,\n            loss_rate=0.123456,\n            from_period={'kwh': 1800.5, 'price': 1.23456},\n            to_period={'kwh': 1000.7, 'price': 0.3456}\n        )\n        self._print_result(result7)\n        self.test_results.append(('极限精度', result7))\n        \n        # 测试用例8：边界条件 - 零损耗\n        print(\"\\n【测试8】边界条件 - 零损耗率\")\n        print(\"-\" * 80)\n        result8 = self.calculate_shifting(\n            shiftable_kwh=300,\n            loss_rate=0.0,  # 完全无损\n            from_period={'kwh': 1800, 'price': 1.2},\n            to_period={'kwh': 1000, 'price': 0.3}\n        )\n        self._print_result(result8)\n        self.test_results.append(('零损耗', result8))\n        \n        self._print_summary()\n    \n    def _print_result(self, result: Dict):\n        \"\"\"打印单个测试结果\"\"\"\n        print(f\"状态: {result['status']}\")\n        print(f\"消息: {result['message']}\")\n        \n        if result['status'] == 'invalid':\n            print(f\"错误详情: {result['error']}\")\n        else:\n            bd = result['breakdown']\n            print(f\"\\n移峰前:\")\n            print(f\"  源时段: {bd['移峰前']['源时段成本']:.2f}元\")\n            print(f\"  目标时段: {bd['移峰前']['目标时段成本']:.2f}元\")\n            print(f\"  小计: {bd['移峰前']['小计']:.2f}元\")\n            \n            print(f\"\\n移峰后:\")\n            print(f\"  源时段: 电量{bd['移峰后']['源时段电量']:.2f}kWh, 成本{bd['移峰后']['源时段成本']:.2f}元\")\n            print(f\"  目标时段: 电量{bd['移峰后']['目标时段电量(含损耗)']:.2f}kWh, 成本{bd['移峰后']['目标时段成本']:.2f}元\")\n            print(f\"  小计: {bd['移峰后']['小计']:.2f}元\")\n            \n            print(f\"\\n移峰影响:\")\n            print(f\"  可移峰电量: {bd['移峰影响']['可移峰电量']}kWh\")\n            print(f\"  损耗率: {bd['移峰影响']['损耗率']*100:.2f}%\")\n            print(f\"  损耗电量: {bd['移峰影响']['损耗电量']:.2f}kWh\")\n            print(f\"  实际到达: {bd['移峰影响']['实际到达电量']:.2f}kWh\")\n            print(f\"  损耗成本: {bd['移峰影响']['损耗成本']:.2f}元\")\n            \n            print(f\"\\n经济效果:\")\n            print(f\"  毛节省: {bd['经济效果']['毛节省']:.2f}元\")\n            print(f\"  损耗成本: {bd['经济效果']['损耗成本']:.2f}元\")\n            print(f\"  净节省: {bd['经济效果']['净节省']:.2f}元\")\n            print(f\"  节省率: {bd['经济效果']['节省率']}\")\n    \n    def _print_summary(self):\n        \"\"\"打印测试总结\"\"\"\n        print(\"\\n\" + \"=\" * 80)\n        print(\"测试总结\")\n        print(\"=\" * 80)\n        \n        success_count = sum(1 for _, r in self.test_results if r['status'] != 'invalid')\n        invalid_count = sum(1 for _, r in self.test_results if r['status'] == 'invalid')\n        loss_exceed_count = sum(1 for _, r in self.test_results if r['status'] == 'loss_exceeds_benefit')\n        \n        print(f\"\\n总测试数: {len(self.test_results)}\")\n        print(f\"有效移峰: {success_count}个\")\n        print(f\"无效输入: {invalid_count}个\")\n        print(f\"损耗超收益: {loss_exceed_count}个\")\n        \n        print(f\"\\n各测试项:\")\n        for name, result in self.test_results:\n            status_icon = \"✓\" if result['status'] != 'invalid' else \"✗\"\n            net_saving = result['net_saving']\n            print(f\"  {status_icon} {name:20s} | 净节省: {float(net_saving):8.2f}元 | 状态: {result['status']}\")\n\n\nif __name__ == \"__main__\":\n    # 创建计算器并运行测试\n    calc = PeakShiftingCalculator(precision=2)\n    calc.run_test_suite()\n```\n\n---\n\n## 测试用例说明\n\n| 测试 | 场景 | 验证内容 |\n|-----|------|--------|\n| **1. 正常移峰** | 300kWh从1.2元→0.3元，5%损耗 | 基准案例，对应实际数据 |\n| **2. 零可移峰** | shiftable_kwh=0 | 无移峰空间的识别 |\n| **3. 负电量** | shiftable_kwh=-100 | 非法负数的拦截 |\n| **4. 损耗超收益** | 95%损耗率 | 损耗成本 > 毛节省的检测 |\n| **5. 小数精度** | 333.333 kWh, 1.235 元/kWh | 保留2位精度的正确舍入 |\n| **6. 无收益移峰** | 从0.3→1.2元（反向） | 低价→高价的无意义检测 |\n| **7. 极限精度** | 长小数串 | Decimal精度边界 |\n| **8. 零损耗** | loss_rate=0.0 | 完全无损的理想情况 |\n\n---\n\n## 核心设计特点\n\n1. **Decimal精确运算**：避免浮点舍入错误，确保人民币计算精度\n2. **多层参数验证**：捕获零可移峰、负电量、损耗率越界\n3. **损耗超收益判断**：自动识别损耗成本 > 毛节省的低效案例\n4. **详细拆解**：移峰前后、损耗影响、经济效果分层输出\n5. **可复核性**：每步计算可追溯，便于审计\n\n---\n\n## 使用建议\n\n```python\n# 实际调用示例\ncalc = PeakShiftingCalculator(precision=2)\n\n# 单次计算\nresult = calc.calculate_shifting(\n    shiftable_kwh=300,\n    loss_rate=0.05,\n    from_period={'kwh': 1800, 'price': 1.2},\n    to_period={'kwh': 1000, 'price': 0.3}\n)\n\nprint(f\"净节省: {result['net_saving']}元\")\n# 输出: 净节省: 270.00元\n```\n\n此代码**可起草但不能执行**，需要在您的Python环境中运行验证。",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795617804342
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 1,
+    "cache_read_tokens": 0
+  }
+}

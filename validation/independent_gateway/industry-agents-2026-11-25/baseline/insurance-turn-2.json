@@ -1,0 +1,319 @@
+{
+  "id": "25d468f4556a9e0aa4b3fb21",
+  "session_id": "60f9c6eac12a8b32226747a4",
+  "scenario_id": "insurance",
+  "title": "理赔材料核对与免赔额计算",
+  "industry": "保险",
+  "prompt": "计算现有材料下与补齐I22后两种赔付估算，逐步解释免赔额、共同承担比例和总限额的应用顺序。",
+  "status": "completed",
+  "created_at": 1795616999129,
+  "turn": 2,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 4096,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617004020,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-ec3687bb75b37546c9e2164137b3224757a5d8f627fe0995d1a43c552cf25e5b",
+  "answer": "根据保单规则和现有材料，逐步解释免赔额、共同承担比例和总限额的应用顺序，并计算赔付估算：\n\n1. **免赔额**：\n   - 报案“C22”的免赔额为2000元，这是从保单信息中获取的。\n\n2. **共同承担比例**：\n   - 保单规则中明确指出，剩余金额扣免赔后赔付90%。这意味着在扣除免赔额后，保险公司将承担90%的责任。\n\n3. **总限额**：\n   - 保单信息中提到的总限额为30000元，这是报案“C22”的总保障限额。\n\n**计算顺序**：\n\n1. **扣除免赔额**：\n   - 报案金额为9000元，扣除免赔额2000元后，剩余金额为7000元。\n\n2. **计算共同承担比例**：\n   - 扣除免赔额后的7000元中，保险公司将承担90%，即7000元的90% = 6300元。\n\n3. **受总限额约束**：\n   - 因为计算出的6300元未超过总限额30000元，因此保险公司的赔付将是6300元。\n\n**两种赔付估算**：\n\n- **现有材料下**：在缺少材料之前，报案“C22”无法进行赔付，赔付金额为0元。\n- **补齐缺失材料后**：按照上述计算顺序，保险公司将赔付6300元。\n\n总结，在补齐缺失材料后，报案“C22”的赔付估算为6300元，而在缺失材料之前，无法进行赔付。",
+  "finished_at": 1795617004005,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "28e2761a7eec111a3ba0669a",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "configuration_id": "13043f5e2865142ea68b1f10",
+      "previous_model_id": "amazon.nova-lite-v1:0",
+      "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+      "model_changed": true,
+      "configuration_changed": true,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 149.776,
+      "target_ms": 1002.047,
+      "usage": {
+        "inputTokens": 1675,
+        "outputTokens": 198,
+        "totalTokens": 2439,
+        "cacheReadInputTokens": 566,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 566,
+        "write_tokens": 0,
+        "total_input_tokens": 2241,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "tool_use",
+      "tool_call_count": 1
+    },
+    {
+      "step": 2,
+      "run_id": "f7a53d68b55a0b624e115f88",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "configuration_id": "13043f5e2865142ea68b1f10",
+      "previous_model_id": "amazon.nova-micro-v1:0",
+      "previous_configuration_id": "13043f5e2865142ea68b1f10",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "13043f5e2865142ea68b1f10",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 150.786,
+      "target_ms": 2341.342,
+      "usage": {
+        "inputTokens": 1993,
+        "outputTokens": 578,
+        "totalTokens": 3135,
+        "cacheReadInputTokens": 564,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 564,
+        "write_tokens": 0,
+        "total_input_tokens": 2557,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "insurance",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617000982
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617001000
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "28e2761a7eec111a3ba0669a",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "configuration_id": "13043f5e2865142ea68b1f10",
+      "previous_model_id": "amazon.nova-lite-v1:0",
+      "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+      "model_changed": true,
+      "configuration_changed": true,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 149.776,
+      "target_ms": 1002.047,
+      "usage": {
+        "inputTokens": 1675,
+        "outputTokens": 198,
+        "totalTokens": 2439,
+        "cacheReadInputTokens": 566,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 566,
+        "write_tokens": 0,
+        "total_input_tokens": 2241,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "tool_use",
+      "tool_call_count": 1,
+      "sequence": 3,
+      "recorded_at": 1795617001031
+    },
+    {
+      "type": "tool_started",
+      "name": "read_policy",
+      "arguments": {},
+      "sequence": 4,
+      "recorded_at": 1795617001051
+    },
+    {
+      "type": "tool_result",
+      "name": "read_policy",
+      "arguments": {},
+      "status": "success",
+      "result": {
+        "policy": "同一事故免赔额只扣一次；先去重票据，缺失材料部分暂不纳入，剩余金额扣免赔后赔90%，受总限额约束；最终由理赔员确认。",
+        "source": "synthetic_business_policy"
+      },
+      "elapsed_ms": 0.008,
+      "sequence": 5,
+      "recorded_at": 1795617003935
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 6,
+      "recorded_at": 1795617003956
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "f7a53d68b55a0b624e115f88",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "configuration_id": "13043f5e2865142ea68b1f10",
+      "previous_model_id": "amazon.nova-micro-v1:0",
+      "previous_configuration_id": "13043f5e2865142ea68b1f10",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "13043f5e2865142ea68b1f10",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 150.786,
+      "target_ms": 2341.342,
+      "usage": {
+        "inputTokens": 1993,
+        "outputTokens": 578,
+        "totalTokens": 3135,
+        "cacheReadInputTokens": 564,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 564,
+        "write_tokens": 0,
+        "total_input_tokens": 2557,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 7,
+      "recorded_at": 1795617003971
+    },
+    {
+      "type": "completed",
+      "answer": "根据保单规则和现有材料，逐步解释免赔额、共同承担比例和总限额的应用顺序，并计算赔付估算：\n\n1. **免赔额**：\n   - 报案“C22”的免赔额为2000元，这是从保单信息中获取的。\n\n2. **共同承担比例**：\n   - 保单规则中明确指出，剩余金额扣免赔后赔付90%。这意味着在扣除免赔额后，保险公司将承担90%的责任。\n\n3. **总限额**：\n   - 保单信息中提到的总限额为30000元，这是报案“C22”的总保障限额。\n\n**计算顺序**：\n\n1. **扣除免赔额**：\n   - 报案金额为9000元，扣除免赔额2000元后，剩余金额为7000元。\n\n2. **计算共同承担比例**：\n   - 扣除免赔额后的7000元中，保险公司将承担90%，即7000元的90% = 6300元。\n\n3. **受总限额约束**：\n   - 因为计算出的6300元未超过总限额30000元，因此保险公司的赔付将是6300元。\n\n**两种赔付估算**：\n\n- **现有材料下**：在缺少材料之前，报案“C22”无法进行赔付，赔付金额为0元。\n- **补齐缺失材料后**：按照上述计算顺序，保险公司将赔付6300元。\n\n总结，在补齐缺失材料后，报案“C22”的赔付估算为6300元，而在缺失材料之前，无法进行赔付。",
+      "model_calls": 2,
+      "sequence": 8,
+      "recorded_at": 1795617004005
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 1,
+    "model_switches": 1,
+    "retained_calls": 1,
+    "cache_read_tokens": 1130
+  }
+}

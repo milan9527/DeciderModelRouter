@@ -1,0 +1,195 @@
+{
+  "id": "ce79b59b959c8f8bcb21e710",
+  "session_id": "4c7fb06ff2746348a8d98961",
+  "scenario_id": "public-services",
+  "title": "许可申请积压与办理时限",
+  "industry": "政务服务",
+  "prompt": "向窗口主管写简短建议，保留超时编号和净处理能力，不承诺审批结果。",
+  "status": "completed",
+  "created_at": 1795618547485,
+  "turn": 4,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 16384,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795618553432,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-c02e0b6d398b282523bdc92312da0fd8536e53e6a1e162e70d472e7e4b20b0b2",
+  "answer": "## 政务窗口优化建议\n\n**致：窗口主管**\n\n---\n\n### 现状分析\n\n根据申请业务数据统计，当前评审部面临**积压28件、新增压力持续**的局面。\n\n**超时预警**\n- 申请编号 **G2**（新办）已超期1个工作日\n- 其他案件暂未超期，但处于时限临界状态\n\n**处理能力** \n- 现有配置：2名评审员，日均承载 **8件/天**\n- 每日新增：5件/天\n- **净清理速率：3件/天**（即积压消化速度）\n\n---\n\n### 建议方案\n\n#### 第一阶段（即日起第1-2个工作日）\n1. **A岗位**指定优先处理G2，确保48小时内取得实质进展\n2. **B岗位**保持常规进度，新增案件同日处理（不过夜）\n3. **目标**：消除超时预警，积压从28件下降至26件以内\n\n#### 第二阶段（第3-10个工作日）\n1. 双岗联动，严格执行4件/人·天标准投入\n2. 每周五检查进度（应清21件/周）\n3. **预期**：10工作日内积压净清理至安全水位（≤10件）\n\n#### 触发条件（若需增强配置）\n- 新增压力突破8件/天\n- 补件频率超30%\n- 进度滑落超预期\n\n此时可考虑投入1名临时评审员，将清理周期压缩至4天。\n\n---\n\n### 关键提醒\n\n✓ **不承诺审批结果**，以上方案仅针对流程优化和人员排班  \n✓ **保持监测**G2等重点案件的实际办理进展  \n✓ **定期评估**新增数据，及时调整配置  \n✓ **补件管理**应同步强化，降低二次积压风险\n\n---\n\n**建议**：采纳第一阶段方案，5个工作日后复盘数据，决定是否升级配置。",
+  "finished_at": 1795618553415,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "56fd3b680f9d69124edd52a5",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 184.107,
+      "target_ms": 5034.25,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 629,
+        "totalTokens": 12289,
+        "cacheReadInputTokens": 4326,
+        "cacheWriteInputTokens": 7331,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 7331
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 4326,
+        "write_tokens": 7331,
+        "total_input_tokens": 11660,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "public-services",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795618553343
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795618553358
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "56fd3b680f9d69124edd52a5",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 184.107,
+      "target_ms": 5034.25,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 629,
+        "totalTokens": 12289,
+        "cacheReadInputTokens": 4326,
+        "cacheWriteInputTokens": 7331,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 7331
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 4326,
+        "write_tokens": 7331,
+        "total_input_tokens": 11660,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795618553374
+    },
+    {
+      "type": "completed",
+      "answer": "## 政务窗口优化建议\n\n**致：窗口主管**\n\n---\n\n### 现状分析\n\n根据申请业务数据统计，当前评审部面临**积压28件、新增压力持续**的局面。\n\n**超时预警**\n- 申请编号 **G2**（新办）已超期1个工作日\n- 其他案件暂未超期，但处于时限临界状态\n\n**处理能力** \n- 现有配置：2名评审员，日均承载 **8件/天**\n- 每日新增：5件/天\n- **净清理速率：3件/天**（即积压消化速度）\n\n---\n\n### 建议方案\n\n#### 第一阶段（即日起第1-2个工作日）\n1. **A岗位**指定优先处理G2，确保48小时内取得实质进展\n2. **B岗位**保持常规进度，新增案件同日处理（不过夜）\n3. **目标**：消除超时预警，积压从28件下降至26件以内\n\n#### 第二阶段（第3-10个工作日）\n1. 双岗联动，严格执行4件/人·天标准投入\n2. 每周五检查进度（应清21件/周）\n3. **预期**：10工作日内积压净清理至安全水位（≤10件）\n\n#### 触发条件（若需增强配置）\n- 新增压力突破8件/天\n- 补件频率超30%\n- 进度滑落超预期\n\n此时可考虑投入1名临时评审员，将清理周期压缩至4天。\n\n---\n\n### 关键提醒\n\n✓ **不承诺审批结果**，以上方案仅针对流程优化和人员排班  \n✓ **保持监测**G2等重点案件的实际办理进展  \n✓ **定期评估**新增数据，及时调整配置  \n✓ **补件管理**应同步强化，降低二次积压风险\n\n---\n\n**建议**：采纳第一阶段方案，5个工作日后复盘数据，决定是否升级配置。",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795618553415
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 4326
+  }
+}

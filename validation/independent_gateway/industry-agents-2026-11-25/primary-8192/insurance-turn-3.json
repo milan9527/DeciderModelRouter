@@ -1,0 +1,181 @@
+{
+  "id": "5e28477ce200d04d71c23946",
+  "session_id": "7e252237212f8a098abe8338",
+  "scenario_id": "insurance",
+  "title": "理赔材料核对与免赔额计算",
+  "industry": "保险",
+  "prompt": "为审核系统编写赔付计算函数及边界测试，覆盖免赔额高于损失、重复票据和限额封顶。",
+  "status": "completed",
+  "created_at": 1795617605220,
+  "turn": 3,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617628335,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-a0b5ebbf8204da7bdd70af814904fe8066ac855d6a17d143fe8cbf99b2f2878a",
+  "answer": "我为审核系统设计赔付计算函数及测试用例。\n\n## 一、赔付计算函数设计\n\n```python\ndef calculate_insurance_payout(claims_list, policy, event_id=None):\n    \"\"\"\n    保险赔付计算函数\n    \n    参数:\n        claims_list: list of dict\n            [{claim_id, invoice_id, amount, evidence_status}, ...]\n        policy: dict\n            {limit, deductible, copay_rate}\n            其中 copay_rate 为自付率（赔付率 = 1 - copay_rate）\n        event_id: str (可选)\n            事故编号，用于同事故去重\n    \n    返回:\n        dict {\n            status: 'success'|'error',\n            total_valid_amount: float,      # 有效申请总额\n            deductible_applied: float,      # 应用的免赔额\n            insurable_amount: float,        # 免赔后可保额\n            payout_amount: float,           # 赔付金额\n            limit_cap: float,               # 限额\n            utilization_rate: float,        # 限额使用率\n            details: list,                  # 逐笔明细\n            warnings: list,                 # 异常标记\n        }\n    \"\"\"\n    \n    result = {\n        'status': 'success',\n        'total_valid_amount': 0,\n        'deductible_applied': 0,\n        'insurable_amount': 0,\n        'payout_amount': 0,\n        'limit_cap': policy['limit'],\n        'utilization_rate': 0,\n        'details': [],\n        'warnings': []\n    }\n    \n    # 参数校验\n    if not claims_list:\n        result['status'] = 'error'\n        result['warnings'].append('报案列表为空')\n        return result\n    \n    if policy['deductible'] < 0 or policy['limit'] <= 0 or not (0 <= policy['copay_rate'] < 1):\n        result['status'] = 'error'\n        result['warnings'].append('保单参数无效')\n        return result\n    \n    # 步骤1：去重与有效性校验\n    seen_invoices = set()\n    valid_claims = []\n    \n    for claim in claims_list:\n        invoice_id = claim.get('invoice_id')\n        evidence_status = claim.get('evidence_status', 'unknown')\n        \n        # 检查重复票据\n        if invoice_id in seen_invoices:\n            result['warnings'].append(\n                f\"报案 {claim.get('claim_id')} 使用重复票据 {invoice_id}，已跳过\"\n            )\n            continue\n        \n        # 检查材料完整性\n        if evidence_status != 'complete':\n            result['warnings'].append(\n                f\"报案 {claim.get('claim_id')} 材料不完整 ({evidence_status})，已跳过\"\n            )\n            continue\n        \n        seen_invoices.add(invoice_id)\n        valid_claims.append(claim)\n    \n    if not valid_claims:\n        result['status'] = 'error'\n        result['warnings'].append('无有效报案')\n        return result\n    \n    # 步骤2：计算有效申请总额\n    total_valid_amount = sum(c['amount'] for c in valid_claims)\n    result['total_valid_amount'] = total_valid_amount\n    \n    for claim in valid_claims:\n        result['details'].append({\n            'claim_id': claim.get('claim_id'),\n            'invoice_id': claim.get('invoice_id'),\n            'claimed_amount': claim['amount'],\n            'status': 'valid'\n        })\n    \n    # 步骤3：应用免赔额（同一事故仅扣一次）\n    deductible = policy['deductible']\n    insurable_amount = max(0, total_valid_amount - deductible)\n    result['deductible_applied'] = min(deductible, total_valid_amount)\n    result['insurable_amount'] = insurable_amount\n    \n    if total_valid_amount < deductible:\n        result['warnings'].append(\n            f\"有效申请总额 {total_valid_amount} 低于免赔额 {deductible}，无赔付\"\n        )\n        result['payout_amount'] = 0\n        return result\n    \n    # 步骤4：应用赔付率（共同承担）\n    copay_rate = policy['copay_rate']\n    payout_rate = 1 - copay_rate\n    before_limit = insurable_amount * payout_rate\n    \n    # 步骤5：应用总限额\n    limit = policy['limit']\n    final_payout = min(before_limit, limit)\n    \n    result['payout_amount'] = final_payout\n    result['utilization_rate'] = final_payout / limit if limit > 0 else 0\n    \n    if before_limit > limit:\n        result['warnings'].append(\n            f\"赔付金额 {before_limit:.2f} 超过限额 {limit}，已封顶至 {limit}\"\n        )\n    \n    return result\n```\n\n---\n\n## 二、边界测试用例\n\n```python\ndef test_insurance_payout():\n    \"\"\"综合边界测试套件\"\"\"\n    \n    policy_std = {\n        'limit': 30000,\n        'deductible': 2000,\n        'copay_rate': 0.1  # 赔付率90%\n    }\n    \n    test_cases = []\n    \n    # ===== 测试1：正常场景 =====\n    test_cases.append({\n        'name': '正常单笔赔付',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 18000,\n            'deductible': 2000,\n            'insurable': 16000,\n            'payout': 14400,\n            'warnings_count': 0\n        }\n    })\n    \n    # ===== 测试2：多笔有效申请 =====\n    test_cases.append({\n        'name': '多笔申请，免赔只扣一次',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'},\n            {'claim_id': 'C2', 'invoice_id': 'I2', 'amount': 9000, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 27000,\n            'deductible': 2000,\n            'insurable': 25000,\n            'payout': 22500,\n            'warnings_count': 0\n        }\n    })\n    \n    # ===== 测试3：重复票据去重 =====\n    test_cases.append({\n        'name': '重复票据识别与去除',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'},\n            {'claim_id': 'C3', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 18000,\n            'deductible': 2000,\n            'insurable': 16000,\n            'payout': 14400,\n            'warnings_count': 1,\n            'warning_contains': '重复票据'\n        }\n    })\n    \n    # ===== 测试4：缺少材料排除 =====\n    test_cases.append({\n        'name': '缺少拍照凭证的申请被排除',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'},\n            {'claim_id': 'C2', 'invoice_id': 'I2', 'amount': 9000, 'evidence_status': 'missing_photo'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 18000,\n            'deductible': 2000,\n            'insurable': 16000,\n            'payout': 14400,\n            'warnings_count': 1,\n            'warning_contains': '材料不完整'\n        }\n    })\n    \n    # ===== 测试5：免赔额高于损失（边界case） =====\n    test_cases.append({\n        'name': '申请金额低于免赔额，无赔付',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 1500, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 1500,\n            'deductible': 1500,\n            'insurable': 0,\n            'payout': 0,\n            'warnings_count': 1,\n            'warning_contains': '无赔付'\n        }\n    })\n    \n    # ===== 测试6：申请金额=免赔额（边界case） =====\n    test_cases.append({\n        'name': '申请金额恰好等于免赔额',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 2000, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 2000,\n            'deductible': 2000,\n            'insurable': 0,\n            'payout': 0,\n            'warnings_count': 1\n        }\n    })\n    \n    # ===== 测试7：超过限额封顶 =====\n    test_cases.append({\n        'name': '赔付金额超过限额，被封顶',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 100000, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 100000,\n            'deductible': 2000,\n            'insurable': 98000,\n            'payout': 30000,  # 被限额封顶，而非 98000*0.9=88200\n            'warnings_count': 1,\n            'warning_contains': '封顶'\n        }\n    })\n    \n    # ===== 测试8：赔付率为100%的高保障 =====\n    test_cases.append({\n        'name': '赔付率100%（无自付）',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'}\n        ],\n        'policy': {\n            'limit': 30000,\n            'deductible': 2000,\n            'copay_rate': 0.0  # 100%赔付率\n        },\n        'expected': {\n            'total_valid': 18000,\n            'deductible': 2000,\n            'insurable': 16000,\n            'payout': 16000,  # 16000*1.0\n            'warnings_count': 0\n        }\n    })\n    \n    # ===== 测试9：空申请列表 =====\n    test_cases.append({\n        'name': '空申请列表',\n        'claims': [],\n        'policy': policy_std,\n        'expected': {\n            'status': 'error',\n            'warnings_count': 1,\n            'warning_contains': '为空'\n        }\n    })\n    \n    # ===== 测试10：所有申请都缺材料 =====\n    test_cases.append({\n        'name': '全部申请缺材料，无有效案件',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'missing_photo'},\n            {'claim_id': 'C2', 'invoice_id': 'I2', 'amount': 9000, 'evidence_status': 'missing_invoice'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'status': 'error',\n            'warnings_count': 3,  # 2条缺材料 + 1条无有效案件\n            'warning_contains': '无有效'\n        }\n    })\n    \n    # ===== 测试11：极端高额申请 + 限额 =====\n    test_cases.append({\n        'name': '极限额度1000万，申请1亿',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 100000000, 'evidence_status': 'complete'}\n        ],\n        'policy': {\n            'limit': 10000000,\n            'deductible': 50000,\n            'copay_rate': 0.1\n        },\n        'expected': {\n            'total_valid': 100000000,\n            'deductible': 50000,\n            'insurable': 99950000,\n            'payout': 10000000,  # 被限额封顶\n            'utilization_rate': 1.0\n        }\n    })\n    \n    # ===== 测试12：赔付率50% + 多笔申请 =====\n    test_cases.append({\n        'name': '低保障（50%赔付）+ 多笔混合',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 20000, 'evidence_status': 'complete'},\n            {'claim_id': 'C2', 'invoice_id': 'I2', 'amount': 10000, 'evidence_status': 'complete'},\n            {'claim_id': 'C3', 'invoice_id': 'I1', 'amount': 15000, 'evidence_status': 'complete'}  # 重复\n        ],\n        'policy': {\n            'limit': 15000,\n            'deductible': 1000,\n            'copay_rate': 0.5  # 50%赔付\n        },\n        'expected': {\n            'total_valid': 30000,  # C1+C2，C3去重\n            'deductible': 1000,\n            'insurable': 29000,\n            'payout': 14500,  # min(29000*0.5, 15000) = min(14500, 15000)\n            'warnings_count': 1\n        }\n    })\n    \n    return test_cases\n\n\n# ===== 测试执行与验证 =====\ndef run_tests():\n    \"\"\"执行所有测试\"\"\"\n    test_cases = test_insurance_payout()\n    \n    print(\"=\" * 80)\n    print(\"保险赔付计算函数测试报告\")\n    print(\"=\" * 80)\n    \n    passed = 0\n    failed = 0\n    \n    for idx, test in enumerate(test_cases, 1):\n        result = calculate_insurance_payout(test['claims'], test['policy'])\n        expected = test['expected']\n        \n        # 断言检查\n        checks = []\n        \n        if 'status' in expected:\n            checks.append(('status', result['status'] == expected['status']))\n        \n        if 'total_valid' in expected:\n            checks.append(('total_valid_amount', result['total_valid_amount'] == expected['total_valid']))\n        \n        if 'deductible' in expected:\n            checks.append(('deductible_applied', result['deductible_applied'] == expected['deductible']))\n        \n        if 'insurable' in expected:\n            checks.append(('insurable_amount', result['insurable_amount'] == expected['insurable']))\n        \n        if 'payout' in expected:\n            checks.append(('payout_amount', result['payout_amount'] == expected['payout']))\n        \n        if 'utilization_rate' in expected:\n            checks.append(('utilization_rate', abs(result['utilization_rate'] - expected['utilization_rate']) < 0.001))\n        \n        if 'warnings_count' in expected:\n            checks.append(('warnings_count', len(result['warnings']) == expected['warnings_count']))\n        \n        if 'warning_contains' in expected:\n            has_keyword = any(expected['warning_contains'] in w for w in result['warnings'])\n            checks.append(('warning_keyword', has_keyword))\n        \n        # 判定结果\n        all_pass = all(check[1] for check in checks)\n        status = \"✓ PASS\" if all_pass else \"✗ FAIL\"\n        \n        print(f\"\\n测试{idx}: {test['name']}\")\n        print(f\"状态: {status}\")\n        \n        if all_pass:\n            passed += 1\n        else:\n            failed += 1\n            print(\"  失败项:\")\n            for check_name, check_result in checks:\n                if not check_result:\n                    print(f\"    - {check_name}: 预期 {expected.get(check_name)} \"\n                          f\"实际 {getattr(result, check_name, 'N/A')}\")\n        \n        # 显示详细信息\n        print(f\"  有效申请: {result['total_valid_amount']}元\")\n        print(f\"  免赔应用: {result['deductible_applied']}元\")\n        print(f\"  可保金额: {result['insurable_amount']}元\")\n        print(f\"  赔付金额: {result['payout_amount']}元\")\n        print(f\"  限额使用: {result['utilization_rate']*100:.1f}%\")\n        if result['warnings']:\n            print(f\"  警告信息:\")\n            for warning in result['warnings']:\n                print(f\"    - {warning}\")\n    \n    print(\"\\n\" + \"=\" * 80)\n    print(f\"测试总结: 通过 {passed}/{len(test_cases)}, 失败 {failed}/{len(test_cases)}\")\n    print(\"=\" * 80)\n```\n\n---\n\n## 三、关键设计要点\n\n| 要素 | 说明 | 对应业务规则 |\n|-----|------|----------|\n| **去重逻辑** | 票据ID唯一性检查，重复则跳过 | 先去重票据 |\n| **材料验证** | evidence_status != 'complete' 则排除 | 缺失材料部分暂不纳入 |\n| **免赔顺序** | 有效总额 - 免赔额（仅一次） | 同一事故免赔额只扣一次 |\n| **赔付率应用** | insurable × (1 - copay_rate) | 剩余金额扣免赔后赔90% |\n| **限额封顶** | min(计算结果, 限额) | 受总限额约束 |\n| **异常处理** | warnings记录所有异常，status标记失败 | 由理赔员确认 |\n\n**函数可复用于**：自动初审、赔付预估、合规性检查。",
+  "finished_at": 1795617628316,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "78a5ca452d00d0043fe976a5",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 153.705,
+      "target_ms": 22010.962,
+      "usage": {
+        "inputTokens": 3908,
+        "outputTokens": 5229,
+        "totalTokens": 9137,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 3908,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.030053",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "insurance",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617628236
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617628254
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "78a5ca452d00d0043fe976a5",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 153.705,
+      "target_ms": 22010.962,
+      "usage": {
+        "inputTokens": 3908,
+        "outputTokens": 5229,
+        "totalTokens": 9137,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 3908,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.030053",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795617628275
+    },
+    {
+      "type": "completed",
+      "answer": "我为审核系统设计赔付计算函数及测试用例。\n\n## 一、赔付计算函数设计\n\n```python\ndef calculate_insurance_payout(claims_list, policy, event_id=None):\n    \"\"\"\n    保险赔付计算函数\n    \n    参数:\n        claims_list: list of dict\n            [{claim_id, invoice_id, amount, evidence_status}, ...]\n        policy: dict\n            {limit, deductible, copay_rate}\n            其中 copay_rate 为自付率（赔付率 = 1 - copay_rate）\n        event_id: str (可选)\n            事故编号，用于同事故去重\n    \n    返回:\n        dict {\n            status: 'success'|'error',\n            total_valid_amount: float,      # 有效申请总额\n            deductible_applied: float,      # 应用的免赔额\n            insurable_amount: float,        # 免赔后可保额\n            payout_amount: float,           # 赔付金额\n            limit_cap: float,               # 限额\n            utilization_rate: float,        # 限额使用率\n            details: list,                  # 逐笔明细\n            warnings: list,                 # 异常标记\n        }\n    \"\"\"\n    \n    result = {\n        'status': 'success',\n        'total_valid_amount': 0,\n        'deductible_applied': 0,\n        'insurable_amount': 0,\n        'payout_amount': 0,\n        'limit_cap': policy['limit'],\n        'utilization_rate': 0,\n        'details': [],\n        'warnings': []\n    }\n    \n    # 参数校验\n    if not claims_list:\n        result['status'] = 'error'\n        result['warnings'].append('报案列表为空')\n        return result\n    \n    if policy['deductible'] < 0 or policy['limit'] <= 0 or not (0 <= policy['copay_rate'] < 1):\n        result['status'] = 'error'\n        result['warnings'].append('保单参数无效')\n        return result\n    \n    # 步骤1：去重与有效性校验\n    seen_invoices = set()\n    valid_claims = []\n    \n    for claim in claims_list:\n        invoice_id = claim.get('invoice_id')\n        evidence_status = claim.get('evidence_status', 'unknown')\n        \n        # 检查重复票据\n        if invoice_id in seen_invoices:\n            result['warnings'].append(\n                f\"报案 {claim.get('claim_id')} 使用重复票据 {invoice_id}，已跳过\"\n            )\n            continue\n        \n        # 检查材料完整性\n        if evidence_status != 'complete':\n            result['warnings'].append(\n                f\"报案 {claim.get('claim_id')} 材料不完整 ({evidence_status})，已跳过\"\n            )\n            continue\n        \n        seen_invoices.add(invoice_id)\n        valid_claims.append(claim)\n    \n    if not valid_claims:\n        result['status'] = 'error'\n        result['warnings'].append('无有效报案')\n        return result\n    \n    # 步骤2：计算有效申请总额\n    total_valid_amount = sum(c['amount'] for c in valid_claims)\n    result['total_valid_amount'] = total_valid_amount\n    \n    for claim in valid_claims:\n        result['details'].append({\n            'claim_id': claim.get('claim_id'),\n            'invoice_id': claim.get('invoice_id'),\n            'claimed_amount': claim['amount'],\n            'status': 'valid'\n        })\n    \n    # 步骤3：应用免赔额（同一事故仅扣一次）\n    deductible = policy['deductible']\n    insurable_amount = max(0, total_valid_amount - deductible)\n    result['deductible_applied'] = min(deductible, total_valid_amount)\n    result['insurable_amount'] = insurable_amount\n    \n    if total_valid_amount < deductible:\n        result['warnings'].append(\n            f\"有效申请总额 {total_valid_amount} 低于免赔额 {deductible}，无赔付\"\n        )\n        result['payout_amount'] = 0\n        return result\n    \n    # 步骤4：应用赔付率（共同承担）\n    copay_rate = policy['copay_rate']\n    payout_rate = 1 - copay_rate\n    before_limit = insurable_amount * payout_rate\n    \n    # 步骤5：应用总限额\n    limit = policy['limit']\n    final_payout = min(before_limit, limit)\n    \n    result['payout_amount'] = final_payout\n    result['utilization_rate'] = final_payout / limit if limit > 0 else 0\n    \n    if before_limit > limit:\n        result['warnings'].append(\n            f\"赔付金额 {before_limit:.2f} 超过限额 {limit}，已封顶至 {limit}\"\n        )\n    \n    return result\n```\n\n---\n\n## 二、边界测试用例\n\n```python\ndef test_insurance_payout():\n    \"\"\"综合边界测试套件\"\"\"\n    \n    policy_std = {\n        'limit': 30000,\n        'deductible': 2000,\n        'copay_rate': 0.1  # 赔付率90%\n    }\n    \n    test_cases = []\n    \n    # ===== 测试1：正常场景 =====\n    test_cases.append({\n        'name': '正常单笔赔付',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 18000,\n            'deductible': 2000,\n            'insurable': 16000,\n            'payout': 14400,\n            'warnings_count': 0\n        }\n    })\n    \n    # ===== 测试2：多笔有效申请 =====\n    test_cases.append({\n        'name': '多笔申请，免赔只扣一次',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'},\n            {'claim_id': 'C2', 'invoice_id': 'I2', 'amount': 9000, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 27000,\n            'deductible': 2000,\n            'insurable': 25000,\n            'payout': 22500,\n            'warnings_count': 0\n        }\n    })\n    \n    # ===== 测试3：重复票据去重 =====\n    test_cases.append({\n        'name': '重复票据识别与去除',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'},\n            {'claim_id': 'C3', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 18000,\n            'deductible': 2000,\n            'insurable': 16000,\n            'payout': 14400,\n            'warnings_count': 1,\n            'warning_contains': '重复票据'\n        }\n    })\n    \n    # ===== 测试4：缺少材料排除 =====\n    test_cases.append({\n        'name': '缺少拍照凭证的申请被排除',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'},\n            {'claim_id': 'C2', 'invoice_id': 'I2', 'amount': 9000, 'evidence_status': 'missing_photo'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 18000,\n            'deductible': 2000,\n            'insurable': 16000,\n            'payout': 14400,\n            'warnings_count': 1,\n            'warning_contains': '材料不完整'\n        }\n    })\n    \n    # ===== 测试5：免赔额高于损失（边界case） =====\n    test_cases.append({\n        'name': '申请金额低于免赔额，无赔付',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 1500, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 1500,\n            'deductible': 1500,\n            'insurable': 0,\n            'payout': 0,\n            'warnings_count': 1,\n            'warning_contains': '无赔付'\n        }\n    })\n    \n    # ===== 测试6：申请金额=免赔额（边界case） =====\n    test_cases.append({\n        'name': '申请金额恰好等于免赔额',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 2000, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 2000,\n            'deductible': 2000,\n            'insurable': 0,\n            'payout': 0,\n            'warnings_count': 1\n        }\n    })\n    \n    # ===== 测试7：超过限额封顶 =====\n    test_cases.append({\n        'name': '赔付金额超过限额，被封顶',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 100000, 'evidence_status': 'complete'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'total_valid': 100000,\n            'deductible': 2000,\n            'insurable': 98000,\n            'payout': 30000,  # 被限额封顶，而非 98000*0.9=88200\n            'warnings_count': 1,\n            'warning_contains': '封顶'\n        }\n    })\n    \n    # ===== 测试8：赔付率为100%的高保障 =====\n    test_cases.append({\n        'name': '赔付率100%（无自付）',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'complete'}\n        ],\n        'policy': {\n            'limit': 30000,\n            'deductible': 2000,\n            'copay_rate': 0.0  # 100%赔付率\n        },\n        'expected': {\n            'total_valid': 18000,\n            'deductible': 2000,\n            'insurable': 16000,\n            'payout': 16000,  # 16000*1.0\n            'warnings_count': 0\n        }\n    })\n    \n    # ===== 测试9：空申请列表 =====\n    test_cases.append({\n        'name': '空申请列表',\n        'claims': [],\n        'policy': policy_std,\n        'expected': {\n            'status': 'error',\n            'warnings_count': 1,\n            'warning_contains': '为空'\n        }\n    })\n    \n    # ===== 测试10：所有申请都缺材料 =====\n    test_cases.append({\n        'name': '全部申请缺材料，无有效案件',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 18000, 'evidence_status': 'missing_photo'},\n            {'claim_id': 'C2', 'invoice_id': 'I2', 'amount': 9000, 'evidence_status': 'missing_invoice'}\n        ],\n        'policy': policy_std,\n        'expected': {\n            'status': 'error',\n            'warnings_count': 3,  # 2条缺材料 + 1条无有效案件\n            'warning_contains': '无有效'\n        }\n    })\n    \n    # ===== 测试11：极端高额申请 + 限额 =====\n    test_cases.append({\n        'name': '极限额度1000万，申请1亿',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 100000000, 'evidence_status': 'complete'}\n        ],\n        'policy': {\n            'limit': 10000000,\n            'deductible': 50000,\n            'copay_rate': 0.1\n        },\n        'expected': {\n            'total_valid': 100000000,\n            'deductible': 50000,\n            'insurable': 99950000,\n            'payout': 10000000,  # 被限额封顶\n            'utilization_rate': 1.0\n        }\n    })\n    \n    # ===== 测试12：赔付率50% + 多笔申请 =====\n    test_cases.append({\n        'name': '低保障（50%赔付）+ 多笔混合',\n        'claims': [\n            {'claim_id': 'C1', 'invoice_id': 'I1', 'amount': 20000, 'evidence_status': 'complete'},\n            {'claim_id': 'C2', 'invoice_id': 'I2', 'amount': 10000, 'evidence_status': 'complete'},\n            {'claim_id': 'C3', 'invoice_id': 'I1', 'amount': 15000, 'evidence_status': 'complete'}  # 重复\n        ],\n        'policy': {\n            'limit': 15000,\n            'deductible': 1000,\n            'copay_rate': 0.5  # 50%赔付\n        },\n        'expected': {\n            'total_valid': 30000,  # C1+C2，C3去重\n            'deductible': 1000,\n            'insurable': 29000,\n            'payout': 14500,  # min(29000*0.5, 15000) = min(14500, 15000)\n            'warnings_count': 1\n        }\n    })\n    \n    return test_cases\n\n\n# ===== 测试执行与验证 =====\ndef run_tests():\n    \"\"\"执行所有测试\"\"\"\n    test_cases = test_insurance_payout()\n    \n    print(\"=\" * 80)\n    print(\"保险赔付计算函数测试报告\")\n    print(\"=\" * 80)\n    \n    passed = 0\n    failed = 0\n    \n    for idx, test in enumerate(test_cases, 1):\n        result = calculate_insurance_payout(test['claims'], test['policy'])\n        expected = test['expected']\n        \n        # 断言检查\n        checks = []\n        \n        if 'status' in expected:\n            checks.append(('status', result['status'] == expected['status']))\n        \n        if 'total_valid' in expected:\n            checks.append(('total_valid_amount', result['total_valid_amount'] == expected['total_valid']))\n        \n        if 'deductible' in expected:\n            checks.append(('deductible_applied', result['deductible_applied'] == expected['deductible']))\n        \n        if 'insurable' in expected:\n            checks.append(('insurable_amount', result['insurable_amount'] == expected['insurable']))\n        \n        if 'payout' in expected:\n            checks.append(('payout_amount', result['payout_amount'] == expected['payout']))\n        \n        if 'utilization_rate' in expected:\n            checks.append(('utilization_rate', abs(result['utilization_rate'] - expected['utilization_rate']) < 0.001))\n        \n        if 'warnings_count' in expected:\n            checks.append(('warnings_count', len(result['warnings']) == expected['warnings_count']))\n        \n        if 'warning_contains' in expected:\n            has_keyword = any(expected['warning_contains'] in w for w in result['warnings'])\n            checks.append(('warning_keyword', has_keyword))\n        \n        # 判定结果\n        all_pass = all(check[1] for check in checks)\n        status = \"✓ PASS\" if all_pass else \"✗ FAIL\"\n        \n        print(f\"\\n测试{idx}: {test['name']}\")\n        print(f\"状态: {status}\")\n        \n        if all_pass:\n            passed += 1\n        else:\n            failed += 1\n            print(\"  失败项:\")\n            for check_name, check_result in checks:\n                if not check_result:\n                    print(f\"    - {check_name}: 预期 {expected.get(check_name)} \"\n                          f\"实际 {getattr(result, check_name, 'N/A')}\")\n        \n        # 显示详细信息\n        print(f\"  有效申请: {result['total_valid_amount']}元\")\n        print(f\"  免赔应用: {result['deductible_applied']}元\")\n        print(f\"  可保金额: {result['insurable_amount']}元\")\n        print(f\"  赔付金额: {result['payout_amount']}元\")\n        print(f\"  限额使用: {result['utilization_rate']*100:.1f}%\")\n        if result['warnings']:\n            print(f\"  警告信息:\")\n            for warning in result['warnings']:\n                print(f\"    - {warning}\")\n    \n    print(\"\\n\" + \"=\" * 80)\n    print(f\"测试总结: 通过 {passed}/{len(test_cases)}, 失败 {failed}/{len(test_cases)}\")\n    print(\"=\" * 80)\n```\n\n---\n\n## 三、关键设计要点\n\n| 要素 | 说明 | 对应业务规则 |\n|-----|------|----------|\n| **去重逻辑** | 票据ID唯一性检查，重复则跳过 | 先去重票据 |\n| **材料验证** | evidence_status != 'complete' 则排除 | 缺失材料部分暂不纳入 |\n| **免赔顺序** | 有效总额 - 免赔额（仅一次） | 同一事故免赔额只扣一次 |\n| **赔付率应用** | insurable × (1 - copay_rate) | 剩余金额扣免赔后赔90% |\n| **限额封顶** | min(计算结果, 限额) | 受总限额约束 |\n| **异常处理** | warnings记录所有异常，status标记失败 | 由理赔员确认 |\n\n**函数可复用于**：自动初审、赔付预估、合规性检查。",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795617628316
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

@@ -1,0 +1,374 @@
+{
+  "id": "c9c4954bb1c306ba277b2c2d",
+  "session_id": "7e252237212f8a098abe8338",
+  "scenario_id": "insurance",
+  "title": "理赔材料核对与免赔额计算",
+  "industry": "保险",
+  "prompt": "起草给客户的补件清单与当前估算说明，不承诺最终赔付。",
+  "status": "completed",
+  "created_at": 1795617629853,
+  "turn": 4,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617651893,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-a0b5ebbf8204da7bdd70af814904fe8066ac855d6a17d143fe8cbf99b2f2878a",
+  "answer": "---\n\n# 客户补件清单与赔付估算说明\n\n## 文件编号\n**暴雨灾害理赔案件 · 初审材料补充通知**  \n出具日期：2024年\n案件涉及报案号：C21、C22、C23\n\n---\n\n## 一、您的报案汇总\n\n感谢您的理赔申请。我们已收到以下报案：\n\n| 报案号 | 票据号 | 申请金额 | 材料状态 | 备注 |\n|------|-------|--------|--------|------|\n| **C21** | I21 | 18,000元 | ✓ 完整 | 已受理 |\n| **C22** | I22 | 9,000元 | ⚠ 缺材料 | 需补件 |\n| **C23** | I21 | 18,000元 | ✗ 重复 | 重复票据 |\n| **总申请** | — | **45,000元** | — | — |\n\n---\n\n## 二、补件要求\n\n### 报案 C22 - 需补齐以下材料\n\n**【缺失项目】**  \n⚠ **拍照凭证（missing_photo）**\n\n**【补件说明】**\n- 请提供损失现场的高清照片（至少3张）\n- 照片内容应清晰显示：\n  - 受损物品全景\n  - 受损部位特写\n  - 标注受损时间戳的收据/发票\n- 照片格式：JPG/PNG，单张不低于2MB\n- 请在照片背面或文件名标注日期和位置\n\n**【补件截止】**  \n请于 **15个工作日内** 通过以下方式提交：\n- 在线客服系统上传\n- 或电邮发送至：claims@insurance.example.com\n- 邮件主题格式：`[报案号] C22 补件提交`\n\n**【逾期提醒】**  \n如逾期未补件，该笔申请（9,000元）将按缺材料处理，不纳入本次赔付。\n\n---\n\n## 三、当前赔付估算\n\n### ⚠ 重要说明（非承诺）\n\n**以下估算仅供参考，不作为最终赔付承诺。最终赔付金额将由理赔部门完成调查审核后确认。**\n\n### 场景一：按现有完整材料计算\n\n**适用条件**：仅C21报案纳入审核\n\n| 步骤 | 操作 | 金额 |\n|-----|------|------|\n| ① 有效申请金额 | C21完整；C22缺材料排除；C23重复票据去除 | **18,000元** |\n| ② 扣除免赔额 | 本次事故免赔额2,000元（仅扣一次） | 18,000 - 2,000 = **16,000元** |\n| ③ 应用赔付率 | 保险承担90%，您自付10% | 16,000 × 90% = **14,400元** |\n| ④ 限额校验 | 保单限额30,000元 | 14,400 ≤ 30,000 ✓ |\n| **估算赔付** | — | **14,400元** |\n\n**您需承担**：18,000 - 14,400 = **3,600元**（含免赔2,000元 + 自付10%）\n\n---\n\n### 场景二：C22补齐材料后的估算\n\n**适用条件**：C21 + C22 两笔报案纳入审核（C23仍需排除）\n\n| 步骤 | 操作 | 金额 |\n|-----|------|------|\n| ① 有效申请金额 | C21完整 + C22补齐后完整；C23重复票据去除 | 18,000 + 9,000 = **27,000元** |\n| ② 扣除免赔额 | 本次事故免赔额2,000元（仅扣一次，不重复） | 27,000 - 2,000 = **25,000元** |\n| ③ 应用赔付率 | 保险承担90%，您自付10% | 25,000 × 90% = **22,500元** |\n| ④ 限额校验 | 保单限额30,000元 | 22,500 ≤ 30,000 ✓ |\n| **估算赔付** | — | **22,500元** |\n\n**您需承担**：27,000 - 22,500 = **4,500元**（含免赔2,000元 + 自付10%）\n\n**相比场景一，补齐C22可额外获赔**：22,500 - 14,400 = **8,100元**\n\n---\n\n## 四、关键业务规则说明\n\n为了帮助您理解赔付估算，特别说明以下规则：\n\n### 1. **免赔额仅扣一次**\n- 保单约定免赔额为2,000元\n- 本次暴雨事故造成的所有有效损失共用1个免赔额\n- 无论有1笔或多笔报案，免赔2,000元仅在合并金额中扣除一次\n- 示例：C21(18,000) + C22(9,000) = 27,000，仅扣2,000，不扣4,000\n\n### 2. **重复票据自动排除**\n- C21和C23均使用票据号**I21**\n- 保险原则上不重复赔付同一张票据\n- C23将被排除，不参与赔付计算\n- **建议**：如C23确实是独立损失，请提供另外的票据（如I23）\n\n### 3. **共同承担比例（赔付率90%）**\n- 保单约定您自付10%，保险承担90%\n- 仅适用于扣除免赔额后的金额\n- 计算逻辑：(申请金额 - 免赔额) × 90% = 保险赔付\n\n### 4. **保单限额约束**\n- 您的保单最高赔付限额为30,000元\n- 任何单次事故赔付都不超过此额度\n- 场景一和场景二的估算均未触及限额上限\n\n### 5. **缺材料暂不纳入**\n- C22因缺少拍照凭证，当前不能纳入赔付范围\n- 补齐材料后可重新审核纳入\n- 材料越完整，赔付金额越可能增加\n\n---\n\n## 五、重复票据处理建议\n\n**【问题说明】**  \n报案C23使用的票据号I21与C21相同。这可能因以下原因导致：\n- ① 重复报案（同一笔损失被报了两次）\n- ② 系统录入错误（应为I23或其他号）\n- ③ 多件损失使用了相同单据号\n\n**【您需要提供的信息】**\n- C21和C23是否为同一笔损失？\n- 如为两笔不同损失，请提供C23的正确票据号或发票复印件\n\n**【处理结果】**\n- 如确认为重复：C23自动排除，不影响C21赔付\n- 如为独立损失：提供正确票据号后可重新审核\n\n---\n\n## 六、赔付流程与时间安排\n\n### 当前进度\n✓ 已受理：C21  \n⚠ 待补件：C22  \n✗ 待核实：C23（重复票据）  \n\n### 后续步骤\n\n| 阶段 | 预计耗时 | 说明 |\n|-----|--------|------|\n| **补件阶段** | 15个工作日 | 您提交C22补件材料 |\n| **初审阶段** | 5-7个工作日 | 我们完成资料审核 |\n| **调查阶段** | 7-10个工作日 | 必要时进行现场查勘或核实 |\n| **审批阶段** | 3-5个工作日 | 理赔部门最终审批 |\n| **赔付执行** | 2-3个工作日 | 经您确认后，转账至指定账户 |\n| **总预计** | **32-40个工作日** | 从提交补件至赔付到账 |\n\n---\n\n## 七、常见问题\n\n**Q1：为什么估算给出两个数字（14,400和22,500）？**  \nA：取决于C22是否补齐材料。若您补件及时，可享受较高的赔付。若不补件，只按现有完整材料（C21）计算14,400元。\n\n**Q2：为什么不能立即赔付14,400元？**  \nA：初审需等待所有材料齐全并完成合规性检查。同时若C22补件较早提交，可能合并审核以提高效率。\n\n**Q3：有什么办法突破30,000元限额？**  \nA：保单限额是对保险保障的约定上限，无法突破。如需更高保障，可在下一保单期重新投保更高额度的产品。\n\n**Q4：C23能否按新票据号重新报案？**  \nA：可以。请确认C23是独立的损失事项，并提供不同的原始凭证和票据号。\n\n**Q5：自付部分（10%）能否减免？**  \nA：自付率是保单条款约定的固定比例，不可减免。\n\n---\n\n## 八、联系方式\n\n如有疑问，请通过以下方式联系我们：\n\n| 联系方式 | 详情 |\n|---------|------|\n| **客服电话** | 400-800-8888（工作日9:00-18:00） |\n| **在线客服** | 登录官方APP或网站的\"我的理赔\"模块 |\n| **邮件** | claims@insurance.example.com |\n| **案件经理** | [专属理赔员姓名 & 工号] |\n\n---\n\n## 九、免责声明\n\n✓ **本通知中的赔付估算仅基于现有信息的初步计算**  \n✓ **不构成最终赔付承诺或法律约束**  \n✓ **最终赔付金额将由理赔部门按保险条款完整审核后确定**  \n✓ **如发现隐瞒、虚假报案或欺诈行为，保险公司保留拒赔或追偿权**\n\n---\n\n## 十、确认签收\n\n请在收到本通知后 **3个工作日内** 确认收悉。确认方式：\n- 在线系统：点击\"我已阅读\"\n- 电话确认：直接拨打客服电话\n- 邮件回复：回复本邮件表示确认\n\n**收悉确认码**：[自动生成]\n\n---\n\n**出具单位**：[保险公司名称] 理赔部门  \n**出具时间**：2024年  \n**有效期**：自出具之日起30天内有效，逾期需重新申请  \n\n---\n\n## 附表：当前处理状态追踪\n\n| 报案号 | 金额 | 状态码 | 状态描述 | 下一步 | 预计完成 |\n|------|------|-------|--------|-------|--------|\n| C21 | 18,000 | ACCEPTED | 已受理，待批 | 等待初审 | 7天内 |\n| C22 | 9,000 | PENDING_DOCS | 待补件 | 请补齐拍照凭证 | 15天内提交 |\n| C23 | 18,000 | REJECTED_DUP | 重复票据，已排除 | 确认或提供新票据 | 待客户反馈 |\n\n---\n\n**感谢您的耐心理解。我们承诺在遵守保险条款的前提下，为您提供高效、透明的理赔服务。**",
+  "finished_at": 1795617651877,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "73a1eb29c2ac2965e72b7058",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 182.882,
+      "target_ms": 1113.69,
+      "usage": {
+        "inputTokens": 9169,
+        "outputTokens": 150,
+        "totalTokens": 9319,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 9169,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.009919",
+      "stop_reason": "tool_use",
+      "tool_call_count": 2
+    },
+    {
+      "step": 2,
+      "run_id": "dca76d46e1a928428fd812e4",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 150.871,
+      "target_ms": 19097.83,
+      "usage": {
+        "inputTokens": 9518,
+        "outputTokens": 3487,
+        "totalTokens": 13005,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 9518,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.026953",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "insurance",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617631857
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617631874
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "73a1eb29c2ac2965e72b7058",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 182.882,
+      "target_ms": 1113.69,
+      "usage": {
+        "inputTokens": 9169,
+        "outputTokens": 150,
+        "totalTokens": 9319,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 9169,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.009919",
+      "stop_reason": "tool_use",
+      "tool_call_count": 2,
+      "sequence": 3,
+      "recorded_at": 1795617631899
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "claims"
+      },
+      "sequence": 4,
+      "recorded_at": 1795617631919
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "claims"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "claims",
+        "records": [
+          {
+            "claim": "C21",
+            "invoice": "I21",
+            "amount": 18000,
+            "evidence": "complete"
+          },
+          {
+            "claim": "C22",
+            "invoice": "I22",
+            "amount": 9000,
+            "evidence": "missing_photo"
+          },
+          {
+            "claim": "C23",
+            "invoice": "I21",
+            "amount": 18000,
+            "evidence": "duplicate"
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.013,
+      "sequence": 5,
+      "recorded_at": 1795617651778
+    },
+    {
+      "type": "tool_started",
+      "name": "calculate_metric",
+      "arguments": {
+        "dataset": "claims",
+        "field": "amount",
+        "operation": "sum"
+      },
+      "sequence": 6,
+      "recorded_at": 1795617651794
+    },
+    {
+      "type": "tool_result",
+      "name": "calculate_metric",
+      "arguments": {
+        "dataset": "claims",
+        "field": "amount",
+        "operation": "sum"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "claims",
+        "field": "amount",
+        "operation": "sum",
+        "result": "45000",
+        "rows": 3
+      },
+      "elapsed_ms": 0.025,
+      "sequence": 7,
+      "recorded_at": 1795617651813
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 8,
+      "recorded_at": 1795617651830
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "dca76d46e1a928428fd812e4",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 150.871,
+      "target_ms": 19097.83,
+      "usage": {
+        "inputTokens": 9518,
+        "outputTokens": 3487,
+        "totalTokens": 13005,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 9518,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.026953",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 9,
+      "recorded_at": 1795617651846
+    },
+    {
+      "type": "completed",
+      "answer": "---\n\n# 客户补件清单与赔付估算说明\n\n## 文件编号\n**暴雨灾害理赔案件 · 初审材料补充通知**  \n出具日期：2024年\n案件涉及报案号：C21、C22、C23\n\n---\n\n## 一、您的报案汇总\n\n感谢您的理赔申请。我们已收到以下报案：\n\n| 报案号 | 票据号 | 申请金额 | 材料状态 | 备注 |\n|------|-------|--------|--------|------|\n| **C21** | I21 | 18,000元 | ✓ 完整 | 已受理 |\n| **C22** | I22 | 9,000元 | ⚠ 缺材料 | 需补件 |\n| **C23** | I21 | 18,000元 | ✗ 重复 | 重复票据 |\n| **总申请** | — | **45,000元** | — | — |\n\n---\n\n## 二、补件要求\n\n### 报案 C22 - 需补齐以下材料\n\n**【缺失项目】**  \n⚠ **拍照凭证（missing_photo）**\n\n**【补件说明】**\n- 请提供损失现场的高清照片（至少3张）\n- 照片内容应清晰显示：\n  - 受损物品全景\n  - 受损部位特写\n  - 标注受损时间戳的收据/发票\n- 照片格式：JPG/PNG，单张不低于2MB\n- 请在照片背面或文件名标注日期和位置\n\n**【补件截止】**  \n请于 **15个工作日内** 通过以下方式提交：\n- 在线客服系统上传\n- 或电邮发送至：claims@insurance.example.com\n- 邮件主题格式：`[报案号] C22 补件提交`\n\n**【逾期提醒】**  \n如逾期未补件，该笔申请（9,000元）将按缺材料处理，不纳入本次赔付。\n\n---\n\n## 三、当前赔付估算\n\n### ⚠ 重要说明（非承诺）\n\n**以下估算仅供参考，不作为最终赔付承诺。最终赔付金额将由理赔部门完成调查审核后确认。**\n\n### 场景一：按现有完整材料计算\n\n**适用条件**：仅C21报案纳入审核\n\n| 步骤 | 操作 | 金额 |\n|-----|------|------|\n| ① 有效申请金额 | C21完整；C22缺材料排除；C23重复票据去除 | **18,000元** |\n| ② 扣除免赔额 | 本次事故免赔额2,000元（仅扣一次） | 18,000 - 2,000 = **16,000元** |\n| ③ 应用赔付率 | 保险承担90%，您自付10% | 16,000 × 90% = **14,400元** |\n| ④ 限额校验 | 保单限额30,000元 | 14,400 ≤ 30,000 ✓ |\n| **估算赔付** | — | **14,400元** |\n\n**您需承担**：18,000 - 14,400 = **3,600元**（含免赔2,000元 + 自付10%）\n\n---\n\n### 场景二：C22补齐材料后的估算\n\n**适用条件**：C21 + C22 两笔报案纳入审核（C23仍需排除）\n\n| 步骤 | 操作 | 金额 |\n|-----|------|------|\n| ① 有效申请金额 | C21完整 + C22补齐后完整；C23重复票据去除 | 18,000 + 9,000 = **27,000元** |\n| ② 扣除免赔额 | 本次事故免赔额2,000元（仅扣一次，不重复） | 27,000 - 2,000 = **25,000元** |\n| ③ 应用赔付率 | 保险承担90%，您自付10% | 25,000 × 90% = **22,500元** |\n| ④ 限额校验 | 保单限额30,000元 | 22,500 ≤ 30,000 ✓ |\n| **估算赔付** | — | **22,500元** |\n\n**您需承担**：27,000 - 22,500 = **4,500元**（含免赔2,000元 + 自付10%）\n\n**相比场景一，补齐C22可额外获赔**：22,500 - 14,400 = **8,100元**\n\n---\n\n## 四、关键业务规则说明\n\n为了帮助您理解赔付估算，特别说明以下规则：\n\n### 1. **免赔额仅扣一次**\n- 保单约定免赔额为2,000元\n- 本次暴雨事故造成的所有有效损失共用1个免赔额\n- 无论有1笔或多笔报案，免赔2,000元仅在合并金额中扣除一次\n- 示例：C21(18,000) + C22(9,000) = 27,000，仅扣2,000，不扣4,000\n\n### 2. **重复票据自动排除**\n- C21和C23均使用票据号**I21**\n- 保险原则上不重复赔付同一张票据\n- C23将被排除，不参与赔付计算\n- **建议**：如C23确实是独立损失，请提供另外的票据（如I23）\n\n### 3. **共同承担比例（赔付率90%）**\n- 保单约定您自付10%，保险承担90%\n- 仅适用于扣除免赔额后的金额\n- 计算逻辑：(申请金额 - 免赔额) × 90% = 保险赔付\n\n### 4. **保单限额约束**\n- 您的保单最高赔付限额为30,000元\n- 任何单次事故赔付都不超过此额度\n- 场景一和场景二的估算均未触及限额上限\n\n### 5. **缺材料暂不纳入**\n- C22因缺少拍照凭证，当前不能纳入赔付范围\n- 补齐材料后可重新审核纳入\n- 材料越完整，赔付金额越可能增加\n\n---\n\n## 五、重复票据处理建议\n\n**【问题说明】**  \n报案C23使用的票据号I21与C21相同。这可能因以下原因导致：\n- ① 重复报案（同一笔损失被报了两次）\n- ② 系统录入错误（应为I23或其他号）\n- ③ 多件损失使用了相同单据号\n\n**【您需要提供的信息】**\n- C21和C23是否为同一笔损失？\n- 如为两笔不同损失，请提供C23的正确票据号或发票复印件\n\n**【处理结果】**\n- 如确认为重复：C23自动排除，不影响C21赔付\n- 如为独立损失：提供正确票据号后可重新审核\n\n---\n\n## 六、赔付流程与时间安排\n\n### 当前进度\n✓ 已受理：C21  \n⚠ 待补件：C22  \n✗ 待核实：C23（重复票据）  \n\n### 后续步骤\n\n| 阶段 | 预计耗时 | 说明 |\n|-----|--------|------|\n| **补件阶段** | 15个工作日 | 您提交C22补件材料 |\n| **初审阶段** | 5-7个工作日 | 我们完成资料审核 |\n| **调查阶段** | 7-10个工作日 | 必要时进行现场查勘或核实 |\n| **审批阶段** | 3-5个工作日 | 理赔部门最终审批 |\n| **赔付执行** | 2-3个工作日 | 经您确认后，转账至指定账户 |\n| **总预计** | **32-40个工作日** | 从提交补件至赔付到账 |\n\n---\n\n## 七、常见问题\n\n**Q1：为什么估算给出两个数字（14,400和22,500）？**  \nA：取决于C22是否补齐材料。若您补件及时，可享受较高的赔付。若不补件，只按现有完整材料（C21）计算14,400元。\n\n**Q2：为什么不能立即赔付14,400元？**  \nA：初审需等待所有材料齐全并完成合规性检查。同时若C22补件较早提交，可能合并审核以提高效率。\n\n**Q3：有什么办法突破30,000元限额？**  \nA：保单限额是对保险保障的约定上限，无法突破。如需更高保障，可在下一保单期重新投保更高额度的产品。\n\n**Q4：C23能否按新票据号重新报案？**  \nA：可以。请确认C23是独立的损失事项，并提供不同的原始凭证和票据号。\n\n**Q5：自付部分（10%）能否减免？**  \nA：自付率是保单条款约定的固定比例，不可减免。\n\n---\n\n## 八、联系方式\n\n如有疑问，请通过以下方式联系我们：\n\n| 联系方式 | 详情 |\n|---------|------|\n| **客服电话** | 400-800-8888（工作日9:00-18:00） |\n| **在线客服** | 登录官方APP或网站的\"我的理赔\"模块 |\n| **邮件** | claims@insurance.example.com |\n| **案件经理** | [专属理赔员姓名 & 工号] |\n\n---\n\n## 九、免责声明\n\n✓ **本通知中的赔付估算仅基于现有信息的初步计算**  \n✓ **不构成最终赔付承诺或法律约束**  \n✓ **最终赔付金额将由理赔部门按保险条款完整审核后确定**  \n✓ **如发现隐瞒、虚假报案或欺诈行为，保险公司保留拒赔或追偿权**\n\n---\n\n## 十、确认签收\n\n请在收到本通知后 **3个工作日内** 确认收悉。确认方式：\n- 在线系统：点击\"我已阅读\"\n- 电话确认：直接拨打客服电话\n- 邮件回复：回复本邮件表示确认\n\n**收悉确认码**：[自动生成]\n\n---\n\n**出具单位**：[保险公司名称] 理赔部门  \n**出具时间**：2024年  \n**有效期**：自出具之日起30天内有效，逾期需重新申请  \n\n---\n\n## 附表：当前处理状态追踪\n\n| 报案号 | 金额 | 状态码 | 状态描述 | 下一步 | 预计完成 |\n|------|------|-------|--------|-------|--------|\n| C21 | 18,000 | ACCEPTED | 已受理，待批 | 等待初审 | 7天内 |\n| C22 | 9,000 | PENDING_DOCS | 待补件 | 请补齐拍照凭证 | 15天内提交 |\n| C23 | 18,000 | REJECTED_DUP | 重复票据，已排除 | 确认或提供新票据 | 待客户反馈 |\n\n---\n\n**感谢您的耐心理解。我们承诺在遵守保险条款的前提下，为您提供高效、透明的理赔服务。**",
+      "model_calls": 2,
+      "sequence": 10,
+      "recorded_at": 1795617651877
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 2,
+    "model_switches": 0,
+    "retained_calls": 1,
+    "cache_read_tokens": 0
+  }
+}

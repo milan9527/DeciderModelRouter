@@ -5,3 +5,5 @@
 仅保留本项目部署架构图使用的图标，原始 SVG 未修改。生成器将图标内联到架构图，保留官方颜色与图形，并为元素 ID 添加独立前缀以避免重复引用。最终 SVG 可独立展示，不需要联网加载图标。
 
 AWS 图标及相关商标归 Amazon Web Services 所有，其使用应遵循官方页面提供的使用指南。它们不表示 AWS 对本演示的认可。
+
+`agentcore.svg`复用本仓库`docs/presentations/v26/assets/official-icons/agentcore.svg`中的AWS官方AgentCore图标，原SVG未修改。

@@ -265,12 +265,18 @@ class Auth:
             return await call_next(request)
         public = request.url.path in ("/api/live", "/api/ready", "/api/auth/login")
         try:
-            if not public:
+            agent_callback = request.url.path == "/api/gateway/agent/model" and hasattr(request.app.state, "agents")
+            if agent_callback:
+                identity, job = await run_in_threadpool(
+                    request.app.state.agents.identity, request.headers.get("authorization", ""),
+                )
+                request.state.user, request.state.agent_job = identity, job
+            elif not public:
                 identity = await run_in_threadpool(self.identity, request.cookies.get(self.cookie))
                 if identity is None:
                     raise HTTPException(401, "请先登录，或重新登录以恢复会话")
                 request.state.user = identity
-            if request.method not in ("GET", "HEAD", "OPTIONS"):
+            if not agent_callback and request.method not in ("GET", "HEAD", "OPTIONS"):
                 self.check_csrf(request)
         except HTTPException as exc:
             response = JSONResponse({"detail": exc.detail}, exc.status_code, headers=exc.headers)

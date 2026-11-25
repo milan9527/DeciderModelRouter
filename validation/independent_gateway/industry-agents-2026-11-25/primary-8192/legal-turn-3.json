@@ -1,0 +1,181 @@
+{
+  "id": "ae905ef00c4e275e88c78c9b",
+  "session_id": "f24ffacae41ed73929e315bd",
+  "scenario_id": "legal",
+  "title": "采购合同付款与责任条款复核",
+  "industry": "企业法务",
+  "prompt": "编写付款条件和违约金计算函数，测试比例和不为100%、金额精度、负天数与封顶。",
+  "status": "completed",
+  "created_at": 1795618053089,
+  "turn": 3,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795618072637,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-a0936801dd70a42a52738cd0095a7cb5a22f496f7f4c2b38ff0610f4d1a150f0",
+  "answer": "我来编写付款条件和违约金计算函数，涵盖您提出的各个测试场景。\n\n```python\nfrom decimal import Decimal, ROUND_HALF_UP\nfrom typing import Dict, Tuple, List\n\nclass ContractPaymentCalculator:\n    \"\"\"合同付款与违约金计算器\"\"\"\n    \n    def __init__(self, contract_total: Decimal, daily_rate: Decimal, cap_rate: Decimal):\n        \"\"\"\n        初始化合同参数\n        \n        Args:\n            contract_total: 合同总额\n            daily_rate: 每日违约金比例（如0.0005表示0.05%）\n            cap_rate: 违约金封顶比例（如0.05表示5%）\n        \"\"\"\n        self.contract_total = Decimal(str(contract_total))\n        self.daily_rate = Decimal(str(daily_rate))\n        self.cap_rate = Decimal(str(cap_rate))\n    \n    def calculate_milestone_payment(\n        self, \n        milestone_percent: Decimal, \n        is_accepted: bool, \n        is_invoiced: bool,\n        decimal_places: int = 2\n    ) -> Dict:\n        \"\"\"\n        计算单个节点是否具备付款条件\n        \n        Args:\n            milestone_percent: 节点占比（可不为100%）\n            is_accepted: 是否已验收\n            is_invoiced: 是否已开票\n            decimal_places: 金额精度（默认2位）\n        \n        Returns:\n            {\n                'amount': Decimal,  # 节点金额\n                'is_eligible': bool,  # 是否具备付款条件\n                'reason': str,  # 原因说明\n                'validation_error': str or None  # 数据校验错误\n            }\n        \"\"\"\n        result = {\n            'amount': None,\n            'is_eligible': False,\n            'reason': '',\n            'validation_error': None\n        }\n        \n        # 比例校验\n        if not (Decimal('0') <= milestone_percent <= Decimal('100')):\n            result['validation_error'] = f\"比例应在0-100之间，实际：{milestone_percent}%\"\n            return result\n        \n        # 计算金额（使用指定精度）\n        amount = (self.contract_total * milestone_percent / Decimal('100')).quantize(\n            Decimal(10) ** -decimal_places,\n            rounding=ROUND_HALF_UP\n        )\n        result['amount'] = amount\n        \n        # 付款条件判断：验收 AND 开票\n        if is_accepted and is_invoiced:\n            result['is_eligible'] = True\n            result['reason'] = '已验收 + 已开票，满足付款条件'\n        else:\n            result['is_eligible'] = False\n            missing = []\n            if not is_accepted:\n                missing.append('验收')\n            if not is_invoiced:\n                missing.append('开票')\n            result['reason'] = f'缺少条件：{\" + \".join(missing)}'\n        \n        return result\n    \n    def calculate_penalty(\n        self,\n        delay_days: int,\n        decimal_places: int = 2\n    ) -> Dict:\n        \"\"\"\n        计算违约金（包含边界情况处理）\n        \n        Args:\n            delay_days: 延误天数（允许负数，表示提前完成）\n            decimal_places: 金额精度（默认2位）\n        \n        Returns:\n            {\n                'delay_days': int,\n                'uncapped_penalty': Decimal,  # 应计违约金（未封顶）\n                'capped_penalty': Decimal,  # 实际违约金（已封顶）\n                'cap_triggered': bool,  # 是否触发封顶\n                'penalty_rate': Decimal,  # 实际生效比例\n                'validation_error': str or None\n            }\n        \"\"\"\n        result = {\n            'delay_days': delay_days,\n            'uncapped_penalty': None,\n            'capped_penalty': None,\n            'cap_triggered': False,\n            'penalty_rate': None,\n            'validation_error': None\n        }\n        \n        # 负天数处理：提前完成不产生违约金\n        if delay_days < 0:\n            result['delay_days'] = 0\n            result['uncapped_penalty'] = Decimal('0')\n            result['capped_penalty'] = Decimal('0')\n            result['cap_triggered'] = False\n            result['penalty_rate'] = Decimal('0')\n            result['validation_error'] = f\"延误天数为负（{delay_days}），按提前完成处理，违约金为0\"\n            return result\n        \n        # 计算应计违约金\n        uncapped_penalty = (\n            self.contract_total * self.daily_rate * Decimal(delay_days)\n        ).quantize(\n            Decimal(10) ** -decimal_places,\n            rounding=ROUND_HALF_UP\n        )\n        result['uncapped_penalty'] = uncapped_penalty\n        \n        # 计算封顶违约金\n        cap_amount = (\n            self.contract_total * self.cap_rate\n        ).quantize(\n            Decimal(10) ** -decimal_places,\n            rounding=ROUND_HALF_UP\n        )\n        \n        # 判断是否触发封顶\n        if uncapped_penalty > cap_amount:\n            result['capped_penalty'] = cap_amount\n            result['cap_triggered'] = True\n            result['penalty_rate'] = self.cap_rate\n        else:\n            result['capped_penalty'] = uncapped_penalty\n            result['cap_triggered'] = False\n            actual_rate = (self.daily_rate * Decimal(delay_days)).quantize(\n                Decimal('0.000001'),\n                rounding=ROUND_HALF_UP\n            )\n            result['penalty_rate'] = actual_rate\n        \n        return result\n    \n    def calculate_net_payment(\n        self,\n        milestone_payment: Dict,\n        penalty: Dict,\n        decimal_places: int = 2\n    ) -> Dict:\n        \"\"\"\n        计算净支付金额（应付款 - 违约金）\n        \n        Args:\n            milestone_payment: 节点支付信息\n            penalty: 违约金计算结果\n            decimal_places: 金额精度\n        \n        Returns:\n            {\n                'gross_amount': Decimal,  # 应付总额\n                'penalty_deduction': Decimal,  # 违约金扣缴\n                'net_payment': Decimal,  # 净支付额\n                'is_payable': bool,  # 是否可支付\n                'payment_note': str  # 支付说明\n            }\n        \"\"\"\n        gross = milestone_payment['amount']\n        penalty_deduction = penalty['capped_penalty']\n        \n        net = (gross - penalty_deduction).quantize(\n            Decimal(10) ** -decimal_places,\n            rounding=ROUND_HALF_UP\n        )\n        \n        # 负数处理：如果违约金超过应付款\n        if net < 0:\n            net = Decimal('0')\n            is_payable = False\n            note = \"违约金超过应付款，实际支付0元，须由对方补偿\"\n        else:\n            is_payable = True if milestone_payment['is_eligible'] else False\n            note = \"\"\n            if not milestone_payment['is_eligible']:\n                note = f\"不满足付款条件（{milestone_payment['reason']}）\"\n            elif penalty['delay_days'] > 0:\n                note = f\"延误{penalty['delay_days']}天，扣缴违约金{penalty_deduction}\"\n            else:\n                note = \"正常支付\"\n        \n        return {\n            'gross_amount': gross,\n            'penalty_deduction': penalty_deduction,\n            'net_payment': net,\n            'is_payable': is_payable,\n            'payment_note': note\n        }\n\n\n# ============= 测试用例 =============\n\ndef run_tests():\n    \"\"\"执行完整测试套件\"\"\"\n    \n    # 初始化计算器（基于演示合同CT1）\n    calc = ContractPaymentCalculator(\n        contract_total=Decimal('500000'),\n        daily_rate=Decimal('0.0005'),  # 0.05%\n        cap_rate=Decimal('0.05')  # 5%\n    )\n    \n    print(\"=\" * 80)\n    print(\"付款条件与违约金计算函数测试\")\n    print(\"=\" * 80)\n    \n    # ========== 测试1：比例不为100% ==========\n    print(\"\\n【测试1】比例不为100%\")\n    print(\"-\" * 80)\n    test_cases_1 = [\n        (Decimal('30'), True, True, \"30%节点-满足条件\"),\n        (Decimal('50'), True, False, \"50%节点-仅已开票\"),\n        (Decimal('20'), False, False, \"20%节点-未验收未开票\"),\n        (Decimal('0'), False, False, \"0%节点-边界\"),\n        (Decimal('100'), True, True, \"100%节点-全额\"),\n        (Decimal('33.33'), True, True, \"33.33%-精度测试\"),\n        (Decimal('150'), False, False, \"150%-越界检测\"),\n    ]\n    \n    for percent, accepted, invoiced, desc in test_cases_1:\n        result = calc.calculate_milestone_payment(percent, accepted, invoiced)\n        status = \"✓\" if not result['validation_error'] else \"✗\"\n        print(f\"{status} {desc}\")\n        print(f\"   比例：{percent}% | 金额：{result['amount']} | 条件：{result['is_eligible']}\")\n        if result['validation_error']:\n            print(f\"   错误：{result['validation_error']}\")\n        else:\n            print(f\"   说明：{result['reason']}\")\n    \n    # ========== 测试2：金额精度 ==========\n    print(\"\\n【测试2】金额精度（小数位处理）\")\n    print(\"-\" * 80)\n    test_cases_2 = [\n        (Decimal('33.333'), \"2位精度\"),\n        (Decimal('33.33'), \"正常比例\"),\n        (Decimal('0.001'), \"极小比例\"),\n    ]\n    \n    for percent, desc in test_cases_2:\n        result = calc.calculate_milestone_payment(percent, True, True, decimal_places=2)\n        expected_gross = calc.contract_total * percent / Decimal('100')\n        rounded = expected_gross.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)\n        print(f\"{desc}\")\n        print(f\"   输入比例：{percent}% | 计算金额：{expected_gross} | 舍入结果：{result['amount']}\")\n        print(f\"   精度验证：{result['amount']} == {rounded} ? {result['amount'] == rounded}\")\n    \n    # ========== 测试3：负天数 ==========\n    print(\"\\n【测试3】负天数（提前完成）\")\n    print(\"-\" * 80)\n    test_cases_3 = [\n        (-10, \"提前10天\"),\n        (-1, \"提前1天\"),\n        (0, \"按期完成\"),\n        (1, \"延误1天\"),\n        (20, \"延误20天\"),\n    ]\n    \n    for days, desc in test_cases_3:\n        result = calc.calculate_penalty(days)\n        print(f\"{desc} | 天数：{days}\")\n        print(f\"   应计违约金：{result['uncapped_penalty']} | 实际违约金：{result['capped_penalty']}\")\n        if result['validation_error']:\n            print(f\"   处理：{result['validation_error']}\")\n    \n    # ========== 测试4：封顶触发 ==========\n    print(\"\\n【测试4】违约金封顶触发场景\")\n    print(\"-\" * 80)\n    test_cases_4 = [\n        (20, \"未触发封顶\"),\n        (100, \"接近封顶\"),\n        (150, \"触发封顶\"),\n        (200, \"明显超封顶\"),\n        (500, \"极端延误\"),\n    ]\n    \n    for days, desc in test_cases_4:\n        result = calc.calculate_penalty(days)\n        cap_pct = (result['capped_penalty'] / calc.contract_total * Decimal('100')).quantize(\n            Decimal('0.01'),\n            rounding=ROUND_HALF_UP\n        )\n        print(f\"{desc} | 延误{days}天\")\n        print(f\"   应计：{result['uncapped_penalty']} ({(result['uncapped_penalty']/calc.contract_total*100).quantize(Decimal('0.01'))}%)\")\n        print(f\"   实际：{result['capped_penalty']} ({cap_pct}%) | 封顶触发：{result['cap_triggered']}\")\n    \n    # ========== 测试5：完整支付场景 ==========\n    print(\"\\n【测试5】完整支付流程（应付-违约金=净支付）\")\n    print(\"-\" * 80)\n    scenarios = [\n        {\n            'desc': '场景A：M1，20天延误',\n            'percent': Decimal('30'),\n            'accepted': True,\n            'invoiced': True,\n            'delay_days': 20\n        },\n        {\n            'desc': '场景B：M1，150天延误',\n            'percent': Decimal('30'),\n            'accepted': True,\n            'invoiced': True,\n            'delay_days': 150\n        },\n        {\n            'desc': '场景C：M2，未验收，0延误',\n            'percent': Decimal('50'),\n            'accepted': False,\n            'invoiced': True,\n            'delay_days': 0\n        },\n        {\n            'desc': '场景D：M3，未开票未验收',\n            'percent': Decimal('20'),\n            'accepted': False,\n            'invoiced': False,\n            'delay_days': 0\n        },\n        {\n            'desc': '场景E：100%合同，500天极端延误',\n            'percent': Decimal('100'),\n            'accepted': True,\n            'invoiced': True,\n            'delay_days': 500\n        },\n    ]\n    \n    for scenario in scenarios:\n        print(f\"\\n{scenario['desc']}\")\n        milestone = calc.calculate_milestone_payment(\n            scenario['percent'],\n            scenario['accepted'],\n            scenario['invoiced']\n        )\n        penalty = calc.calculate_penalty(scenario['delay_days'])\n        payment = calc.calculate_net_payment(milestone, penalty)\n        \n        print(f\"   应付总额：{payment['gross_amount']}\")\n        print(f\"   违约金扣缴：{payment['penalty_deduction']}\")\n        print(f\"   净支付额：{payment['net_payment']}\")\n        print(f\"   可否支付：{'是' if payment['is_payable'] else '否'}\")\n        print(f\"   说明：{payment['payment_note']}\")\n    \n    # ========== 测试6：边界与特殊情况 ==========\n    print(\"\\n【测试6】边界与特殊情况\")\n    print(\"-\" * 80)\n    \n    # 子测试6a：违约金超过应付款\n    print(\"6a. 违约金超过应付款（极小比例+长时间延误）\")\n    result_6a = calc.calculate_milestone_payment(Decimal('1'), True, True)\n    penalty_6a = calc.calculate_penalty(2000)\n    payment_6a = calc.calculate_net_payment(result_6a, penalty_6a)\n    print(f\"   应付：{payment_6a['gross_amount']} | 违约金：{payment_6a['penalty_deduction']}\")\n    print(f\"   净支付：{payment_6a['net_payment']} | 说明：{payment_6a['payment_note']}\")\n    \n    # 子测试6b：三位小数精度\n    print(\"\\n6b. 三位小数精度\")\n    calc_3decimal = ContractPaymentCalculator(\n        Decimal('1000'),\n        Decimal('0.001'),  # 0.1%\n        Decimal('0.1')  # 10%\n    )\n    result_6b = calc_3decimal.calculate_milestone_payment(Decimal('33.333'), True, True, decimal_places=3)\n    print(f\"   比例：33.333% | 金额：{result_6b['amount']} | 精度：3位小数\")\n    \n    # 子测试6c：0天延误\n    print(\"\\n6c. 0天延误（边界）\")\n    result_6c = calc.calculate_penalty(0)\n    print(f\"   应计：{result_6c['uncapped_penalty']} | 实际：{result_6c['capped_penalty']}\")\n    \n    print(\"\\n\" + \"=\" * 80)\n    print(\"测试完成\")\n    print(\"=\" * 80)\n\n\nif __name__ == '__main__':\n    run_tests()\n```\n\n---\n\n## 测试覆盖范围\n\n| 测试项 | 场景 | 目的 |\n|--------|------|------|\n| **1. 比例不为100%** | 30%, 50%, 20%, 0%, 100%, 33.33%, 150% | 验证比例校验与金额计算准确性 |\n| **2. 金额精度** | 33.333%, 33.33%, 0.001% | 确保舍入算法一致（ROUND_HALF_UP） |\n| **3. 负天数** | -10, -1, 0, 1 | 提前完成按0天处理，不产生违约金 |\n| **4. 封顶触发** | 20天, 100天, 150天, 200天, 500天 | 验证5%封顶机制生效 |\n| **5. 完整流程** | 5个综合场景 | 付款条件+违约金的组合计算 |\n| **6. 边界情况** | 违约金>应付款、三位小数、0天 | 极端情况处理 |\n\n---\n\n## 核心设计特点\n\n1. **使用Decimal精确计算**：避免浮点误差\n2. **ROUND_HALF_UP舍入**：标准四舍五入\n3. **负天数容错**：自动转换为0\n4. **完整数据校验**：比例、精度、边界检查\n5. **返回结构化结果**：便于上层系统集成\n6. **验证错误详细说明**：支持调试与合规审计\n\n可在实际系统中集成此代码，或通过修改参数适应不同合同条款。",
+  "finished_at": 1795618072615,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "0a19fe1c634cec20d2a9c794",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 171.717,
+      "target_ms": 18514.397,
+      "usage": {
+        "inputTokens": 4234,
+        "outputTokens": 5040,
+        "totalTokens": 9274,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 4234,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.029434",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "legal",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795618072528
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795618072553
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "0a19fe1c634cec20d2a9c794",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 171.717,
+      "target_ms": 18514.397,
+      "usage": {
+        "inputTokens": 4234,
+        "outputTokens": 5040,
+        "totalTokens": 9274,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 4234,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.029434",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795618072574
+    },
+    {
+      "type": "completed",
+      "answer": "我来编写付款条件和违约金计算函数，涵盖您提出的各个测试场景。\n\n```python\nfrom decimal import Decimal, ROUND_HALF_UP\nfrom typing import Dict, Tuple, List\n\nclass ContractPaymentCalculator:\n    \"\"\"合同付款与违约金计算器\"\"\"\n    \n    def __init__(self, contract_total: Decimal, daily_rate: Decimal, cap_rate: Decimal):\n        \"\"\"\n        初始化合同参数\n        \n        Args:\n            contract_total: 合同总额\n            daily_rate: 每日违约金比例（如0.0005表示0.05%）\n            cap_rate: 违约金封顶比例（如0.05表示5%）\n        \"\"\"\n        self.contract_total = Decimal(str(contract_total))\n        self.daily_rate = Decimal(str(daily_rate))\n        self.cap_rate = Decimal(str(cap_rate))\n    \n    def calculate_milestone_payment(\n        self, \n        milestone_percent: Decimal, \n        is_accepted: bool, \n        is_invoiced: bool,\n        decimal_places: int = 2\n    ) -> Dict:\n        \"\"\"\n        计算单个节点是否具备付款条件\n        \n        Args:\n            milestone_percent: 节点占比（可不为100%）\n            is_accepted: 是否已验收\n            is_invoiced: 是否已开票\n            decimal_places: 金额精度（默认2位）\n        \n        Returns:\n            {\n                'amount': Decimal,  # 节点金额\n                'is_eligible': bool,  # 是否具备付款条件\n                'reason': str,  # 原因说明\n                'validation_error': str or None  # 数据校验错误\n            }\n        \"\"\"\n        result = {\n            'amount': None,\n            'is_eligible': False,\n            'reason': '',\n            'validation_error': None\n        }\n        \n        # 比例校验\n        if not (Decimal('0') <= milestone_percent <= Decimal('100')):\n            result['validation_error'] = f\"比例应在0-100之间，实际：{milestone_percent}%\"\n            return result\n        \n        # 计算金额（使用指定精度）\n        amount = (self.contract_total * milestone_percent / Decimal('100')).quantize(\n            Decimal(10) ** -decimal_places,\n            rounding=ROUND_HALF_UP\n        )\n        result['amount'] = amount\n        \n        # 付款条件判断：验收 AND 开票\n        if is_accepted and is_invoiced:\n            result['is_eligible'] = True\n            result['reason'] = '已验收 + 已开票，满足付款条件'\n        else:\n            result['is_eligible'] = False\n            missing = []\n            if not is_accepted:\n                missing.append('验收')\n            if not is_invoiced:\n                missing.append('开票')\n            result['reason'] = f'缺少条件：{\" + \".join(missing)}'\n        \n        return result\n    \n    def calculate_penalty(\n        self,\n        delay_days: int,\n        decimal_places: int = 2\n    ) -> Dict:\n        \"\"\"\n        计算违约金（包含边界情况处理）\n        \n        Args:\n            delay_days: 延误天数（允许负数，表示提前完成）\n            decimal_places: 金额精度（默认2位）\n        \n        Returns:\n            {\n                'delay_days': int,\n                'uncapped_penalty': Decimal,  # 应计违约金（未封顶）\n                'capped_penalty': Decimal,  # 实际违约金（已封顶）\n                'cap_triggered': bool,  # 是否触发封顶\n                'penalty_rate': Decimal,  # 实际生效比例\n                'validation_error': str or None\n            }\n        \"\"\"\n        result = {\n            'delay_days': delay_days,\n            'uncapped_penalty': None,\n            'capped_penalty': None,\n            'cap_triggered': False,\n            'penalty_rate': None,\n            'validation_error': None\n        }\n        \n        # 负天数处理：提前完成不产生违约金\n        if delay_days < 0:\n            result['delay_days'] = 0\n            result['uncapped_penalty'] = Decimal('0')\n            result['capped_penalty'] = Decimal('0')\n            result['cap_triggered'] = False\n            result['penalty_rate'] = Decimal('0')\n            result['validation_error'] = f\"延误天数为负（{delay_days}），按提前完成处理，违约金为0\"\n            return result\n        \n        # 计算应计违约金\n        uncapped_penalty = (\n            self.contract_total * self.daily_rate * Decimal(delay_days)\n        ).quantize(\n            Decimal(10) ** -decimal_places,\n            rounding=ROUND_HALF_UP\n        )\n        result['uncapped_penalty'] = uncapped_penalty\n        \n        # 计算封顶违约金\n        cap_amount = (\n            self.contract_total * self.cap_rate\n        ).quantize(\n            Decimal(10) ** -decimal_places,\n            rounding=ROUND_HALF_UP\n        )\n        \n        # 判断是否触发封顶\n        if uncapped_penalty > cap_amount:\n            result['capped_penalty'] = cap_amount\n            result['cap_triggered'] = True\n            result['penalty_rate'] = self.cap_rate\n        else:\n            result['capped_penalty'] = uncapped_penalty\n            result['cap_triggered'] = False\n            actual_rate = (self.daily_rate * Decimal(delay_days)).quantize(\n                Decimal('0.000001'),\n                rounding=ROUND_HALF_UP\n            )\n            result['penalty_rate'] = actual_rate\n        \n        return result\n    \n    def calculate_net_payment(\n        self,\n        milestone_payment: Dict,\n        penalty: Dict,\n        decimal_places: int = 2\n    ) -> Dict:\n        \"\"\"\n        计算净支付金额（应付款 - 违约金）\n        \n        Args:\n            milestone_payment: 节点支付信息\n            penalty: 违约金计算结果\n            decimal_places: 金额精度\n        \n        Returns:\n            {\n                'gross_amount': Decimal,  # 应付总额\n                'penalty_deduction': Decimal,  # 违约金扣缴\n                'net_payment': Decimal,  # 净支付额\n                'is_payable': bool,  # 是否可支付\n                'payment_note': str  # 支付说明\n            }\n        \"\"\"\n        gross = milestone_payment['amount']\n        penalty_deduction = penalty['capped_penalty']\n        \n        net = (gross - penalty_deduction).quantize(\n            Decimal(10) ** -decimal_places,\n            rounding=ROUND_HALF_UP\n        )\n        \n        # 负数处理：如果违约金超过应付款\n        if net < 0:\n            net = Decimal('0')\n            is_payable = False\n            note = \"违约金超过应付款，实际支付0元，须由对方补偿\"\n        else:\n            is_payable = True if milestone_payment['is_eligible'] else False\n            note = \"\"\n            if not milestone_payment['is_eligible']:\n                note = f\"不满足付款条件（{milestone_payment['reason']}）\"\n            elif penalty['delay_days'] > 0:\n                note = f\"延误{penalty['delay_days']}天，扣缴违约金{penalty_deduction}\"\n            else:\n                note = \"正常支付\"\n        \n        return {\n            'gross_amount': gross,\n            'penalty_deduction': penalty_deduction,\n            'net_payment': net,\n            'is_payable': is_payable,\n            'payment_note': note\n        }\n\n\n# ============= 测试用例 =============\n\ndef run_tests():\n    \"\"\"执行完整测试套件\"\"\"\n    \n    # 初始化计算器（基于演示合同CT1）\n    calc = ContractPaymentCalculator(\n        contract_total=Decimal('500000'),\n        daily_rate=Decimal('0.0005'),  # 0.05%\n        cap_rate=Decimal('0.05')  # 5%\n    )\n    \n    print(\"=\" * 80)\n    print(\"付款条件与违约金计算函数测试\")\n    print(\"=\" * 80)\n    \n    # ========== 测试1：比例不为100% ==========\n    print(\"\\n【测试1】比例不为100%\")\n    print(\"-\" * 80)\n    test_cases_1 = [\n        (Decimal('30'), True, True, \"30%节点-满足条件\"),\n        (Decimal('50'), True, False, \"50%节点-仅已开票\"),\n        (Decimal('20'), False, False, \"20%节点-未验收未开票\"),\n        (Decimal('0'), False, False, \"0%节点-边界\"),\n        (Decimal('100'), True, True, \"100%节点-全额\"),\n        (Decimal('33.33'), True, True, \"33.33%-精度测试\"),\n        (Decimal('150'), False, False, \"150%-越界检测\"),\n    ]\n    \n    for percent, accepted, invoiced, desc in test_cases_1:\n        result = calc.calculate_milestone_payment(percent, accepted, invoiced)\n        status = \"✓\" if not result['validation_error'] else \"✗\"\n        print(f\"{status} {desc}\")\n        print(f\"   比例：{percent}% | 金额：{result['amount']} | 条件：{result['is_eligible']}\")\n        if result['validation_error']:\n            print(f\"   错误：{result['validation_error']}\")\n        else:\n            print(f\"   说明：{result['reason']}\")\n    \n    # ========== 测试2：金额精度 ==========\n    print(\"\\n【测试2】金额精度（小数位处理）\")\n    print(\"-\" * 80)\n    test_cases_2 = [\n        (Decimal('33.333'), \"2位精度\"),\n        (Decimal('33.33'), \"正常比例\"),\n        (Decimal('0.001'), \"极小比例\"),\n    ]\n    \n    for percent, desc in test_cases_2:\n        result = calc.calculate_milestone_payment(percent, True, True, decimal_places=2)\n        expected_gross = calc.contract_total * percent / Decimal('100')\n        rounded = expected_gross.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)\n        print(f\"{desc}\")\n        print(f\"   输入比例：{percent}% | 计算金额：{expected_gross} | 舍入结果：{result['amount']}\")\n        print(f\"   精度验证：{result['amount']} == {rounded} ? {result['amount'] == rounded}\")\n    \n    # ========== 测试3：负天数 ==========\n    print(\"\\n【测试3】负天数（提前完成）\")\n    print(\"-\" * 80)\n    test_cases_3 = [\n        (-10, \"提前10天\"),\n        (-1, \"提前1天\"),\n        (0, \"按期完成\"),\n        (1, \"延误1天\"),\n        (20, \"延误20天\"),\n    ]\n    \n    for days, desc in test_cases_3:\n        result = calc.calculate_penalty(days)\n        print(f\"{desc} | 天数：{days}\")\n        print(f\"   应计违约金：{result['uncapped_penalty']} | 实际违约金：{result['capped_penalty']}\")\n        if result['validation_error']:\n            print(f\"   处理：{result['validation_error']}\")\n    \n    # ========== 测试4：封顶触发 ==========\n    print(\"\\n【测试4】违约金封顶触发场景\")\n    print(\"-\" * 80)\n    test_cases_4 = [\n        (20, \"未触发封顶\"),\n        (100, \"接近封顶\"),\n        (150, \"触发封顶\"),\n        (200, \"明显超封顶\"),\n        (500, \"极端延误\"),\n    ]\n    \n    for days, desc in test_cases_4:\n        result = calc.calculate_penalty(days)\n        cap_pct = (result['capped_penalty'] / calc.contract_total * Decimal('100')).quantize(\n            Decimal('0.01'),\n            rounding=ROUND_HALF_UP\n        )\n        print(f\"{desc} | 延误{days}天\")\n        print(f\"   应计：{result['uncapped_penalty']} ({(result['uncapped_penalty']/calc.contract_total*100).quantize(Decimal('0.01'))}%)\")\n        print(f\"   实际：{result['capped_penalty']} ({cap_pct}%) | 封顶触发：{result['cap_triggered']}\")\n    \n    # ========== 测试5：完整支付场景 ==========\n    print(\"\\n【测试5】完整支付流程（应付-违约金=净支付）\")\n    print(\"-\" * 80)\n    scenarios = [\n        {\n            'desc': '场景A：M1，20天延误',\n            'percent': Decimal('30'),\n            'accepted': True,\n            'invoiced': True,\n            'delay_days': 20\n        },\n        {\n            'desc': '场景B：M1，150天延误',\n            'percent': Decimal('30'),\n            'accepted': True,\n            'invoiced': True,\n            'delay_days': 150\n        },\n        {\n            'desc': '场景C：M2，未验收，0延误',\n            'percent': Decimal('50'),\n            'accepted': False,\n            'invoiced': True,\n            'delay_days': 0\n        },\n        {\n            'desc': '场景D：M3，未开票未验收',\n            'percent': Decimal('20'),\n            'accepted': False,\n            'invoiced': False,\n            'delay_days': 0\n        },\n        {\n            'desc': '场景E：100%合同，500天极端延误',\n            'percent': Decimal('100'),\n            'accepted': True,\n            'invoiced': True,\n            'delay_days': 500\n        },\n    ]\n    \n    for scenario in scenarios:\n        print(f\"\\n{scenario['desc']}\")\n        milestone = calc.calculate_milestone_payment(\n            scenario['percent'],\n            scenario['accepted'],\n            scenario['invoiced']\n        )\n        penalty = calc.calculate_penalty(scenario['delay_days'])\n        payment = calc.calculate_net_payment(milestone, penalty)\n        \n        print(f\"   应付总额：{payment['gross_amount']}\")\n        print(f\"   违约金扣缴：{payment['penalty_deduction']}\")\n        print(f\"   净支付额：{payment['net_payment']}\")\n        print(f\"   可否支付：{'是' if payment['is_payable'] else '否'}\")\n        print(f\"   说明：{payment['payment_note']}\")\n    \n    # ========== 测试6：边界与特殊情况 ==========\n    print(\"\\n【测试6】边界与特殊情况\")\n    print(\"-\" * 80)\n    \n    # 子测试6a：违约金超过应付款\n    print(\"6a. 违约金超过应付款（极小比例+长时间延误）\")\n    result_6a = calc.calculate_milestone_payment(Decimal('1'), True, True)\n    penalty_6a = calc.calculate_penalty(2000)\n    payment_6a = calc.calculate_net_payment(result_6a, penalty_6a)\n    print(f\"   应付：{payment_6a['gross_amount']} | 违约金：{payment_6a['penalty_deduction']}\")\n    print(f\"   净支付：{payment_6a['net_payment']} | 说明：{payment_6a['payment_note']}\")\n    \n    # 子测试6b：三位小数精度\n    print(\"\\n6b. 三位小数精度\")\n    calc_3decimal = ContractPaymentCalculator(\n        Decimal('1000'),\n        Decimal('0.001'),  # 0.1%\n        Decimal('0.1')  # 10%\n    )\n    result_6b = calc_3decimal.calculate_milestone_payment(Decimal('33.333'), True, True, decimal_places=3)\n    print(f\"   比例：33.333% | 金额：{result_6b['amount']} | 精度：3位小数\")\n    \n    # 子测试6c：0天延误\n    print(\"\\n6c. 0天延误（边界）\")\n    result_6c = calc.calculate_penalty(0)\n    print(f\"   应计：{result_6c['uncapped_penalty']} | 实际：{result_6c['capped_penalty']}\")\n    \n    print(\"\\n\" + \"=\" * 80)\n    print(\"测试完成\")\n    print(\"=\" * 80)\n\n\nif __name__ == '__main__':\n    run_tests()\n```\n\n---\n\n## 测试覆盖范围\n\n| 测试项 | 场景 | 目的 |\n|--------|------|------|\n| **1. 比例不为100%** | 30%, 50%, 20%, 0%, 100%, 33.33%, 150% | 验证比例校验与金额计算准确性 |\n| **2. 金额精度** | 33.333%, 33.33%, 0.001% | 确保舍入算法一致（ROUND_HALF_UP） |\n| **3. 负天数** | -10, -1, 0, 1 | 提前完成按0天处理，不产生违约金 |\n| **4. 封顶触发** | 20天, 100天, 150天, 200天, 500天 | 验证5%封顶机制生效 |\n| **5. 完整流程** | 5个综合场景 | 付款条件+违约金的组合计算 |\n| **6. 边界情况** | 违约金>应付款、三位小数、0天 | 极端情况处理 |\n\n---\n\n## 核心设计特点\n\n1. **使用Decimal精确计算**：避免浮点误差\n2. **ROUND_HALF_UP舍入**：标准四舍五入\n3. **负天数容错**：自动转换为0\n4. **完整数据校验**：比例、精度、边界检查\n5. **返回结构化结果**：便于上层系统集成\n6. **验证错误详细说明**：支持调试与合规审计\n\n可在实际系统中集成此代码，或通过修改参数适应不同合同条款。",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795618072615
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

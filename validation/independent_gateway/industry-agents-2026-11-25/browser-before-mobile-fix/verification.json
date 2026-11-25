@@ -1,0 +1,9 @@
+{
+  "fixture": false,
+  "new_model_calls": 0,
+  "desktop_passed": true,
+  "mobile_passed": false,
+  "mobile_document_width": 551,
+  "mobile_viewport_width": 390,
+  "diagnosis": "Grid intrinsic minimum expanded the document; setting min-width:0 and minmax(0,1fr) reduced document to390 in a diagnostic injected-style check. Final production verification is separate."
+}

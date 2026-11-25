@@ -1,0 +1,710 @@
+{
+  "started_at": "2026-11-25T14:37:44.407707+00:00",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net",
+  "fixture": false,
+  "data_source": "synthetic_business_records",
+  "scope": "industry_agent_four_turns",
+  "quality_scoring": "manual_review_required",
+  "results": [
+    {
+      "scenario_id": "retail",
+      "turn": 1,
+      "job_id": "877b669b43e140e7ab7211a4",
+      "status": "error",
+      "session_id": "97968ce2887de1d0de5d201d",
+      "models": [
+        null
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "retail-turn-1.json"
+    },
+    {
+      "scenario_id": "manufacturing",
+      "turn": 1,
+      "job_id": "c4752d13b015a37363e30eec",
+      "status": "completed",
+      "session_id": "52bb3fa9802f04a96974a288",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 3,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "manufacturing-turn-1.json"
+    },
+    {
+      "scenario_id": "manufacturing",
+      "turn": 2,
+      "job_id": "6857a2f4dec435e713b2d77d",
+      "status": "completed",
+      "session_id": "52bb3fa9802f04a96974a288",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 2,
+      "model_switches": 0,
+      "retained_calls": 2,
+      "cache_read_tokens": 0,
+      "artifact": "manufacturing-turn-2.json"
+    },
+    {
+      "scenario_id": "manufacturing",
+      "turn": 3,
+      "job_id": "d8ba7635ae18e040d0dd2c75",
+      "status": "completed",
+      "session_id": "52bb3fa9802f04a96974a288",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "manufacturing-turn-3.json"
+    },
+    {
+      "scenario_id": "manufacturing",
+      "turn": 4,
+      "job_id": "44017e0321b29c67c62af67b",
+      "status": "completed",
+      "session_id": "52bb3fa9802f04a96974a288",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "manufacturing-turn-4.json"
+    },
+    {
+      "scenario_id": "finance",
+      "turn": 1,
+      "job_id": "e501cd1863fc2c8f88d0d1f5",
+      "status": "completed",
+      "session_id": "820fa6319b4d77f556c1d6cd",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 3,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "finance-turn-1.json"
+    },
+    {
+      "scenario_id": "finance",
+      "turn": 2,
+      "job_id": "bd773b2773ec4ca896f1da2f",
+      "status": "completed",
+      "session_id": "820fa6319b4d77f556c1d6cd",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 2,
+      "model_switches": 0,
+      "retained_calls": 2,
+      "cache_read_tokens": 0,
+      "artifact": "finance-turn-2.json"
+    },
+    {
+      "scenario_id": "finance",
+      "turn": 3,
+      "job_id": "d5ff3e12e194dc3a314dec32",
+      "status": "error",
+      "session_id": "820fa6319b4d77f556c1d6cd",
+      "models": [
+        null
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "finance-turn-3.json"
+    },
+    {
+      "scenario_id": "insurance",
+      "turn": 1,
+      "job_id": "354ec3b15cc93577a3dd16c3",
+      "status": "completed",
+      "session_id": "7e252237212f8a098abe8338",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 3,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "insurance-turn-1.json"
+    },
+    {
+      "scenario_id": "insurance",
+      "turn": 2,
+      "job_id": "b8d39c2061520f95c1970ebf",
+      "status": "completed",
+      "session_id": "7e252237212f8a098abe8338",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "insurance-turn-2.json"
+    },
+    {
+      "scenario_id": "insurance",
+      "turn": 3,
+      "job_id": "5e28477ce200d04d71c23946",
+      "status": "completed",
+      "session_id": "7e252237212f8a098abe8338",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "insurance-turn-3.json"
+    },
+    {
+      "scenario_id": "insurance",
+      "turn": 4,
+      "job_id": "c9c4954bb1c306ba277b2c2d",
+      "status": "completed",
+      "session_id": "7e252237212f8a098abe8338",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 2,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "insurance-turn-4.json"
+    },
+    {
+      "scenario_id": "healthcare",
+      "turn": 1,
+      "job_id": "06bdb5ceb728c87e5eb9e1ff",
+      "status": "completed",
+      "session_id": "1456190075efb68f2d863bed",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 3,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "healthcare-turn-1.json"
+    },
+    {
+      "scenario_id": "healthcare",
+      "turn": 2,
+      "job_id": "b85282e4523578b92aa9adc6",
+      "status": "completed",
+      "session_id": "1456190075efb68f2d863bed",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "healthcare-turn-2.json"
+    },
+    {
+      "scenario_id": "healthcare",
+      "turn": 3,
+      "job_id": "656c37436532703bfc7f79e8",
+      "status": "completed",
+      "session_id": "1456190075efb68f2d863bed",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "healthcare-turn-3.json"
+    },
+    {
+      "scenario_id": "healthcare",
+      "turn": 4,
+      "job_id": "a5eaf15ed60fdc5349bf1725",
+      "status": "completed",
+      "session_id": "1456190075efb68f2d863bed",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "healthcare-turn-4.json"
+    },
+    {
+      "scenario_id": "logistics",
+      "turn": 1,
+      "job_id": "ec38b4d1fb8fcf1f5d030a97",
+      "status": "completed",
+      "session_id": "270c76fee636ad6f59cef9fb",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 3,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "logistics-turn-1.json"
+    },
+    {
+      "scenario_id": "logistics",
+      "turn": 2,
+      "job_id": "cb3bb11d708cbdeb452bc1ca",
+      "status": "completed",
+      "session_id": "270c76fee636ad6f59cef9fb",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 3,
+      "model_switches": 0,
+      "retained_calls": 2,
+      "cache_read_tokens": 0,
+      "artifact": "logistics-turn-2.json"
+    },
+    {
+      "scenario_id": "logistics",
+      "turn": 3,
+      "job_id": "7ccf45eaa4b9d01a2ab32512",
+      "status": "error",
+      "session_id": "270c76fee636ad6f59cef9fb",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        null
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "logistics-turn-3.json"
+    },
+    {
+      "scenario_id": "energy",
+      "turn": 1,
+      "job_id": "d47fbb86265c5020c0dba873",
+      "status": "completed",
+      "session_id": "ca428015292eccd05f06f1c3",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 2,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "energy-turn-1.json"
+    },
+    {
+      "scenario_id": "energy",
+      "turn": 2,
+      "job_id": "0af40f7829d60e25a193217b",
+      "status": "completed",
+      "session_id": "ca428015292eccd05f06f1c3",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "energy-turn-2.json"
+    },
+    {
+      "scenario_id": "energy",
+      "turn": 3,
+      "job_id": "7a385bd850c464cc49805be8",
+      "status": "completed",
+      "session_id": "ca428015292eccd05f06f1c3",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "energy-turn-3.json"
+    },
+    {
+      "scenario_id": "energy",
+      "turn": 4,
+      "job_id": "0e199390c5724c730b365f3e",
+      "status": "completed",
+      "session_id": "ca428015292eccd05f06f1c3",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "energy-turn-4.json"
+    },
+    {
+      "scenario_id": "saas",
+      "turn": 1,
+      "job_id": "dec380f33fb4a2fc3c655b4b",
+      "status": "completed",
+      "session_id": "a5966f3ddec50ead45725f77",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 3,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "saas-turn-1.json"
+    },
+    {
+      "scenario_id": "saas",
+      "turn": 2,
+      "job_id": "d389c80b723bd4f37f76d352",
+      "status": "completed",
+      "session_id": "a5966f3ddec50ead45725f77",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 2,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "saas-turn-2.json"
+    },
+    {
+      "scenario_id": "saas",
+      "turn": 3,
+      "job_id": "62640bf7603e7e9f3b048de4",
+      "status": "error",
+      "session_id": "a5966f3ddec50ead45725f77",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        null
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "saas-turn-3.json"
+    },
+    {
+      "scenario_id": "telecom",
+      "turn": 1,
+      "job_id": "7c80a937c143a04065bd4165",
+      "status": "completed",
+      "session_id": "3858088418321999d3d918b8",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 3,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "telecom-turn-1.json"
+    },
+    {
+      "scenario_id": "telecom",
+      "turn": 2,
+      "job_id": "a2f7df32775bfd384d8cfe11",
+      "status": "completed",
+      "session_id": "3858088418321999d3d918b8",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 2,
+      "model_switches": 0,
+      "retained_calls": 2,
+      "cache_read_tokens": 0,
+      "artifact": "telecom-turn-2.json"
+    },
+    {
+      "scenario_id": "telecom",
+      "turn": 3,
+      "job_id": "c575c5c16b1f0f7597e03694",
+      "status": "completed",
+      "session_id": "3858088418321999d3d918b8",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "telecom-turn-3.json"
+    },
+    {
+      "scenario_id": "telecom",
+      "turn": 4,
+      "job_id": "77dbf39ac790f1ab2b31b221",
+      "status": "completed",
+      "session_id": "3858088418321999d3d918b8",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "telecom-turn-4.json"
+    },
+    {
+      "scenario_id": "public-services",
+      "turn": 1,
+      "job_id": "791814300fda1b85a60da4c8",
+      "status": "completed",
+      "session_id": "4c7fb06ff2746348a8d98961",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 3,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "public-services-turn-1.json"
+    },
+    {
+      "scenario_id": "public-services",
+      "turn": 2,
+      "job_id": "9d8af3604bf30a118eb3186e",
+      "status": "completed",
+      "session_id": "4c7fb06ff2746348a8d98961",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 2,
+      "model_switches": 0,
+      "retained_calls": 2,
+      "cache_read_tokens": 0,
+      "artifact": "public-services-turn-2.json"
+    },
+    {
+      "scenario_id": "public-services",
+      "turn": 3,
+      "job_id": "b05833f6f5d5a914ad8a5172",
+      "status": "error",
+      "session_id": "4c7fb06ff2746348a8d98961",
+      "models": [
+        null
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "public-services-turn-3.json"
+    },
+    {
+      "scenario_id": "education",
+      "turn": 1,
+      "job_id": "fd74e1fa1b2904819303dd52",
+      "status": "completed",
+      "session_id": "ac118b8ac1e342bd718d86db",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 2,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "education-turn-1.json"
+    },
+    {
+      "scenario_id": "education",
+      "turn": 2,
+      "job_id": "fa12f61526dfba06b5c0b3e1",
+      "status": "completed",
+      "session_id": "ac118b8ac1e342bd718d86db",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "education-turn-2.json"
+    },
+    {
+      "scenario_id": "education",
+      "turn": 3,
+      "job_id": "942a4fcd3124f4f6685efaad",
+      "status": "completed",
+      "session_id": "ac118b8ac1e342bd718d86db",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "education-turn-3.json"
+    },
+    {
+      "scenario_id": "education",
+      "turn": 4,
+      "job_id": "823c2eb3f4a5cbdfc3367e16",
+      "status": "completed",
+      "session_id": "ac118b8ac1e342bd718d86db",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "education-turn-4.json"
+    },
+    {
+      "scenario_id": "legal",
+      "turn": 1,
+      "job_id": "ddfc257640effae9a7894c9d",
+      "status": "completed",
+      "session_id": "f24ffacae41ed73929e315bd",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 3,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "legal-turn-1.json"
+    },
+    {
+      "scenario_id": "legal",
+      "turn": 2,
+      "job_id": "5ebbf6e5de35c633721b0a19",
+      "status": "completed",
+      "session_id": "f24ffacae41ed73929e315bd",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "legal-turn-2.json"
+    },
+    {
+      "scenario_id": "legal",
+      "turn": 3,
+      "job_id": "ae905ef00c4e275e88c78c9b",
+      "status": "completed",
+      "session_id": "f24ffacae41ed73929e315bd",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "legal-turn-3.json"
+    },
+    {
+      "scenario_id": "legal",
+      "turn": 4,
+      "job_id": "e99de6f4fa945f694a4387ce",
+      "status": "completed",
+      "session_id": "f24ffacae41ed73929e315bd",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "legal-turn-4.json"
+    }
+  ],
+  "dataset_version": "dae0d4382fc67060",
+  "planned_turns": 48,
+  "scenarios": [
+    "retail",
+    "manufacturing",
+    "finance",
+    "insurance",
+    "healthcare",
+    "logistics",
+    "energy",
+    "saas",
+    "telecom",
+    "public-services",
+    "education",
+    "legal"
+  ],
+  "completed_turns": 36,
+  "finished_at": "2026-11-25T14:48:32.420929+00:00"
+}

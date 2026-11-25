@@ -1,0 +1,35 @@
+{
+  "started_at": "2026-11-25T14:22:44.204623+00:00",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net",
+  "fixture": false,
+  "data_source": "synthetic_business_records",
+  "scope": "industry_agent_four_turns",
+  "quality_scoring": "manual_review_required",
+  "results": [
+    {
+      "scenario_id": "retail",
+      "turn": 1,
+      "job_id": "d4af2dc12b8cec9f90c4ec5c",
+      "status": "error",
+      "session_id": "6c7dfd28880c420489a6292e",
+      "models": [
+        "amazon.nova-lite-v1:0",
+        "amazon.nova-lite-v1:0",
+        "amazon.nova-lite-v1:0"
+      ],
+      "model_calls": 3,
+      "tool_calls": 4,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 1279,
+      "artifact": "retail-turn-1.json"
+    }
+  ],
+  "dataset_version": "dae0d4382fc67060",
+  "planned_turns": 4,
+  "scenarios": [
+    "retail"
+  ],
+  "completed_turns": 0,
+  "finished_at": "2026-11-25T14:22:57.038597+00:00"
+}

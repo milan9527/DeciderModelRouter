@@ -50,6 +50,7 @@
             ><span>◈</span> 网关工作台</a
           >
           <a href="#models" data-page="models"><span>▦</span> Bedrock 模型</a>
+          <a href="#agents" data-page="agents" data-persistent hidden><span>↔</span> 行业 Agent</a>
           <a href="#performance" data-page="performance"
             ><span>▥</span> 历史与性能</a
           >
@@ -163,7 +164,7 @@
                   <p id="media-notice" class="footnote" role="status"></p>
                   <div class="field-row template-search">
                     <label>场景分类<select id="template-category"><option value="all">全部场景</option></select></label>
-                    <label>搜索模板<input id="template-search" type="search" placeholder="问候、解释、写作、代码…" /></label>
+                    <label>搜索模板<input id="template-search" type="search" placeholder="制造、对账、物流、理赔…" /></label>
                   </div>
                   <div
                     id="examples"
@@ -360,6 +361,34 @@
                 </section>
               </div>
             </div>
+          </section>
+          <section data-view="agents" hidden>
+            <div class="page-heading"><div><p class="eyebrow">INDUSTRY AGENTS</p><h1>从业务查询到复杂决策，观察模型如何变化。</h1>
+              <p class="muted">在同一Agent会话中连续追问，查看实际模型、原生工具调用和沿用或切换原因。</p></div></div>
+            <p id="agent-runtime-state" class="region"></p>
+            <div class="agent-layout">
+              <section class="panel agent-input">
+                <label>行业场景<select id="agent-scenario"></select></label>
+                <p id="agent-context"></p>
+                <details><summary>查看演示业务数据与规则</summary><p class="footnote">数据为合成业务记录，工具实际读取这些记录，不连接生产业务系统。</p>
+                  <pre id="agent-data"></pre><p id="agent-policy"></p></details>
+                <p class="footnote">业务验收要点：<span id="agent-acceptance"></span></p>
+                <div id="agent-turns"></div>
+                <button type="button" class="secondary" id="agent-advanced" hidden>进阶追问：跨区域计费一致性</button>
+                <button type="button" class="secondary" id="agent-summary" disabled>追问：简短总结上一条回答</button>
+                <form id="agent-form">
+                  <label>本轮任务 / 自由追问<textarea id="agent-prompt" rows="5" maxlength="1400" required></textarea></label>
+                  <label>成本与能力偏好<select id="agent-tier"><option value="medium">自动均衡</option><option value="low">优先节省</option><option value="high">优先能力</option></select></label>
+                  <label>每次模型输出上限<select id="agent-budget"><option value="4096">4,096 tokens</option><option value="8192">8,192 tokens</option><option value="16384" selected>16,384 tokens</option></select></label>
+                  <div class="dialog-actions"><button class="primary" id="agent-send">发送本轮任务</button><button class="secondary" type="button" id="agent-new">新建会话</button></div>
+                </form>
+                <button type="button" class="secondary" id="agent-run-all">新会话运行四轮验证</button>
+                <p class="footnote">每轮最多6次模型调用，四轮最多24次，按实际调用产生费用；首次运行可能等待Runtime启动。</p>
+                <p id="agent-session-label" aria-live="polite"></p>
+              </section>
+              <div><div class="metrics" id="agent-metrics"></div><section class="panel" id="agent-result" aria-live="polite"></section></div>
+            </div>
+            <section class="panel"><div class="panel-heading"><h2>Agent会话历史</h2><span class="tiny">按账户持久保存</span></div><div id="agent-history"></div></section>
           </section>
           <section data-view="models" hidden>
             <section class="panel padded-panel">

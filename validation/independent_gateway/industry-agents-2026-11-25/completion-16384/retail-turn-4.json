@@ -1,0 +1,195 @@
+{
+  "id": "af14228932d9d0408288a45d",
+  "session_id": "4542e30a24a5949dda57bb79",
+  "scenario_id": "retail",
+  "title": "大促缺货与履约补救",
+  "industry": "零售电商",
+  "prompt": "把已有结论改写成给客服的三条操作说明，保留订单编号和补偿金额，不要重复查询。",
+  "status": "completed",
+  "created_at": 1795618373663,
+  "turn": 4,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 16384,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795618379087,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-d9d886f539dbfd7f562118c1afae58b91105befc4265e0c46513fe6a9cc11411",
+  "answer": "## 客服操作说明\n\n基于订单O101、O102、O103的库存分析，现提供三条操作指引：\n\n---\n\n### **说明1：O101订单处理**\n- **订单编号**：O101\n- **状态**：超期26小时，需立即发货\n- **操作**：从现有库存分配30件SKU A，同时发放延期补偿¥300\n- **依据**：该订单为SKU A最早承诺(26h)，政策规定同SKU按承诺日期先后分货；补偿按5%×¥6000=¥300(单订单上限)\n\n---\n\n### **说明2：O103订单处理**\n- **订单编号**：O103\n- **状态**：超期30小时，存在缺货风险\n- **操作**：**建议等待48小时，届时可从在途库存(20件)完整补齐需求**，同时发放延期补偿¥200\n  - 若客户不可等：当前可先行部分发货5件，剩余15件待处理(成本需另行评估)\n- **依据**：现有库存35件优先满足O101(30件)后仅剩5件；政策规定O101先于O103；补偿按5%×¥4000=¥200；等待方案可实现零缺货，毛利提升¥675\n\n---\n\n### **说明3：O102订单处理**\n- **订单编号**：O102  \n- **状态**：仅超期4小时，无缺货风险\n- **操作**：正常发货，**无需补偿**\n- **依据**：超期未满24小时阈值，不触发补偿规则；SKU B库存充足(20件可用)\n\n---\n\n**补偿总额汇总**：O101(¥300) + O103(¥200) = **¥500**  \n**客户确认项**：O103是否同意等待48小时完整发货，或现在部分发货并接受后续缺货处理",
+  "finished_at": 1795618379065,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "1608b1042c7d766d15ae7c39",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 192.178,
+      "target_ms": 4444.499,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 581,
+        "totalTokens": 11711,
+        "cacheReadInputTokens": 4373,
+        "cacheWriteInputTokens": 6754,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 6754
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 4373,
+        "write_tokens": 6754,
+        "total_input_tokens": 11130,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "retail",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795618378990
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795618379007
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "1608b1042c7d766d15ae7c39",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 192.178,
+      "target_ms": 4444.499,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 581,
+        "totalTokens": 11711,
+        "cacheReadInputTokens": 4373,
+        "cacheWriteInputTokens": 6754,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 6754
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 4373,
+        "write_tokens": 6754,
+        "total_input_tokens": 11130,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795618379025
+    },
+    {
+      "type": "completed",
+      "answer": "## 客服操作说明\n\n基于订单O101、O102、O103的库存分析，现提供三条操作指引：\n\n---\n\n### **说明1：O101订单处理**\n- **订单编号**：O101\n- **状态**：超期26小时，需立即发货\n- **操作**：从现有库存分配30件SKU A，同时发放延期补偿¥300\n- **依据**：该订单为SKU A最早承诺(26h)，政策规定同SKU按承诺日期先后分货；补偿按5%×¥6000=¥300(单订单上限)\n\n---\n\n### **说明2：O103订单处理**\n- **订单编号**：O103\n- **状态**：超期30小时，存在缺货风险\n- **操作**：**建议等待48小时，届时可从在途库存(20件)完整补齐需求**，同时发放延期补偿¥200\n  - 若客户不可等：当前可先行部分发货5件，剩余15件待处理(成本需另行评估)\n- **依据**：现有库存35件优先满足O101(30件)后仅剩5件；政策规定O101先于O103；补偿按5%×¥4000=¥200；等待方案可实现零缺货，毛利提升¥675\n\n---\n\n### **说明3：O102订单处理**\n- **订单编号**：O102  \n- **状态**：仅超期4小时，无缺货风险\n- **操作**：正常发货，**无需补偿**\n- **依据**：超期未满24小时阈值，不触发补偿规则；SKU B库存充足(20件可用)\n\n---\n\n**补偿总额汇总**：O101(¥300) + O103(¥200) = **¥500**  \n**客户确认项**：O103是否同意等待48小时完整发货，或现在部分发货并接受后续缺货处理",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795618379065
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 4373
+  }
+}

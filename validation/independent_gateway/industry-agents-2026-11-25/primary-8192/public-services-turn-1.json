@@ -1,0 +1,395 @@
+{
+  "id": "791814300fda1b85a60da4c8",
+  "session_id": "4c7fb06ff2746348a8d98961",
+  "scenario_id": "public-services",
+  "title": "许可申请积压与办理时限",
+  "industry": "政务服务",
+  "prompt": "查询申请和人员能力，计算各件有效办理天数，列出超时项。",
+  "status": "completed",
+  "created_at": 1795617933308,
+  "turn": 1,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617941562,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-c02e0b6d398b282523bdc92312da0fd8536e53e6a1e162e70d472e7e4b20b0b2",
+  "answer": "好的，现在计算各申请的有效办理天数。**有效办理天数 = 已用工作日 - 补件暂停天数**\n\n## 有效办理天数计算结果\n\n| 申请编号 | 申请类型 | 已用工作日 | 补件暂停天数 | **有效办理天数** | 时限状态 |\n|---------|--------|---------|----------|------------|--------|\n| G1 | 续期 | 12 | 5 | **7** | ✓ 正常 |\n| G2 | 新办 | 11 | 0 | **11** | ⚠️ **超时** |\n| G3 | 新办 | 6 | 1 | **5** | ✓ 正常 |\n\n## 超时项详情\n\n**申请编号 G2**\n- 申请类型：新办\n- 有效办理天数：11天 > 时限10天\n- 状态：**超期1个工作日**\n- 补件情况：无补件停顿\n\n## 人员能力分析\n\n| 部门 | 评审员数 | 日均承载(件/日) | 当前积压 |\n|------|--------|------------|-------|\n| 评审部 | 2人 | 8 | 28件 |\n\n**处置预测**：按日均4件/人·天计，2人组需7工作日清除当前积压，建议考虑临时人力支持以防止新增申请继续超时。\n\n## 关键发现\n\n- **应立即行动**：G2已超时，需明确是否待命处理或已完成待通知\n- **非补件原因超时**：G2的超时不因补件停顿导致，属实际办理延迟\n- **系统瓶颈**：评审部积压28件相对人力不足，需排班调整\n\n建议按优先级重新排序人员配置，或增配评审员以保障时限达成。",
+  "finished_at": 1795617941544,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "c3bdd6e15f5b8d759bb8ad08",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "customer_support",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 97.7,
+      "target_ms": 1015.05,
+      "usage": {
+        "inputTokens": 1312,
+        "outputTokens": 153,
+        "totalTokens": 1465,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1312,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.002077",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3
+    },
+    {
+      "step": 2,
+      "run_id": "b3ffc8b829dac4de013854de",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 116.281,
+      "target_ms": 3788.317,
+      "usage": {
+        "inputTokens": 1793,
+        "outputTokens": 563,
+        "totalTokens": 2356,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1793,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.004608",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "public-services",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617937073
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617937095
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "c3bdd6e15f5b8d759bb8ad08",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "customer_support",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 97.7,
+      "target_ms": 1015.05,
+      "usage": {
+        "inputTokens": 1312,
+        "outputTokens": 153,
+        "totalTokens": 1465,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1312,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.002077",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3,
+      "sequence": 3,
+      "recorded_at": 1795617937116
+    },
+    {
+      "type": "tool_started",
+      "name": "read_policy",
+      "arguments": {},
+      "sequence": 4,
+      "recorded_at": 1795617937137
+    },
+    {
+      "type": "tool_result",
+      "name": "read_policy",
+      "arguments": {},
+      "status": "success",
+      "result": {
+        "policy": "办理时限10个工作日，已给elapsed_days为工作日；补件暂停天数不计入；不因年龄、姓名等无关属性排序；最终审批由授权人员办理。",
+        "source": "synthetic_business_policy"
+      },
+      "elapsed_ms": 0.009,
+      "sequence": 5,
+      "recorded_at": 1795617937157
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "applications"
+      },
+      "sequence": 6,
+      "recorded_at": 1795617937177
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "applications"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "applications",
+        "records": [
+          {
+            "id": "G1",
+            "elapsed_days": 12,
+            "paused_days": 5,
+            "type": "renewal"
+          },
+          {
+            "id": "G2",
+            "elapsed_days": 11,
+            "paused_days": 0,
+            "type": "new"
+          },
+          {
+            "id": "G3",
+            "elapsed_days": 6,
+            "paused_days": 1,
+            "type": "new"
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.009,
+      "sequence": 7,
+      "recorded_at": 1795617937195
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "staffing"
+      },
+      "sequence": 8,
+      "recorded_at": 1795617937215
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "staffing"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "staffing",
+        "records": [
+          {
+            "team": "review",
+            "reviewers": 2,
+            "cases_per_day": 4,
+            "backlog": 28
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.007,
+      "sequence": 9,
+      "recorded_at": 1795617937238
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 10,
+      "recorded_at": 1795617941479
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "b3ffc8b829dac4de013854de",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 116.281,
+      "target_ms": 3788.317,
+      "usage": {
+        "inputTokens": 1793,
+        "outputTokens": 563,
+        "totalTokens": 2356,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1793,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.004608",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 11,
+      "recorded_at": 1795617941500
+    },
+    {
+      "type": "completed",
+      "answer": "好的，现在计算各申请的有效办理天数。**有效办理天数 = 已用工作日 - 补件暂停天数**\n\n## 有效办理天数计算结果\n\n| 申请编号 | 申请类型 | 已用工作日 | 补件暂停天数 | **有效办理天数** | 时限状态 |\n|---------|--------|---------|----------|------------|--------|\n| G1 | 续期 | 12 | 5 | **7** | ✓ 正常 |\n| G2 | 新办 | 11 | 0 | **11** | ⚠️ **超时** |\n| G3 | 新办 | 6 | 1 | **5** | ✓ 正常 |\n\n## 超时项详情\n\n**申请编号 G2**\n- 申请类型：新办\n- 有效办理天数：11天 > 时限10天\n- 状态：**超期1个工作日**\n- 补件情况：无补件停顿\n\n## 人员能力分析\n\n| 部门 | 评审员数 | 日均承载(件/日) | 当前积压 |\n|------|--------|------------|-------|\n| 评审部 | 2人 | 8 | 28件 |\n\n**处置预测**：按日均4件/人·天计，2人组需7工作日清除当前积压，建议考虑临时人力支持以防止新增申请继续超时。\n\n## 关键发现\n\n- **应立即行动**：G2已超时，需明确是否待命处理或已完成待通知\n- **非补件原因超时**：G2的超时不因补件停顿导致，属实际办理延迟\n- **系统瓶颈**：评审部积压28件相对人力不足，需排班调整\n\n建议按优先级重新排序人员配置，或增配评审员以保障时限达成。",
+      "model_calls": 2,
+      "sequence": 12,
+      "recorded_at": 1795617941544
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 3,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

@@ -1,0 +1,284 @@
+{
+  "started_at": "2026-11-25T14:28:21.296318+00:00",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net",
+  "fixture": false,
+  "data_source": "synthetic_business_records",
+  "scope": "industry_agent_four_turns",
+  "quality_scoring": "manual_review_required",
+  "results": [
+    {
+      "scenario_id": "retail",
+      "turn": 1,
+      "job_id": "95b0026de401d115d99faef9",
+      "status": "completed",
+      "session_id": "70ae03ada4d01d72987f6137",
+      "models": [
+        "amazon.nova-lite-v1:0",
+        "amazon.nova-lite-v1:0",
+        "amazon.nova-lite-v1:0"
+      ],
+      "model_calls": 3,
+      "tool_calls": 2,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 1801,
+      "artifact": "retail-turn-1.json"
+    },
+    {
+      "scenario_id": "retail",
+      "turn": 2,
+      "job_id": "df2412638f57abfcdcd0084e",
+      "status": "completed",
+      "session_id": "70ae03ada4d01d72987f6137",
+      "models": [
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-micro-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 1,
+      "retained_calls": 1,
+      "cache_read_tokens": 746,
+      "artifact": "retail-turn-2.json"
+    },
+    {
+      "scenario_id": "retail",
+      "turn": 3,
+      "job_id": "8f4a563c321db8559e95b120",
+      "status": "completed",
+      "session_id": "70ae03ada4d01d72987f6137",
+      "models": [
+        "amazon.nova-lite-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 1,
+      "retained_calls": 0,
+      "cache_read_tokens": 743,
+      "artifact": "retail-turn-3.json"
+    },
+    {
+      "scenario_id": "retail",
+      "turn": 4,
+      "job_id": "fc1392c39a444a92fd05bd6a",
+      "status": "completed",
+      "session_id": "70ae03ada4d01d72987f6137",
+      "models": [
+        "amazon.nova-micro-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 1,
+      "retained_calls": 0,
+      "cache_read_tokens": 599,
+      "artifact": "retail-turn-4.json"
+    },
+    {
+      "scenario_id": "manufacturing",
+      "turn": 1,
+      "job_id": "b33212ee3c41476b02eec7cc",
+      "status": "completed",
+      "session_id": "4e6ddb623656c9676ff44acc",
+      "models": [
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-lite-v1:0",
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-lite-v1:0"
+      ],
+      "model_calls": 5,
+      "tool_calls": 9,
+      "model_switches": 3,
+      "retained_calls": 1,
+      "cache_read_tokens": 1546,
+      "artifact": "manufacturing-turn-1.json"
+    },
+    {
+      "scenario_id": "manufacturing",
+      "turn": 2,
+      "job_id": "ac27b450c158a1cb1d27a049",
+      "status": "completed",
+      "session_id": "4e6ddb623656c9676ff44acc",
+      "models": [
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-micro-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 1,
+      "retained_calls": 1,
+      "cache_read_tokens": 1013,
+      "artifact": "manufacturing-turn-2.json"
+    },
+    {
+      "scenario_id": "manufacturing",
+      "turn": 3,
+      "job_id": "b351935bf650a84306d67732",
+      "status": "completed",
+      "session_id": "4e6ddb623656c9676ff44acc",
+      "models": [
+        "amazon.nova-lite-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 1,
+      "retained_calls": 0,
+      "cache_read_tokens": 517,
+      "artifact": "manufacturing-turn-3.json"
+    },
+    {
+      "scenario_id": "manufacturing",
+      "turn": 4,
+      "job_id": "2b8a851a21fd634ddeb16dce",
+      "status": "completed",
+      "session_id": "4e6ddb623656c9676ff44acc",
+      "models": [
+        "amazon.nova-micro-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 1,
+      "retained_calls": 0,
+      "cache_read_tokens": 463,
+      "artifact": "manufacturing-turn-4.json"
+    },
+    {
+      "scenario_id": "finance",
+      "turn": 1,
+      "job_id": "229b001001e0a29fc403c0c9",
+      "status": "completed",
+      "session_id": "c8731d5fd02e73789ca5c6b3",
+      "models": [
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-lite-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 2,
+      "model_switches": 1,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "finance-turn-1.json"
+    },
+    {
+      "scenario_id": "finance",
+      "turn": 2,
+      "job_id": "83673136e92026eb0a3b760b",
+      "status": "completed",
+      "session_id": "c8731d5fd02e73789ca5c6b3",
+      "models": [
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-micro-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 5,
+      "model_switches": 1,
+      "retained_calls": 1,
+      "cache_read_tokens": 1239,
+      "artifact": "finance-turn-2.json"
+    },
+    {
+      "scenario_id": "finance",
+      "turn": 3,
+      "job_id": "99917c219d7aef34c3d55038",
+      "status": "completed",
+      "session_id": "c8731d5fd02e73789ca5c6b3",
+      "models": [
+        "amazon.nova-lite-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 1,
+      "retained_calls": 0,
+      "cache_read_tokens": 578,
+      "artifact": "finance-turn-3.json"
+    },
+    {
+      "scenario_id": "finance",
+      "turn": 4,
+      "job_id": "f53ef7fe6c3074a4d654cc42",
+      "status": "completed",
+      "session_id": "c8731d5fd02e73789ca5c6b3",
+      "models": [
+        "amazon.nova-micro-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 1,
+      "retained_calls": 0,
+      "cache_read_tokens": 478,
+      "artifact": "finance-turn-4.json"
+    },
+    {
+      "scenario_id": "insurance",
+      "turn": 1,
+      "job_id": "d3f6b179565564a8d9b16485",
+      "status": "completed",
+      "session_id": "60f9c6eac12a8b32226747a4",
+      "models": [
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-lite-v1:0"
+      ],
+      "model_calls": 5,
+      "tool_calls": 5,
+      "model_switches": 1,
+      "retained_calls": 1,
+      "cache_read_tokens": 2113,
+      "artifact": "insurance-turn-1.json"
+    },
+    {
+      "scenario_id": "insurance",
+      "turn": 2,
+      "job_id": "25d468f4556a9e0aa4b3fb21",
+      "status": "completed",
+      "session_id": "60f9c6eac12a8b32226747a4",
+      "models": [
+        "amazon.nova-micro-v1:0",
+        "amazon.nova-micro-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 1,
+      "retained_calls": 1,
+      "cache_read_tokens": 1130,
+      "artifact": "insurance-turn-2.json"
+    },
+    {
+      "scenario_id": "insurance",
+      "turn": 3,
+      "job_id": "e05052ac80acd0c9f5fb8a8d",
+      "status": "completed",
+      "session_id": "60f9c6eac12a8b32226747a4",
+      "models": [
+        "amazon.nova-lite-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 1,
+      "retained_calls": 0,
+      "cache_read_tokens": 570,
+      "artifact": "insurance-turn-3.json"
+    }
+  ],
+  "dataset_version": "dae0d4382fc67060",
+  "planned_turns": 48,
+  "scenarios": [
+    "retail",
+    "manufacturing",
+    "finance",
+    "insurance",
+    "healthcare",
+    "logistics",
+    "energy",
+    "saas",
+    "telecom",
+    "public-services",
+    "education",
+    "legal"
+  ],
+  "completed_turns": 15,
+  "finished_at": "2026-11-25T14:30:05.302762+00:00",
+  "status": "stopped_for_evidence_policy_refinement"
+}

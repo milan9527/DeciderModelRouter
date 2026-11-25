@@ -1295,3 +1295,23 @@ dialog::backdrop { background: #10152b88; backdrop-filter: blur(3px); }
 .conversation-thread { max-height: 440px; overflow: auto; }
 .conversation-turn { padding: 12px 0; border-bottom: 1px solid var(--line, #dce4ed); }
 .conversation-turn pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: 13px; }
+.agent-layout { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 20px; align-items: start; margin: 20px 0; }
+.agent-layout > * { min-width: 0; }
+[data-view="agents"] .panel { padding: 22px; min-width: 0; }
+.agent-input details { margin: 16px 0; }
+[data-view="agents"] pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 420px; overflow: auto; font-size: 12px; line-height: 1.65; }
+.agent-turn, .agent-history-row { width: 100%; display: grid; gap: 6px; text-align: left; padding: 12px; margin: 8px 0; border: 1px solid var(--line, #dce4ed); border-radius: 8px; background: transparent; color: inherit; }
+.agent-turn:hover, .agent-history-row:hover { background: #f2f6ff; }
+.agent-turn span, .agent-history-row span { font-size: 12px; line-height: 1.6; }
+.agent-input form { margin-top: 18px; }
+.agent-table { overflow-x: auto; }
+.agent-table td { min-width: 100px; max-width: 280px; font-size: 12px; overflow-wrap: anywhere; }
+.agent-table small { display: block; margin-top: 6px; color: var(--muted); }
+.agent-switch { color: #176452; }
+.agent-tools { margin-top: 22px; }
+.agent-tools article { padding: 12px 0; border-bottom: 1px solid var(--line, #dce4ed); }
+[data-view="agents"] .agent-answer { max-height: none; font-size: 14px; }
+#agent-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#agent-result:empty { display: none; }
+@media (max-width: 1200px) { .agent-layout { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { #agent-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } [data-view="agents"] .panel { padding: 16px; } }

@@ -8,7 +8,9 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-最新部署为 **ECS revision 10 / Python 3.12 ARM64**，镜像 `sha256:a5c4449aee029e4c4be10996d7bd78d21683c253c96acd2900ad4ab86846afa3`。默认决策模型改为 **Liquid d1-2B**，前端刷新后自动选中；未传 `provider` 的API请求也使用Liquid，仍可显式选择Decider/H2O。43项相关软件测试通过；正式域名一次Liquid分类、一次Nova Micro执行完成，历史保存及浏览器默认选项验证通过。CloudFront刷新 `I16K1IVRTND7WSDWOK3JTD88W7` 已完成。沿用GPU，原服务revision 36保持不变。[验证记录](../validation/independent_gateway/liquid-default-2026-11-25/README.zh.md)，本机审计目录 `.deployment/liquid-default-20261125/`。
+最新部署为 **ECS revision 16 / Python 3.12 ARM64**，API镜像 `sha256:f0293af24d4a48cf46a93014fba527503bc2ce9abd541f75d4d350d98edc4842`。新增[行业Agent页面](https://d3eipg2g3l3an3.cloudfront.net/#agents)、12行业四轮任务、原生工具、多轮数据库恢复、缓存和逐次选模展示。独立 **AgentCore Runtime平台V2 / 应用版本3**，Runtime镜像 `sha256:db83453019721a43a38143465a0937b873a572a0afb88a8c6a4f1801d7cca7c7`；Strands模型提供者为`model-router`，每次调用经过默认Liquid及ECS路由。增加长回调保活与Agent专用240秒目标等待。527项软件测试通过；标准行业任务补测后累计46/48完整执行，业务抽查仍有错误，不能当作质量通过率。[实测与最终AWS核验](../validation/independent_gateway/industry-agents-2026-11-25/README.zh.md)、[架构与机制](../docs/INDUSTRY_AGENTS.zh.md)。本机审计目录 `.deployment/industry-agent-20261125/`。沿用GPU和原服务revision 36，没有CloudFormation或Cognito。
+
+前一版 **ECS revision 10**，镜像 `sha256:a5c4449aee029e4c4be10996d7bd78d21683c253c96acd2900ad4ab86846afa3`。默认决策模型改为 **Liquid d1-2B**，前端刷新后自动选中；未传 `provider` 的API请求也使用Liquid，仍可显式选择Decider/H2O。43项相关软件测试通过；正式域名一次Liquid分类、一次Nova Micro执行完成，历史保存及浏览器默认选项验证通过。CloudFront刷新 `I16K1IVRTND7WSDWOK3JTD88W7` 已完成。沿用GPU，原服务revision 36保持不变。[验证记录](../validation/independent_gateway/liquid-default-2026-11-25/README.zh.md)，本机审计目录 `.deployment/liquid-default-20261125/`。
 
 前一版 **ECS revision 9**，镜像 `sha256:0bf8665ec1bb233f0d351570fbf939f1199ad41c630ba2946e022e59345f5cbe`。新增多轮上下文、会话粘性、原生提示词缓存、ConverseStream、受约束回退及对应历史与性能展示。513项全量软件测试、后续26项定向回归和浏览器验证通过；线上五次 H2O 分类、五次 Nova Micro 执行全部完成，连续追问沿用配置，长前缀追问实际读取2,109缓存tokens。CloudFront 刷新 `IBGGC2FUX1K7ILTCRSW75LRHIT` 已完成，根路径无跳转，五个公网静态文件匹配本地；独立GPU、原GPU及原服务 revision 36 未变。[机制与边界](../docs/SESSION_ROUTING.zh.md)、[实测报告](../validation/independent_gateway/sessions-2026-11-25/README.zh.md)，本机审计目录 `.deployment/session-release-20261125/`。
 
@@ -42,6 +44,8 @@ API 文档：https://d3eipg2g3l3an3.cloudfront.net/api/docs（需登录）。
 | OAC / VPC Origin | `E3FP5MHA6YE62X` / `vo_ICO9DXxf2dTCwLlQB2ZqlA` |
 | VPC | `vpc-05ac5abdb873adec9` |
 | ECS 集群 / 服务 | `decider-model-router` |
+| AgentCore Runtime | `decider_model_router_industry-Fg8vWeEOIs` · 平台V2 · 应用版本3 · DEFAULT |
+| Runtime执行角色 | `decider-model-router-agent`；自身ECR/日志权限，不直接调用Bedrock |
 | 内网 ALB | `decider-model-router` |
 | 账户表 | `decider-model-router-auth` |
 | 会话/运行/评测表 | `decider-model-router-data` |

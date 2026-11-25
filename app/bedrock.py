@@ -16,6 +16,7 @@ MODELS = {
 }
 ROUTING_MODELS = {"us.openai.gpt-6-sol"}
 TARGET_READ_TIMEOUT_SECONDS = 120
+AGENT_READ_TIMEOUT_SECONDS = 240
 
 
 def create_client(*, read_timeout=40):

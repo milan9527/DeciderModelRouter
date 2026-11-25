@@ -95,6 +95,10 @@ def final_result(text, usage, stop, cache, streaming, ttft=None):
 
 
 async def converse(request, client, row, task, runtime):
+    if getattr(runtime, "agent_tools", False):
+        from app.agent_model import agent_converse
+
+        return await agent_converse(client, row, task, runtime)
     caps = capabilities(row)
     if not caps["multi_turn"]:
         raise HTTPException(422, "当前适配器不支持多轮文本会话，请关闭历史或新建会话。")

@@ -1,0 +1,181 @@
+{
+  "id": "f53ef7fe6c3074a4d654cc42",
+  "session_id": "c8731d5fd02e73789ca5c6b3",
+  "scenario_id": "finance",
+  "title": "支付对账差异与幂等修复",
+  "industry": "银行与支付",
+  "prompt": "将结论简写成发给商户的说明草稿，保留金额单位和待查事项，不发送消息。",
+  "status": "completed",
+  "created_at": 1795616982385,
+  "turn": 4,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 4096,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795616984815,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-4713f2d2614f5f6bd36af02c0a174cb388fb175837c11e0493f0852be21c6269",
+  "answer": "### 商户对账说明草稿\n\n亲爱的商户，感谢您使用我们的支付服务。根据最新对账结果，我们发现以下情况：\n\n1. **重复交易处理**：对于重复交易（如交易ID P11 和 P13 的重复记录），我们已按照业务规则进行处理，确保不会造成重复计算或损失。\n   \n2. **退款处理**：所有退款（如交易ID P11 和 P13 的退款记录）均已正确反映在对账中，退款金额已扣除。\n\n3. **未结算金额**：交易ID P12 仍未结算，请注意其金额为 8300 分。\n\n4. **并发写入和金额冲突**：我们采用了线程安全的处理机制，确保在并发写入和金额冲突（如交易ID P13）情况下，数据的准确性和一致性。\n\n**待查事项**：如有任何不符合预期的交易或金额差异，请联系我们进行进一步核查。\n\n此致，\n[您的公司名称]\n支付运营团队\n\n请根据实际情况调整具体信息和金额。",
+  "finished_at": 1795616984800,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "0cbdf51d2bf253344581c6c1",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "configuration_id": "13043f5e2865142ea68b1f10",
+      "previous_model_id": "amazon.nova-lite-v1:0",
+      "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+      "model_changed": true,
+      "configuration_changed": true,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 183.434,
+      "target_ms": 1513.82,
+      "usage": {
+        "inputTokens": 3292,
+        "outputTokens": 346,
+        "totalTokens": 4116,
+        "cacheReadInputTokens": 478,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 478,
+        "write_tokens": 0,
+        "total_input_tokens": 3770,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "finance",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795616984732
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795616984748
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "0cbdf51d2bf253344581c6c1",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "configuration_id": "13043f5e2865142ea68b1f10",
+      "previous_model_id": "amazon.nova-lite-v1:0",
+      "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+      "model_changed": true,
+      "configuration_changed": true,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 183.434,
+      "target_ms": 1513.82,
+      "usage": {
+        "inputTokens": 3292,
+        "outputTokens": 346,
+        "totalTokens": 4116,
+        "cacheReadInputTokens": 478,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 478,
+        "write_tokens": 0,
+        "total_input_tokens": 3770,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795616984764
+    },
+    {
+      "type": "completed",
+      "answer": "### 商户对账说明草稿\n\n亲爱的商户，感谢您使用我们的支付服务。根据最新对账结果，我们发现以下情况：\n\n1. **重复交易处理**：对于重复交易（如交易ID P11 和 P13 的重复记录），我们已按照业务规则进行处理，确保不会造成重复计算或损失。\n   \n2. **退款处理**：所有退款（如交易ID P11 和 P13 的退款记录）均已正确反映在对账中，退款金额已扣除。\n\n3. **未结算金额**：交易ID P12 仍未结算，请注意其金额为 8300 分。\n\n4. **并发写入和金额冲突**：我们采用了线程安全的处理机制，确保在并发写入和金额冲突（如交易ID P13）情况下，数据的准确性和一致性。\n\n**待查事项**：如有任何不符合预期的交易或金额差异，请联系我们进行进一步核查。\n\n此致，\n[您的公司名称]\n支付运营团队\n\n请根据实际情况调整具体信息和金额。",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795616984800
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 1,
+    "retained_calls": 0,
+    "cache_read_tokens": 478
+  }
+}

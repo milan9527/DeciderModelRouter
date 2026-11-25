@@ -1,0 +1,195 @@
+{
+  "id": "cc9e5306a27bbbc306b8dca8",
+  "session_id": "270c76fee636ad6f59cef9fb",
+  "scenario_id": "logistics",
+  "title": "冷链延误与温控异常处置",
+  "industry": "物流供应链",
+  "prompt": "将结论压缩为调度员三条交接指令，保留运单编号和阈值。",
+  "status": "completed",
+  "created_at": 1795618457637,
+  "turn": 4,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 16384,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795618462778,
+  "trimmed_turns": 1,
+  "runtime_session_id": "dmr-d004e47826f6900bc326b43e8caf0326eddb3fa1feec46b6780fdede57e99cd7",
+  "answer": "## 冷链调度员交接指令\n\n### 📋 **指令1：隔离与复验**\n\n**立即执行**（收货后0.5h内）\n\n- **运单**：S41 | **批次**：K1 | **货值**：24000元\n- **原因**：传感器数据超温35分钟（阈值>30分钟触发隔离）\n- **措施**：\n  - 转移冷链隔离区A-02，标签\"S41-K1-HOLD\"\n  - 72小时内完成质检复验（微生物+感官）\n  - 温度记录上传系统存档\n\n---\n\n### 📋 **指令2：SLA追责与通知**\n\n**2小时内启动**（确认货品无温控风险后）\n\n- **运单**：S43 | **批次**：K3 | **货值**：32000元\n- **原因**：延误9小时（阈值>4小时触发SLA核查）\n- **措施**：\n  - 承运商正式违约通知，计算赔偿\n  - 高层客户通知及赔偿方案（运费×5-10%）\n  - 更新承运商信用评级\n\n---\n\n### 📋 **指令3：常规入库**\n\n**即刻执行**\n\n- **运单**：S42 | **批次**：K2 | **货值**：18000元\n- **原因**：温度恒定5℃（2-8℃范围内），延误1小时（<4小时）\n- **措施**：\n  - 例行验收后正常上架\n  - 无特殊处理需求\n\n---\n\n**去重告警触发阈值**：\n- 温度超8℃累计>1800秒 → 告警\n- 缺测超300秒 → 传感器故障告警\n- 同批次30分钟内去重 → 仅首次告警",
+  "finished_at": 1795618462761,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "9953214f2407c971c601dff2",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 149.071,
+      "target_ms": 4245.883,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 546,
+        "totalTokens": 13795,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 13246,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 13246
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 13246,
+        "total_input_tokens": 13249,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "logistics",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795618462686
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795618462705
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "9953214f2407c971c601dff2",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 149.071,
+      "target_ms": 4245.883,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 546,
+        "totalTokens": 13795,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 13246,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 13246
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 13246,
+        "total_input_tokens": 13249,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795618462721
+    },
+    {
+      "type": "completed",
+      "answer": "## 冷链调度员交接指令\n\n### 📋 **指令1：隔离与复验**\n\n**立即执行**（收货后0.5h内）\n\n- **运单**：S41 | **批次**：K1 | **货值**：24000元\n- **原因**：传感器数据超温35分钟（阈值>30分钟触发隔离）\n- **措施**：\n  - 转移冷链隔离区A-02，标签\"S41-K1-HOLD\"\n  - 72小时内完成质检复验（微生物+感官）\n  - 温度记录上传系统存档\n\n---\n\n### 📋 **指令2：SLA追责与通知**\n\n**2小时内启动**（确认货品无温控风险后）\n\n- **运单**：S43 | **批次**：K3 | **货值**：32000元\n- **原因**：延误9小时（阈值>4小时触发SLA核查）\n- **措施**：\n  - 承运商正式违约通知，计算赔偿\n  - 高层客户通知及赔偿方案（运费×5-10%）\n  - 更新承运商信用评级\n\n---\n\n### 📋 **指令3：常规入库**\n\n**即刻执行**\n\n- **运单**：S42 | **批次**：K2 | **货值**：18000元\n- **原因**：温度恒定5℃（2-8℃范围内），延误1小时（<4小时）\n- **措施**：\n  - 例行验收后正常上架\n  - 无特殊处理需求\n\n---\n\n**去重告警触发阈值**：\n- 温度超8℃累计>1800秒 → 告警\n- 缺测超300秒 → 传感器故障告警\n- 同批次30分钟内去重 → 仅首次告警",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795618462761
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

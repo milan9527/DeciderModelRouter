@@ -1,0 +1,78 @@
+{
+  "id": "7285c490e6c989703e54b104",
+  "session_id": "9e4aa21964ab7f669eaf974e",
+  "scenario_id": "insurance",
+  "title": "理赔材料核对与免赔额计算",
+  "industry": "保险",
+  "prompt": "查询报案与保单，列出重复票据、缺少材料项目和可进入初审的金额。",
+  "status": "error",
+  "created_at": 1795617311888,
+  "turn": 1,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617314865,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-c7fc271ced5a2cae443db84b5e447d5a83bfc0ceeb91633c5ac8a404b3e7cfa3",
+  "error": "Model Router调用未完成（HTTP 502），请查看网关步骤历史",
+  "finished_at": 1795617314846,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "0e2f6d9c39fc8a1d49321b18",
+      "status": "failed",
+      "error": {
+        "code": 502,
+        "message": "Agent目标返回了无效的工具或消息结构"
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "insurance",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617314814
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617314832
+    },
+    {
+      "type": "error",
+      "message": "Model Router调用未完成（HTTP 502），请查看网关步骤历史",
+      "sequence": 3,
+      "recorded_at": 1795617314846
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

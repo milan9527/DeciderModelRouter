@@ -1,0 +1,217 @@
+{
+  "id": "62640bf7603e7e9f3b048de4",
+  "session_id": "a5966f3ddec50ead45725f77",
+  "scenario_id": "saas",
+  "title": "租户故障定位与幂等补偿",
+  "industry": "软件与云服务",
+  "prompt": "编写Python幂等计费处理与SQL约束，处理多租户同event、并发写入和金额冲突；提供边界测试，不运行生产操作。",
+  "status": "error",
+  "created_at": 1795617846781,
+  "turn": 3,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617875297,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-b046aa5b28b9902f000df2eb7a37d1107c6cc0743c0e9cabe6d2fdb1d3d3b9e1",
+  "error": "Model Router调用未完成（HTTP 502），请查看网关步骤历史",
+  "finished_at": 1795617875273,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "f457c271b406c32e6f64f8dd",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "other"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 188.339,
+      "target_ms": 813.457,
+      "usage": {
+        "inputTokens": 7458,
+        "outputTokens": 70,
+        "totalTokens": 7528,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 7458,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.007808",
+      "stop_reason": "tool_use",
+      "tool_call_count": 1
+    },
+    {
+      "step": 2,
+      "run_id": "ff7ce9907966b5bf49f3635a",
+      "status": "failed",
+      "error": {
+        "status": "incomplete",
+        "route_ms": 316.519,
+        "backend_total_ms": 26323.067
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "saas",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617848684
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617848707
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "f457c271b406c32e6f64f8dd",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "other"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 188.339,
+      "target_ms": 813.457,
+      "usage": {
+        "inputTokens": 7458,
+        "outputTokens": 70,
+        "totalTokens": 7528,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 7458,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.007808",
+      "stop_reason": "tool_use",
+      "tool_call_count": 1,
+      "sequence": 3,
+      "recorded_at": 1795617848731
+    },
+    {
+      "type": "tool_started",
+      "name": "read_policy",
+      "arguments": {},
+      "sequence": 4,
+      "recorded_at": 1795617848755
+    },
+    {
+      "type": "tool_result",
+      "name": "read_policy",
+      "arguments": {},
+      "status": "success",
+      "result": {
+        "policy": "错误率超过5%且P95超过1000ms升级P1；event唯一键必须包含tenant；先止损再核对账务，不自动退款；回滚需值班负责人批准。",
+        "source": "synthetic_business_policy"
+      },
+      "elapsed_ms": 0.009,
+      "sequence": 5,
+      "recorded_at": 1795617875233
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 6,
+      "recorded_at": 1795617875252
+    },
+    {
+      "type": "error",
+      "message": "Model Router调用未完成（HTTP 502），请查看网关步骤历史",
+      "sequence": 7,
+      "recorded_at": 1795617875273
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 1,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

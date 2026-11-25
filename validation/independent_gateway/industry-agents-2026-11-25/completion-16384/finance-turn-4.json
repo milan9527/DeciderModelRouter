@@ -1,0 +1,195 @@
+{
+  "id": "7d3407a9dcb5342378d75904",
+  "session_id": "820fa6319b4d77f556c1d6cd",
+  "scenario_id": "finance",
+  "title": "支付对账差异与幂等修复",
+  "industry": "银行与支付",
+  "prompt": "将结论简写成发给商户的说明草稿，保留金额单位和待查事项，不发送消息。",
+  "status": "completed",
+  "created_at": 1795618414616,
+  "turn": 4,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 16384,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795618421265,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-68b9467c1af3b95c70b0f1a3f5013f5eedf34e09c800a746611d50c45648b59b",
+  "answer": "## 商户对账说明草稿\n\n**对账批次**：BATCH_20240115  \n**对账时间**：2024-01-15  \n**商户**：[商户名称]\n\n---\n\n### 📊 本期对账结果\n\n| 项目 | 笔数 | 金额(分) | 状态 |\n|------|------|---------|------|\n| ✓ 正常结算 | 1笔 | 12,500 | 已入账 |\n| ⚠ 重复投递 | 1笔 | 12,500 | 已去重 |\n| ⏳ 待结算 | 1笔 | 8,300 | 在途处理 |\n| ✗ 金额不匹配 | 1笔 | — | 需调查 |\n| ⚠ 异常漂移 | 1笔 | — | 需确认 |\n\n---\n\n### 💰 本期资金流\n\n| 类型 | 金额(分) |\n|------|---------|\n| 收入结算 | +12,500 |\n| 退款结算 | -20,000 |\n| **本期净额** | **-7,500** |\n| **待结算** | **+8,300** |\n\n**说明**：本期实际入账-7,500分（收入12,500分，退款20,000分）；另有订单P12（8,300分）已授权待结算，预计下批次处理。\n\n---\n\n### ⚠️ 需关注事项\n\n**1. 交易P11 - 重复投递**  \n- 账本金额：12,500分（已结算）\n- 结算记录：投递2次（同一事件ID）\n- 处理：自动去重，仅计1笔\n- **状态**：✓ 已正确处理\n\n**2. 交易P12 - 待结算**  \n- 金额：8,300分\n- 状态：已授权(captured)，本批次未结算\n- 预期：下批次推送结算\n- **待查**：✓ 确认是否按预期结算\n\n**3. 交易P13 - 退款**  \n- 账本金额：20,000分（已退款）\n- 结算金额：-20,000分（负数）\n- **状态**：✓ 金额匹配正常\n\n**4. 交易P14 - 金额不匹配**  \n- 账本：10,000分\n- 结算：9,999分\n- 差异：-1分（结算少1分）\n- **待查**：✓ 确认是否为系统舍入或异常\n\n**5. 交易P99 - 异常漂移**  \n- 结算：5,000分投递\n- 账本：无对应记录\n- **待查**：✓ 确认此笔交易是否应属本商户\n\n---\n\n### ✅ 确认事项\n\n请确认以下内容：\n- [ ] P12是否需要立即结算或按计划处理\n- [ ] P14的1分差异是否可接受或需调查\n- [ ] P99的异常漂移是否为误投或其他原因\n\n---\n\n**对账周期**：每日对账，异常自动告警  \n**联系方式**：[客服电话/邮箱]  \n**更新时间**：2024-01-15 11:00:00",
+  "finished_at": 1795618421248,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "1722b25f34c463d767c171da",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 151.326,
+      "target_ms": 5742.936,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 955,
+        "totalTokens": 13606,
+        "cacheReadInputTokens": 4323,
+        "cacheWriteInputTokens": 8325,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 8325
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 4323,
+        "write_tokens": 8325,
+        "total_input_tokens": 12651,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "finance",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795618421171
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795618421189
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "1722b25f34c463d767c171da",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 151.326,
+      "target_ms": 5742.936,
+      "usage": {
+        "inputTokens": 3,
+        "outputTokens": 955,
+        "totalTokens": 13606,
+        "cacheReadInputTokens": 4323,
+        "cacheWriteInputTokens": 8325,
+        "cacheDetails": [
+          {
+            "ttl": "5m",
+            "inputTokens": 8325
+          }
+        ]
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 4,
+        "policy_version": "agent-native-cache-v1",
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 4323,
+        "write_tokens": 8325,
+        "total_input_tokens": 12651,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795618421206
+    },
+    {
+      "type": "completed",
+      "answer": "## 商户对账说明草稿\n\n**对账批次**：BATCH_20240115  \n**对账时间**：2024-01-15  \n**商户**：[商户名称]\n\n---\n\n### 📊 本期对账结果\n\n| 项目 | 笔数 | 金额(分) | 状态 |\n|------|------|---------|------|\n| ✓ 正常结算 | 1笔 | 12,500 | 已入账 |\n| ⚠ 重复投递 | 1笔 | 12,500 | 已去重 |\n| ⏳ 待结算 | 1笔 | 8,300 | 在途处理 |\n| ✗ 金额不匹配 | 1笔 | — | 需调查 |\n| ⚠ 异常漂移 | 1笔 | — | 需确认 |\n\n---\n\n### 💰 本期资金流\n\n| 类型 | 金额(分) |\n|------|---------|\n| 收入结算 | +12,500 |\n| 退款结算 | -20,000 |\n| **本期净额** | **-7,500** |\n| **待结算** | **+8,300** |\n\n**说明**：本期实际入账-7,500分（收入12,500分，退款20,000分）；另有订单P12（8,300分）已授权待结算，预计下批次处理。\n\n---\n\n### ⚠️ 需关注事项\n\n**1. 交易P11 - 重复投递**  \n- 账本金额：12,500分（已结算）\n- 结算记录：投递2次（同一事件ID）\n- 处理：自动去重，仅计1笔\n- **状态**：✓ 已正确处理\n\n**2. 交易P12 - 待结算**  \n- 金额：8,300分\n- 状态：已授权(captured)，本批次未结算\n- 预期：下批次推送结算\n- **待查**：✓ 确认是否按预期结算\n\n**3. 交易P13 - 退款**  \n- 账本金额：20,000分（已退款）\n- 结算金额：-20,000分（负数）\n- **状态**：✓ 金额匹配正常\n\n**4. 交易P14 - 金额不匹配**  \n- 账本：10,000分\n- 结算：9,999分\n- 差异：-1分（结算少1分）\n- **待查**：✓ 确认是否为系统舍入或异常\n\n**5. 交易P99 - 异常漂移**  \n- 结算：5,000分投递\n- 账本：无对应记录\n- **待查**：✓ 确认此笔交易是否应属本商户\n\n---\n\n### ✅ 确认事项\n\n请确认以下内容：\n- [ ] P12是否需要立即结算或按计划处理\n- [ ] P14的1分差异是否可接受或需调查\n- [ ] P99的异常漂移是否为误投或其他原因\n\n---\n\n**对账周期**：每日对账，异常自动告警  \n**联系方式**：[客服电话/邮箱]  \n**更新时间**：2024-01-15 11:00:00",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795618421248
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 4323
+  }
+}

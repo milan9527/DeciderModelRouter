@@ -1,4 +1,5 @@
 const $ = (s) => document.querySelector(s);
+import { IndustryAgents } from "./agents.js";
 const $$ = (s) => [...document.querySelectorAll(s)];
 const date = (v) => new Date(v).toLocaleString("zh-CN", { hour12: false });
 const labels = { running: "处理中", executed: "已完成", selected: "已选模", no_route: "无候选", incomplete: "输出未完成", error: "失败", interrupted: "已中断", completed: "已完成" };
@@ -15,6 +16,7 @@ export function mediaHTML(items = []) {
 export class Workspace {
   constructor({ api, esc, ms, usd, reuse, signedOut }) {
     Object.assign(this, { api, esc, ms, usd, reuse, signedOut, enabled: false, epoch: 0, historyRequest: 0 });
+    this.agents = new IndustryAgents({ api, esc, ms, usd, notify: (m) => this.notify(m) });
     this.bind();
   }
   notify(message) {
@@ -29,6 +31,7 @@ export class Workspace {
     finally { if (button) button.disabled = false; }
   }
   reset() {
+    this.agents.reset();
     this.epoch++;
     this.enabled = false;
     this.sessionId = null;
@@ -76,6 +79,7 @@ export class Workspace {
     $("#account-description").textContent = `${user.username} · ${account.role === "admin" ? "管理员" : "普通用户"}`;
     $("#admin-panel").hidden = $("#users-panel").hidden = account.role !== "admin";
     await this.refreshHistory();
+    await this.agents.enter();
     this.page(location.hash.slice(1));
   }
   renderSessions() {
@@ -105,6 +109,7 @@ export class Workspace {
   }
   page(page) {
     if (!this.enabled) return;
+    if (page === "agents") this.action(() => this.agents.history());
     if (page === "performance") this.action(() => this.refreshHistory());
     if (page === "evaluations") this.action(() => Promise.all([this.refreshEvaluations(), this.refreshEffects()]));
     if (page === "account" && this.account?.role === "admin") this.action(() => this.refreshUsers());

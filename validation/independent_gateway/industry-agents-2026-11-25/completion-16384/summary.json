@@ -1,0 +1,187 @@
+{
+  "scope": "resume_missing_turns_with_16384_budget",
+  "source": "../primary-8192/summary.json",
+  "fixture": false,
+  "results": [
+    {
+      "scenario_id": "retail",
+      "turn": 1,
+      "job_id": "49fb729ad7d7931d8d37b684",
+      "status": "completed",
+      "session_id": "4542e30a24a5949dda57bb79",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 3,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "retail-turn-1.json"
+    },
+    {
+      "scenario_id": "retail",
+      "turn": 2,
+      "job_id": "a7098302c415f128264c4e39",
+      "status": "completed",
+      "session_id": "4542e30a24a5949dda57bb79",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 2,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "artifact": "retail-turn-2.json"
+    },
+    {
+      "scenario_id": "retail",
+      "turn": 3,
+      "job_id": "9dca199cb9d09d720989e9ce",
+      "status": "completed",
+      "session_id": "4542e30a24a5949dda57bb79",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "retail-turn-3.json"
+    },
+    {
+      "scenario_id": "retail",
+      "turn": 4,
+      "job_id": "af14228932d9d0408288a45d",
+      "status": "completed",
+      "session_id": "4542e30a24a5949dda57bb79",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 4373,
+      "artifact": "retail-turn-4.json"
+    },
+    {
+      "scenario_id": "finance",
+      "turn": 3,
+      "job_id": "1497e3f91c7d4cae8314572e",
+      "status": "completed",
+      "session_id": "820fa6319b4d77f556c1d6cd",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 4181,
+      "artifact": "finance-turn-3.json"
+    },
+    {
+      "scenario_id": "finance",
+      "turn": 4,
+      "job_id": "7d3407a9dcb5342378d75904",
+      "status": "completed",
+      "session_id": "820fa6319b4d77f556c1d6cd",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 4323,
+      "artifact": "finance-turn-4.json"
+    },
+    {
+      "scenario_id": "logistics",
+      "turn": 3,
+      "job_id": "de37cdb0209312bd4787b8a4",
+      "status": "completed",
+      "session_id": "270c76fee636ad6f59cef9fb",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0",
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 6331,
+      "artifact": "logistics-turn-3.json"
+    },
+    {
+      "scenario_id": "logistics",
+      "turn": 4,
+      "job_id": "cc9e5306a27bbbc306b8dca8",
+      "status": "completed",
+      "session_id": "270c76fee636ad6f59cef9fb",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "logistics-turn-4.json"
+    },
+    {
+      "scenario_id": "saas",
+      "turn": 3,
+      "job_id": "d1b9932ba5a7011eedd43297",
+      "status": "error",
+      "session_id": "a5966f3ddec50ead45725f77",
+      "models": [
+        null
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "saas-turn-3.json"
+    },
+    {
+      "scenario_id": "public-services",
+      "turn": 3,
+      "job_id": "4a2c9de7759136f8bdfae25f",
+      "status": "completed",
+      "session_id": "4c7fb06ff2746348a8d98961",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "public-services-turn-3.json"
+    },
+    {
+      "scenario_id": "public-services",
+      "turn": 4,
+      "job_id": "ce79b59b959c8f8bcb21e710",
+      "status": "completed",
+      "session_id": "4c7fb06ff2746348a8d98961",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 4326,
+      "artifact": "public-services-turn-4.json"
+    }
+  ]
+}

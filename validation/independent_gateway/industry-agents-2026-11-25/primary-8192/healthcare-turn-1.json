@@ -1,0 +1,394 @@
+{
+  "id": "06bdb5ceb728c87e5eb9e1ff",
+  "session_id": "1456190075efb68f2d863bed",
+  "scenario_id": "healthcare",
+  "title": "门诊排班与检查资源协调",
+  "industry": "医疗运营",
+  "prompt": "查询检查预约与可用时段，汇总MRI需求分钟数，包含清洁时间。",
+  "status": "completed",
+  "created_at": 1795617652410,
+  "turn": 1,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617664096,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-054cee5e5ddeb26b2c99b95c2d19e50f3d2d7458ebfb83222b131bd393aaafc5",
+  "answer": "基于查询结果，以下为MRI需求汇总：\n\n**预约检查明细（appointments）：**\n| 预约ID | 检查类型 | 检查时长(分钟) | 优先级 |\n|--------|--------|-------------|------|\n| A31 | MRI | 45 | urgent |\n| A32 | MRI | 30 | routine |\n| A33 | MRI | 60 | routine |\n\n**可用时段与清洁规则（capacity）：**\n| 资源单元 | 可用时段(分钟) | 单次清洁时长(分钟) |\n|--------|-------------|----------------|\n| MRI | 120 | 10 |\n\n**MRI需求总量计算：**\n\n检查时长合计：45 + 30 + 60 = **135分钟**\n\n清洁时间：3例检查 × 10分钟/例 = **30分钟**\n（政策规定每例检查后预留10分钟清洁，含最后一例）\n\n**所需总时长：135 + 30 = 165分钟**\n\n**容量分析：**\n- 可用时段：120分钟\n- 所需总时长：165分钟\n- **超容量：45分钟**（165 - 120 = 45）\n\n**建议：** 根据业务规则，超容量情况需协调加班或改期并征得患者确认。按优先级，建议保留urgent预约A31，可考虑将routine预约A32或A33改期至其他时段。",
+  "finished_at": 1795617664076,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "a3334502a8b89aa9d7aec263",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 98.197,
+      "target_ms": 872.403,
+      "usage": {
+        "inputTokens": 1317,
+        "outputTokens": 138,
+        "totalTokens": 1455,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1317,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.002007",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3
+    },
+    {
+      "step": 2,
+      "run_id": "59caf5db3623368fcf1abd3d",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 115.815,
+      "target_ms": 4675.188,
+      "usage": {
+        "inputTokens": 1764,
+        "outputTokens": 432,
+        "totalTokens": 2196,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1764,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.003924",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "healthcare",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617658501
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617658524
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "a3334502a8b89aa9d7aec263",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 98.197,
+      "target_ms": 872.403,
+      "usage": {
+        "inputTokens": 1317,
+        "outputTokens": 138,
+        "totalTokens": 1455,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1317,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.002007",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3,
+      "sequence": 3,
+      "recorded_at": 1795617658546
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "appointments"
+      },
+      "sequence": 4,
+      "recorded_at": 1795617658571
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "appointments"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "appointments",
+        "records": [
+          {
+            "id": "A31",
+            "unit": "MRI",
+            "minutes": 45,
+            "priority": "urgent"
+          },
+          {
+            "id": "A32",
+            "unit": "MRI",
+            "minutes": 30,
+            "priority": "routine"
+          },
+          {
+            "id": "A33",
+            "unit": "MRI",
+            "minutes": 60,
+            "priority": "routine"
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.012,
+      "sequence": 5,
+      "recorded_at": 1795617663894
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "capacity"
+      },
+      "sequence": 6,
+      "recorded_at": 1795617663931
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "capacity"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "capacity",
+        "records": [
+          {
+            "unit": "MRI",
+            "available_minutes": 120,
+            "cleaning_per_case": 10
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.006,
+      "sequence": 7,
+      "recorded_at": 1795617663950
+    },
+    {
+      "type": "tool_started",
+      "name": "read_policy",
+      "arguments": {},
+      "sequence": 8,
+      "recorded_at": 1795617663971
+    },
+    {
+      "type": "tool_result",
+      "name": "read_policy",
+      "arguments": {},
+      "status": "success",
+      "result": {
+        "policy": "每例检查后预留10分钟清洁，含最后一例；urgent优先；不能取消检查或自行修改临床优先级；超容量需协调加班或改期并征得确认。",
+        "source": "synthetic_business_policy"
+      },
+      "elapsed_ms": 0.002,
+      "sequence": 9,
+      "recorded_at": 1795617663991
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 10,
+      "recorded_at": 1795617664013
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "59caf5db3623368fcf1abd3d",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 115.815,
+      "target_ms": 4675.188,
+      "usage": {
+        "inputTokens": 1764,
+        "outputTokens": 432,
+        "totalTokens": 2196,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1764,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.003924",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 11,
+      "recorded_at": 1795617664033
+    },
+    {
+      "type": "completed",
+      "answer": "基于查询结果，以下为MRI需求汇总：\n\n**预约检查明细（appointments）：**\n| 预约ID | 检查类型 | 检查时长(分钟) | 优先级 |\n|--------|--------|-------------|------|\n| A31 | MRI | 45 | urgent |\n| A32 | MRI | 30 | routine |\n| A33 | MRI | 60 | routine |\n\n**可用时段与清洁规则（capacity）：**\n| 资源单元 | 可用时段(分钟) | 单次清洁时长(分钟) |\n|--------|-------------|----------------|\n| MRI | 120 | 10 |\n\n**MRI需求总量计算：**\n\n检查时长合计：45 + 30 + 60 = **135分钟**\n\n清洁时间：3例检查 × 10分钟/例 = **30分钟**\n（政策规定每例检查后预留10分钟清洁，含最后一例）\n\n**所需总时长：135 + 30 = 165分钟**\n\n**容量分析：**\n- 可用时段：120分钟\n- 所需总时长：165分钟\n- **超容量：45分钟**（165 - 120 = 45）\n\n**建议：** 根据业务规则，超容量情况需协调加班或改期并征得患者确认。按优先级，建议保留urgent预约A31，可考虑将routine预约A32或A33改期至其他时段。",
+      "model_calls": 2,
+      "sequence": 12,
+      "recorded_at": 1795617664076
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 3,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

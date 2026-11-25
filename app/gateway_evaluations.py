@@ -12,7 +12,7 @@ from pydantic import Field
 from starlette.concurrency import run_in_threadpool
 
 from app.gateway_store import percentile
-from app.gateway_templates import evaluation_cases, load_templates
+from app.gateway_templates import evaluation_cases, load_reference
 from app.routing import Task
 from app.routing_profile import PROFILE_VERSION, parse_profile, profile_payload
 from app.schemas import StrictModel
@@ -80,7 +80,7 @@ class Evaluations:
                 "status": "running",
                 "providers": body.providers,
                 "case_ids": body.case_ids,
-                "dataset_version": load_templates()["version"],
+                "dataset_version": load_reference()["version"],
                 "profile_version": PROFILE_VERSION,
                 "dataset_scope": "visible_development_reference_not_heldout",
                 "cases": [
@@ -200,7 +200,7 @@ class Evaluations:
 @router.get("/cases")
 def cases():
     return {
-        "version": load_templates()["version"],
+        "version": load_reference()["version"],
         "items": evaluation_cases(),
         "scope": "公开开发参考集；七项分类逐项评分，不作为独立业务验证集。",
     }

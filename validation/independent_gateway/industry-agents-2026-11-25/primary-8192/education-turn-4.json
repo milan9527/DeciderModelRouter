@@ -1,0 +1,181 @@
+{
+  "id": "823c2eb3f4a5cbdfc3367e16",
+  "session_id": "ac118b8ac1e342bd718d86db",
+  "scenario_id": "education",
+  "title": "课程资源排期与补课安排",
+  "industry": "教育培训",
+  "prompt": "用三条给教务交接排程和待确认事项，不声称讲师已经同意。",
+  "status": "completed",
+  "created_at": 1795618024123,
+  "turn": 4,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795618030838,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-54ba4c86c4a7e1f06f45a619f1ff4412dbe5e68301a6ecf2a5e659b3cef71406",
+  "answer": "## 教务交接单\n\n**交接日期**：2024年1月15日  \n**交接对象**：教务部门  \n**交接内容**：补课排程方案与待确认事项\n\n---\n\n### 一、排程方案（待确认后执行）\n\n| 班级 | 课程 | 学员数 | 教室 | 时间 | 课时 | 状态 |\n|------|------|--------|------|------|------|------|\n| C1 | Python | 24人 | R1 | 09:00-11:00 | 2 | ⏳ 待讲师确认 |\n| C2 | SQL | 18人 | R2 | 09:00-12:00 | 3 | ⏳ 待讲师确认 |\n| C3 | Python | 30人 | R2 | 13:00-15:00 | 2 | ⏳ 待讲师确认 |\n\n**排程依据**：\n- C1(24人)与C2(18人)存在共同学员，通过错开至不同教室+不同讲师规避时间冲突\n- C3(30人)按容量需求指定R2(容量35人)\n- 所有方案均满足教室容量和课时可用性约束\n\n---\n\n### 二、待讲师确认的三项关键事项\n\n**（1）讲师资质与时间可用性**  \n需分别确认：\n- Python课程（C1、C3）的指派讲师及其Python教学资质\n- SQL课程（C2）的指派讲师及其SQL教学资质\n- 各讲师在上述时段的可用性（09:00-15:00）\n\n**（2）讲师转场可行性**  \n若C1(R1)与C2(R2)、或C2(R2)与C3(R2)采用同一讲师，需确认：\n- 该讲师是否能在端点时间（11:00、12:00）完成教室间转场\n- 政策当前假设无需转场时间，实际需讲师反馈\n\n**（3）共同学员参课安排**  \nC1与C2的共同学员需确认：\n- 该部分学员是否确实存在（需与招生数据对账）\n- 学员对两个时段的参课承诺（09:00-11:00 C1 且 09:00-12:00 C2）\n\n---\n\n### 三、教务需完成的后续步骤\n\n1. **讲师确认**（待讲师部门提供）：获取各科讲师姓名、资质证明及时间确认函  \n2. **方案最终定版**：讲师确认后，本排程方案正式生效并通知学员  \n3. **异常处理预案**：若讲师无法按时参课，启动备选讲师名单或时间调整流程\n\n**备注**：本排程方案基于合成演示数据，不代表实际讲师已同意参课；所有排程仅在获得讲师方书面确认后方可执行。",
+  "finished_at": 1795618030820,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "6f58840df3fe44fe13bbb1bc",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 181.494,
+      "target_ms": 5704.984,
+      "usage": {
+        "inputTokens": 7508,
+        "outputTokens": 880,
+        "totalTokens": 8388,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 7508,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.011908",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "education",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795618030740
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795618030759
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "6f58840df3fe44fe13bbb1bc",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 181.494,
+      "target_ms": 5704.984,
+      "usage": {
+        "inputTokens": 7508,
+        "outputTokens": 880,
+        "totalTokens": 8388,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 7508,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.011908",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795618030778
+    },
+    {
+      "type": "completed",
+      "answer": "## 教务交接单\n\n**交接日期**：2024年1月15日  \n**交接对象**：教务部门  \n**交接内容**：补课排程方案与待确认事项\n\n---\n\n### 一、排程方案（待确认后执行）\n\n| 班级 | 课程 | 学员数 | 教室 | 时间 | 课时 | 状态 |\n|------|------|--------|------|------|------|------|\n| C1 | Python | 24人 | R1 | 09:00-11:00 | 2 | ⏳ 待讲师确认 |\n| C2 | SQL | 18人 | R2 | 09:00-12:00 | 3 | ⏳ 待讲师确认 |\n| C3 | Python | 30人 | R2 | 13:00-15:00 | 2 | ⏳ 待讲师确认 |\n\n**排程依据**：\n- C1(24人)与C2(18人)存在共同学员，通过错开至不同教室+不同讲师规避时间冲突\n- C3(30人)按容量需求指定R2(容量35人)\n- 所有方案均满足教室容量和课时可用性约束\n\n---\n\n### 二、待讲师确认的三项关键事项\n\n**（1）讲师资质与时间可用性**  \n需分别确认：\n- Python课程（C1、C3）的指派讲师及其Python教学资质\n- SQL课程（C2）的指派讲师及其SQL教学资质\n- 各讲师在上述时段的可用性（09:00-15:00）\n\n**（2）讲师转场可行性**  \n若C1(R1)与C2(R2)、或C2(R2)与C3(R2)采用同一讲师，需确认：\n- 该讲师是否能在端点时间（11:00、12:00）完成教室间转场\n- 政策当前假设无需转场时间，实际需讲师反馈\n\n**（3）共同学员参课安排**  \nC1与C2的共同学员需确认：\n- 该部分学员是否确实存在（需与招生数据对账）\n- 学员对两个时段的参课承诺（09:00-11:00 C1 且 09:00-12:00 C2）\n\n---\n\n### 三、教务需完成的后续步骤\n\n1. **讲师确认**（待讲师部门提供）：获取各科讲师姓名、资质证明及时间确认函  \n2. **方案最终定版**：讲师确认后，本排程方案正式生效并通知学员  \n3. **异常处理预案**：若讲师无法按时参课，启动备选讲师名单或时间调整流程\n\n**备注**：本排程方案基于合成演示数据，不代表实际讲师已同意参课；所有排程仅在获得讲师方书面确认后方可执行。",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795618030820
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

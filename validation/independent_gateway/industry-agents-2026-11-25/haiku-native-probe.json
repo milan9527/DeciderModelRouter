@@ -1,0 +1,63 @@
+{
+  "ResponseMetadata": {
+    "RequestId": "c6e05dd4-aca5-4cb2-ac2f-310541d8e48f",
+    "HTTPStatusCode": 200,
+    "HTTPHeaders": {
+      "date": "Wed, 25 Nov 2026 14:35:19 GMT",
+      "content-type": "application/json",
+      "content-length": "776",
+      "connection": "keep-alive",
+      "x-amzn-requestid": "c6e05dd4-aca5-4cb2-ac2f-310541d8e48f"
+    },
+    "RetryAttempts": 0
+  },
+  "output": {
+    "message": {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "我来帮您查询订单和库存数据，并理清SKU A的缺口情况和超期订单。"
+        },
+        {
+          "toolUse": {
+            "toolUseId": "tooluse_92Pz1cH59YhAYYEqZB32SA",
+            "name": "query_records",
+            "input": {
+              "dataset": "orders"
+            },
+            "type": "tool_use"
+          }
+        },
+        {
+          "toolUse": {
+            "toolUseId": "tooluse_zr9vCRyr0yAIEz18lENox8",
+            "name": "query_records",
+            "input": {
+              "dataset": "inventory"
+            },
+            "type": "tool_use"
+          }
+        },
+        {
+          "toolUse": {
+            "toolUseId": "tooluse_qfNBKmNbvD1xzWXC3q7HrN",
+            "name": "read_policy",
+            "input": {},
+            "type": "tool_use"
+          }
+        }
+      ]
+    }
+  },
+  "stopReason": "tool_use",
+  "usage": {
+    "inputTokens": 1323,
+    "outputTokens": 143,
+    "totalTokens": 1466,
+    "cacheReadInputTokens": 0,
+    "cacheWriteInputTokens": 0
+  },
+  "metrics": {
+    "latencyMs": 970
+  }
+}

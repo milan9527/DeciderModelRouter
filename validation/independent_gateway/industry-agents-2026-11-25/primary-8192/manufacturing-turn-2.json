@@ -1,0 +1,361 @@
+{
+  "id": "6857a2f4dec435e713b2d77d",
+  "session_id": "52bb3fa9802f04a96974a288",
+  "scenario_id": "manufacturing",
+  "title": "产线质量异常与批次追溯",
+  "industry": "制造业",
+  "prompt": "比较供应商、产线和温度三个解释，设计能区分混杂因素的复验方案；估算隔离数量，说明样本量局限。",
+  "status": "completed",
+  "created_at": 1795617479524,
+  "turn": 2,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617496420,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-62fdfd5e9a6bf71b014270562d5c6c21405e4e3407105f0c64afc5267565a9f7",
+  "answer": "## 混杂因素分离与复验方案设计\n\n### **现状数据汇总**\n\n| 指标 | 数值 |\n|------|------|\n| 总隔离不良数 | 70件（3批合计） |\n| 点检样品不良数 | 6件/150样品 |\n| **需隔离重点：B702** | **40件不良** |\n\n---\n\n## **三因素对比分析框架**\n\n### 因素交叉表\n\n| 因素组合 | 批次 | 产量 | 不良率 | 点检温度 | 点检不良率 |\n|---------|------|------|--------|---------|-----------|\n| **S1 × L1** | B701 | 1,200 | 1.5% | 180℃ | 2.0% |\n| **S1 × L2** | B702 | 800 | **5.0%** | **196℃** | **10.0%** |\n| **S2 × L2** | B703 | 1,000 | 1.2% | 181℃ | 0% |\n\n**混杂观察：**\n- S1 在 L1 表现良好(1.5%)，在 L2 表现极差(5.0%)  → **产线因素显著**\n- S2 在 L2 表现良好(1.2%)  → **非供应商通病**\n- L2中B702温度196℃异常，B703正常181℃  → **温度可能是中介**\n\n---\n\n## **分离混杂因素的复验方案**\n\n### **第一阶段：源头确认（全数复验 B702）**\n\n**目标：** 区分是材料问题还是工艺问题\n\n| 检验项 | 方法 | 预期对照 | 判断逻辑 |\n|--------|------|---------|---------|\n| **1. 供应商追溯** | 拆解S1批次标识、检验原材料外观/尺寸 | B701同批S1（1.5%不良） | 若B702材料与B701相同，排除供应商质量差异 |\n| **2. 工艺参数重放** | 抽取B702×10件，在标准条件(180℃)重新制造/处理 | B702原不良率5% | 若重放后不良率↓至1-2%，指向工艺条件(温度)而非材料 |\n| **3. L2温度验证** | 校准L2温度计，检查196℃是否系统偏差 | L1温度(180℃)基准 | 若存在+16℃偏差，解释B702高不良率 |\n\n**样本设计：**\n```\n复验总量 = B702全部40件不良 + 核心验证样本\n- 供应商追溯：全部40件\n- 工艺重放：20件（高风险样本）\n- 温度相关性：现有点检数据+新增10件对照\n```\n\n---\n\n### **第二阶段：因素隔离（对照试验）**\n\n**设计逻辑表（析因设计）**\n\n| 试验组 | 供应商 | 产线 | 目标温度 | 样本量* | 目标不良率 | 判断依据 |\n|--------|--------|------|---------|--------|-----------|---------|\n| **对照1** | S1 | L1 | 180℃ | 50 | ~1.5% | 基准(已验证) |\n| **对照2** | S2 | L2 | 180℃ | 50 | ~1.2% | S2在L2表现 |\n| **测试3** | S1 | L2 | 180℃ | 50 | ? | 若接近对照→产线/温度主因 |\n| **测试4** | S1 | L2 | 196℃ | 50 | ? | 若≈原5%→温度导致 |\n\n**预期结果解释：**\n- 若Test3 ≈ 1.5% < 5%  →  **L2温度是主要因素**  \n- 若Test4 ≈ 5%  →  **验证温度-不良率关联**  \n- 若Test3 ≈ 5% 且Test4 ≈ 5%  →  **非温度，可能L2其他设备问题**\n\n**样本量局限说明：**\n> 每组50件样本统计功率有限。若真实不良率为3-5%，50件样本内信心区间±2-3%。  \n> 建议：**高风险组(S1×L2)扩大到100件**，以提升检出能力。\n\n---\n\n## **隔离数量估算**\n\n### **B702 隔离规模**\n\n| 项目 | 数量 | 说明 |\n|------|------|------|\n| **待隔离总量** | **800件** | B702全批(产量) |\n| **已确认不良** | 40件 | 生产过程检验 |\n| **可用良品** | 760件 | 未经复验 |\n| **复验方案隔离** | 20-100件 | 用于析因试验 |\n| **临时冻结** | 740-780件 | 等待复验结论 |\n\n### **分层隔离策略**\n\n```\nB702（800件）隔离方案：\n\n├─ 第1层：确认不良（40件）\n│  └─ 处置：返工或报废（待质量工程师批准）\n│\n├─ 第2层：复验样本（50-100件）\n│  ├─ 工艺重放试验（20件）\n│  ├─ 材料追溯检验（20件）\n│  └─ 温度对照试验（10-60件）\n│  └─ 处置：根据试验结果判断\n│\n└─ 第3层：待验良品（700-750件）\n   └─ 状态：冻结，等待复验结论后决策\n   └─ 预案A：若主因明确且可控→有条件放行\n   └─ 预案B：若混杂因素未清→批量返工或降级\n```\n\n---\n\n## **样本量局限性分析**\n\n### **现有点检数据的统计局限**\n\n| 指标 | 现状 | 局限 |\n|------|------|------|\n| **点检样本量** | 50件/批 | 在5%不良率下，误差范围±4.1%（95%CI），难以区分3-5% |\n| **交叉因素** | 仅3批，无重复 | 无法计算因素间交互效应 |\n| **温度层级** | 3个点（180/196/181℃） | 无温度梯度数据，不知非线性关系 |\n| **时间维度** | 单次抽样 | 不知过程漂移、批内变异 |\n\n### **复验方案的样本设计建议**\n\n**若资源允许：**\n```\n推荐方案（统计功率80%，检出3% vs 5%差异）\n- 每个因素组合：100件最优\n- 总样本量：400-600件\n- 时间：1-2周内完成\n- 成本：中等（主要是重测试时间）\n\n最小方案（资源紧张）\n- 每组50件（如上表）\n- 增加\"可疑样本\"的比例抽样\n- 时间：3-5天\n- 风险：小差异可能未被检出\n```\n\n---\n\n## **复验方案总结**\n\n| 阶段 | 重点 | 样本 | 时间 | 决策点 |\n|------|------|------|------|--------|\n| **I. 源头追溯** | 供应商 vs 工艺 | 40+20件 | 2-3天 | 材料是否可用 |\n| **II. 因素隔离** | 温度 vs 产线 | 100-200件 | 5-7天 | 主导因素确认 |\n| **III. 验证** | 改善有效性 | 50件 | 2-3天 | 放行条件 |\n\n**关键决策权：** 所有放行由质量工程师批准（政策规定）。",
+  "finished_at": 1795617496400,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "d402aa004364d915dc6063c3",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 181.682,
+      "target_ms": 1029.407,
+      "usage": {
+        "inputTokens": 2635,
+        "outputTokens": 188,
+        "totalTokens": 2823,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 2635,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.003575",
+      "stop_reason": "tool_use",
+      "tool_call_count": 2
+    },
+    {
+      "step": 2,
+      "run_id": "3eec153081e4f284c3c0b46a",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 178.066,
+      "target_ms": 14052.037,
+      "usage": {
+        "inputTokens": 2946,
+        "outputTokens": 2359,
+        "totalTokens": 5305,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 2946,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.014741",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "manufacturing",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617481526
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617481549
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "d402aa004364d915dc6063c3",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 181.682,
+      "target_ms": 1029.407,
+      "usage": {
+        "inputTokens": 2635,
+        "outputTokens": 188,
+        "totalTokens": 2823,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 2635,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.003575",
+      "stop_reason": "tool_use",
+      "tool_call_count": 2,
+      "sequence": 3,
+      "recorded_at": 1795617481571
+    },
+    {
+      "type": "tool_started",
+      "name": "calculate_metric",
+      "arguments": {
+        "dataset": "batches",
+        "field": "defects",
+        "operation": "sum"
+      },
+      "sequence": 4,
+      "recorded_at": 1795617481596
+    },
+    {
+      "type": "tool_result",
+      "name": "calculate_metric",
+      "arguments": {
+        "dataset": "batches",
+        "field": "defects",
+        "operation": "sum"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "batches",
+        "field": "defects",
+        "operation": "sum",
+        "result": "70",
+        "rows": 3
+      },
+      "elapsed_ms": 0.033,
+      "sequence": 5,
+      "recorded_at": 1795617496274
+    },
+    {
+      "type": "tool_started",
+      "name": "calculate_metric",
+      "arguments": {
+        "dataset": "checks",
+        "field": "failed",
+        "operation": "sum"
+      },
+      "sequence": 6,
+      "recorded_at": 1795617496294
+    },
+    {
+      "type": "tool_result",
+      "name": "calculate_metric",
+      "arguments": {
+        "dataset": "checks",
+        "field": "failed",
+        "operation": "sum"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "checks",
+        "field": "failed",
+        "operation": "sum",
+        "result": "6",
+        "rows": 3
+      },
+      "elapsed_ms": 0.016,
+      "sequence": 7,
+      "recorded_at": 1795617496315
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 8,
+      "recorded_at": 1795617496333
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "3eec153081e4f284c3c0b46a",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 178.066,
+      "target_ms": 14052.037,
+      "usage": {
+        "inputTokens": 2946,
+        "outputTokens": 2359,
+        "totalTokens": 5305,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 2946,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.014741",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 9,
+      "recorded_at": 1795617496359
+    },
+    {
+      "type": "completed",
+      "answer": "## 混杂因素分离与复验方案设计\n\n### **现状数据汇总**\n\n| 指标 | 数值 |\n|------|------|\n| 总隔离不良数 | 70件（3批合计） |\n| 点检样品不良数 | 6件/150样品 |\n| **需隔离重点：B702** | **40件不良** |\n\n---\n\n## **三因素对比分析框架**\n\n### 因素交叉表\n\n| 因素组合 | 批次 | 产量 | 不良率 | 点检温度 | 点检不良率 |\n|---------|------|------|--------|---------|-----------|\n| **S1 × L1** | B701 | 1,200 | 1.5% | 180℃ | 2.0% |\n| **S1 × L2** | B702 | 800 | **5.0%** | **196℃** | **10.0%** |\n| **S2 × L2** | B703 | 1,000 | 1.2% | 181℃ | 0% |\n\n**混杂观察：**\n- S1 在 L1 表现良好(1.5%)，在 L2 表现极差(5.0%)  → **产线因素显著**\n- S2 在 L2 表现良好(1.2%)  → **非供应商通病**\n- L2中B702温度196℃异常，B703正常181℃  → **温度可能是中介**\n\n---\n\n## **分离混杂因素的复验方案**\n\n### **第一阶段：源头确认（全数复验 B702）**\n\n**目标：** 区分是材料问题还是工艺问题\n\n| 检验项 | 方法 | 预期对照 | 判断逻辑 |\n|--------|------|---------|---------|\n| **1. 供应商追溯** | 拆解S1批次标识、检验原材料外观/尺寸 | B701同批S1（1.5%不良） | 若B702材料与B701相同，排除供应商质量差异 |\n| **2. 工艺参数重放** | 抽取B702×10件，在标准条件(180℃)重新制造/处理 | B702原不良率5% | 若重放后不良率↓至1-2%，指向工艺条件(温度)而非材料 |\n| **3. L2温度验证** | 校准L2温度计，检查196℃是否系统偏差 | L1温度(180℃)基准 | 若存在+16℃偏差，解释B702高不良率 |\n\n**样本设计：**\n```\n复验总量 = B702全部40件不良 + 核心验证样本\n- 供应商追溯：全部40件\n- 工艺重放：20件（高风险样本）\n- 温度相关性：现有点检数据+新增10件对照\n```\n\n---\n\n### **第二阶段：因素隔离（对照试验）**\n\n**设计逻辑表（析因设计）**\n\n| 试验组 | 供应商 | 产线 | 目标温度 | 样本量* | 目标不良率 | 判断依据 |\n|--------|--------|------|---------|--------|-----------|---------|\n| **对照1** | S1 | L1 | 180℃ | 50 | ~1.5% | 基准(已验证) |\n| **对照2** | S2 | L2 | 180℃ | 50 | ~1.2% | S2在L2表现 |\n| **测试3** | S1 | L2 | 180℃ | 50 | ? | 若接近对照→产线/温度主因 |\n| **测试4** | S1 | L2 | 196℃ | 50 | ? | 若≈原5%→温度导致 |\n\n**预期结果解释：**\n- 若Test3 ≈ 1.5% < 5%  →  **L2温度是主要因素**  \n- 若Test4 ≈ 5%  →  **验证温度-不良率关联**  \n- 若Test3 ≈ 5% 且Test4 ≈ 5%  →  **非温度，可能L2其他设备问题**\n\n**样本量局限说明：**\n> 每组50件样本统计功率有限。若真实不良率为3-5%，50件样本内信心区间±2-3%。  \n> 建议：**高风险组(S1×L2)扩大到100件**，以提升检出能力。\n\n---\n\n## **隔离数量估算**\n\n### **B702 隔离规模**\n\n| 项目 | 数量 | 说明 |\n|------|------|------|\n| **待隔离总量** | **800件** | B702全批(产量) |\n| **已确认不良** | 40件 | 生产过程检验 |\n| **可用良品** | 760件 | 未经复验 |\n| **复验方案隔离** | 20-100件 | 用于析因试验 |\n| **临时冻结** | 740-780件 | 等待复验结论 |\n\n### **分层隔离策略**\n\n```\nB702（800件）隔离方案：\n\n├─ 第1层：确认不良（40件）\n│  └─ 处置：返工或报废（待质量工程师批准）\n│\n├─ 第2层：复验样本（50-100件）\n│  ├─ 工艺重放试验（20件）\n│  ├─ 材料追溯检验（20件）\n│  └─ 温度对照试验（10-60件）\n│  └─ 处置：根据试验结果判断\n│\n└─ 第3层：待验良品（700-750件）\n   └─ 状态：冻结，等待复验结论后决策\n   └─ 预案A：若主因明确且可控→有条件放行\n   └─ 预案B：若混杂因素未清→批量返工或降级\n```\n\n---\n\n## **样本量局限性分析**\n\n### **现有点检数据的统计局限**\n\n| 指标 | 现状 | 局限 |\n|------|------|------|\n| **点检样本量** | 50件/批 | 在5%不良率下，误差范围±4.1%（95%CI），难以区分3-5% |\n| **交叉因素** | 仅3批，无重复 | 无法计算因素间交互效应 |\n| **温度层级** | 3个点（180/196/181℃） | 无温度梯度数据，不知非线性关系 |\n| **时间维度** | 单次抽样 | 不知过程漂移、批内变异 |\n\n### **复验方案的样本设计建议**\n\n**若资源允许：**\n```\n推荐方案（统计功率80%，检出3% vs 5%差异）\n- 每个因素组合：100件最优\n- 总样本量：400-600件\n- 时间：1-2周内完成\n- 成本：中等（主要是重测试时间）\n\n最小方案（资源紧张）\n- 每组50件（如上表）\n- 增加\"可疑样本\"的比例抽样\n- 时间：3-5天\n- 风险：小差异可能未被检出\n```\n\n---\n\n## **复验方案总结**\n\n| 阶段 | 重点 | 样本 | 时间 | 决策点 |\n|------|------|------|------|--------|\n| **I. 源头追溯** | 供应商 vs 工艺 | 40+20件 | 2-3天 | 材料是否可用 |\n| **II. 因素隔离** | 温度 vs 产线 | 100-200件 | 5-7天 | 主导因素确认 |\n| **III. 验证** | 改善有效性 | 50件 | 2-3天 | 放行条件 |\n\n**关键决策权：** 所有放行由质量工程师批准（政策规定）。",
+      "model_calls": 2,
+      "sequence": 10,
+      "recorded_at": 1795617496400
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 2,
+    "model_switches": 0,
+    "retained_calls": 2,
+    "cache_read_tokens": 0
+  }
+}

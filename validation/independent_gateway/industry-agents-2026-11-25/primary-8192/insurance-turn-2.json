@@ -1,0 +1,330 @@
+{
+  "id": "b8d39c2061520f95c1970ebf",
+  "session_id": "7e252237212f8a098abe8338",
+  "scenario_id": "insurance",
+  "title": "理赔材料核对与免赔额计算",
+  "industry": "保险",
+  "prompt": "计算现有材料下与补齐I22后两种赔付估算，逐步解释免赔额、共同承担比例和总限额的应用顺序。",
+  "status": "completed",
+  "created_at": 1795617594918,
+  "turn": 2,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617603367,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-a0b5ebbf8204da7bdd70af814904fe8066ac855d6a17d143fe8cbf99b2f2878a",
+  "answer": "## 赔付估算对比分析\n\n根据业务规则：**同一事故免赔额只扣一次 → 先去重票据 → 缺失材料部分暂不纳入 → 剩余金额扣免赔后赔90% → 受总限额约束**\n\n### 保单参数（POL9）\n- **免赔额**：2,000元\n- **自付率**：10%（即**赔付率90%**）\n- **总限额**：30,000元\n\n---\n\n## 场景一：现有完整材料下的赔付\n\n**有效申请**：\n- C21（票据I21）：18,000元 ✓ 完整\n- C23（票据I21）：18,000元 ✗ 重复，**去除**\n- C22（票据I22）：9,000元 ✗ 缺材料，**暂不纳入**\n\n**处理步骤**：\n\n| 步骤 | 操作 | 数值 | 说明 |\n|-----|------|------|------|\n| 1️⃣ | 有效申请金额 | 18,000 | 仅C21完整，C23重复去除，C22缺材料排除 |\n| 2️⃣ | **应用免赔额**（同一事故只扣一次） | 18,000 - 2,000 = **16,000** | 扣除2,000元免赔 |\n| 3️⃣ | **应用赔付率**（共同承担90%） | 16,000 × 90% = **14,400** | 保险承担90%，被保人自付10% |\n| 4️⃣ | **校验总限额** | 14,400 ≤ 30,000 ✓ | 未超限，金额有效 |\n| **最终赔付** | — | **14,400元** | — |\n\n---\n\n## 场景二：C22补齐材料后的赔付\n\n**有效申请**（补材后）：\n- C21（票据I21）：18,000元 ✓ 完整\n- C22（票据I22）：9,000元 ✓ 补齐材料\n- C23（票据I21）：18,000元 ✗ 重复，**去除**\n\n**处理步骤**：\n\n| 步骤 | 操作 | 数值 | 说明 |\n|-----|------|------|------|\n| 1️⃣ | 有效申请金额合计 | 18,000 + 9,000 = **27,000** | C21与C22各自独立票据，C23仍重复去除 |\n| 2️⃣ | **应用免赔额**（同一事故只扣一次） | 27,000 - 2,000 = **25,000** | 整个事故阶段只扣一次免赔2,000 |\n| 3️⃣ | **应用赔付率**（共同承担90%） | 25,000 × 90% = **22,500** | 保险承担90%，被保人自付10% |\n| 4️⃣ | **校验总限额** | 22,500 ≤ 30,000 ✓ | 未超限，金额有效 |\n| **最终赔付** | — | **22,500元** | — |\n\n---\n\n## 对比总结\n\n| 场景 | 有效申请 | 免赔后 | 赔付率应用 | 限额校验 | **最终赔付** | 增加额 |\n|-----|--------|-------|---------|--------|----------|-------|\n| 现有材料 | 18,000 | 16,000 | 14,400 | ✓ | **14,400元** | — |\n| 补齐后 | 27,000 | 25,000 | 22,500 | ✓ | **22,500元** | +8,100 |\n\n**关键点**：\n- 免赔额在同一事故阶段**仅扣一次**，不因多笔申请而重复扣除\n- C22补齐材料后，可额外获赔 **8,100元**（=9,000×90%）\n- C23因票据重复（I21与C21相同）**必须剔除**，不能并行赔付",
+  "finished_at": 1795617603350,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "bfc2340b44194339a8d9ef16",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 179.627,
+      "target_ms": 979.093,
+      "usage": {
+        "inputTokens": 2478,
+        "outputTokens": 118,
+        "totalTokens": 2596,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 2478,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.003068",
+      "stop_reason": "tool_use",
+      "tool_call_count": 1
+    },
+    {
+      "step": 2,
+      "run_id": "d4a2e7ab74b7f74ae2898a6f",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "other"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 175.121,
+      "target_ms": 5933.377,
+      "usage": {
+        "inputTokens": 2638,
+        "outputTokens": 1222,
+        "totalTokens": 3860,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 2638,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.008748",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "insurance",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617596732
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617596749
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "bfc2340b44194339a8d9ef16",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 179.627,
+      "target_ms": 979.093,
+      "usage": {
+        "inputTokens": 2478,
+        "outputTokens": 118,
+        "totalTokens": 2596,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 2478,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.003068",
+      "stop_reason": "tool_use",
+      "tool_call_count": 1,
+      "sequence": 3,
+      "recorded_at": 1795617596767
+    },
+    {
+      "type": "tool_started",
+      "name": "calculate_metric",
+      "arguments": {
+        "dataset": "claims",
+        "field": "amount",
+        "operation": "sum"
+      },
+      "sequence": 4,
+      "recorded_at": 1795617596789
+    },
+    {
+      "type": "tool_result",
+      "name": "calculate_metric",
+      "arguments": {
+        "dataset": "claims",
+        "field": "amount",
+        "operation": "sum"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "claims",
+        "field": "amount",
+        "operation": "sum",
+        "result": "45000",
+        "rows": 3
+      },
+      "elapsed_ms": 0.035,
+      "sequence": 5,
+      "recorded_at": 1795617603278
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 6,
+      "recorded_at": 1795617603300
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "d4a2e7ab74b7f74ae2898a6f",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "other"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 175.121,
+      "target_ms": 5933.377,
+      "usage": {
+        "inputTokens": 2638,
+        "outputTokens": 1222,
+        "totalTokens": 3860,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 2638,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.008748",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 7,
+      "recorded_at": 1795617603317
+    },
+    {
+      "type": "completed",
+      "answer": "## 赔付估算对比分析\n\n根据业务规则：**同一事故免赔额只扣一次 → 先去重票据 → 缺失材料部分暂不纳入 → 剩余金额扣免赔后赔90% → 受总限额约束**\n\n### 保单参数（POL9）\n- **免赔额**：2,000元\n- **自付率**：10%（即**赔付率90%**）\n- **总限额**：30,000元\n\n---\n\n## 场景一：现有完整材料下的赔付\n\n**有效申请**：\n- C21（票据I21）：18,000元 ✓ 完整\n- C23（票据I21）：18,000元 ✗ 重复，**去除**\n- C22（票据I22）：9,000元 ✗ 缺材料，**暂不纳入**\n\n**处理步骤**：\n\n| 步骤 | 操作 | 数值 | 说明 |\n|-----|------|------|------|\n| 1️⃣ | 有效申请金额 | 18,000 | 仅C21完整，C23重复去除，C22缺材料排除 |\n| 2️⃣ | **应用免赔额**（同一事故只扣一次） | 18,000 - 2,000 = **16,000** | 扣除2,000元免赔 |\n| 3️⃣ | **应用赔付率**（共同承担90%） | 16,000 × 90% = **14,400** | 保险承担90%，被保人自付10% |\n| 4️⃣ | **校验总限额** | 14,400 ≤ 30,000 ✓ | 未超限，金额有效 |\n| **最终赔付** | — | **14,400元** | — |\n\n---\n\n## 场景二：C22补齐材料后的赔付\n\n**有效申请**（补材后）：\n- C21（票据I21）：18,000元 ✓ 完整\n- C22（票据I22）：9,000元 ✓ 补齐材料\n- C23（票据I21）：18,000元 ✗ 重复，**去除**\n\n**处理步骤**：\n\n| 步骤 | 操作 | 数值 | 说明 |\n|-----|------|------|------|\n| 1️⃣ | 有效申请金额合计 | 18,000 + 9,000 = **27,000** | C21与C22各自独立票据，C23仍重复去除 |\n| 2️⃣ | **应用免赔额**（同一事故只扣一次） | 27,000 - 2,000 = **25,000** | 整个事故阶段只扣一次免赔2,000 |\n| 3️⃣ | **应用赔付率**（共同承担90%） | 25,000 × 90% = **22,500** | 保险承担90%，被保人自付10% |\n| 4️⃣ | **校验总限额** | 22,500 ≤ 30,000 ✓ | 未超限，金额有效 |\n| **最终赔付** | — | **22,500元** | — |\n\n---\n\n## 对比总结\n\n| 场景 | 有效申请 | 免赔后 | 赔付率应用 | 限额校验 | **最终赔付** | 增加额 |\n|-----|--------|-------|---------|--------|----------|-------|\n| 现有材料 | 18,000 | 16,000 | 14,400 | ✓ | **14,400元** | — |\n| 补齐后 | 27,000 | 25,000 | 22,500 | ✓ | **22,500元** | +8,100 |\n\n**关键点**：\n- 免赔额在同一事故阶段**仅扣一次**，不因多笔申请而重复扣除\n- C22补齐材料后，可额外获赔 **8,100元**（=9,000×90%）\n- C23因票据重复（I21与C21相同）**必须剔除**，不能并行赔付",
+      "model_calls": 2,
+      "sequence": 8,
+      "recorded_at": 1795617603350
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 1,
+    "model_switches": 0,
+    "retained_calls": 1,
+    "cache_read_tokens": 0
+  }
+}

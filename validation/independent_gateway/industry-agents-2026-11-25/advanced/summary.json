@@ -1,0 +1,39 @@
+{
+  "scope": "automatic_complexity_switch_with_retained_long_answer",
+  "cost_tier": "medium",
+  "fixture": false,
+  "results": [
+    {
+      "scenario_id": "saas",
+      "turn": 5,
+      "job_id": "c0a9647b5a42a500f34883d5",
+      "status": "completed",
+      "session_id": "a5966f3ddec50ead45725f77",
+      "models": [
+        "anthropic.claude-opus-4-5-20251101-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 1,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "complex-followup.json"
+    },
+    {
+      "scenario_id": "saas",
+      "turn": 6,
+      "job_id": "7573cf13516dbe3560098af8",
+      "status": "completed",
+      "session_id": "a5966f3ddec50ead45725f77",
+      "models": [
+        "anthropic.claude-haiku-4-5-20251001-v1:0"
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "model_switches": 1,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "artifact": "return-to-summary.json"
+    }
+  ]
+}

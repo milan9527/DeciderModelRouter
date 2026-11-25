@@ -1,0 +1,54 @@
+{
+  "full_software_suite": {
+    "passed": 527,
+    "command": "pytest -q",
+    "elapsed_seconds": 46.56,
+    "note": "包含长回答完整恢复、整轮裁剪不拆工具配对、拒绝静默清空最近一轮、索引迁移、多轮缓存及保活回调。"
+  },
+  "agent_targeted_tests": {
+    "passed": 26,
+    "scope": "14 Agent模块测试 + 12会话测试，包含在全量527项中。",
+    "agent_module_tests": 14
+  },
+  "runtime_container_smoke": {
+    "strands_version": "1.66.0",
+    "native_tool_loop": true,
+    "canonical_transcript": true,
+    "call_budget_enforced": true,
+    "real_aws_calls": 0,
+    "heartbeat_json": true,
+    "structured_error_without_retry": true
+  },
+  "local_browser": {
+    "industries": 12,
+    "templates": 21,
+    "four_turns_per_industry": true,
+    "desktop_and_mobile": true,
+    "page_errors": [],
+    "real_aws_calls": 0,
+    "scope": "初始空结果布局；真实已填充结果的手机端问题与修复另见browser验证。"
+  },
+  "source_hashes": {
+    "agent_model.py": "2a88944cfcf433e2c52555fc7bf80d0688c38ca35bcac41170a7bfa7b221a140",
+    "gateway_agents.py": "715c1a52d7c2d4e37f781773ea61aa74737c8ee111fce44a96e38543babf9eff",
+    "gateway_adapter.py": "78b1a53d7040fc5129d215436c0480c0d786e7613759dc32c0fd8afb23ecf74b",
+    "industry_scenarios.py": "ca62761abee8324f3b4fe182bc8b5e88d16a55220f9c8df5593e8d525a121aeb",
+    "gateway_main.py": "79dbbcbba57d5a0acab88f7392dfb9d7a5bef8c06f9f67ca1a1c668d39dac627",
+    "gateway_templates.py": "e4ffcdbe88fe2157da362abaf641b6bdf26b5dcb4b77dfe9987fbe45d4973933",
+    "gateway_templates.json": "d2ee7cc70466292af757388c42b144b032e1174d11af3645992c8885d4925925",
+    "gateway_reference_templates.json": "c225691af95fa1a46e7610dcc964371d2167e8d0603f1bf788d1678baac242bf",
+    "gateway_evaluations.py": "83117784cb4fd3b671447890e1625c409c97c94ad90354bb60e3cb19e9adeba4",
+    "routing.py": "d07a84c6d7e9ad215a5533c3b1fe0464202e4b8d7413b7133bf49bc6e1cc30af",
+    "auth.py": "374a378fee88237bb95ef9a8c9fe3368414112fdca44e191baf07c861d5cbbde",
+    "gateway_store.py": "634d6ab59fce1293bfcbb2a28e9606a2a4c2712832af875e997d191362821463",
+    "bedrock.py": "fc1234f93e806a27339df732ca2c2d061fabc76d307f1940c96b2905ab9906b4"
+  },
+  "frozen_reference_sha256": "c225691af95fa1a46e7610dcc964371d2167e8d0603f1bf788d1678baac242bf",
+  "unchanged_87_case_effect_report_sha256": "187b310813a31fe8b762d605351d27692af667e9c1a9eda269fda1cfde62d6b3",
+  "runtime_source_sha256": "1f07139c04841405de7b2ac4e2e11724c3f3149a95cd66631ab8762e6cee6029",
+  "api_image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router@sha256:f0293af24d4a48cf46a93014fba527503bc2ce9abd541f75d4d350d98edc4842",
+  "api_container_source_matches": true,
+  "test_log_sha256": "29d1e41c92bc704a9fbafda27e0d1df392eea3fc291018b356655728f0ceeead",
+  "runtime_image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router-agent@sha256:db83453019721a43a38143465a0937b873a572a0afb88a8c6a4f1801d7cca7c7",
+  "runtime_container_source_matches": true
+}

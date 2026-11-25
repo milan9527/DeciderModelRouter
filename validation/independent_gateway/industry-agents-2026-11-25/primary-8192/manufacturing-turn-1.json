@@ -1,0 +1,410 @@
+{
+  "id": "c4752d13b015a37363e30eec",
+  "session_id": "52bb3fa9802f04a96974a288",
+  "scenario_id": "manufacturing",
+  "title": "产线质量异常与批次追溯",
+  "industry": "制造业",
+  "prompt": "查询批次与点检记录，报告各批次不良率及超过隔离阈值的批次。",
+  "status": "completed",
+  "created_at": 1795617469202,
+  "turn": 1,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617478177,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-62fdfd5e9a6bf71b014270562d5c6c21405e4e3407105f0c64afc5267565a9f7",
+  "answer": "## 批次不良率分析报告\n\n### **各批次不良率统计**\n\n| 批次 | 产线 | 供应商 | 总产量 | 不良数 | **不良率** | 隔离状态 |\n|------|------|--------|--------|--------|-----------|---------|\n| **B701** | L1 | S1 | 1,200 | 18 | **1.5%** | ✓ 允许 |\n| **B702** | L2 | S1 | 800 | 40 | **5.0%** | ⚠️ **超阈值** |\n| **B703** | L2 | S2 | 1,000 | 12 | **1.2%** | ✓ 允许 |\n\n### **需隔离批次**\n\n**批次 B702** 超过隔离阈值：\n- **不良率 5.0% > 3.0%** 政策阈值\n- 产线：L2（供应商 S1）\n- 点检数据：50件样品中不良5件（样品不良率10%）\n- 点检温度：196℃ **超出目标范围** (目标180±5℃，即175-185℃)\n\n### **两条产线差异对比**\n\n| 指标 | L1 (B701) | L2 (B702/B703) |\n|------|-----------|-----------------|\n| 整体不良率 | 1.5% | 3.1%~5.0% |\n| 点检温度 | 180℃ ✓ | 196℃ ⚠️ / 181℃ ✓ |\n| 供应商 | S1 | S1 / S2 |\n\n### **建议行动**\n\n1. **B702 隔离处理**（供应商 S1）\n   - 全数隔离，统计期间停止使用\n   - 安排100%复验或返工评估\n\n2. **L2 产线温度调查**\n   - B702点检温度196℃异常，需排查设备工作状态\n   - 验证L2温度控制系统是否偏高\n\n3. **供应商 S1 评估**\n   - B702涉及S1供应商，B701虽在L1但同为S1\n   - 需区分：是供应商质量问题还是L2工艺条件问题\n   - 建议通过复验数据进一步判断\n\n**注：** 上述分析基于现有数据。相关性尚不能证明供应商或温度为直接原因，需要根据复验结果进一步确认（政策规定）。",
+  "finished_at": 1795617478154,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "25b02d014fda709f61a1c873",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 99.203,
+      "target_ms": 1035.844,
+      "usage": {
+        "inputTokens": 1324,
+        "outputTokens": 142,
+        "totalTokens": 1466,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1324,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.002034",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3
+    },
+    {
+      "step": 2,
+      "run_id": "1fe926d5e150089c736b1fe3",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 116.579,
+      "target_ms": 4997.179,
+      "usage": {
+        "inputTokens": 1847,
+        "outputTokens": 736,
+        "totalTokens": 2583,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1847,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.005527",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "manufacturing",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617472397
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617472418
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "25b02d014fda709f61a1c873",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 99.203,
+      "target_ms": 1035.844,
+      "usage": {
+        "inputTokens": 1324,
+        "outputTokens": 142,
+        "totalTokens": 1466,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1324,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.002034",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3,
+      "sequence": 3,
+      "recorded_at": 1795617472441
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "batches"
+      },
+      "sequence": 4,
+      "recorded_at": 1795617472462
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "batches"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "batches",
+        "records": [
+          {
+            "batch": "B701",
+            "line": "L1",
+            "supplier": "S1",
+            "produced": 1200,
+            "defects": 18
+          },
+          {
+            "batch": "B702",
+            "line": "L2",
+            "supplier": "S1",
+            "produced": 800,
+            "defects": 40
+          },
+          {
+            "batch": "B703",
+            "line": "L2",
+            "supplier": "S2",
+            "produced": 1000,
+            "defects": 12
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.015,
+      "sequence": 5,
+      "recorded_at": 1795617472482
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "checks"
+      },
+      "sequence": 6,
+      "recorded_at": 1795617472506
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "checks"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "checks",
+        "records": [
+          {
+            "batch": "B701",
+            "temperature": 180,
+            "sample": 50,
+            "failed": 1
+          },
+          {
+            "batch": "B702",
+            "temperature": 196,
+            "sample": 50,
+            "failed": 5
+          },
+          {
+            "batch": "B703",
+            "temperature": 181,
+            "sample": 50,
+            "failed": 0
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.007,
+      "sequence": 7,
+      "recorded_at": 1795617472525
+    },
+    {
+      "type": "tool_started",
+      "name": "read_policy",
+      "arguments": {},
+      "sequence": 8,
+      "recorded_at": 1795617472548
+    },
+    {
+      "type": "tool_result",
+      "name": "read_policy",
+      "arguments": {},
+      "status": "success",
+      "result": {
+        "policy": "批次不良率超过3%需隔离并复验；目标温度180±5℃；相关性不能证明供应商或温度导致异常；放行由质量工程师批准。",
+        "source": "synthetic_business_policy"
+      },
+      "elapsed_ms": 0.003,
+      "sequence": 9,
+      "recorded_at": 1795617478067
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 10,
+      "recorded_at": 1795617478091
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "1fe926d5e150089c736b1fe3",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 116.579,
+      "target_ms": 4997.179,
+      "usage": {
+        "inputTokens": 1847,
+        "outputTokens": 736,
+        "totalTokens": 2583,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1847,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.005527",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 11,
+      "recorded_at": 1795617478111
+    },
+    {
+      "type": "completed",
+      "answer": "## 批次不良率分析报告\n\n### **各批次不良率统计**\n\n| 批次 | 产线 | 供应商 | 总产量 | 不良数 | **不良率** | 隔离状态 |\n|------|------|--------|--------|--------|-----------|---------|\n| **B701** | L1 | S1 | 1,200 | 18 | **1.5%** | ✓ 允许 |\n| **B702** | L2 | S1 | 800 | 40 | **5.0%** | ⚠️ **超阈值** |\n| **B703** | L2 | S2 | 1,000 | 12 | **1.2%** | ✓ 允许 |\n\n### **需隔离批次**\n\n**批次 B702** 超过隔离阈值：\n- **不良率 5.0% > 3.0%** 政策阈值\n- 产线：L2（供应商 S1）\n- 点检数据：50件样品中不良5件（样品不良率10%）\n- 点检温度：196℃ **超出目标范围** (目标180±5℃，即175-185℃)\n\n### **两条产线差异对比**\n\n| 指标 | L1 (B701) | L2 (B702/B703) |\n|------|-----------|-----------------|\n| 整体不良率 | 1.5% | 3.1%~5.0% |\n| 点检温度 | 180℃ ✓ | 196℃ ⚠️ / 181℃ ✓ |\n| 供应商 | S1 | S1 / S2 |\n\n### **建议行动**\n\n1. **B702 隔离处理**（供应商 S1）\n   - 全数隔离，统计期间停止使用\n   - 安排100%复验或返工评估\n\n2. **L2 产线温度调查**\n   - B702点检温度196℃异常，需排查设备工作状态\n   - 验证L2温度控制系统是否偏高\n\n3. **供应商 S1 评估**\n   - B702涉及S1供应商，B701虽在L1但同为S1\n   - 需区分：是供应商质量问题还是L2工艺条件问题\n   - 建议通过复验数据进一步判断\n\n**注：** 上述分析基于现有数据。相关性尚不能证明供应商或温度为直接原因，需要根据复验结果进一步确认（政策规定）。",
+      "model_calls": 2,
+      "sequence": 12,
+      "recorded_at": 1795617478154
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 3,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

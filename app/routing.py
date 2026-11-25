@@ -17,7 +17,7 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import Field, field_validator
 from starlette.concurrency import run_in_threadpool
 
-from app.bedrock import TARGET_READ_TIMEOUT_SECONDS
+from app.bedrock import AGENT_READ_TIMEOUT_SECONDS, TARGET_READ_TIMEOUT_SECONDS
 from app.bedrock import decide as bedrock_decide
 from app.crypto import fingerprint
 from app.jev import JevError
@@ -684,7 +684,7 @@ async def auto_execute(body: AutoExecute, request: Request):
     )
     if not selection.get("execution_ready", True):
         raise HTTPException(422, selection["execution_notice"])
-    if profile.tools == "yes" or profile.structured_output == "yes":
+    if (profile.tools == "yes" and not getattr(runtime, "agent_tools", False)) or profile.structured_output == "yes":
         raise HTTPException(422, "已选型；当前执行演示尚未提供工具或结构化输出参数。")
     if runtime:
         from app.gateway_execution import execute
@@ -884,15 +884,19 @@ async def execute_selected(
     request, row, task, workflow, strategy, evidence_version, ranking_version
 ):
     model = row["model"]
+    runtime = getattr(request.state, "gateway_runtime", None)
+    is_agent = bool(runtime and getattr(runtime, "agent_tools", False))
+    target_timeout = AGENT_READ_TIMEOUT_SECONDS if is_agent else TARGET_READ_TIMEOUT_SECONDS
     client = getattr(request.app.state, "bedrock_target", None) or request.app.state.bedrock
+    if is_agent:
+        client = getattr(request.app.state, "bedrock_agent_target", None) or client
     if client is None:
         raise HTTPException(503, "Bedrock 尚未配置。")
     started = perf_counter()
     try:
-        async with asyncio.timeout(TARGET_READ_TIMEOUT_SECONDS + 10):
+        async with asyncio.timeout(target_timeout + 10):
             async with request.app.state.bedrock_slots:
                 invoked_at = perf_counter()
-                runtime = getattr(request.state, "gateway_runtime", None)
                 if runtime and (not row.get("adapter") and workflow in {"general_text", "customer_support", "coding", "reasoning"}
                                 or row.get("adapter") == "converse_media"):
                     from app.gateway_adapter import converse
@@ -932,7 +936,7 @@ async def execute_selected(
     except ReadTimeoutError as exc:
         raise HTTPException(
             504,
-            f"目标模型在 {TARGET_READ_TIMEOUT_SECONDS} 秒响应等待内未返回；本次未完成。"
+            f"目标模型在 {target_timeout} 秒响应等待内未返回；本次未完成。"
             "上游可能仍在生成，未自动重试或切换模型。",
         ) from exc
     except (ClientError, BotoCoreError) as exc:

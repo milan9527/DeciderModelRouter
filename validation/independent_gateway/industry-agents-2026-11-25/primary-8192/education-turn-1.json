@@ -1,0 +1,379 @@
+{
+  "id": "fd74e1fa1b2904819303dd52",
+  "session_id": "ac118b8ac1e342bd718d86db",
+  "scenario_id": "education",
+  "title": "课程资源排期与补课安排",
+  "industry": "教育培训",
+  "prompt": "查询班级和教室，列出容量限制及总课时，指出C3可用教室。",
+  "status": "completed",
+  "created_at": 1795617992928,
+  "turn": 1,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617999009,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-54ba4c86c4a7e1f06f45a619f1ff4412dbe5e68301a6ecf2a5e659b3cef71406",
+  "answer": "## 查询结果总结\n\n### 班级信息（容量限制与总课时）\n\n| 班级 | 课程技能 | 学员数 | 所需课时 |\n|------|---------|--------|---------|\n| C1 | Python | 24人 | 2课时 |\n| C2 | SQL | 18人 | 3课时 |\n| C3 | Python | 30人 | 2课时 |\n\n### 教室信息（容量与可用时段）\n\n| 教室 | 容量限制 | 可用课时 |\n|------|---------|---------|\n| R1 | 25人 | 5课时 |\n| R2 | 35人 | 3课时 |\n\n### C3可用教室分析\n\n**C3班级要求：30人，2课时**\n\n- **R1**（容量25人）：**不可用** ❌ — 容量不足（需30人，仅容25人）\n- **R2**（容量35人）：**可用** ✅ — 容量充足，可用课时充足（需2课时，有3课时）\n\n**结论**：C3补课只能安排在 **R2教室**，可选择R2的3个可用课时中的任意2课时进行安排。",
+  "finished_at": 1795617998987,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "d4b7df8995bca7fd4b12ad88",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 98.161,
+      "target_ms": 797.526,
+      "usage": {
+        "inputTokens": 1315,
+        "outputTokens": 106,
+        "totalTokens": 1421,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1315,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.001845",
+      "stop_reason": "tool_use",
+      "tool_call_count": 2
+    },
+    {
+      "step": 2,
+      "run_id": "af2ac8c605edced52ac9859d",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 114.141,
+      "target_ms": 2324.355,
+      "usage": {
+        "inputTokens": 1645,
+        "outputTokens": 358,
+        "totalTokens": 2003,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1645,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.003435",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "education",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617995920
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617995943
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "d4b7df8995bca7fd4b12ad88",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 98.161,
+      "target_ms": 797.526,
+      "usage": {
+        "inputTokens": 1315,
+        "outputTokens": 106,
+        "totalTokens": 1421,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1315,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.001845",
+      "stop_reason": "tool_use",
+      "tool_call_count": 2,
+      "sequence": 3,
+      "recorded_at": 1795617995964
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "classes"
+      },
+      "sequence": 4,
+      "recorded_at": 1795617995982
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "classes"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "classes",
+        "records": [
+          {
+            "course": "C1",
+            "students": 24,
+            "hours": 2,
+            "skill": "python"
+          },
+          {
+            "course": "C2",
+            "students": 18,
+            "hours": 3,
+            "skill": "sql"
+          },
+          {
+            "course": "C3",
+            "students": 30,
+            "hours": 2,
+            "skill": "python"
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.015,
+      "sequence": 5,
+      "recorded_at": 1795617998865
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "rooms"
+      },
+      "sequence": 6,
+      "recorded_at": 1795617998886
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "rooms"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "rooms",
+        "records": [
+          {
+            "room": "R1",
+            "capacity": 25,
+            "available_hours": 5
+          },
+          {
+            "room": "R2",
+            "capacity": 35,
+            "available_hours": 3
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.007,
+      "sequence": 7,
+      "recorded_at": 1795617998905
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 8,
+      "recorded_at": 1795617998927
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "af2ac8c605edced52ac9859d",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 114.141,
+      "target_ms": 2324.355,
+      "usage": {
+        "inputTokens": 1645,
+        "outputTokens": 358,
+        "totalTokens": 2003,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1645,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.003435",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 9,
+      "recorded_at": 1795617998947
+    },
+    {
+      "type": "completed",
+      "answer": "## 查询结果总结\n\n### 班级信息（容量限制与总课时）\n\n| 班级 | 课程技能 | 学员数 | 所需课时 |\n|------|---------|--------|---------|\n| C1 | Python | 24人 | 2课时 |\n| C2 | SQL | 18人 | 3课时 |\n| C3 | Python | 30人 | 2课时 |\n\n### 教室信息（容量与可用时段）\n\n| 教室 | 容量限制 | 可用课时 |\n|------|---------|---------|\n| R1 | 25人 | 5课时 |\n| R2 | 35人 | 3课时 |\n\n### C3可用教室分析\n\n**C3班级要求：30人，2课时**\n\n- **R1**（容量25人）：**不可用** ❌ — 容量不足（需30人，仅容25人）\n- **R2**（容量35人）：**可用** ✅ — 容量充足，可用课时充足（需2课时，有3课时）\n\n**结论**：C3补课只能安排在 **R2教室**，可选择R2的3个可用课时中的任意2课时进行安排。",
+      "model_calls": 2,
+      "sequence": 10,
+      "recorded_at": 1795617998987
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 2,
+    "model_switches": 0,
+    "retained_calls": 1,
+    "cache_read_tokens": 0
+  }
+}

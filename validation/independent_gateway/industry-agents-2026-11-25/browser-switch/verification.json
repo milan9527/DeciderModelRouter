@@ -1,0 +1,18 @@
+{
+  "fixture": false,
+  "new_model_calls": 0,
+  "job_id": "7573cf13516dbe3560098af8",
+  "checks": [
+    "authenticated industry page: 12 scenarios, four turns, V2, 16384-token UI default",
+    "advanced concurrency follow-up fills a real task without a preset model",
+    "same-session summary follow-up fills without a preset model or new inference",
+    "saved real answer, model decisions, tools, performance and usage visible",
+    "reload restores history; existing agent session can accept a follow-up",
+    "1440px desktop and 390px mobile have no document overflow",
+    "logout clears the authenticated workspace"
+  ],
+  "page_errors": [],
+  "model_rows": [
+    "#1\nend_turn\tanthropic.claude-haiku-4-5-20251001-v1:0\n上次：anthropic.claude-opus-4-5-20251101-v1:0\n\t已切换模型\ngeneral_text · complex\n任务属性、约束或证据版本变化，重新选模。\n选型依据与用量\n\tGPU 192.3 ms\n目标 2457.7 ms\n缓存读 0\n\t未知\n缓存计价未知时不估算折扣"
+  ]
+}

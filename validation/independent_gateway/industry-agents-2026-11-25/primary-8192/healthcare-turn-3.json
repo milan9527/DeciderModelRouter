@@ -1,0 +1,181 @@
+{
+  "id": "656c37436532703bfc7f79e8",
+  "session_id": "1456190075efb68f2d863bed",
+  "scenario_id": "healthcare",
+  "title": "门诊排班与检查资源协调",
+  "industry": "医疗运营",
+  "prompt": "写一个带优先级和清洁时间的Python排程函数，给出不可行案例和验证不重叠的测试。",
+  "status": "completed",
+  "created_at": 1795617671135,
+  "turn": 3,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617687638,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-054cee5e5ddeb26b2c99b95c2d19e50f3d2d7458ebfb83222b131bd393aaafc5",
+  "answer": "以下是带优先级和清洁时间的Python排程函数，包含不可行案例和验证测试：\n\n```python\nfrom typing import List, Tuple, Dict\nfrom dataclasses import dataclass\nfrom enum import Enum\n\nclass Priority(Enum):\n    \"\"\"优先级枚举\"\"\"\n    URGENT = 1\n    ROUTINE = 2\n\n@dataclass\nclass Appointment:\n    \"\"\"检查预约记录\"\"\"\n    id: str\n    exam_type: str\n    duration: int  # 检查时长（分钟）\n    priority: Priority\n    \n    def __repr__(self):\n        return f\"Apt({self.id}, {self.exam_type}, {self.duration}min, {self.priority.name})\"\n\n@dataclass\nclass CapacityRule:\n    \"\"\"容量规则\"\"\"\n    exam_type: str\n    available_minutes: int\n    cleaning_per_case: int\n\n@dataclass\nclass ScheduleSlot:\n    \"\"\"排程时段\"\"\"\n    appointment: Appointment\n    start_time: int\n    end_time: int  # 包含清洁时间\n    \n    def __repr__(self):\n        return f\"Slot({self.appointment.id}, {self.start_time}-{self.end_time}min)\"\n\ndef schedule_appointments(\n    appointments: List[Appointment],\n    capacity_rules: Dict[str, CapacityRule]\n) -> Tuple[List[ScheduleSlot], List[Appointment]]:\n    \"\"\"\n    排程函数：按优先级和容量约束排程检查\n    \n    Args:\n        appointments: 预约列表\n        capacity_rules: 各资源单元的容量规则（以exam_type为键）\n    \n    Returns:\n        (已排程列表, 未排程列表)\n        \n    说明：\n    - 按优先级排序（urgent优先）\n    - 每个检查后预留清洁时间\n    - 检查不重叠\n    - 总耗时不超过容量限制\n    \"\"\"\n    \n    # 按优先级排序（优先级值小的优先）\n    sorted_apts = sorted(appointments, key=lambda a: (a.priority.value, a.id))\n    \n    scheduled: List[ScheduleSlot] = []\n    unscheduled: List[Appointment] = []\n    \n    for apt in sorted_apts:\n        # 获取该检查类型的容量规则\n        if apt.exam_type not in capacity_rules:\n            raise ValueError(f\"未找到 {apt.exam_type} 的容量规则\")\n        \n        rule = capacity_rules[apt.exam_type]\n        cleaning_time = rule.cleaning_per_case\n        \n        # 计算所需总时间（检查 + 清洁）\n        required_time = apt.duration + cleaning_time\n        \n        # 计算新检查的开始时间（前一个检查结束时间）\n        if scheduled:\n            # 只考虑同一资源单元的检查\n            same_unit_slots = [s for s in scheduled if s.appointment.exam_type == apt.exam_type]\n            if same_unit_slots:\n                start_time = max(s.end_time for s in same_unit_slots)\n            else:\n                start_time = 0\n        else:\n            start_time = 0\n        \n        end_time = start_time + required_time\n        \n        # 检查是否超容量\n        if end_time <= rule.available_minutes:\n            slot = ScheduleSlot(apt, start_time, end_time)\n            scheduled.append(slot)\n        else:\n            unscheduled.append(apt)\n    \n    return scheduled, unscheduled\n\ndef validate_no_overlap(scheduled: List[ScheduleSlot]) -> bool:\n    \"\"\"\n    验证排程中无重叠\n    \n    Returns:\n        True: 无重叠，False: 存在重叠\n    \"\"\"\n    # 按资源单元分组\n    by_unit = {}\n    for slot in scheduled:\n        unit = slot.appointment.exam_type\n        if unit not in by_unit:\n            by_unit[unit] = []\n        by_unit[unit].append(slot)\n    \n    # 检查每个资源单元内的重叠\n    for unit, slots in by_unit.items():\n        sorted_slots = sorted(slots, key=lambda s: s.start_time)\n        for i in range(len(sorted_slots) - 1):\n            if sorted_slots[i].end_time > sorted_slots[i+1].start_time:\n                print(f\"⚠ {unit} 中发现重叠：{sorted_slots[i]} 与 {sorted_slots[i+1]} 重叠\")\n                return False\n    \n    return True\n\ndef print_schedule_report(\n    scheduled: List[ScheduleSlot],\n    unscheduled: List[Appointment],\n    capacity_rules: Dict[str, CapacityRule]\n):\n    \"\"\"打印排程报告\"\"\"\n    print(\"=\" * 70)\n    print(\"排程报告\")\n    print(\"=\" * 70)\n    \n    # 按资源单元分组\n    by_unit = {}\n    for slot in scheduled:\n        unit = slot.appointment.exam_type\n        if unit not in by_unit:\n            by_unit[unit] = []\n        by_unit[unit].append(slot)\n    \n    for unit in by_unit:\n        print(f\"\\n【{unit}】\")\n        rule = capacity_rules[unit]\n        slots = sorted(by_unit[unit], key=lambda s: s.start_time)\n        \n        for slot in slots:\n            exam_time = slot.end_time - slot.appointment.duration\n            print(f\"  {slot.appointment.id:4s} | {slot.appointment.priority.name:6s} | \"\n                  f\"检查:{slot.appointment.duration:3d}min | \"\n                  f\"清洁:{slot.end_time - exam_time:3d}min | \"\n                  f\"时段:[{slot.start_time:3d}, {slot.end_time:3d}]min\")\n        \n        total_used = max(s.end_time for s in slots) if slots else 0\n        utilization = (total_used / rule.available_minutes * 100) if rule.available_minutes > 0 else 0\n        print(f\"  → 容量: {total_used}/{rule.available_minutes}min ({utilization:.1f}%)\")\n    \n    if unscheduled:\n        print(f\"\\n【未安排病例】({len(unscheduled)}例)\")\n        for apt in unscheduled:\n            rule = capacity_rules[apt.exam_type]\n            required = apt.duration + rule.cleaning_per_case\n            print(f\"  {apt.id:4s} | {apt.priority.name:6s} | \"\n                  f\"需要:{required}min | 原因:容量不足\")\n    else:\n        print(f\"\\n【未安排病例】(0例)\")\n    \n    print(f\"\\n✓ 无重叠验证: {validate_no_overlap(scheduled)}\")\n    print(\"=\" * 70)\n\n# ============================================================================\n# 测试用例\n# ============================================================================\n\ndef test_case_1_feasible():\n    \"\"\"测试用例1：可行方案（本次查询数据）\"\"\"\n    print(\"\\n📌 测试用例1：可行方案 (MRI 120min容量, 3例预约)\")\n    \n    appointments = [\n        Appointment(\"A31\", \"MRI\", 45, Priority.URGENT),\n        Appointment(\"A32\", \"MRI\", 30, Priority.ROUTINE),\n        Appointment(\"A33\", \"MRI\", 60, Priority.ROUTINE),\n    ]\n    \n    capacity_rules = {\n        \"MRI\": CapacityRule(\"MRI\", available_minutes=120, cleaning_per_case=10)\n    }\n    \n    scheduled, unscheduled = schedule_appointments(appointments, capacity_rules)\n    \n    print(f\"可行排程数: {len(scheduled)}\")\n    print(f\"未安排数: {len(unscheduled)}\")\n    for slot in scheduled:\n        print(f\"  → {slot}\")\n    for apt in unscheduled:\n        print(f\"  → {apt} (未安排)\")\n    \n    print_schedule_report(scheduled, unscheduled, capacity_rules)\n    assert len(scheduled) == 2, \"应安排2例\"\n    assert len(unscheduled) == 1, \"应未安排1例\"\n    assert validate_no_overlap(scheduled), \"排程应无重叠\"\n    print(\"✓ 测试通过\\n\")\n\ndef test_case_2_infeasible():\n    \"\"\"测试用例2：不可行方案（全部超容）\"\"\"\n    print(\"\\n📌 测试用例2：不可行方案 (容量严重不足)\")\n    \n    appointments = [\n        Appointment(\"B1\", \"CT\", 50, Priority.URGENT),\n        Appointment(\"B2\", \"CT\", 50, Priority.ROUTINE),\n        Appointment(\"B3\", \"CT\", 50, Priority.ROUTINE),\n    ]\n    \n    capacity_rules = {\n        \"CT\": CapacityRule(\"CT\", available_minutes=60, cleaning_per_case=5)\n    }\n    \n    scheduled, unscheduled = schedule_appointments(appointments, capacity_rules)\n    \n    print(f\"可行排程数: {len(scheduled)}\")\n    print(f\"未安排数: {len(unscheduled)}\")\n    for slot in scheduled:\n        print(f\"  → {slot}\")\n    for apt in unscheduled:\n        print(f\"  → {apt} (未安排)\")\n    \n    print_schedule_report(scheduled, unscheduled, capacity_rules)\n    assert len(scheduled) == 1, \"仅能安排1例（优先级最高）\"\n    assert len(unscheduled) == 2, \"应未安排2例\"\n    assert validate_no_overlap(scheduled), \"排程应无重叠\"\n    print(\"✓ 测试通过\\n\")\n\ndef test_case_3_mixed_units():\n    \"\"\"测试用例3：混合资源单元（无相互影响）\"\"\"\n    print(\"\\n📌 测试用例3：混合资源单元\")\n    \n    appointments = [\n        Appointment(\"C1\", \"MRI\", 50, Priority.URGENT),\n        Appointment(\"C2\", \"MRI\", 50, Priority.ROUTINE),\n        Appointment(\"C3\", \"CT\", 40, Priority.ROUTINE),\n    ]\n    \n    capacity_rules = {\n        \"MRI\": CapacityRule(\"MRI\", available_minutes=120, cleaning_per_case=10),\n        \"CT\": CapacityRule(\"CT\", available_minutes=60, cleaning_per_case=5),\n    }\n    \n    scheduled, unscheduled = schedule_appointments(appointments, capacity_rules)\n    \n    print(f\"可行排程数: {len(scheduled)}\")\n    print(f\"未安排数: {len(unscheduled)}\")\n    for slot in scheduled:\n        print(f\"  → {slot}\")\n    for apt in unscheduled:\n        print(f\"  → {apt} (未安排)\")\n    \n    print_schedule_report(scheduled, unscheduled, capacity_rules)\n    assert len(scheduled) == 2, \"MRI能排2例，CT能排1例\"\n    assert validate_no_overlap(scheduled), \"排程应无重叠\"\n    print(\"✓ 测试通过\\n\")\n\ndef test_case_4_priority_order():\n    \"\"\"测试用例4：优先级排序验证\"\"\"\n    print(\"\\n📌 测试用例4：优先级排序验证\")\n    \n    appointments = [\n        Appointment(\"D1\", \"MRI\", 30, Priority.ROUTINE),\n        Appointment(\"D2\", \"MRI\", 60, Priority.URGENT),\n        Appointment(\"D3\", \"MRI\", 20, Priority.ROUTINE),\n    ]\n    \n    capacity_rules = {\n        \"MRI\": CapacityRule(\"MRI\", available_minutes=100, cleaning_per_case=10)\n    }\n    \n    scheduled, unscheduled = schedule_appointments(appointments, capacity_rules)\n    \n    print(f\"可行排程数: {len(scheduled)}\")\n    print(f\"未安排数: {len(unscheduled)}\")\n    \n    # D2(urgent) 应该最先排程\n    if scheduled:\n        first_id = scheduled[0].appointment.id\n        print(f\"首个排程: {first_id}\")\n        assert first_id == \"D2\", \"URGENT应该优先排程\"\n    \n    print_schedule_report(scheduled, unscheduled, capacity_rules)\n    assert validate_no_overlap(scheduled), \"排程应无重叠\"\n    print(\"✓ 测试通过\\n\")\n\ndef test_overlap_detection():\n    \"\"\"测试用例5：重叠检测功能验证\"\"\"\n    print(\"\\n📌 测试用例5：重叠检测功能验证\")\n    \n    # 手工构造重叠的排程（模拟错误）\n    apt1 = Appointment(\"E1\", \"MRI\", 30, Priority.URGENT)\n    apt2 = Appointment(\"E2\", \"MRI\", 30, Priority.ROUTINE)\n    \n    # 有重叠的时段\n    overlapping_schedule = [\n        ScheduleSlot(apt1, 0, 40),    # 0-40\n        ScheduleSlot(apt2, 35, 75),   # 35-75 (与前一个重叠)\n    ]\n    \n    print(\"测试重叠检测...\")\n    is_valid = validate_no_overlap(overlapping_schedule)\n    assert not is_valid, \"应检测到重叠\"\n    print(\"✓ 成功检测到重叠\\n\")\n    \n    # 无重叠的时段\n    non_overlapping_schedule = [\n        ScheduleSlot(apt1, 0, 40),    # 0-40\n        ScheduleSlot(apt2, 40, 80),   # 40-80 (无重叠)\n    ]\n    \n    print(\"测试无重叠排程...\")\n    is_valid = validate_no_overlap(non_overlapping_schedule)\n    assert is_valid, \"应验证无重叠\"\n    print(\"✓ 验证无重叠成功\\n\")\n\n# ============================================================================\n# 运行所有测试\n# ============================================================================\n\nif __name__ == \"__main__\":\n    print(\"\\n\" + \"=\" * 70)\n    print(\"医疗排程系统测试套件\")\n    print(\"=\" * 70)\n    \n    test_case_1_feasible()\n    test_case_2_infeasible()\n    test_case_3_mixed_units()\n    test_case_4_priority_order()\n    test_overlap_detection()\n    \n    print(\"\\n\" + \"=\" * 70)\n    print(\"✓ 所有测试通过\")\n    print(\"=\" * 70)\n```\n\n---\n\n## 代码说明\n\n**核心函数：**\n- `schedule_appointments()`: 按优先级和容量约束进行排程\n  - 优先级排序（URGENT < ROUTINE）\n  - 时间不重叠\n  - 包含清洁时间（每例检查后自动加入）\n  - 返回已排程和未排程列表\n\n- `validate_no_overlap()`: 验证排程中无时段重叠\n  - 按资源单元分组检查\n  - 返回布尔值\n\n**数据结构：**\n- `Appointment`: 预约记录（ID、类型、时长、优先级）\n- `CapacityRule`: 容量规则（资源单元、可用时长、单次清洁时长）\n- `ScheduleSlot`: 排程时段（包含起止时间）\n\n**测试用例：**\n1. **可行方案** (A31/A32/A33): 验证优先级排序和容量控制\n2. **不可行方案** (B1/B2/B3): 验证容量严重不足时的处理\n3. **混合资源** (C1/C2/C3): 验证不同资源单元的独立排程\n4. **优先级验证** (D1/D2/D3): 验证URGENT优先排程\n5. **重叠检测**: 验证手工构造的重叠和无重叠场景\n\n**关键特性：**\n- ✓ 自动检测和防止时段重叠\n- ✓ 支持多资源单元独立容量管理\n- ✓ 自动计入清洁时间（不需手工计算）\n- ✓ 完整的测试覆盖和验证",
+  "finished_at": 1795617687561,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "5520136eec5149cdf2e0ab56",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "other"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 185.005,
+      "target_ms": 15395.604,
+      "usage": {
+        "inputTokens": 3350,
+        "outputTokens": 4439,
+        "totalTokens": 7789,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 3350,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.025545",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "healthcare",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617687436
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617687452
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "5520136eec5149cdf2e0ab56",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "other"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 185.005,
+      "target_ms": 15395.604,
+      "usage": {
+        "inputTokens": 3350,
+        "outputTokens": 4439,
+        "totalTokens": 7789,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 3350,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.025545",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795617687473
+    },
+    {
+      "type": "completed",
+      "answer": "以下是带优先级和清洁时间的Python排程函数，包含不可行案例和验证测试：\n\n```python\nfrom typing import List, Tuple, Dict\nfrom dataclasses import dataclass\nfrom enum import Enum\n\nclass Priority(Enum):\n    \"\"\"优先级枚举\"\"\"\n    URGENT = 1\n    ROUTINE = 2\n\n@dataclass\nclass Appointment:\n    \"\"\"检查预约记录\"\"\"\n    id: str\n    exam_type: str\n    duration: int  # 检查时长（分钟）\n    priority: Priority\n    \n    def __repr__(self):\n        return f\"Apt({self.id}, {self.exam_type}, {self.duration}min, {self.priority.name})\"\n\n@dataclass\nclass CapacityRule:\n    \"\"\"容量规则\"\"\"\n    exam_type: str\n    available_minutes: int\n    cleaning_per_case: int\n\n@dataclass\nclass ScheduleSlot:\n    \"\"\"排程时段\"\"\"\n    appointment: Appointment\n    start_time: int\n    end_time: int  # 包含清洁时间\n    \n    def __repr__(self):\n        return f\"Slot({self.appointment.id}, {self.start_time}-{self.end_time}min)\"\n\ndef schedule_appointments(\n    appointments: List[Appointment],\n    capacity_rules: Dict[str, CapacityRule]\n) -> Tuple[List[ScheduleSlot], List[Appointment]]:\n    \"\"\"\n    排程函数：按优先级和容量约束排程检查\n    \n    Args:\n        appointments: 预约列表\n        capacity_rules: 各资源单元的容量规则（以exam_type为键）\n    \n    Returns:\n        (已排程列表, 未排程列表)\n        \n    说明：\n    - 按优先级排序（urgent优先）\n    - 每个检查后预留清洁时间\n    - 检查不重叠\n    - 总耗时不超过容量限制\n    \"\"\"\n    \n    # 按优先级排序（优先级值小的优先）\n    sorted_apts = sorted(appointments, key=lambda a: (a.priority.value, a.id))\n    \n    scheduled: List[ScheduleSlot] = []\n    unscheduled: List[Appointment] = []\n    \n    for apt in sorted_apts:\n        # 获取该检查类型的容量规则\n        if apt.exam_type not in capacity_rules:\n            raise ValueError(f\"未找到 {apt.exam_type} 的容量规则\")\n        \n        rule = capacity_rules[apt.exam_type]\n        cleaning_time = rule.cleaning_per_case\n        \n        # 计算所需总时间（检查 + 清洁）\n        required_time = apt.duration + cleaning_time\n        \n        # 计算新检查的开始时间（前一个检查结束时间）\n        if scheduled:\n            # 只考虑同一资源单元的检查\n            same_unit_slots = [s for s in scheduled if s.appointment.exam_type == apt.exam_type]\n            if same_unit_slots:\n                start_time = max(s.end_time for s in same_unit_slots)\n            else:\n                start_time = 0\n        else:\n            start_time = 0\n        \n        end_time = start_time + required_time\n        \n        # 检查是否超容量\n        if end_time <= rule.available_minutes:\n            slot = ScheduleSlot(apt, start_time, end_time)\n            scheduled.append(slot)\n        else:\n            unscheduled.append(apt)\n    \n    return scheduled, unscheduled\n\ndef validate_no_overlap(scheduled: List[ScheduleSlot]) -> bool:\n    \"\"\"\n    验证排程中无重叠\n    \n    Returns:\n        True: 无重叠，False: 存在重叠\n    \"\"\"\n    # 按资源单元分组\n    by_unit = {}\n    for slot in scheduled:\n        unit = slot.appointment.exam_type\n        if unit not in by_unit:\n            by_unit[unit] = []\n        by_unit[unit].append(slot)\n    \n    # 检查每个资源单元内的重叠\n    for unit, slots in by_unit.items():\n        sorted_slots = sorted(slots, key=lambda s: s.start_time)\n        for i in range(len(sorted_slots) - 1):\n            if sorted_slots[i].end_time > sorted_slots[i+1].start_time:\n                print(f\"⚠ {unit} 中发现重叠：{sorted_slots[i]} 与 {sorted_slots[i+1]} 重叠\")\n                return False\n    \n    return True\n\ndef print_schedule_report(\n    scheduled: List[ScheduleSlot],\n    unscheduled: List[Appointment],\n    capacity_rules: Dict[str, CapacityRule]\n):\n    \"\"\"打印排程报告\"\"\"\n    print(\"=\" * 70)\n    print(\"排程报告\")\n    print(\"=\" * 70)\n    \n    # 按资源单元分组\n    by_unit = {}\n    for slot in scheduled:\n        unit = slot.appointment.exam_type\n        if unit not in by_unit:\n            by_unit[unit] = []\n        by_unit[unit].append(slot)\n    \n    for unit in by_unit:\n        print(f\"\\n【{unit}】\")\n        rule = capacity_rules[unit]\n        slots = sorted(by_unit[unit], key=lambda s: s.start_time)\n        \n        for slot in slots:\n            exam_time = slot.end_time - slot.appointment.duration\n            print(f\"  {slot.appointment.id:4s} | {slot.appointment.priority.name:6s} | \"\n                  f\"检查:{slot.appointment.duration:3d}min | \"\n                  f\"清洁:{slot.end_time - exam_time:3d}min | \"\n                  f\"时段:[{slot.start_time:3d}, {slot.end_time:3d}]min\")\n        \n        total_used = max(s.end_time for s in slots) if slots else 0\n        utilization = (total_used / rule.available_minutes * 100) if rule.available_minutes > 0 else 0\n        print(f\"  → 容量: {total_used}/{rule.available_minutes}min ({utilization:.1f}%)\")\n    \n    if unscheduled:\n        print(f\"\\n【未安排病例】({len(unscheduled)}例)\")\n        for apt in unscheduled:\n            rule = capacity_rules[apt.exam_type]\n            required = apt.duration + rule.cleaning_per_case\n            print(f\"  {apt.id:4s} | {apt.priority.name:6s} | \"\n                  f\"需要:{required}min | 原因:容量不足\")\n    else:\n        print(f\"\\n【未安排病例】(0例)\")\n    \n    print(f\"\\n✓ 无重叠验证: {validate_no_overlap(scheduled)}\")\n    print(\"=\" * 70)\n\n# ============================================================================\n# 测试用例\n# ============================================================================\n\ndef test_case_1_feasible():\n    \"\"\"测试用例1：可行方案（本次查询数据）\"\"\"\n    print(\"\\n📌 测试用例1：可行方案 (MRI 120min容量, 3例预约)\")\n    \n    appointments = [\n        Appointment(\"A31\", \"MRI\", 45, Priority.URGENT),\n        Appointment(\"A32\", \"MRI\", 30, Priority.ROUTINE),\n        Appointment(\"A33\", \"MRI\", 60, Priority.ROUTINE),\n    ]\n    \n    capacity_rules = {\n        \"MRI\": CapacityRule(\"MRI\", available_minutes=120, cleaning_per_case=10)\n    }\n    \n    scheduled, unscheduled = schedule_appointments(appointments, capacity_rules)\n    \n    print(f\"可行排程数: {len(scheduled)}\")\n    print(f\"未安排数: {len(unscheduled)}\")\n    for slot in scheduled:\n        print(f\"  → {slot}\")\n    for apt in unscheduled:\n        print(f\"  → {apt} (未安排)\")\n    \n    print_schedule_report(scheduled, unscheduled, capacity_rules)\n    assert len(scheduled) == 2, \"应安排2例\"\n    assert len(unscheduled) == 1, \"应未安排1例\"\n    assert validate_no_overlap(scheduled), \"排程应无重叠\"\n    print(\"✓ 测试通过\\n\")\n\ndef test_case_2_infeasible():\n    \"\"\"测试用例2：不可行方案（全部超容）\"\"\"\n    print(\"\\n📌 测试用例2：不可行方案 (容量严重不足)\")\n    \n    appointments = [\n        Appointment(\"B1\", \"CT\", 50, Priority.URGENT),\n        Appointment(\"B2\", \"CT\", 50, Priority.ROUTINE),\n        Appointment(\"B3\", \"CT\", 50, Priority.ROUTINE),\n    ]\n    \n    capacity_rules = {\n        \"CT\": CapacityRule(\"CT\", available_minutes=60, cleaning_per_case=5)\n    }\n    \n    scheduled, unscheduled = schedule_appointments(appointments, capacity_rules)\n    \n    print(f\"可行排程数: {len(scheduled)}\")\n    print(f\"未安排数: {len(unscheduled)}\")\n    for slot in scheduled:\n        print(f\"  → {slot}\")\n    for apt in unscheduled:\n        print(f\"  → {apt} (未安排)\")\n    \n    print_schedule_report(scheduled, unscheduled, capacity_rules)\n    assert len(scheduled) == 1, \"仅能安排1例（优先级最高）\"\n    assert len(unscheduled) == 2, \"应未安排2例\"\n    assert validate_no_overlap(scheduled), \"排程应无重叠\"\n    print(\"✓ 测试通过\\n\")\n\ndef test_case_3_mixed_units():\n    \"\"\"测试用例3：混合资源单元（无相互影响）\"\"\"\n    print(\"\\n📌 测试用例3：混合资源单元\")\n    \n    appointments = [\n        Appointment(\"C1\", \"MRI\", 50, Priority.URGENT),\n        Appointment(\"C2\", \"MRI\", 50, Priority.ROUTINE),\n        Appointment(\"C3\", \"CT\", 40, Priority.ROUTINE),\n    ]\n    \n    capacity_rules = {\n        \"MRI\": CapacityRule(\"MRI\", available_minutes=120, cleaning_per_case=10),\n        \"CT\": CapacityRule(\"CT\", available_minutes=60, cleaning_per_case=5),\n    }\n    \n    scheduled, unscheduled = schedule_appointments(appointments, capacity_rules)\n    \n    print(f\"可行排程数: {len(scheduled)}\")\n    print(f\"未安排数: {len(unscheduled)}\")\n    for slot in scheduled:\n        print(f\"  → {slot}\")\n    for apt in unscheduled:\n        print(f\"  → {apt} (未安排)\")\n    \n    print_schedule_report(scheduled, unscheduled, capacity_rules)\n    assert len(scheduled) == 2, \"MRI能排2例，CT能排1例\"\n    assert validate_no_overlap(scheduled), \"排程应无重叠\"\n    print(\"✓ 测试通过\\n\")\n\ndef test_case_4_priority_order():\n    \"\"\"测试用例4：优先级排序验证\"\"\"\n    print(\"\\n📌 测试用例4：优先级排序验证\")\n    \n    appointments = [\n        Appointment(\"D1\", \"MRI\", 30, Priority.ROUTINE),\n        Appointment(\"D2\", \"MRI\", 60, Priority.URGENT),\n        Appointment(\"D3\", \"MRI\", 20, Priority.ROUTINE),\n    ]\n    \n    capacity_rules = {\n        \"MRI\": CapacityRule(\"MRI\", available_minutes=100, cleaning_per_case=10)\n    }\n    \n    scheduled, unscheduled = schedule_appointments(appointments, capacity_rules)\n    \n    print(f\"可行排程数: {len(scheduled)}\")\n    print(f\"未安排数: {len(unscheduled)}\")\n    \n    # D2(urgent) 应该最先排程\n    if scheduled:\n        first_id = scheduled[0].appointment.id\n        print(f\"首个排程: {first_id}\")\n        assert first_id == \"D2\", \"URGENT应该优先排程\"\n    \n    print_schedule_report(scheduled, unscheduled, capacity_rules)\n    assert validate_no_overlap(scheduled), \"排程应无重叠\"\n    print(\"✓ 测试通过\\n\")\n\ndef test_overlap_detection():\n    \"\"\"测试用例5：重叠检测功能验证\"\"\"\n    print(\"\\n📌 测试用例5：重叠检测功能验证\")\n    \n    # 手工构造重叠的排程（模拟错误）\n    apt1 = Appointment(\"E1\", \"MRI\", 30, Priority.URGENT)\n    apt2 = Appointment(\"E2\", \"MRI\", 30, Priority.ROUTINE)\n    \n    # 有重叠的时段\n    overlapping_schedule = [\n        ScheduleSlot(apt1, 0, 40),    # 0-40\n        ScheduleSlot(apt2, 35, 75),   # 35-75 (与前一个重叠)\n    ]\n    \n    print(\"测试重叠检测...\")\n    is_valid = validate_no_overlap(overlapping_schedule)\n    assert not is_valid, \"应检测到重叠\"\n    print(\"✓ 成功检测到重叠\\n\")\n    \n    # 无重叠的时段\n    non_overlapping_schedule = [\n        ScheduleSlot(apt1, 0, 40),    # 0-40\n        ScheduleSlot(apt2, 40, 80),   # 40-80 (无重叠)\n    ]\n    \n    print(\"测试无重叠排程...\")\n    is_valid = validate_no_overlap(non_overlapping_schedule)\n    assert is_valid, \"应验证无重叠\"\n    print(\"✓ 验证无重叠成功\\n\")\n\n# ============================================================================\n# 运行所有测试\n# ============================================================================\n\nif __name__ == \"__main__\":\n    print(\"\\n\" + \"=\" * 70)\n    print(\"医疗排程系统测试套件\")\n    print(\"=\" * 70)\n    \n    test_case_1_feasible()\n    test_case_2_infeasible()\n    test_case_3_mixed_units()\n    test_case_4_priority_order()\n    test_overlap_detection()\n    \n    print(\"\\n\" + \"=\" * 70)\n    print(\"✓ 所有测试通过\")\n    print(\"=\" * 70)\n```\n\n---\n\n## 代码说明\n\n**核心函数：**\n- `schedule_appointments()`: 按优先级和容量约束进行排程\n  - 优先级排序（URGENT < ROUTINE）\n  - 时间不重叠\n  - 包含清洁时间（每例检查后自动加入）\n  - 返回已排程和未排程列表\n\n- `validate_no_overlap()`: 验证排程中无时段重叠\n  - 按资源单元分组检查\n  - 返回布尔值\n\n**数据结构：**\n- `Appointment`: 预约记录（ID、类型、时长、优先级）\n- `CapacityRule`: 容量规则（资源单元、可用时长、单次清洁时长）\n- `ScheduleSlot`: 排程时段（包含起止时间）\n\n**测试用例：**\n1. **可行方案** (A31/A32/A33): 验证优先级排序和容量控制\n2. **不可行方案** (B1/B2/B3): 验证容量严重不足时的处理\n3. **混合资源** (C1/C2/C3): 验证不同资源单元的独立排程\n4. **优先级验证** (D1/D2/D3): 验证URGENT优先排程\n5. **重叠检测**: 验证手工构造的重叠和无重叠场景\n\n**关键特性：**\n- ✓ 自动检测和防止时段重叠\n- ✓ 支持多资源单元独立容量管理\n- ✓ 自动计入清洁时间（不需手工计算）\n- ✓ 完整的测试覆盖和验证",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795617687562
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

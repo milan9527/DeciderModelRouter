@@ -1,0 +1,422 @@
+{
+  "scope": "real_calls_with_synthetic_business_records",
+  "completion_is_not_business_acceptance": true,
+  "standard_exercise": {
+    "planned": 48,
+    "completed": 46,
+    "industries": {
+      "education": {
+        "completed_turns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "planned_turns": 4
+      },
+      "energy": {
+        "completed_turns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "planned_turns": 4
+      },
+      "finance": {
+        "completed_turns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "planned_turns": 4
+      },
+      "healthcare": {
+        "completed_turns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "planned_turns": 4
+      },
+      "insurance": {
+        "completed_turns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "planned_turns": 4
+      },
+      "legal": {
+        "completed_turns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "planned_turns": 4
+      },
+      "logistics": {
+        "completed_turns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "planned_turns": 4
+      },
+      "manufacturing": {
+        "completed_turns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "planned_turns": 4
+      },
+      "public-services": {
+        "completed_turns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "planned_turns": 4
+      },
+      "retail": {
+        "completed_turns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "planned_turns": 4
+      },
+      "saas": {
+        "completed_turns": [
+          1,
+          2
+        ],
+        "planned_turns": 4
+      },
+      "telecom": {
+        "completed_turns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "planned_turns": 4
+      }
+    },
+    "batches": [
+      "primary-8192",
+      "completion-16384"
+    ],
+    "note": "累积补测完成数，不是单一版本首次成功率；进阶追问另列。"
+  },
+  "batches": {
+    "advanced": {
+      "attempted_turns": 2,
+      "statuses": {
+        "completed": 2
+      },
+      "router_steps": 2,
+      "completed_router_steps": 2,
+      "models_completed": {
+        "anthropic.claude-opus-4-5-20251101-v1:0": 1,
+        "anthropic.claude-haiku-4-5-20251001-v1:0": 1
+      },
+      "tool_calls": 0,
+      "model_switches": 2,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "gpu_completed_call_latency": {
+        "samples": 2,
+        "p50_ms": 179.242,
+        "p95_ms": 192.309,
+        "method": "nearest_rank"
+      },
+      "target_completed_call_latency": {
+        "samples": 2,
+        "p50_ms": 2457.742,
+        "p95_ms": 63432.718,
+        "method": "nearest_rank"
+      },
+      "job_completed_latency": {
+        "samples": 2,
+        "p50_ms": 3336,
+        "p95_ms": 71131,
+        "method": "nearest_rank"
+      },
+      "known_reference_cost_usd": "0.15194",
+      "completed_calls_with_unknown_cost": 1,
+      "cost_note": "仅已完成且可计价调用的小计；不含未知缓存费用、失败用量、GPU、ECS或AgentCore费用，不是账单。"
+    },
+    "advanced-before-history-fix": {
+      "attempted_turns": 2,
+      "statuses": {
+        "completed": 2
+      },
+      "router_steps": 3,
+      "completed_router_steps": 3,
+      "models_completed": {
+        "anthropic.claude-opus-4-5-20251101-v1:0": 1,
+        "anthropic.claude-haiku-4-5-20251001-v1:0": 2
+      },
+      "tool_calls": 3,
+      "model_switches": 2,
+      "retained_calls": 1,
+      "cache_read_tokens": 0,
+      "gpu_completed_call_latency": {
+        "samples": 3,
+        "p50_ms": 125.361,
+        "p95_ms": 184.774,
+        "method": "nearest_rank"
+      },
+      "target_completed_call_latency": {
+        "samples": 3,
+        "p50_ms": 2530.43,
+        "p95_ms": 108506.244,
+        "method": "nearest_rank"
+      },
+      "job_completed_latency": {
+        "samples": 2,
+        "p50_ms": 5155,
+        "p95_ms": 113904,
+        "method": "nearest_rank"
+      },
+      "known_reference_cost_usd": "0.005489",
+      "completed_calls_with_unknown_cost": 1,
+      "cost_note": "仅已完成且可计价调用的小计；不含未知缓存费用、失败用量、GPU、ECS或AgentCore费用，不是账单。"
+    },
+    "advanced-timeout-120": {
+      "attempted_turns": 1,
+      "statuses": {
+        "error": 1
+      },
+      "router_steps": 1,
+      "completed_router_steps": 0,
+      "models_completed": {},
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "gpu_completed_call_latency": {
+        "samples": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "method": "nearest_rank"
+      },
+      "target_completed_call_latency": {
+        "samples": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "method": "nearest_rank"
+      },
+      "job_completed_latency": {
+        "samples": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "method": "nearest_rank"
+      },
+      "known_reference_cost_usd": null,
+      "completed_calls_with_unknown_cost": 0,
+      "cost_note": "仅已完成且可计价调用的小计；不含未知缓存费用、失败用量、GPU、ECS或AgentCore费用，不是账单。"
+    },
+    "baseline": {
+      "attempted_turns": 15,
+      "statuses": {
+        "completed": 15
+      },
+      "router_steps": 30,
+      "completed_router_steps": 30,
+      "models_completed": {
+        "amazon.nova-micro-v1:0": 19,
+        "amazon.nova-lite-v1:0": 11
+      },
+      "tool_calls": 26,
+      "model_switches": 16,
+      "retained_calls": 7,
+      "cache_read_tokens": 13536,
+      "gpu_completed_call_latency": {
+        "samples": 30,
+        "p50_ms": 167.188,
+        "p95_ms": 191.463,
+        "method": "nearest_rank"
+      },
+      "target_completed_call_latency": {
+        "samples": 30,
+        "p50_ms": 1513.82,
+        "p95_ms": 5583.749,
+        "method": "nearest_rank"
+      },
+      "job_completed_latency": {
+        "samples": 15,
+        "p50_ms": 6022,
+        "p95_ms": 11479,
+        "method": "nearest_rank"
+      },
+      "known_reference_cost_usd": null,
+      "completed_calls_with_unknown_cost": 30,
+      "cost_note": "仅已完成且可计价调用的小计；不含未知缓存费用、失败用量、GPU、ECS或AgentCore费用，不是账单。"
+    },
+    "claude-protocol-failure": {
+      "attempted_turns": 4,
+      "statuses": {
+        "error": 4
+      },
+      "router_steps": 4,
+      "completed_router_steps": 0,
+      "models_completed": {},
+      "tool_calls": 0,
+      "model_switches": 0,
+      "retained_calls": 0,
+      "cache_read_tokens": 0,
+      "gpu_completed_call_latency": {
+        "samples": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "method": "nearest_rank"
+      },
+      "target_completed_call_latency": {
+        "samples": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "method": "nearest_rank"
+      },
+      "job_completed_latency": {
+        "samples": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "method": "nearest_rank"
+      },
+      "known_reference_cost_usd": null,
+      "completed_calls_with_unknown_cost": 0,
+      "cost_note": "仅已完成且可计价调用的小计；不含未知缓存费用、失败用量、GPU、ECS或AgentCore费用，不是账单。"
+    },
+    "completion-16384": {
+      "attempted_turns": 11,
+      "statuses": {
+        "completed": 10,
+        "error": 1
+      },
+      "router_steps": 15,
+      "completed_router_steps": 14,
+      "models_completed": {
+        "anthropic.claude-haiku-4-5-20251001-v1:0": 14
+      },
+      "tool_calls": 7,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 23534,
+      "gpu_completed_call_latency": {
+        "samples": 14,
+        "p50_ms": 175.748,
+        "p95_ms": 192.178,
+        "method": "nearest_rank"
+      },
+      "target_completed_call_latency": {
+        "samples": 14,
+        "p50_ms": 4444.499,
+        "p95_ms": 30557.931,
+        "method": "nearest_rank"
+      },
+      "job_completed_latency": {
+        "samples": 10,
+        "p50_ms": 8275,
+        "p95_ms": 34415,
+        "method": "nearest_rank"
+      },
+      "known_reference_cost_usd": "0.020606",
+      "completed_calls_with_unknown_cost": 10,
+      "cost_note": "仅已完成且可计价调用的小计；不含未知缓存费用、失败用量、GPU、ECS或AgentCore费用，不是账单。"
+    },
+    "initial-retail-failure": {
+      "attempted_turns": 1,
+      "statuses": {
+        "error": 1
+      },
+      "router_steps": 3,
+      "completed_router_steps": 3,
+      "models_completed": {
+        "amazon.nova-lite-v1:0": 3
+      },
+      "tool_calls": 4,
+      "model_switches": 0,
+      "retained_calls": 1,
+      "cache_read_tokens": 1279,
+      "gpu_completed_call_latency": {
+        "samples": 3,
+        "p50_ms": 117.121,
+        "p95_ms": 175.541,
+        "method": "nearest_rank"
+      },
+      "target_completed_call_latency": {
+        "samples": 3,
+        "p50_ms": 1212.531,
+        "p95_ms": 2400.863,
+        "method": "nearest_rank"
+      },
+      "job_completed_latency": {
+        "samples": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "method": "nearest_rank"
+      },
+      "known_reference_cost_usd": null,
+      "completed_calls_with_unknown_cost": 3,
+      "cost_note": "仅已完成且可计价调用的小计；不含未知缓存费用、失败用量、GPU、ECS或AgentCore费用，不是账单。"
+    },
+    "primary-8192": {
+      "attempted_turns": 41,
+      "statuses": {
+        "completed": 36,
+        "error": 5
+      },
+      "router_steps": 67,
+      "completed_router_steps": 62,
+      "models_completed": {
+        "anthropic.claude-haiku-4-5-20251001-v1:0": 62
+      },
+      "tool_calls": 54,
+      "model_switches": 0,
+      "retained_calls": 22,
+      "cache_read_tokens": 0,
+      "gpu_completed_call_latency": {
+        "samples": 62,
+        "p50_ms": 169.172,
+        "p95_ms": 185.005,
+        "method": "nearest_rank"
+      },
+      "target_completed_call_latency": {
+        "samples": 62,
+        "p50_ms": 3262.474,
+        "p95_ms": 22010.962,
+        "method": "nearest_rank"
+      },
+      "job_completed_latency": {
+        "samples": 36,
+        "p50_ms": 8885,
+        "p95_ms": 30272,
+        "method": "nearest_rank"
+      },
+      "known_reference_cost_usd": "0.639549",
+      "completed_calls_with_unknown_cost": 0,
+      "cost_note": "仅已完成且可计价调用的小计；不含未知缓存费用、失败用量、GPU、ECS或AgentCore费用，不是账单。"
+    }
+  },
+  "all_attempts": {
+    "router_history_records": 125,
+    "gpu_calls": 125,
+    "target_attempts": 125,
+    "separate_probes": {
+      "classification_only_gpu_calls": 2,
+      "direct_haiku_protocol_target_calls": 1
+    },
+    "note": "含早期失败、旧策略与所有补测；按真实历史run_id去重。"
+  }
+}

@@ -1,0 +1,395 @@
+{
+  "id": "ddfc257640effae9a7894c9d",
+  "session_id": "f24ffacae41ed73929e315bd",
+  "scenario_id": "legal",
+  "title": "采购合同付款与责任条款复核",
+  "industry": "企业法务",
+  "prompt": "查询付款节点与合同，计算当前具备付款条件的金额，区分已开票与已验收。",
+  "status": "completed",
+  "created_at": 1795618032438,
+  "turn": 1,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795618039682,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-a0936801dd70a42a52738cd0095a7cb5a22f496f7f4c2b38ff0610f4d1a150f0",
+  "answer": "## 分析结果\n\n### 一、事实数据\n\n**合同基本信息（CT1）：**\n- 合同总额：¥500,000\n- 违约金标准：每日0.05%，最高5%\n\n**付款节点状态（milestones）：**\n\n| 节点 | 占比 | 金额 | 已验收 | 已开票 | 状态 |\n|------|------|------|--------|--------|------|\n| M1 | 30% | ¥150,000 | ✓ | ✓ | 具备付款条件 |\n| M2 | 50% | ¥250,000 | ✗ | ✓ | 仅开票，待验收 |\n| M3 | 20% | ¥100,000 | ✗ | ✗ | 未开票，未验收 |\n\n### 二、付款条件判断\n\n**业务规则：** 验收与合规发票均完成后才具备付款条件\n\n**当前具备付款条件的金额统计：**\n\n| 类别 | 金额 | 节点 |\n|------|------|------|\n| **已开票 + 已验收** | ¥150,000 | M1 |\n| **仅已开票（待验收）** | ¥250,000 | M2 |\n| **未开票、未验收** | ¥100,000 | M3 |\n\n**真正具备付款条件：¥150,000**（M1，同时满足验收和开票）\n\n### 三、待处理事项\n\n- **M2（¥250,000）** ：已开票但未验收，不满足付款条件；需协调完成验收\n- **M3（¥100,000）** ：既未开票也未验收；需供应商补开票或协议调整\n- **违约金适用** ：政策载明需法务审查判断是否主张及适用性，不能自动扣款\n\n### 四、建议\n\n建议确认M1付款（¥150,000），同时推进M2验收进展，联系供应商完成M3开票，待补齐条件后再行支付。",
+  "finished_at": 1795618039662,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "c1528763784cc45bd4176b06",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "customer_support",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 98.456,
+      "target_ms": 1030.187,
+      "usage": {
+        "inputTokens": 1318,
+        "outputTokens": 141,
+        "totalTokens": 1459,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1318,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.002023",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3
+    },
+    {
+      "step": 2,
+      "run_id": "80a2c5dd04b4a2c1bab7b9f5",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "customer_support",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 116.613,
+      "target_ms": 3262.474,
+      "usage": {
+        "inputTokens": 1774,
+        "outputTokens": 610,
+        "totalTokens": 2384,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1774,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.004824",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "legal",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795618035708
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795618035729
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "c1528763784cc45bd4176b06",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "customer_support",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 98.456,
+      "target_ms": 1030.187,
+      "usage": {
+        "inputTokens": 1318,
+        "outputTokens": 141,
+        "totalTokens": 1459,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1318,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.002023",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3,
+      "sequence": 3,
+      "recorded_at": 1795618035748
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "milestones"
+      },
+      "sequence": 4,
+      "recorded_at": 1795618035769
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "milestones"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "milestones",
+        "records": [
+          {
+            "id": "M1",
+            "percent": 30,
+            "accepted": true,
+            "invoice": true
+          },
+          {
+            "id": "M2",
+            "percent": 50,
+            "accepted": false,
+            "invoice": true
+          },
+          {
+            "id": "M3",
+            "percent": 20,
+            "accepted": false,
+            "invoice": false
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.018,
+      "sequence": 5,
+      "recorded_at": 1795618035792
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "contract"
+      },
+      "sequence": 6,
+      "recorded_at": 1795618035813
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "contract"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "contract",
+        "records": [
+          {
+            "id": "CT1",
+            "total": 500000,
+            "delay_daily_rate": 0.0005,
+            "delay_cap_rate": 0.05
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.008,
+      "sequence": 7,
+      "recorded_at": 1795618035833
+    },
+    {
+      "type": "tool_started",
+      "name": "read_policy",
+      "arguments": {},
+      "sequence": 8,
+      "recorded_at": 1795618035853
+    },
+    {
+      "type": "tool_result",
+      "name": "read_policy",
+      "arguments": {},
+      "status": "success",
+      "result": {
+        "policy": "验收与合规发票均完成后才具备付款条件；违约金按合同总额每日0.05%，最高5%；是否主张及适用性需法务审查，不能自动付款。",
+        "source": "synthetic_business_policy"
+      },
+      "elapsed_ms": 0.004,
+      "sequence": 9,
+      "recorded_at": 1795618035874
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 10,
+      "recorded_at": 1795618039601
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "80a2c5dd04b4a2c1bab7b9f5",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "customer_support",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "继续使用本会话的模型及评测配置；能力和费用约束仍满足。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 116.613,
+      "target_ms": 3262.474,
+      "usage": {
+        "inputTokens": 1774,
+        "outputTokens": 610,
+        "totalTokens": 2384,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1774,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.004824",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 11,
+      "recorded_at": 1795618039622
+    },
+    {
+      "type": "completed",
+      "answer": "## 分析结果\n\n### 一、事实数据\n\n**合同基本信息（CT1）：**\n- 合同总额：¥500,000\n- 违约金标准：每日0.05%，最高5%\n\n**付款节点状态（milestones）：**\n\n| 节点 | 占比 | 金额 | 已验收 | 已开票 | 状态 |\n|------|------|------|--------|--------|------|\n| M1 | 30% | ¥150,000 | ✓ | ✓ | 具备付款条件 |\n| M2 | 50% | ¥250,000 | ✗ | ✓ | 仅开票，待验收 |\n| M3 | 20% | ¥100,000 | ✗ | ✗ | 未开票，未验收 |\n\n### 二、付款条件判断\n\n**业务规则：** 验收与合规发票均完成后才具备付款条件\n\n**当前具备付款条件的金额统计：**\n\n| 类别 | 金额 | 节点 |\n|------|------|------|\n| **已开票 + 已验收** | ¥150,000 | M1 |\n| **仅已开票（待验收）** | ¥250,000 | M2 |\n| **未开票、未验收** | ¥100,000 | M3 |\n\n**真正具备付款条件：¥150,000**（M1，同时满足验收和开票）\n\n### 三、待处理事项\n\n- **M2（¥250,000）** ：已开票但未验收，不满足付款条件；需协调完成验收\n- **M3（¥100,000）** ：既未开票也未验收；需供应商补开票或协议调整\n- **违约金适用** ：政策载明需法务审查判断是否主张及适用性，不能自动扣款\n\n### 四、建议\n\n建议确认M1付款（¥150,000），同时推进M2验收进展，联系供应商完成M3开票，待补齐条件后再行支付。",
+      "model_calls": 2,
+      "sequence": 12,
+      "recorded_at": 1795618039662
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 3,
+    "model_switches": 0,
+    "retained_calls": 1,
+    "cache_read_tokens": 0
+  }
+}

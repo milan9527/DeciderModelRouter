@@ -1,0 +1,79 @@
+{
+  "id": "d5ff3e12e194dc3a314dec32",
+  "session_id": "820fa6319b4d77f556c1d6cd",
+  "scenario_id": "finance",
+  "title": "支付对账差异与幂等修复",
+  "industry": "银行与支付",
+  "prompt": "设计Python对账函数和SQL唯一约束，覆盖乱序退款、重复回调、并发写入和金额冲突，并给出测试样例。",
+  "status": "error",
+  "created_at": 1795617557888,
+  "turn": 3,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617585596,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-68b9467c1af3b95c70b0f1a3f5013f5eedf34e09c800a746611d50c45648b59b",
+  "error": "Model Router调用未完成（HTTP 502），请查看网关步骤历史",
+  "finished_at": 1795617585576,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "6210d6bef48c2fa27a2412ea",
+      "status": "failed",
+      "error": {
+        "status": "incomplete",
+        "route_ms": 305.171,
+        "backend_total_ms": 27214.697
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "finance",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617585534
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617585556
+    },
+    {
+      "type": "error",
+      "message": "Model Router调用未完成（HTTP 502），请查看网关步骤历史",
+      "sequence": 3,
+      "recorded_at": 1795617585576
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

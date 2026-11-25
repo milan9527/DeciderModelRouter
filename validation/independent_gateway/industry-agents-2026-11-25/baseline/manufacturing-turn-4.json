@@ -1,0 +1,181 @@
+{
+  "id": "2b8a851a21fd634ddeb16dce",
+  "session_id": "4e6ddb623656c9676ff44acc",
+  "scenario_id": "manufacturing",
+  "title": "产线质量异常与批次追溯",
+  "industry": "制造业",
+  "prompt": "给下一班写一份100字交接单，沿用已核实的批次与数字，区分事实和待验证原因。",
+  "status": "completed",
+  "created_at": 1795616957511,
+  "turn": 4,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 4096,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795616959737,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-229c4cab0594a6d8ef6bf300f516e3ddb0a921a86802b169a6559282c994d396",
+  "answer": "以下是一份100字交接单，用于向下一班传递信息：\n\n“本班核实了批次B701、B702和B703，其中B702不良率高达5%，超过3%的隔离阈值，待验证原因为温度异常。B701和B703不良率为1.5%和1.2%，均在合格范围内。请下班仔细检查B702，并核实温度是否异常，确保产品质量。其他批次无异常情况，交接正常。”\n\n这份交接单使用已核实的批次和数字，明确指出了B702的异常情况及待验证原因，并区分了事实和待验证原因。同时，它提醒下一班仔细检查B702的不良率和温度，以确保产品质量。其他批次则无异常情况，交接正常。",
+  "finished_at": 1795616959722,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "c2127715fada3e998e7848d8",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "configuration_id": "13043f5e2865142ea68b1f10",
+      "previous_model_id": "amazon.nova-lite-v1:0",
+      "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+      "model_changed": true,
+      "configuration_changed": true,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 191.463,
+      "target_ms": 1318.842,
+      "usage": {
+        "inputTokens": 4980,
+        "outputTokens": 263,
+        "totalTokens": 5706,
+        "cacheReadInputTokens": 463,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 463,
+        "write_tokens": 0,
+        "total_input_tokens": 5443,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "manufacturing",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795616959650
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795616959670
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "c2127715fada3e998e7848d8",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "amazon.nova-micro-v1:0",
+      "configuration_id": "13043f5e2865142ea68b1f10",
+      "previous_model_id": "amazon.nova-lite-v1:0",
+      "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+      "model_changed": true,
+      "configuration_changed": true,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "a36698ff80c0b7a80094a40b",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 191.463,
+      "target_ms": 1318.842,
+      "usage": {
+        "inputTokens": 4980,
+        "outputTokens": 263,
+        "totalTokens": 5706,
+        "cacheReadInputTokens": 463,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 463,
+        "write_tokens": 0,
+        "total_input_tokens": 5443,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": null,
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795616959686
+    },
+    {
+      "type": "completed",
+      "answer": "以下是一份100字交接单，用于向下一班传递信息：\n\n“本班核实了批次B701、B702和B703，其中B702不良率高达5%，超过3%的隔离阈值，待验证原因为温度异常。B701和B703不良率为1.5%和1.2%，均在合格范围内。请下班仔细检查B702，并核实温度是否异常，确保产品质量。其他批次无异常情况，交接正常。”\n\n这份交接单使用已核实的批次和数字，明确指出了B702的异常情况及待验证原因，并区分了事实和待验证原因。同时，它提醒下一班仔细检查B702的不良率和温度，以确保产品质量。其他批次则无异常情况，交接正常。",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795616959722
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 1,
+    "retained_calls": 0,
+    "cache_read_tokens": 463
+  }
+}

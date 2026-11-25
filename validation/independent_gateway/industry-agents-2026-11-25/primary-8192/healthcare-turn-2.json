@@ -1,0 +1,181 @@
+{
+  "id": "b85282e4523578b92aa9adc6",
+  "session_id": "1456190075efb68f2d863bed",
+  "scenario_id": "healthcare",
+  "title": "门诊排班与检查资源协调",
+  "industry": "医疗运营",
+  "prompt": "在120分钟容量下给出可行排程及未安排病例，比较最少延期人数和最少延期时长两个目标。",
+  "status": "completed",
+  "created_at": 1795617664881,
+  "turn": 2,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617670080,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-054cee5e5ddeb26b2c99b95c2d19e50f3d2d7458ebfb83222b131bd393aaafc5",
+  "answer": "我来分析在120分钟容量下的两个排程目标。\n\n**现状分析：**\n- 总需求：165分钟（检查135分钟 + 清洁30分钟）\n- 可用容量：120分钟\n- 需要压缩：45分钟\n\n**目标1：最少延期人数**\n\n排程方案：\n| 顺序 | 预约ID | 优先级 | 检查时长 | 清洁时长 | 累计时间 | 状态 |\n|-----|--------|-------|--------|--------|--------|------|\n| 1 | A31 | urgent | 45分钟 | 10分钟 | 55分钟 | ✓安排 |\n| 2 | A32 | routine | 30分钟 | 10分钟 | 95分钟 | ✓安排 |\n| 3 | A33 | routine | 60分钟 | 10分钟 | 175分钟 | ✗超容 |\n\n- **可行排程：** A31 + A32（95分钟，剩余25分钟缓冲）\n- **未安排病例：** A33（60分钟检查 + 10分钟清洁 = 70分钟）\n- **延期人数：1人**\n\n---\n\n**目标2：最少延期时长**\n\n为最小化延期总时长，应延期检查时长最少的病例。\n\n排程方案：\n| 顺序 | 预约ID | 优先级 | 检查时长 | 清洁时长 | 累计时间 | 状态 |\n|-----|--------|-------|--------|--------|--------|------|\n| 1 | A31 | urgent | 45分钟 | 10分钟 | 55分钟 | ✓安排 |\n| 2 | A33 | routine | 60分钟 | 10分钟 | 135分钟 | ✗超容 |\n\n无法同时安排A31+A33。尝试A31+A32：\n\n| 顺序 | 预约ID | 优先级 | 检查时长 | 清洁时长 | 累计时间 | 状态 |\n|-----|--------|-------|--------|--------|--------|------|\n| 1 | A31 | urgent | 45分钟 | 10分钟 | 55分钟 | ✓安排 |\n| 2 | A32 | routine | 30分钟 | 10分钟 | 95分钟 | ✓安排 |\n| 3 | A33 | routine | 60分钟 | 10分钟 | 175分钟 | ✗超容 |\n\n- **可行排程：** A31 + A32（95分钟）\n- **未安排病例：** A33\n- **延期时长：70分钟**（60分钟检查 + 10分钟清洁）\n\n---\n\n**两目标对比：**\n\n| 指标 | 目标1：最少延期人数 | 目标2：最少延期时长 |\n|-----|-------------------|------------------|\n| 可行排程 | A31 + A32 | A31 + A32 |\n| 延期人数 | 1人 | 1人 |\n| 延期时长 | 70分钟 | 70分钟 |\n\n**结论：** 在此容量约束下，两个目标收敛到同一排程方案：\n- **当日安排：** A31（urgent，45分钟检查）→ A32（routine，30分钟检查）\n- **当日占用：** 95分钟（剩余25分钟缓冲）\n- **延期病例：** A33（routine，60分钟检查），需协调改期并征得患者确认",
+  "finished_at": 1795617670058,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "8f9d2888ce3ea106221bc5a3",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 178.387,
+      "target_ms": 4178.85,
+      "usage": {
+        "inputTokens": 2241,
+        "outputTokens": 1067,
+        "totalTokens": 3308,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 2241,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.007576",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "healthcare",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617669973
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617669994
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "8f9d2888ce3ea106221bc5a3",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 178.387,
+      "target_ms": 4178.85,
+      "usage": {
+        "inputTokens": 2241,
+        "outputTokens": 1067,
+        "totalTokens": 3308,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 2241,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.007576",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795617670015
+    },
+    {
+      "type": "completed",
+      "answer": "我来分析在120分钟容量下的两个排程目标。\n\n**现状分析：**\n- 总需求：165分钟（检查135分钟 + 清洁30分钟）\n- 可用容量：120分钟\n- 需要压缩：45分钟\n\n**目标1：最少延期人数**\n\n排程方案：\n| 顺序 | 预约ID | 优先级 | 检查时长 | 清洁时长 | 累计时间 | 状态 |\n|-----|--------|-------|--------|--------|--------|------|\n| 1 | A31 | urgent | 45分钟 | 10分钟 | 55分钟 | ✓安排 |\n| 2 | A32 | routine | 30分钟 | 10分钟 | 95分钟 | ✓安排 |\n| 3 | A33 | routine | 60分钟 | 10分钟 | 175分钟 | ✗超容 |\n\n- **可行排程：** A31 + A32（95分钟，剩余25分钟缓冲）\n- **未安排病例：** A33（60分钟检查 + 10分钟清洁 = 70分钟）\n- **延期人数：1人**\n\n---\n\n**目标2：最少延期时长**\n\n为最小化延期总时长，应延期检查时长最少的病例。\n\n排程方案：\n| 顺序 | 预约ID | 优先级 | 检查时长 | 清洁时长 | 累计时间 | 状态 |\n|-----|--------|-------|--------|--------|--------|------|\n| 1 | A31 | urgent | 45分钟 | 10分钟 | 55分钟 | ✓安排 |\n| 2 | A33 | routine | 60分钟 | 10分钟 | 135分钟 | ✗超容 |\n\n无法同时安排A31+A33。尝试A31+A32：\n\n| 顺序 | 预约ID | 优先级 | 检查时长 | 清洁时长 | 累计时间 | 状态 |\n|-----|--------|-------|--------|--------|--------|------|\n| 1 | A31 | urgent | 45分钟 | 10分钟 | 55分钟 | ✓安排 |\n| 2 | A32 | routine | 30分钟 | 10分钟 | 95分钟 | ✓安排 |\n| 3 | A33 | routine | 60分钟 | 10分钟 | 175分钟 | ✗超容 |\n\n- **可行排程：** A31 + A32（95分钟）\n- **未安排病例：** A33\n- **延期时长：70分钟**（60分钟检查 + 10分钟清洁）\n\n---\n\n**两目标对比：**\n\n| 指标 | 目标1：最少延期人数 | 目标2：最少延期时长 |\n|-----|-------------------|------------------|\n| 可行排程 | A31 + A32 | A31 + A32 |\n| 延期人数 | 1人 | 1人 |\n| 延期时长 | 70分钟 | 70分钟 |\n\n**结论：** 在此容量约束下，两个目标收敛到同一排程方案：\n- **当日安排：** A31（urgent，45分钟检查）→ A32（routine，30分钟检查）\n- **当日占用：** 95分钟（剩余25分钟缓冲）\n- **延期病例：** A33（routine，60分钟检查），需协调改期并征得患者确认",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795617670058
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

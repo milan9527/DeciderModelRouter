@@ -1,0 +1,181 @@
+{
+  "id": "a5eaf15ed60fdc5349bf1725",
+  "session_id": "1456190075efb68f2d863bed",
+  "scenario_id": "healthcare",
+  "title": "门诊排班与检查资源协调",
+  "industry": "医疗运营",
+  "prompt": "用简短中文向排班员交接方案，标注需要人工协调的匿名病例，不作医学建议。",
+  "status": "completed",
+  "created_at": 1795617689721,
+  "turn": 4,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617694933,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-054cee5e5ddeb26b2c99b95c2d19e50f3d2d7458ebfb83222b131bd393aaafc5",
+  "answer": "以下是向排班员的交接方案：\n\n---\n\n## 📋 MRI排班交接方案\n\n**排班日期** | 资源单元 | 可用时段\n---|---|---\n次日 | MRI | 120分钟\n\n### ✓ 当日排程（95分钟，剩余25分钟缓冲）\n\n| 时间段 | 病例编号 | 优先级 | 检查时长 | 清洁时长 | 操作 |\n|--------|--------|-------|--------|--------|------|\n| 0-55min | P001 | 加急 | 45分钟 | 10分钟 | 按时安排 |\n| 55-95min | P002 | 常规 | 30分钟 | 10分钟 | 按时安排 |\n\n---\n\n### ⚠️ 需要人工协调（1例）\n\n**病例编号** | P003\n---|---\n**优先级** | 常规\n**检查时长** | 60分钟 + 10分钟清洁 = 70分钟\n**原因** | 当日容量不足（需165分钟，仅有120分钟）\n**建议** | **改期至次日或其他时段**，建议与患者确认时间安排\n\n---\n\n### 📌 排班注意事项\n\n1. **P001（加急）** 优先安排，确保55分钟内完成（含清洁）\n2. **P002（常规）** 接续排程，从P001清洁完成后开始\n3. **P003（常规）** 不可当日安排，需主动联系协调改期\n4. **缓冲时间** 保留最后25分钟应对突发加急或清洁超时\n\n---\n\n### ✓ 检查清单\n\n- [ ] 确认P001、P002患者次日到位\n- [ ] 准备2套检查间消毒用品（P001、P002各1套，P003改期后另行准备）\n- [ ] 联系患者P003说明改期原因并确认新时间\n- [ ] 次日检查前5分钟检查设备状态\n\n---\n\n**无医学建议 | 仅涉及资源安排**",
+  "finished_at": 1795617694914,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "be7d256ed8cf4212a9a6d652",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 179.163,
+      "target_ms": 4114.164,
+      "usage": {
+        "inputTokens": 7829,
+        "outputTokens": 629,
+        "totalTokens": 8458,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 7829,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.010974",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "healthcare",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617694831
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617694852
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "be7d256ed8cf4212a9a6d652",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "gpu_ms": 179.163,
+      "target_ms": 4114.164,
+      "usage": {
+        "inputTokens": 7829,
+        "outputTokens": 629,
+        "totalTokens": 8458,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 7829,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.010974",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 3,
+      "recorded_at": 1795617694871
+    },
+    {
+      "type": "completed",
+      "answer": "以下是向排班员的交接方案：\n\n---\n\n## 📋 MRI排班交接方案\n\n**排班日期** | 资源单元 | 可用时段\n---|---|---\n次日 | MRI | 120分钟\n\n### ✓ 当日排程（95分钟，剩余25分钟缓冲）\n\n| 时间段 | 病例编号 | 优先级 | 检查时长 | 清洁时长 | 操作 |\n|--------|--------|-------|--------|--------|------|\n| 0-55min | P001 | 加急 | 45分钟 | 10分钟 | 按时安排 |\n| 55-95min | P002 | 常规 | 30分钟 | 10分钟 | 按时安排 |\n\n---\n\n### ⚠️ 需要人工协调（1例）\n\n**病例编号** | P003\n---|---\n**优先级** | 常规\n**检查时长** | 60分钟 + 10分钟清洁 = 70分钟\n**原因** | 当日容量不足（需165分钟，仅有120分钟）\n**建议** | **改期至次日或其他时段**，建议与患者确认时间安排\n\n---\n\n### 📌 排班注意事项\n\n1. **P001（加急）** 优先安排，确保55分钟内完成（含清洁）\n2. **P002（常规）** 接续排程，从P001清洁完成后开始\n3. **P003（常规）** 不可当日安排，需主动联系协调改期\n4. **缓冲时间** 保留最后25分钟应对突发加急或清洁超时\n\n---\n\n### ✓ 检查清单\n\n- [ ] 确认P001、P002患者次日到位\n- [ ] 准备2套检查间消毒用品（P001、P002各1套，P003改期后另行准备）\n- [ ] 联系患者P003说明改期原因并确认新时间\n- [ ] 次日检查前5分钟检查设备状态\n\n---\n\n**无医学建议 | 仅涉及资源安排**",
+      "model_calls": 1,
+      "sequence": 4,
+      "recorded_at": 1795617694914
+    }
+  ],
+  "metrics": {
+    "model_calls": 1,
+    "tool_calls": 0,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

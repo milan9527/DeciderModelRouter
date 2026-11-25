@@ -1,0 +1,404 @@
+{
+  "id": "7c80a937c143a04065bd4165",
+  "session_id": "3858088418321999d3d918b8",
+  "scenario_id": "telecom",
+  "title": "基站告警与业务影响评估",
+  "industry": "电信运营",
+  "prompt": "读取站点和告警，去重事件，指出优先升级站点。",
+  "status": "completed",
+  "created_at": 1795617875554,
+  "turn": 1,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617882311,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-33bbf6402ee4be540df52d8756f7fa9cb75875a5b85e3b8e8919bd4990f1e824",
+  "answer": "## 事实总结\n\n**站点数据（sites）：**\n- N1：800用户，有备份，中断20分钟\n- N2：2200用户，无备份，中断45分钟\n- N3：500用户，有备份，中断0分钟\n\n**告警数据（alarms）：**\n- AL1（电源故障）：N2站点出现2条重复告警\n- AL2（回程故障）：N1站点出现1条告警\n\n## 去重后的事件\n\n| 事件ID | 站点 | 类型 | 原告警数 | 去重后 | 受影响用户 |\n|--------|------|------|---------|--------|-----------|\n| EVT-1 | N2 | 电源 | 2 | AL1 | 2200 |\n| EVT-2 | N1 | 回程 | 1 | AL2 | 800 |\n\n## 优先升级评估\n\n**业务规则：** 无备份且中断超过30分钟优先升级\n\n| 站点 | 有备份 | 中断分钟 | 超过30分钟 | 优先升级 | 用户数 |\n|------|--------|---------|-----------|---------|--------|\n| **N2** | ❌ | 45 | ✅ | **是** | 2200 |\n| N1 | ✅ | 20 | ❌ | 否 | 800 |\n| N3 | ✅ | 0 | ❌ | 否 | 500 |\n\n## 结论\n\n**优先升级站点：N2**\n\n- N2因电源故障（EVT-1）无备份保护、中断45分钟已超过阈值，涉及2200用户\n- N1虽有回程故障（EVT-2），但具备备份且中断仅20分钟，不符合优先升级条件\n- N3无故障",
+  "finished_at": 1795617882288,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "76ff1d78cdbe82b83ddcca8e",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 97.719,
+      "target_ms": 939.88,
+      "usage": {
+        "inputTokens": 1310,
+        "outputTokens": 136,
+        "totalTokens": 1446,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1310,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.00199",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3
+    },
+    {
+      "step": 2,
+      "run_id": "e6467dcf28f31cf7d6b8ec3e",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 115.591,
+      "target_ms": 2825.274,
+      "usage": {
+        "inputTokens": 1787,
+        "outputTokens": 537,
+        "totalTokens": 2324,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1787,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.004472",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "telecom",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617878752
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617878775
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "76ff1d78cdbe82b83ddcca8e",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 97.719,
+      "target_ms": 939.88,
+      "usage": {
+        "inputTokens": 1310,
+        "outputTokens": 136,
+        "totalTokens": 1446,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1310,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.00199",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3,
+      "sequence": 3,
+      "recorded_at": 1795617878797
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "sites"
+      },
+      "sequence": 4,
+      "recorded_at": 1795617878819
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "sites"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "sites",
+        "records": [
+          {
+            "site": "N1",
+            "users": 800,
+            "backup": true,
+            "outage_minutes": 20
+          },
+          {
+            "site": "N2",
+            "users": 2200,
+            "backup": false,
+            "outage_minutes": 45
+          },
+          {
+            "site": "N3",
+            "users": 500,
+            "backup": true,
+            "outage_minutes": 0
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.016,
+      "sequence": 5,
+      "recorded_at": 1795617878841
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "alarms"
+      },
+      "sequence": 6,
+      "recorded_at": 1795617878863
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "alarms"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "alarms",
+        "records": [
+          {
+            "site": "N2",
+            "alarm": "AL1",
+            "type": "power"
+          },
+          {
+            "site": "N2",
+            "alarm": "AL1",
+            "type": "power"
+          },
+          {
+            "site": "N1",
+            "alarm": "AL2",
+            "type": "backhaul"
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.008,
+      "sequence": 7,
+      "recorded_at": 1795617878880
+    },
+    {
+      "type": "tool_started",
+      "name": "read_policy",
+      "arguments": {},
+      "sequence": 8,
+      "recorded_at": 1795617878902
+    },
+    {
+      "type": "tool_result",
+      "name": "read_policy",
+      "arguments": {},
+      "status": "success",
+      "result": {
+        "policy": "无备份且中断超过30分钟优先升级；重复alarm不重复计事件；各站用户可能重叠，不能直接相加称独立人数。",
+        "source": "synthetic_business_policy"
+      },
+      "elapsed_ms": 0.004,
+      "sequence": 9,
+      "recorded_at": 1795617878922
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 10,
+      "recorded_at": 1795617882217
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "e6467dcf28f31cf7d6b8ec3e",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 115.591,
+      "target_ms": 2825.274,
+      "usage": {
+        "inputTokens": 1787,
+        "outputTokens": 537,
+        "totalTokens": 2324,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1787,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.004472",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 11,
+      "recorded_at": 1795617882240
+    },
+    {
+      "type": "completed",
+      "answer": "## 事实总结\n\n**站点数据（sites）：**\n- N1：800用户，有备份，中断20分钟\n- N2：2200用户，无备份，中断45分钟\n- N3：500用户，有备份，中断0分钟\n\n**告警数据（alarms）：**\n- AL1（电源故障）：N2站点出现2条重复告警\n- AL2（回程故障）：N1站点出现1条告警\n\n## 去重后的事件\n\n| 事件ID | 站点 | 类型 | 原告警数 | 去重后 | 受影响用户 |\n|--------|------|------|---------|--------|-----------|\n| EVT-1 | N2 | 电源 | 2 | AL1 | 2200 |\n| EVT-2 | N1 | 回程 | 1 | AL2 | 800 |\n\n## 优先升级评估\n\n**业务规则：** 无备份且中断超过30分钟优先升级\n\n| 站点 | 有备份 | 中断分钟 | 超过30分钟 | 优先升级 | 用户数 |\n|------|--------|---------|-----------|---------|--------|\n| **N2** | ❌ | 45 | ✅ | **是** | 2200 |\n| N1 | ✅ | 20 | ❌ | 否 | 800 |\n| N3 | ✅ | 0 | ❌ | 否 | 500 |\n\n## 结论\n\n**优先升级站点：N2**\n\n- N2因电源故障（EVT-1）无备份保护、中断45分钟已超过阈值，涉及2200用户\n- N1虽有回程故障（EVT-2），但具备备份且中断仅20分钟，不符合优先升级条件\n- N3无故障",
+      "model_calls": 2,
+      "sequence": 12,
+      "recorded_at": 1795617882288
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 3,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}

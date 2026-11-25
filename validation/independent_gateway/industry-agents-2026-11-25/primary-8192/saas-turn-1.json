@@ -1,0 +1,407 @@
+{
+  "id": "dec380f33fb4a2fc3c655b4b",
+  "session_id": "a5966f3ddec50ead45725f77",
+  "scenario_id": "saas",
+  "title": "租户故障定位与幂等补偿",
+  "industry": "软件与云服务",
+  "prompt": "查询租户指标和计费事件，找出需升级的租户、错误率与重复事件，先给事故摘要。",
+  "status": "completed",
+  "created_at": 1795617809694,
+  "turn": 1,
+  "runtime_arn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+  "runtime_qualifier": "DEFAULT",
+  "platform_version": "V2",
+  "model": "model-router",
+  "provider": "liquid",
+  "dataset_version": "dae0d4382fc67060",
+  "data_source": "synthetic_business_records",
+  "routing_preferences": {
+    "cost_tier": "medium",
+    "benchmark_release": "auto",
+    "input_tokens": null,
+    "expected_output_tokens": 1024,
+    "max_output_tokens": 8192,
+    "min_success_rate": null,
+    "max_latency_ms": null,
+    "min_context_tokens": null,
+    "max_reference_cost_usd": null,
+    "allowed_models": null,
+    "excluded_models": []
+  },
+  "max_model_calls": 6,
+  "updated_at": 1795617817986,
+  "trimmed_turns": 0,
+  "runtime_session_id": "dmr-b046aa5b28b9902f000df2eb7a37d1107c6cc0743c0e9cabe6d2fdb1d3d3b9e1",
+  "answer": "## 事故摘要\n\n### 一、租户健康状态\n| 租户 | 请求数 | 错误数 | 错误率 | P95延迟 | 升级等级 |\n|------|--------|--------|--------|---------|---------|\n| T1 | 10000 | 100 | 1.0% | 180ms | ✓ 正常 |\n| **T2** | 2000 | 240 | **12.0%** | **1900ms** | **🔴 P1 升级** |\n| T3 | 6000 | 30 | 0.5% | 220ms | ✓ 正常 |\n\n**关键发现**：租户T2触发升级条件（错误率12.0% > 5%，P95延迟1900ms > 1000ms）\n\n### 二、计费事件异常\n\n**重复计费事件**：\n- **事件编号** EV9（租户T2）**重复2次**\n  - 版本：v42\n  - 单笔金额：¥199\n  - **重复金额**：¥199（应该只计一次，多算了一次）\n  \n- 事件EV8（租户T1）：¥99，单次，正常\n\n**异常指标**：\n- 重复事件占比：1/3 = 33.3%（高风险）\n- 重复计费总额：¥199\n\n### 三、根本原因分析\n\n**推测**：\n- T2高错误率（12%）可能导致发布版本v42中计费逻辑存在Bug\n- Event唯一性校验失效（违反策略要求\"event唯一键必须包含tenant\"），EV9未被去重\n- **缺失信息**：当前计费系统是否有幂等性控制、事件去重机制状态\n\n### 四、风险评级\n- 🔴 **高优先级**：T2 P1升级 + 重复计费\n- ⚠️ **财务影响**：已确认重复计费¥199（T2 EV9）\n- ⚠️ **客户信任**：T2错误率12%，需立即止损\n\n---\n\n**下一步建议**：需要您确认：\n1. 是否需要查询具体的回滚方案（v42版本）？\n2. T2重复事件是否涉及其他租户？\n3. 需要提供账务核对与修复代码吗？",
+  "finished_at": 1795617817967,
+  "steps": [
+    {
+      "step": 1,
+      "run_id": "cd78ad60e2d2276cd060374d",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "customer_support",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 98.077,
+      "target_ms": 960.09,
+      "usage": {
+        "inputTokens": 1333,
+        "outputTokens": 137,
+        "totalTokens": 1470,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1333,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.002018",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3
+    },
+    {
+      "step": 2,
+      "run_id": "32c12144d8129208262bb75c",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 116.858,
+      "target_ms": 4325.66,
+      "usage": {
+        "inputTokens": 1848,
+        "outputTokens": 693,
+        "totalTokens": 2541,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1848,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.005313",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0
+    }
+  ],
+  "events": [
+    {
+      "type": "started",
+      "model": "model-router",
+      "scenario_id": "saas",
+      "data_source": "synthetic_business_records",
+      "sequence": 1,
+      "recorded_at": 1795617812924
+    },
+    {
+      "type": "model_started",
+      "step": 1,
+      "model": "model-router",
+      "sequence": 2,
+      "recorded_at": 1795617812949
+    },
+    {
+      "type": "model_completed",
+      "step": 1,
+      "run_id": "cd78ad60e2d2276cd060374d",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "customer_support",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": null,
+      "previous_configuration_id": null,
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本次没有带入历史，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 98.077,
+      "target_ms": 960.09,
+      "usage": {
+        "inputTokens": 1333,
+        "outputTokens": 137,
+        "totalTokens": 1470,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1333,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.002018",
+      "stop_reason": "tool_use",
+      "tool_call_count": 3,
+      "sequence": 3,
+      "recorded_at": 1795617812967
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "tenants"
+      },
+      "sequence": 4,
+      "recorded_at": 1795617812985
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "tenants"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "tenants",
+        "records": [
+          {
+            "tenant": "T1",
+            "requests": 10000,
+            "errors": 100,
+            "p95_ms": 180
+          },
+          {
+            "tenant": "T2",
+            "requests": 2000,
+            "errors": 240,
+            "p95_ms": 1900
+          },
+          {
+            "tenant": "T3",
+            "requests": 6000,
+            "errors": 30,
+            "p95_ms": 220
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.014,
+      "sequence": 5,
+      "recorded_at": 1795617813007
+    },
+    {
+      "type": "tool_started",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "events"
+      },
+      "sequence": 6,
+      "recorded_at": 1795617813035
+    },
+    {
+      "type": "tool_result",
+      "name": "query_records",
+      "arguments": {
+        "dataset": "events"
+      },
+      "status": "success",
+      "result": {
+        "dataset": "events",
+        "records": [
+          {
+            "tenant": "T2",
+            "event": "EV9",
+            "amount": 199,
+            "version": "v42"
+          },
+          {
+            "tenant": "T2",
+            "event": "EV9",
+            "amount": 199,
+            "version": "v42"
+          },
+          {
+            "tenant": "T1",
+            "event": "EV8",
+            "amount": 99,
+            "version": "v41"
+          }
+        ],
+        "source": "synthetic_business_records"
+      },
+      "elapsed_ms": 0.007,
+      "sequence": 7,
+      "recorded_at": 1795617813053
+    },
+    {
+      "type": "tool_started",
+      "name": "read_policy",
+      "arguments": {},
+      "sequence": 8,
+      "recorded_at": 1795617813075
+    },
+    {
+      "type": "tool_result",
+      "name": "read_policy",
+      "arguments": {},
+      "status": "success",
+      "result": {
+        "policy": "错误率超过5%且P95超过1000ms升级P1；event唯一键必须包含tenant；先止损再核对账务，不自动退款；回滚需值班负责人批准。",
+        "source": "synthetic_business_policy"
+      },
+      "elapsed_ms": 0.004,
+      "sequence": 9,
+      "recorded_at": 1795617817885
+    },
+    {
+      "type": "model_started",
+      "step": 2,
+      "model": "model-router",
+      "sequence": 10,
+      "recorded_at": 1795617817905
+    },
+    {
+      "type": "model_completed",
+      "step": 2,
+      "run_id": "32c12144d8129208262bb75c",
+      "status": "completed",
+      "provider": "liquid",
+      "decision_model": "LiquidAI/d1-2B",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "configuration_id": "d75254606ddc8cd15c5d373a",
+      "previous_model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+      "model_changed": false,
+      "configuration_changed": false,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "d75254606ddc8cd15c5d373a",
+        "reason": "任务属性、约束或证据版本变化，重新选模。"
+      },
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "gpu_ms": 116.858,
+      "target_ms": 4325.66,
+      "usage": {
+        "inputTokens": 1848,
+        "outputTokens": 693,
+        "totalTokens": 2541,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 1,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 4096,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 1848,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "reference_cost_usd": "0.005313",
+      "stop_reason": "end_turn",
+      "tool_call_count": 0,
+      "sequence": 11,
+      "recorded_at": 1795617817928
+    },
+    {
+      "type": "completed",
+      "answer": "## 事故摘要\n\n### 一、租户健康状态\n| 租户 | 请求数 | 错误数 | 错误率 | P95延迟 | 升级等级 |\n|------|--------|--------|--------|---------|---------|\n| T1 | 10000 | 100 | 1.0% | 180ms | ✓ 正常 |\n| **T2** | 2000 | 240 | **12.0%** | **1900ms** | **🔴 P1 升级** |\n| T3 | 6000 | 30 | 0.5% | 220ms | ✓ 正常 |\n\n**关键发现**：租户T2触发升级条件（错误率12.0% > 5%，P95延迟1900ms > 1000ms）\n\n### 二、计费事件异常\n\n**重复计费事件**：\n- **事件编号** EV9（租户T2）**重复2次**\n  - 版本：v42\n  - 单笔金额：¥199\n  - **重复金额**：¥199（应该只计一次，多算了一次）\n  \n- 事件EV8（租户T1）：¥99，单次，正常\n\n**异常指标**：\n- 重复事件占比：1/3 = 33.3%（高风险）\n- 重复计费总额：¥199\n\n### 三、根本原因分析\n\n**推测**：\n- T2高错误率（12%）可能导致发布版本v42中计费逻辑存在Bug\n- Event唯一性校验失效（违反策略要求\"event唯一键必须包含tenant\"），EV9未被去重\n- **缺失信息**：当前计费系统是否有幂等性控制、事件去重机制状态\n\n### 四、风险评级\n- 🔴 **高优先级**：T2 P1升级 + 重复计费\n- ⚠️ **财务影响**：已确认重复计费¥199（T2 EV9）\n- ⚠️ **客户信任**：T2错误率12%，需立即止损\n\n---\n\n**下一步建议**：需要您确认：\n1. 是否需要查询具体的回滚方案（v42版本）？\n2. T2重复事件是否涉及其他租户？\n3. 需要提供账务核对与修复代码吗？",
+      "model_calls": 2,
+      "sequence": 12,
+      "recorded_at": 1795617817967
+    }
+  ],
+  "metrics": {
+    "model_calls": 2,
+    "tool_calls": 3,
+    "model_switches": 0,
+    "retained_calls": 0,
+    "cache_read_tokens": 0
+  }
+}
