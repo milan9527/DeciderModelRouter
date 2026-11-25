@@ -1,0 +1,7 @@
+{
+  "changed_files_scanned": 60,
+  "known_credential_leaks": 0,
+  "credential_pattern_matches": 0,
+  "export_sensitive_keys": 0,
+  "credentials_written": false
+}

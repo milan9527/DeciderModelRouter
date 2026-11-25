@@ -9,6 +9,8 @@ app/**
 !app/comparison_cases.json
 !app/vision_assets/
 !app/vision_assets/**
+!app/evaluation_assets/
+!app/evaluation_assets/**
 !deployment/
 deployment/**
 !deployment/*.py

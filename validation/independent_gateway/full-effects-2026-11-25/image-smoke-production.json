@@ -1,0 +1,12 @@
+{
+  "cases": 87,
+  "suite_version": "6feb4fe4b201b8a7",
+  "judge_version": "effect-judge-v2",
+  "fixtures_verified": 6,
+  "max_output_tokens": 16384,
+  "read_only": true,
+  "network": "none",
+  "new_model_calls": 0,
+  "image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router:effects-budget-20261125-010830",
+  "digest": "sha256:614fb07416138116912ead1d9e8ddd1b581a66382bec19bd8fe32ef626cb448c"
+}

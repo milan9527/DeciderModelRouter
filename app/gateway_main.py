@@ -16,6 +16,8 @@ from app.bedrock import TARGET_READ_TIMEOUT_SECONDS, create_client
 from app.gateway import router as gateway_router
 from app.gateway_accounts import router as accounts_router
 from app.gateway_decision import GatewayDecisionService
+from app.gateway_effects import EffectEvaluations
+from app.gateway_effects import router as effects_router
 from app.gateway_evaluations import Evaluations
 from app.gateway_evaluations import router as evaluations_router
 from app.gateway_history import router as history_router
@@ -36,10 +38,12 @@ async def lifespan(app):
         app.state.client = client
         app.state.gateway_decision = GatewayDecisionService(client)
         app.state.evaluations = Evaluations(app.state.history, app.state.gateway_decision)
+        app.state.effects = EffectEvaluations(app.state.history, app.state.gateway_decision)
         try:
             yield
         finally:
             await app.state.evaluations.close()
+            await app.state.effects.close()
             if app.state.bedrock:
                 app.state.bedrock.close()
             if app.state.bedrock_target:
@@ -54,7 +58,7 @@ app = FastAPI(
     openapi_url="/api/openapi.json",
     redoc_url=None,
 )
-for router in (auth_router, gateway_router, history_router, evaluations_router, accounts_router, media_router):
+for router in (auth_router, gateway_router, history_router, evaluations_router, effects_router, accounts_router, media_router):
     app.include_router(router)
 
 

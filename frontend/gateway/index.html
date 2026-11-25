@@ -53,7 +53,7 @@
           <a href="#performance" data-page="performance"
             ><span>▥</span> 历史与性能</a
           >
-          <a href="#evaluations" data-page="evaluations" data-persistent hidden><span>◇</span> 决策模型评测</a>
+          <a href="#evaluations" data-page="evaluations" data-persistent hidden><span>◇</span> 路由效果评测</a>
           <a href="#account" data-page="account" data-persistent hidden><span>◎</span> 账户管理</a>
         </nav>
         <div class="sidebar-bottom">
@@ -403,7 +403,36 @@
             </section>
           </section>
           <section data-view="evaluations" hidden>
-            <div class="page-heading"><div><p class="eyebrow">REPRODUCIBLE EVALUATIONS</p><h1>比较决策模型的判断</h1><p class="muted">同一任务、同一七项分类标准。记录逐项差异、失败和耗时。</p></div></div>
+            <div class="page-heading"><div><p class="eyebrow">REPRODUCIBLE EVALUATIONS</p><h1>从选模到实际任务效果</h1><p class="muted">比较输出质量、能力覆盖、耗时与成本。分类标签诊断保留在下方。</p></div></div>
+            <div class="evaluation-grid">
+              <section class="panel padded-panel">
+                <h2>端到端效果评测</h2>
+                <p id="effect-scope" class="footnote"></p>
+                <form id="effect-form">
+                  <fieldset><legend>决策模型</legend><div id="effect-providers" class="choice-list"></div></fieldset>
+                  <label>场景分类<select id="effect-family"><option value="">全部场景</option></select></label>
+                  <div class="panel-heading"><button type="button" id="effect-select" class="text-button">选择当前分类</button><button type="button" id="effect-clear" class="text-button">清空选择</button></div>
+                  <fieldset><legend>场景与验收依据</legend><div id="effect-cases" class="choice-list case-list"></div></fieldset>
+                  <details><summary>添加自定义场景</summary>
+                    <label>任务<textarea id="effect-custom" rows="3" maxlength="1400" placeholder="可输入目录之外的任务"></textarea></label>
+                    <label>验收标准<textarea id="effect-rubric" rows="2" maxlength="1000" placeholder="什么样的输出才算完成"></textarea></label>
+                    <label>精确期望文本（可选）<input id="effect-expected" maxlength="2000" placeholder="留空则待人工评分" /></label>
+                  </details>
+                  <label class="check"><input type="checkbox" id="effect-baselines" />比较低价 / 高能力策略（可能增加目标调用）</label>
+                  <label>目标调用总上限<select id="effect-call-cap"><option value="24">24 次</option><option value="96" selected>96 次</option><option value="192">192 次</option><option value="0">0 次，仅检查路由</option></select></label>
+                  <label>每次输出 token 上限<select id="effect-token-cap"><option value="1024">1024</option><option value="2048">2048</option><option value="4096">4096</option><option value="8192">8192</option><option value="16384">16384</option></select></label>
+                  <p id="effect-budget" class="form-note"></p>
+                  <button id="effect-start" class="primary">开始效果评测 →</button>
+                </form>
+              </section>
+              <section class="panel padded-panel">
+                <div class="panel-heading"><h2>效果评测历史</h2><button id="refresh-effects" class="text-button">刷新</button></div>
+                <p class="footnote">公开开发回归集。未评分、缺口、调用失败分别保留；每个用例需扩展独立样本后，才能推断该场景整体能力。</p>
+                <div id="effect-history"></div>
+              </section>
+            </div>
+            <section id="effect-result" class="panel padded-panel" hidden></section>
+            <h2>七项分类诊断</h2>
             <div class="evaluation-grid">
               <section class="panel padded-panel">
                 <h2>创建评测</h2>

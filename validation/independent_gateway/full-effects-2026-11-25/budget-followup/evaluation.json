@@ -1,0 +1,931 @@
+{
+  "id": "ff3c22292d248171f41346e9",
+  "created_at": 1795569530585,
+  "status": "completed",
+  "providers": [
+    "h2o"
+  ],
+  "cases": [
+    {
+      "id": "plan",
+      "family": "创作与规划",
+      "title": "约束行程",
+      "task": {
+        "text": "给一位膝盖不适的老人安排半天城市休闲活动，预算100元，避免爬楼和长距离步行。"
+      },
+      "allowed_workflows": [
+        "general_text",
+        "customer_support",
+        "reasoning"
+      ],
+      "judge": {
+        "kind": "manual",
+        "expected": null,
+        "rubric": "活动可行、照顾行动限制、预算明示且不超过100元。"
+      },
+      "fixture": null,
+      "gap": null,
+      "expected_boundary_statuses": null
+    },
+    {
+      "id": "concurrency",
+      "family": "代码与工程",
+      "title": "并发幂等设计",
+      "task": {
+        "text": "支付回调会重复且并发到达。解释如何用数据库事务和唯一键确保余额只增加一次，并说明崩溃恢复。"
+      },
+      "allowed_workflows": [
+        "coding",
+        "reasoning"
+      ],
+      "judge": {
+        "kind": "manual",
+        "expected": null,
+        "rubric": "幂等键持久唯一约束；余额更新与幂等记录同事务；说明重试和崩溃边界。"
+      },
+      "fixture": null,
+      "gap": null,
+      "expected_boundary_statuses": null
+    }
+  ],
+  "dataset_version": "6feb4fe4b201b8a7",
+  "dataset_scope": "visible_development_suite_not_heldout",
+  "judge_version": "effect-judge-v2",
+  "profile_version": "task-profile-v2",
+  "catalog_version": "9c9167c3f9c97193",
+  "ranking_version": "1d0a074a9e3a3fba",
+  "policy_version": "bedrock-classified-v3",
+  "calibration_version": "uncalibrated",
+  "baselines": true,
+  "max_target_calls": 6,
+  "max_output_tokens": 8192,
+  "planned_gpu_calls": 2,
+  "started_gpu_calls": 2,
+  "target_model_calls": 6,
+  "reused_observations": 0,
+  "recorded_rows": 6,
+  "summary": [
+    {
+      "provider": "h2o",
+      "recorded": 2,
+      "planned": 2,
+      "route_selected": 2,
+      "workflow_fit": 1,
+      "workflow_checked": 2,
+      "target_completed": 2,
+      "quality_pass": 2,
+      "quality_graded": 2,
+      "quality_pass_rate": 1.0,
+      "quality_coverage": 1.0,
+      "proven_success_over_recorded": 1.0,
+      "pending": 0,
+      "review_methods": {
+        "user_review": 0,
+        "assistant_review": 2,
+        "isolated_tests": 0
+      },
+      "gaps": 0,
+      "errors": 0,
+      "budget_skipped": 0,
+      "boundary_checks": 0,
+      "boundary_pass": 0,
+      "route_p50_ms": 563.754,
+      "route_p95_ms": 564.968,
+      "target_p50_ms": 55625.328,
+      "target_p95_ms": 116646.351,
+      "known_reference_cost_usd": 0.091822,
+      "cost_known_samples": 2,
+      "target_observations": 2,
+      "paired_quality_cases": 2,
+      "avoidable_failures_vs_tested_baselines": 0,
+      "cost_comparable_passing_pairs": 2,
+      "lower_cost_passing_alternative_cases": 1,
+      "reference_cost_above_tested_passing_alternative_usd": 0.0286232
+    }
+  ],
+  "note": "开发回归集；缺口和待人工评审单独计数。低价/高能力基线使用同一实际分类及当前候选池，不是全模型最优解。同用例同有效请求只调用目标一次，共享结果不算独立重复实验。顺序执行，目标计数为调用尝试，不自动重试；参考价格不是AWS账单，未知价格不记为0。",
+  "updated_at": 1795569971945,
+  "results": [
+    {
+      "case_id": "plan",
+      "provider": "h2o",
+      "arm": "routed",
+      "status": "completed",
+      "task": {
+        "text": "给一位膝盖不适的老人安排半天城市休闲活动，预算100元，避免爬楼和长距离步行。",
+        "allow_cross_region": true,
+        "include_legacy": false,
+        "routing_preferences": {
+          "cost_tier": "medium",
+          "benchmark_release": "auto",
+          "input_tokens": null,
+          "expected_output_tokens": 128,
+          "max_output_tokens": 8192,
+          "min_success_rate": null,
+          "max_latency_ms": null,
+          "min_context_tokens": null,
+          "max_reference_cost_usd": null,
+          "allowed_models": null,
+          "excluded_models": []
+        },
+        "attachments": [],
+        "output_modality": "auto",
+        "media_options": {
+          "image_operation": "generate",
+          "voice": "tiffany",
+          "seed": 0,
+          "documents": []
+        }
+      },
+      "grade": {
+        "status": "pending",
+        "reason": "活动可行、照顾行动限制、预算明示且不超过100元。",
+        "source": "manual_required"
+      },
+      "route_status": "selected",
+      "route_ms": 564.968,
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "assessed_profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "classifier_model": "h2oai/h2o-lightning-4b",
+      "classifier_timings": {
+        "execution": "batch",
+        "queue_ms": 0.064,
+        "upstream_ms": 548.35,
+        "validation_ms": 0.171,
+        "service_reported_ms": null,
+        "backend_total_ms": 548.587
+      },
+      "classifier_usage": {
+        "input_tokens": 1117,
+        "processed_input_tokens": 1693,
+        "output_tokens": 7,
+        "latency_ms": 539.7
+      },
+      "classifier_deployment": "FP8 W8A16 / Marlin · vLLM 0.30.0 · resident",
+      "input_hash": "50122f76e6f29faf",
+      "configuration_id": "9420e2a31dacff3a56560e97",
+      "selected_model": {
+        "id": "openai.gpt-6.1-sol",
+        "name": "GPT-6.1 Sol",
+        "provider": "OpenAI",
+        "input_modalities": [
+          "TEXT",
+          "IMAGE"
+        ],
+        "output_modalities": [
+          "TEXT"
+        ],
+        "inference_types": [
+          "INFERENCE_PROFILE"
+        ],
+        "lifecycle": "ACTIVE",
+        "streaming": true,
+        "availability": {
+          "modelId": "openai.gpt-6.1-sol",
+          "agreementAvailability": {
+            "status": "AVAILABLE"
+          },
+          "authorizationStatus": "AUTHORIZED",
+          "entitlementAvailability": "AVAILABLE",
+          "regionAvailability": "AVAILABLE"
+        },
+        "account_available": true,
+        "invoke_id": "us.openai.gpt-6.1-sol",
+        "invocation": "inference_profile",
+        "destination_regions": [
+          "us-east-1",
+          "us-east-2",
+          "us-west-2"
+        ],
+        "inference_quotas": {
+          "region": "us-east-1",
+          "invoke_id": "us.openai.gpt-6.1-sol",
+          "checked_at": "2026-11-24T13:13:20.603201+00:00",
+          "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+          "checks": [
+            {
+              "code": "L-8C5F762B",
+              "name": "Cross-region model inference tokens per minute for GPT-6.1 Sol",
+              "value": 2000000.0
+            }
+          ]
+        }
+      },
+      "candidate_count": 21,
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "cost_context": {
+        "currency": "USD",
+        "input_tokens": 111,
+        "input_token_source": "utf8_bytes_proxy",
+        "expected_output_tokens": 128,
+        "max_output_tokens": 8192,
+        "cost_tier": "medium",
+        "max_reference_cost_usd": null,
+        "ranking_version": "1d0a074a9e3a3fba",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00",
+        "price_scope": "external_reference_not_bedrock_quote",
+        "limitations": "Flat reference rates and estimated tokens, not an actual bill or spending cap. No cache discounts, price tiers, media/tool fees, or router cost included. Hidden reasoning tokens must fit within the configured output cap where supported. The UTF-8 proxy is not model tokenization and excludes provider prompt framing."
+      },
+      "workflow_fit": true,
+      "observation_id": "1baf3d1a070444d9ba146bb4",
+      "reused": false,
+      "output": {
+        "text": "建议安排成 **“就近看景＋坐着休息＋午饭”**，只去一个主要地点，不赶景点。以下按 **老人1人、离家约1–3公里** 估算。\n\n## 地点选择\n优先找一个**免费的小型平地公园**，满足：\n- 车能停在入口附近，全程无台阶、地面平整；\n- 入口附近就有座椅，卫生间不用走太远；\n- 周边约50–100米内有平层小餐馆。\n\n**怕热或遇雨：**改去社区文化中心、图书馆等室内场所，提前确认开放时间、无台阶入口及电梯是否可用。\n\n## 半天安排：9:00—12:30\n\n| 时间 | 活动 | 减轻膝盖负担的安排 |\n|---|---|---|\n| 9:00—9:20 | 打车前往 | 尽量在无台阶入口下车，避免远处停车后再步行 |\n| 9:20—10:00 | 坐着看景、聊天 | 先休息；愿意且不痛时，可慢走3–5分钟，散步完全可以省略 |\n| 10:00—11:20 | 喝水、看报、观景 | 以坐着休闲为主，不绕园一圈、不追求打卡 |\n| 11:20—12:10 | 附近吃午饭 | 选入口无台阶、座位舒适的小馆，不排长队 |\n| 12:10—12:30 | 打车回家 | 提前叫车，尽量坐着等 |\n\n## 预算：100元以内\n- 往返打车：**40元**\n- 午饭：**30元**\n- 饮品：**10元**，也可自带水\n- 备用金：**20元**\n\n出发前看一下打车估价；**若往返超过40元，就换更近的地点，不靠增加步行来省钱。**\n\n## 出发前注意\n- 先问老人更愿意看景还是室内休闲，按当天状态随时缩短行程。\n- 穿防滑鞋，带平时使用的手杖（如有）；走路出现疼痛就坐下，不硬撑。\n- 若膝盖突然明显肿痛、红热或无法负重，应先就医，暂缓外出。\n\n告诉我**所在城市和大致出发区域**，可以进一步落实到具体地点和路线。",
+        "has_final_text": true,
+        "usage": {
+          "inputTokens": 38,
+          "outputTokens": 3109,
+          "totalTokens": 3147,
+          "cacheReadInputTokens": 0,
+          "cacheWriteInputTokens": 0
+        },
+        "stop_reason": "end_turn",
+        "complete": true,
+        "model_id": "openai.gpt-6.1-sol",
+        "invoke_id": "us.openai.gpt-6.1-sol",
+        "backend_total_ms": 55625.328,
+        "timings": {
+          "queue_ms": 0.051,
+          "upstream_ms": 55625.258
+        },
+        "source": "live",
+        "ranking_version": "1d0a074a9e3a3fba",
+        "request_fields": {
+          "reasoning": {
+            "effort": "max"
+          }
+        },
+        "strategy": "classified",
+        "evidence_version": "bedrock-classified-v3",
+        "cost_evidence": {
+          "expected_usd": "0.001502",
+          "at_output_cap_usd": "0.082142"
+        },
+        "observed_reference_cost_usd": "0.031166"
+      },
+      "id": "0000",
+      "recorded_at": 1795569586933,
+      "review": {
+        "status": "pass",
+        "reason": "行程以坐赏、休息和就近午饭为主，控制50至100米短距离与无台阶，3.5小时安排明确；40+30+10+20=100元，并要求交通超预算时换更近地点，符合约束。",
+        "method": "assistant_review",
+        "source": "account_review",
+        "reviewer": "admin",
+        "created_at": 1795569971634
+      }
+    },
+    {
+      "case_id": "plan",
+      "provider": "h2o",
+      "arm": "low",
+      "status": "completed",
+      "grade": {
+        "status": "pending",
+        "reason": "活动可行、照顾行动限制、预算明示且不超过100元。",
+        "source": "manual_required"
+      },
+      "configuration_id": "c86415c8de51519ccec4266d",
+      "selected_model": {
+        "id": "openai.gpt-6-luna",
+        "name": "GPT-6 Luna",
+        "provider": "OpenAI",
+        "input_modalities": [
+          "TEXT",
+          "IMAGE"
+        ],
+        "output_modalities": [
+          "TEXT"
+        ],
+        "inference_types": [
+          "INFERENCE_PROFILE"
+        ],
+        "lifecycle": "ACTIVE",
+        "streaming": true,
+        "availability": {
+          "modelId": "openai.gpt-6-luna",
+          "agreementAvailability": {
+            "status": "AVAILABLE"
+          },
+          "authorizationStatus": "AUTHORIZED",
+          "entitlementAvailability": "AVAILABLE",
+          "regionAvailability": "AVAILABLE"
+        },
+        "account_available": true,
+        "invoke_id": "us.openai.gpt-6-luna",
+        "invocation": "inference_profile",
+        "destination_regions": [
+          "us-east-1",
+          "us-east-2",
+          "us-west-2"
+        ],
+        "inference_quotas": {
+          "region": "us-east-1",
+          "invoke_id": "us.openai.gpt-6-luna",
+          "checked_at": "2026-11-24T13:13:20.603201+00:00",
+          "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+          "checks": [
+            {
+              "code": "L-AB39D760",
+              "name": "Cross-region model inference tokens per minute for GPT-6 Luna",
+              "value": 4000000.0
+            }
+          ]
+        }
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "observation_id": "581ef3ae4a851296ff1430b6",
+      "reused": false,
+      "output": {
+        "text": "按人民币100元、约4小时安排。由于没说明城市，建议选**离家近、车辆能停到入口旁、同一楼层有座位和洗手间的公共图书馆或社区文化中心**，全程只去一个地点，以坐着活动为主。\n\n| 时间 | 安排 |\n|---|---|\n| 13:00–13:30 | 家人接送或短途打车直达，尽量不换乘；提前确认能在入口附近下车。 |\n| 13:30–13:45 | 到场后先坐下、上洗手间，不赶时间。 |\n| 13:45–14:45 | 在阅览区看报、读书，或参加可坐着听的活动；不安排需要走完整个展厅的路线。 |\n| 14:45–15:05 | 坐着休息、喝水，需要时再去洗手间。 |\n| 15:05–15:50 | 在同楼或入口附近的店里喝茶、吃简单点心，继续休息聊天。 |\n| 15:50–16:20 | 留出自由休息时间；觉得累了可提前返程。 |\n| 16:20–16:50 | 原路返家。 |\n\n**预算参考：**往返短途交通40–50元；场馆免费；茶点25–35元；预留15元，合计约80–100元。若交通预计超过50元，就换离家更近的场所或请家人接送。\n\n出发前电话确认**入口无台阶或有电梯、洗手间和座位近、场馆内有休息处**；避免大型公园、需要逛很久的商场和多点转场。途中若膝痛加重或感觉站立不稳，就结束活动返家。",
+        "has_final_text": true,
+        "usage": {
+          "inputTokens": 38,
+          "outputTokens": 5078,
+          "totalTokens": 5116,
+          "cacheReadInputTokens": 0,
+          "cacheWriteInputTokens": 0
+        },
+        "stop_reason": "end_turn",
+        "complete": true,
+        "model_id": "openai.gpt-6-luna",
+        "invoke_id": "us.openai.gpt-6-luna",
+        "backend_total_ms": 40285.464,
+        "timings": {
+          "queue_ms": 0.043,
+          "upstream_ms": 40285.403
+        },
+        "source": "live",
+        "ranking_version": "1d0a074a9e3a3fba",
+        "request_fields": {
+          "reasoning": {
+            "effort": "max"
+          }
+        },
+        "strategy": "classified",
+        "evidence_version": "bedrock-classified-v3",
+        "cost_evidence": {
+          "expected_usd": "0.0000751",
+          "at_output_cap_usd": "0.0041071"
+        },
+        "observed_reference_cost_usd": "0.0025428"
+      },
+      "id": "0001",
+      "recorded_at": 1795569627433,
+      "review": {
+        "status": "pass",
+        "reason": "采用单一无障碍公共场所和坐着活动，避免多点转场与长步行；交通40至50、茶点25至35、预留15合计80至100元，时间约4小时并允许提前结束，满足约束。",
+        "method": "assistant_review",
+        "source": "account_review",
+        "reviewer": "admin",
+        "created_at": 1795569971709
+      }
+    },
+    {
+      "case_id": "plan",
+      "provider": "h2o",
+      "arm": "high",
+      "status": "completed",
+      "grade": {
+        "status": "pending",
+        "reason": "活动可行、照顾行动限制、预算明示且不超过100元。",
+        "source": "manual_required"
+      },
+      "configuration_id": "9e9e964463aee722c9b89517",
+      "selected_model": {
+        "id": "openai.gpt-6-astra",
+        "name": "GPT-6 Astra",
+        "provider": "OpenAI",
+        "input_modalities": [
+          "TEXT",
+          "IMAGE"
+        ],
+        "output_modalities": [
+          "TEXT"
+        ],
+        "inference_types": [
+          "INFERENCE_PROFILE"
+        ],
+        "lifecycle": "ACTIVE",
+        "streaming": true,
+        "availability": {
+          "modelId": "openai.gpt-6-astra",
+          "agreementAvailability": {
+            "status": "AVAILABLE"
+          },
+          "authorizationStatus": "AUTHORIZED",
+          "entitlementAvailability": "AVAILABLE",
+          "regionAvailability": "AVAILABLE"
+        },
+        "account_available": true,
+        "invoke_id": "us.openai.gpt-6-astra",
+        "invocation": "inference_profile",
+        "destination_regions": [
+          "us-east-1",
+          "us-east-2",
+          "us-west-2"
+        ],
+        "inference_quotas": {
+          "region": "us-east-1",
+          "invoke_id": "us.openai.gpt-6-astra",
+          "checked_at": "2026-11-24T13:13:20.603201+00:00",
+          "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+          "checks": [
+            {
+              "code": "L-53A144CD",
+              "name": "Cross-region model inference tokens per minute for GPT-6 Astra",
+              "value": 4000000.0
+            }
+          ]
+        }
+      },
+      "selection_reason": "优先减少任务相关能力的最大短板，再比较费用。",
+      "profile": {
+        "workflow": "reasoning",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "observation_id": "a49e190de83a269c79eb7736",
+      "reused": false,
+      "output": {
+        "text": "建议安排 **“就近公园坐赏＋一楼小店茶点、午餐”**，少换地点，以坐着休闲为主。以下按 **老人1人、9:00—12:30、预算100元** 设计。\n\n### 半天行程\n\n| 时间 | 安排 | 减少膝盖负担的做法 |\n|---|---|---|\n| 9:00—9:20 | 打车到家附近的免费小公园 | 选择车辆可近门上下客、入口无台阶的公园 |\n| 9:20—10:30 | 坐着看景、赏花、聊天 | 入园后就近找有靠背的座椅，不安排绕园散步 |\n| 10:30—11:30 | 到附近一楼小店喝茶、吃少量点心 | 店铺尽量距座椅100米以内，提前确认营业及有厕所 |\n| 11:30—12:10 | 在同一家店吃简餐 | 不再换店，选老人喜欢、平时吃得惯的饭菜 |\n| 12:10—12:30 | 打车回家 | 在店门附近上车，不赶时间 |\n\n### 预算分配\n\n- **往返打车：预留50元**——出门前查价，若超出就换更近的地点，不靠增加步行省钱。\n- **茶水、小点心：15元**\n- **午餐：25元**\n- **机动费用：10元**\n- 公园门票：0元  \n**合计：100元以内。** 以上是预算额度，实际价格需提前确认。\n\n### 出门前重点确认\n\n- **全程无台阶**：不仅是景点入口，还包括店门、厕所及上下车位置；避开天桥和长地下通道。\n- **每段只走短距离**：尽量控制在50—100米，以老人当天舒适程度为准，不舒服就坐下或提前回家。\n- **尊重老人兴趣**：若更喜欢看书、怕晒或遇到雨天，可把公园换成有座椅、无障碍通行的免费图书馆或社区文化中心。\n- 带饮水、防滑鞋和平时使用的助行工具；若当天明显肿痛、难以负重，先不勉强出游，及时就医。\n\n告诉我**所在城市和出发区域**，可以进一步换成具体地点和路线。",
+        "has_final_text": true,
+        "usage": {
+          "inputTokens": 38,
+          "outputTokens": 3502,
+          "totalTokens": 3540,
+          "cacheReadInputTokens": 0,
+          "cacheWriteInputTokens": 0
+        },
+        "stop_reason": "end_turn",
+        "complete": true,
+        "model_id": "openai.gpt-6-astra",
+        "invoke_id": "us.openai.gpt-6-astra",
+        "backend_total_ms": 53950.468,
+        "timings": {
+          "queue_ms": 0.036,
+          "upstream_ms": 53950.415
+        },
+        "source": "live",
+        "ranking_version": "1d0a074a9e3a3fba",
+        "request_fields": {
+          "reasoning": {
+            "effort": "max"
+          }
+        },
+        "strategy": "classified",
+        "evidence_version": "bedrock-classified-v3",
+        "cost_evidence": {
+          "expected_usd": "0.00751",
+          "at_output_cap_usd": "0.41071"
+        },
+        "observed_reference_cost_usd": "0.17548"
+      },
+      "id": "0002",
+      "recorded_at": 1795569681440,
+      "review": {
+        "status": "pass",
+        "reason": "半天安排以公园坐赏和同一店用餐为主，步行分段50至100米且要求无台阶；50+15+25+10=100元，明确价格需提前确认和不适时调整，符合预算及行动限制。",
+        "method": "assistant_review",
+        "source": "account_review",
+        "reviewer": "admin",
+        "created_at": 1795569971784
+      }
+    },
+    {
+      "case_id": "concurrency",
+      "provider": "h2o",
+      "arm": "routed",
+      "status": "completed",
+      "task": {
+        "text": "支付回调会重复且并发到达。解释如何用数据库事务和唯一键确保余额只增加一次，并说明崩溃恢复。",
+        "allow_cross_region": true,
+        "include_legacy": false,
+        "routing_preferences": {
+          "cost_tier": "medium",
+          "benchmark_release": "auto",
+          "input_tokens": null,
+          "expected_output_tokens": 128,
+          "max_output_tokens": 8192,
+          "min_success_rate": null,
+          "max_latency_ms": null,
+          "min_context_tokens": null,
+          "max_reference_cost_usd": null,
+          "allowed_models": null,
+          "excluded_models": []
+        },
+        "attachments": [],
+        "output_modality": "auto",
+        "media_options": {
+          "image_operation": "generate",
+          "voice": "tiffany",
+          "seed": 0,
+          "documents": []
+        }
+      },
+      "grade": {
+        "status": "pending",
+        "reason": "幂等键持久唯一约束；余额更新与幂等记录同事务；说明重试和崩溃边界。",
+        "source": "manual_required"
+      },
+      "route_status": "selected",
+      "route_ms": 563.754,
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "complex",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "assessed_profile": {
+        "workflow": "general_text",
+        "difficulty": "complex",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "classifier_model": "h2oai/h2o-lightning-4b",
+      "classifier_timings": {
+        "execution": "batch",
+        "queue_ms": 0.048,
+        "upstream_ms": 548.141,
+        "validation_ms": 0.165,
+        "service_reported_ms": null,
+        "backend_total_ms": 548.355
+      },
+      "classifier_usage": {
+        "input_tokens": 1118,
+        "processed_input_tokens": 1700,
+        "output_tokens": 7,
+        "latency_ms": 540.2
+      },
+      "classifier_deployment": "FP8 W8A16 / Marlin · vLLM 0.30.0 · resident",
+      "input_hash": "575b0370e81353a2",
+      "configuration_id": "9420e2a31dacff3a56560e97",
+      "selected_model": {
+        "id": "openai.gpt-6.1-sol",
+        "name": "GPT-6.1 Sol",
+        "provider": "OpenAI",
+        "input_modalities": [
+          "TEXT",
+          "IMAGE"
+        ],
+        "output_modalities": [
+          "TEXT"
+        ],
+        "inference_types": [
+          "INFERENCE_PROFILE"
+        ],
+        "lifecycle": "ACTIVE",
+        "streaming": true,
+        "availability": {
+          "modelId": "openai.gpt-6.1-sol",
+          "agreementAvailability": {
+            "status": "AVAILABLE"
+          },
+          "authorizationStatus": "AUTHORIZED",
+          "entitlementAvailability": "AVAILABLE",
+          "regionAvailability": "AVAILABLE"
+        },
+        "account_available": true,
+        "invoke_id": "us.openai.gpt-6.1-sol",
+        "invocation": "inference_profile",
+        "destination_regions": [
+          "us-east-1",
+          "us-east-2",
+          "us-west-2"
+        ],
+        "inference_quotas": {
+          "region": "us-east-1",
+          "invoke_id": "us.openai.gpt-6.1-sol",
+          "checked_at": "2026-11-24T13:13:20.603201+00:00",
+          "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+          "checks": [
+            {
+              "code": "L-8C5F762B",
+              "name": "Cross-region model inference tokens per minute for GPT-6.1 Sol",
+              "value": 2000000.0
+            }
+          ]
+        }
+      },
+      "candidate_count": 21,
+      "selection_reason": "在非劣候选中最小化归一化的最大能力、成本偏离。",
+      "cost_context": {
+        "currency": "USD",
+        "input_tokens": 135,
+        "input_token_source": "utf8_bytes_proxy",
+        "expected_output_tokens": 128,
+        "max_output_tokens": 8192,
+        "cost_tier": "medium",
+        "max_reference_cost_usd": null,
+        "ranking_version": "1d0a074a9e3a3fba",
+        "captured_at": "2026-11-24T13:15:23.115653+00:00",
+        "price_scope": "external_reference_not_bedrock_quote",
+        "limitations": "Flat reference rates and estimated tokens, not an actual bill or spending cap. No cache discounts, price tiers, media/tool fees, or router cost included. Hidden reasoning tokens must fit within the configured output cap where supported. The UTF-8 proxy is not model tokenization and excludes provider prompt framing."
+      },
+      "workflow_fit": false,
+      "observation_id": "122f98576db3eec5689a5337",
+      "reused": false,
+      "output": {
+        "text": "核心是：**用稳定的业务键去重，把“入账流水”和“余额增加”放在同一个数据库事务里，提交后才确认回调成功。**\n\n## 1. 用唯一键标识“一次入账”\n\n如果每个充值订单只允许入账一次，可以在入账流水表上建立：\n\n```sql\nUNIQUE(recharge_order_id)\n```\n\n若同一张流水表记录多种操作，可用：\n\n```sql\nUNIQUE(recharge_order_id, operation_type)\n```\n\n唯一键必须代表同一笔业务入账，**不能使用每次回调新生成的请求 ID**。同时校验支付签名、支付成功状态、金额和币种；入账账户及金额以内部订单为准。\n\n## 2. 在同一事务内完成去重和加余额\n\n下面是伪代码，插入语法采用 PostgreSQL 写法：\n\n```sql\nBEGIN;\n\ninserted := INSERT INTO credit_ledger\n                (recharge_order_id, user_id, amount_cents)\n            VALUES (:order_id, :user_id, :amount_cents)\n            ON CONFLICT (recharge_order_id) DO NOTHING\n            RETURNING recharge_order_id;\n\n-- inserted 表示本次是否真正插入了一行\nIF inserted THEN\n    UPDATE wallets\n       SET balance_cents = balance_cents + :amount_cents\n     WHERE user_id = :user_id;\n    -- 必须更新到一行，否则抛异常、回滚整个事务\n\n    UPDATE recharge_orders\n       SET status = 'credited'\n     WHERE id = :order_id;\nEND IF;\n\nCOMMIT;\n\n-- 提交成功后，才向支付方返回成功\n```\n\n关键点：\n\n- **只有成功插入新流水的事务才能增加余额**；重复回调不执行余额更新。\n- 流水、余额和入账状态必须使用同一数据库事务，不能分开提交。\n- 使用 `balance = balance + amount`，避免“先读余额、应用计算、再覆盖写入”造成其他并发充值的更新丢失。\n- 其他 SQL 错误不能当成重复回调吞掉，应回滚；死锁、序列化失败等可用同一个业务键重试整个事务。\n\n## 3. 为什么并发不会多加钱？\n\n两个回调同时插入同一个唯一键时，数据库的唯一约束会协调冲突：\n\n- A 提交成功：B 的插入命中冲突，不更新余额，直接确认成功。\n- A 回滚：B 可以成功插入，并完成入账。\n\n因此，**不会有两个同键入账事务都提交成功**。仅靠“先查询是否存在，再决定加钱”是不够的，因为两个请求可能同时查到不存在。\n\n## 4. 崩溃后如何恢复？\n\n| 崩溃时点 | 数据库结果 | 恢复方式 |\n|---|---|---|\n| 提交前，包括已经插入流水或更新余额 | 未提交事务回滚；数据库崩溃后也按事务日志恢复，不留下半笔入账 | 回调重试时重新执行整个事务 |\n| 提交后、返回成功前 | 流水和余额变更都已持久化 | 重试命中唯一键，不再加钱，再返回成功 |\n| `COMMIT` 时连接断开，提交结果不明 | 可能提交，也可能未提交 | 用同一个业务键重试或查询主库确认，不要换键重新入账 |\n\n这依赖数据库正常提供 ACID 和提交持久性。**不要先单独提交去重记录再加余额**，否则崩溃可能导致“已去重但没入账”；反过来分开提交则可能重复入账。\n\n最后，唯一键和事务保证的是**最多入账一次**。要保证最终不漏账，还需要支付方重试，以及后台与支付渠道对账，对“已支付但无入账流水”的订单执行同一套幂等事务。幂等流水也不能随意删除，否则迟到的回调可能再次入账。",
+        "has_final_text": true,
+        "usage": {
+          "inputTokens": 38,
+          "outputTokens": 6058,
+          "totalTokens": 6096,
+          "cacheReadInputTokens": 0,
+          "cacheWriteInputTokens": 0
+        },
+        "stop_reason": "end_turn",
+        "complete": true,
+        "model_id": "openai.gpt-6.1-sol",
+        "invoke_id": "us.openai.gpt-6.1-sol",
+        "backend_total_ms": 116646.351,
+        "timings": {
+          "queue_ms": 0.046,
+          "upstream_ms": 116646.289
+        },
+        "source": "live",
+        "ranking_version": "1d0a074a9e3a3fba",
+        "request_fields": {
+          "reasoning": {
+            "effort": "max"
+          }
+        },
+        "strategy": "classified",
+        "evidence_version": "bedrock-classified-v3",
+        "cost_evidence": {
+          "expected_usd": "0.00155",
+          "at_output_cap_usd": "0.08219"
+        },
+        "observed_reference_cost_usd": "0.060656"
+      },
+      "id": "0003",
+      "recorded_at": 1795569798733,
+      "review": {
+        "status": "pass",
+        "reason": "使用稳定业务幂等键和数据库唯一约束，只有插入新流水的事务更新余额，流水、余额、状态同事务；原子余额增量且检查更新行数，明确提交前回滚、提交后重试和提交结果未知的恢复边界，并区分至多一次与对账重试保证最终入账，满足验收规则。SQL明确为伪代码，本项为内容评审，不是执行证明。",
+        "method": "assistant_review",
+        "source": "account_review",
+        "reviewer": "admin",
+        "created_at": 1795569971851
+      }
+    },
+    {
+      "case_id": "concurrency",
+      "provider": "h2o",
+      "arm": "low",
+      "status": "incomplete",
+      "grade": {
+        "status": "fail",
+        "reason": "目标输出未完成或被截断",
+        "source": "automatic"
+      },
+      "configuration_id": "c86415c8de51519ccec4266d",
+      "selected_model": {
+        "id": "openai.gpt-6-luna",
+        "name": "GPT-6 Luna",
+        "provider": "OpenAI",
+        "input_modalities": [
+          "TEXT",
+          "IMAGE"
+        ],
+        "output_modalities": [
+          "TEXT"
+        ],
+        "inference_types": [
+          "INFERENCE_PROFILE"
+        ],
+        "lifecycle": "ACTIVE",
+        "streaming": true,
+        "availability": {
+          "modelId": "openai.gpt-6-luna",
+          "agreementAvailability": {
+            "status": "AVAILABLE"
+          },
+          "authorizationStatus": "AUTHORIZED",
+          "entitlementAvailability": "AVAILABLE",
+          "regionAvailability": "AVAILABLE"
+        },
+        "account_available": true,
+        "invoke_id": "us.openai.gpt-6-luna",
+        "invocation": "inference_profile",
+        "destination_regions": [
+          "us-east-1",
+          "us-east-2",
+          "us-west-2"
+        ],
+        "inference_quotas": {
+          "region": "us-east-1",
+          "invoke_id": "us.openai.gpt-6-luna",
+          "checked_at": "2026-11-24T13:13:20.603201+00:00",
+          "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+          "checks": [
+            {
+              "code": "L-AB39D760",
+              "name": "Cross-region model inference tokens per minute for GPT-6 Luna",
+              "value": 4000000.0
+            }
+          ]
+        }
+      },
+      "selection_reason": "在非劣候选中选择费用最低的配置。",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "complex",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "observation_id": "5b8853c4ebdb27552f8eb0ce",
+      "reused": false,
+      "output": {
+        "text": "已达到 8192 输出 token 上限；模型仅返回推理内容，尚未生成最终答复。本次任务未完成，未自动重试或降低评测配置。",
+        "has_final_text": false,
+        "usage": {
+          "inputTokens": 38,
+          "outputTokens": 8192,
+          "totalTokens": 8230,
+          "cacheReadInputTokens": 0,
+          "cacheWriteInputTokens": 0
+        },
+        "stop_reason": "max_tokens",
+        "complete": false,
+        "model_id": "openai.gpt-6-luna",
+        "invoke_id": "us.openai.gpt-6-luna",
+        "backend_total_ms": 64695.768,
+        "timings": {
+          "queue_ms": 0.035,
+          "upstream_ms": 64695.718
+        },
+        "source": "live",
+        "ranking_version": "1d0a074a9e3a3fba",
+        "request_fields": {
+          "reasoning": {
+            "effort": "max"
+          }
+        },
+        "strategy": "classified",
+        "evidence_version": "bedrock-classified-v3",
+        "cost_evidence": {
+          "expected_usd": "0.0000775",
+          "at_output_cap_usd": "0.0041095"
+        },
+        "observed_reference_cost_usd": "0.0040998"
+      },
+      "id": "0004",
+      "recorded_at": 1795569863490
+    },
+    {
+      "case_id": "concurrency",
+      "provider": "h2o",
+      "arm": "high",
+      "status": "completed",
+      "grade": {
+        "status": "pending",
+        "reason": "幂等键持久唯一约束；余额更新与幂等记录同事务；说明重试和崩溃边界。",
+        "source": "manual_required"
+      },
+      "configuration_id": "9e9e964463aee722c9b89517",
+      "selected_model": {
+        "id": "openai.gpt-6-astra",
+        "name": "GPT-6 Astra",
+        "provider": "OpenAI",
+        "input_modalities": [
+          "TEXT",
+          "IMAGE"
+        ],
+        "output_modalities": [
+          "TEXT"
+        ],
+        "inference_types": [
+          "INFERENCE_PROFILE"
+        ],
+        "lifecycle": "ACTIVE",
+        "streaming": true,
+        "availability": {
+          "modelId": "openai.gpt-6-astra",
+          "agreementAvailability": {
+            "status": "AVAILABLE"
+          },
+          "authorizationStatus": "AUTHORIZED",
+          "entitlementAvailability": "AVAILABLE",
+          "regionAvailability": "AVAILABLE"
+        },
+        "account_available": true,
+        "invoke_id": "us.openai.gpt-6-astra",
+        "invocation": "inference_profile",
+        "destination_regions": [
+          "us-east-1",
+          "us-east-2",
+          "us-west-2"
+        ],
+        "inference_quotas": {
+          "region": "us-east-1",
+          "invoke_id": "us.openai.gpt-6-astra",
+          "checked_at": "2026-11-24T13:13:20.603201+00:00",
+          "source": "AWS Service Quotas ListServiceQuotas (applied account values)",
+          "checks": [
+            {
+              "code": "L-53A144CD",
+              "name": "Cross-region model inference tokens per minute for GPT-6 Astra",
+              "value": 4000000.0
+            }
+          ]
+        }
+      },
+      "selection_reason": "优先减少任务相关能力的最大短板，再比较费用。",
+      "profile": {
+        "workflow": "general_text",
+        "difficulty": "complex",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh"
+      },
+      "observation_id": "e5376365dae01a0a1ffa1709",
+      "reused": false,
+      "output": {
+        "text": "核心是：**用唯一键限制“一笔付款最多有一条入账流水”，再把“插入流水”和“增加余额”放进同一个事务。** 回调可以执行多次，但入账效果不能重复。\n\n## 1. 选对幂等键\n\n幂等键必须标识“业务上只允许入账一次的对象”，例如本地支付单号 `payment_id`，不能使用每次通知都可能变化的请求 ID。\n\n```sql\nCREATE TABLE payment_credit (\n    payment_id   VARCHAR(128) PRIMARY KEY,\n    account_id   BIGINT NOT NULL,\n    currency     VARCHAR(8) NOT NULL,\n    amount_minor BIGINT NOT NULL CHECK (amount_minor > 0)\n);\n```\n\n若使用支付平台交易号，应考虑渠道、商户等命名空间，避免不同来源撞号。若业务要求“每个充值订单只能入账一次”，唯一约束应落实在该充值订单上。\n\n处理前先验签、确认支付成功，并核对本地支付单的账户、金额、币种。金额使用整数最小货币单位或定点数，不用浮点数。\n\n## 2. 在一个事务中完成入账\n\n以下是控制流伪代码，`INSERT` 使用 PostgreSQL 语法：\n\n```text\nBEGIN;\n\ninserted = INSERT INTO payment_credit\n               (payment_id, account_id, currency, amount_minor)\n           VALUES\n               (:payment_id, :account_id, :currency, :amount_minor)\n           ON CONFLICT (payment_id) DO NOTHING\n           RETURNING payment_id;\n\nif inserted 返回一行:\n    UPDATE accounts\n       SET balance_minor = balance_minor + :amount_minor\n     WHERE id = :account_id AND currency = :currency;\n\n    必须恰好更新一行，否则抛错并回滚整个事务。\n\n    如需修改支付单状态，也在这个事务内完成。\nelse:\n    查询已有流水，核对账户、金额、币种一致。\n    一致则视为重复通知，不再增加余额；不一致则报错告警。\n\nCOMMIT;\n\n确认提交成功后，才向支付平台返回成功。\n```\n\n任何异常都应回滚整个事务；死锁、锁等待超时等可重试错误，应使用**同一个幂等键重试整个事务**。\n\n这里有两个关键点：\n\n- **不能先查询“不存在”再无条件入账。** 两个并发请求可能同时查到不存在，最终都加钱。决定入账资格的是数据库唯一约束，不是前置查询。\n- **余额用 `balance = balance + amount` 原子更新。** 不要先读余额、在应用中计算后覆盖写入，否则不同付款同时入账也可能产生丢失更新。\n\n## 3. 为什么并发也只加一次？\n\n假设回调 A、B 同时处理同一个 `payment_id`：\n\n1. A 先插入入账流水，B 在唯一键冲突处等待。\n2. 如果 A 提交，B 的插入不产生新记录，进入重复分支，不增加余额。\n3. 如果 A 回滚，B 可以成功插入，再完成入账。\n\n唯一约束保证**最多一个事务能提交该键的流水**；事务保证流水、余额和支付状态**一起提交或一起回滚**。\n\n尤其不能把“记录已处理”和“更新余额”拆成两个事务，否则可能出现“标记已处理，但实际上没加钱”。\n\n## 4. 崩溃后如何恢复？\n\n| 崩溃时点 | 数据库结果 | 恢复方式 |\n|---|---|---|\n| 插入流水前 | 无入账效果 | 同键重试 |\n| 已插入流水，甚至已更新余额，但尚未提交 | 未提交事务回滚；数据库故障恢复时不会保留部分入账 | 同键重试，重新入账 |\n| 已提交，但尚未返回成功，或响应丢失 | 流水和余额都已持久化 | 重复回调命中唯一键，跳过加钱并返回成功 |\n| 提交时连接断开，不知道是否成功 | 可能已提交，也可能未提交 | **不能假定失败并换新键**；用原键查询或重试，两种结果都安全 |\n\n以上依赖相关写入处于**同一个支持 ACID、可靠持久化提交的数据库事务**中。\n\n最后要区分：**唯一键加事务保证“至多一次入账”；重试和主动对账保证“最终入账”。** 如果平台不再重试，需要对账任务查询已支付但未入账的支付单，并通过同一套事务逻辑、同一个幂等键补单。",
+        "has_final_text": true,
+        "usage": {
+          "inputTokens": 38,
+          "outputTokens": 4655,
+          "totalTokens": 4693,
+          "cacheReadInputTokens": 0,
+          "cacheWriteInputTokens": 0
+        },
+        "stop_reason": "end_turn",
+        "complete": true,
+        "model_id": "openai.gpt-6-astra",
+        "invoke_id": "us.openai.gpt-6-astra",
+        "backend_total_ms": 68899.607,
+        "timings": {
+          "queue_ms": 0.031,
+          "upstream_ms": 68899.561
+        },
+        "source": "live",
+        "ranking_version": "1d0a074a9e3a3fba",
+        "request_fields": {
+          "reasoning": {
+            "effort": "max"
+          }
+        },
+        "strategy": "classified",
+        "evidence_version": "bedrock-classified-v3",
+        "cost_evidence": {
+          "expected_usd": "0.00775",
+          "at_output_cap_usd": "0.41095"
+        },
+        "observed_reference_cost_usd": "0.23313"
+      },
+      "id": "0005",
+      "recorded_at": 1795569932443,
+      "review": {
+        "status": "pass",
+        "reason": "以业务支付单唯一键约束入账，解释并发冲突等待、胜者提交或回滚的分支；流水与原子余额增量同事务，检查更新行数，重复时核对账户、金额、币种；覆盖提交前后及未知提交结果的恢复，同键重试和主动对账均说明。满足设计验收，本项为内容评审，未执行数据库故障注入。",
+        "method": "assistant_review",
+        "source": "account_review",
+        "reviewer": "admin",
+        "created_at": 1795569971918
+      }
+    }
+  ],
+  "reference_errata": []
+}

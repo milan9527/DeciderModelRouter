@@ -1,0 +1,24 @@
+{
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "root_status": 200,
+  "redirect": false,
+  "job_id": "e4b68284d372843309817a6d",
+  "status": "completed",
+  "scenario_count": 87,
+  "case_count": 87,
+  "dataset_version": "957492f464b65171",
+  "new_model_calls": 0,
+  "current_suite_version": "6feb4fe4b201b8a7",
+  "reload_persisted": true,
+  "export_without_receipts": true,
+  "review_methods_visible": true,
+  "mobile_overflow": false,
+  "browser_errors": [],
+  "deployed_asset_sha256": {
+    "index.html": "4e4659d9cb4aade884c6609e8b17899e75745a9a19deb707fac1cf51affd5a5d",
+    "gateway.js": "eb5953d4de4355a220f899e9565db99620f07defdeb554e8334569e2f74667c7",
+    "gateway.css": "79b004e0bb4c6e3d24ec3ffe2d21335277844079a3154f9c9145bd7cf95dbfdd",
+    "workspace.js": "fc39b0215da145620ea9e2c678d472d896e630df94d38f8311107bc61f853249",
+    "mark.svg": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb"
+  }
+}

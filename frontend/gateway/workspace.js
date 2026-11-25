@@ -35,8 +35,11 @@ export class Workspace {
     this.rows = [];
     this.selectedRecord = null;
     clearTimeout(this.pollTimer);
+    clearTimeout(this.effectPollTimer);
     ["#history-detail", "#session-dialog"].forEach((id) => $(id).close());
-    ["#history", "#evaluation-result", "#evaluation-history", "#users-table", "#history-detail-content"].forEach((id) => { $(id).innerHTML = ""; });
+    ["#history", "#evaluation-result", "#evaluation-history", "#effect-result", "#effect-history", "#users-table", "#history-detail-content"].forEach((id) => { $(id).innerHTML = ""; });
+    this.effect = null;
+    $("#effect-form").reset();
     $("#password-form").reset();
     $("#user-form").reset();
     $("#reset-password-form").reset();
@@ -49,8 +52,9 @@ export class Workspace {
     const epoch = this.epoch;
     this.user = user;
     this.catalog = catalog;
-    const [account, sessions, cases] = await Promise.all([
+    const [account, sessions, cases, effects] = await Promise.all([
       this.api("/gateway/account"), this.api("/gateway/sessions"), this.api("/gateway/evaluations/cases"),
+      this.api("/gateway/effects/cases"),
     ]);
     if (epoch !== this.epoch) return;
     this.account = account;
@@ -65,6 +69,8 @@ export class Workspace {
     this.renderSessions();
     this.cases = cases.items;
     this.renderEvaluationForm();
+    this.effectSuite = effects;
+    this.renderEffectForm();
     $("#record-storage-note").textContent = "完整记录已接入数据库，可在历史与性能中查看";
     $("#history-description").textContent = "按账户保存最近 180 天的会话和运行记录。刷新页面或重新登录后仍可查看；回放不计入模型性能。";
     $("#account-description").textContent = `${user.username} · ${account.role === "admin" ? "管理员" : "普通用户"}`;
@@ -83,7 +89,7 @@ export class Workspace {
   page(page) {
     if (!this.enabled) return;
     if (page === "performance") this.action(() => this.refreshHistory());
-    if (page === "evaluations") this.action(() => this.refreshEvaluations());
+    if (page === "evaluations") this.action(() => Promise.all([this.refreshEvaluations(), this.refreshEffects()]));
     if (page === "account" && this.account?.role === "admin") this.action(() => this.refreshUsers());
   }
   query() {
@@ -154,6 +160,64 @@ export class Workspace {
     $("#evaluation-cases").innerHTML = this.cases.map((c, i) => `<label class="check"><input type="checkbox" name="eval-case" value="${this.esc(c.id)}" ${i < 4 ? "checked" : ""} /><span>${this.esc(c.title)}<small>${this.esc(c.category)}</small></span></label>`).join("");
     this.budget();
   }
+  renderEffectForm() {
+    const cases = this.effectSuite.items, families = [...new Set(cases.map((c) => c.family))];
+    $("#effect-scope").textContent = `${cases.length} 个场景 · ${families.length} 类 · ${cases.filter((c) => c.gap).length} 个已标注缺口。可增加自定义任务；此目录不声称穷尽所有输入。`;
+    $("#effect-family").innerHTML = '<option value="">全部场景</option>' + families.map((f) => `<option>${this.esc(f)}</option>`).join("");
+    $("#effect-providers").innerHTML = this.catalog.decision_service.providers.map((p) => `<label class="check"><input type="checkbox" name="effect-provider" value="${this.esc(p.id)}" ${p.configured ? "checked" : "disabled"} />${this.esc(p.id)}</label>`).join("");
+    $("#effect-cases").innerHTML = cases.map((c, i) => `<div data-effect-family="${this.esc(c.family)}"><label class="check"><input type="checkbox" name="effect-case" value="${this.esc(c.id)}" ${i < 4 ? "checked" : ""} /><span>${this.esc(c.title)}<small>${this.esc(c.family)} · ${c.gap ? "能力/评测缺口" : c.judge.kind === "manual" ? "需人工评分" : "明确答案校验"}</small></span></label><details><summary>查看任务与验收依据</summary><p>${this.esc(c.task.text)}</p><p class="footnote">${this.esc(c.gap || c.judge.rubric)}</p>${c.judge.expected !== null ? `<pre>${this.esc(JSON.stringify(c.judge.expected))}</pre>` : ""}</details></div>`).join("");
+    this.effectBudget();
+  }
+  effectBudget() {
+    const ids = $$('input[name="effect-case"]:checked').map((e) => e.value);
+    const custom = Number(Boolean($("#effect-custom").value.trim()));
+    const providers = $$('input[name="effect-provider"]:checked').length;
+    const cases = this.effectSuite?.items.filter((c) => ids.includes(c.id) && !c.gap).length || 0;
+    $("#effect-budget").textContent = `已选 ${ids.length + custom} 个场景，计划最多 ${(cases + custom) * providers} 次 GPU 调用；目标调用最多 ${$("#effect-call-cap").value} 次，每次最多 ${$("#effect-token-cap").value} 输出 tokens。缺口不调用模型，达到上限的任务记为未测。费用含未知项，调用上限不是美元预算。`;
+    $("#effect-start").disabled = !providers || !ids.length && !custom || ids.length + custom > 96;
+  }
+  async refreshEffects() {
+    const epoch = this.epoch, page = await this.api("/gateway/effects");
+    if (epoch !== this.epoch) return;
+    $("#effect-history").innerHTML = page.items.map((j) => `<button class="evaluation-card" data-effect="${this.esc(j.id)}"><strong>${this.esc(date(j.created_at))}</strong><span>${this.esc(j.providers.join(" / "))} · ${j.summary?.[0]?.planned || "…"} 个场景</span><small>${this.esc(labels[j.status] || j.status)} · ${j.target_model_calls} 次目标调用</small></button>`).join("") || '<p class="empty-copy">结果、输出及评分将按账户保存180天。</p>';
+  }
+  effectReviewForm(job, row) {
+    if (job.status === "running" || !row.output?.complete || row.review) return "";
+    return `<form data-effect-review="${row.id}"><label>人工验收<select name="status"><option value="pass">通过</option><option value="fail">失败</option></select></label><label>具体证据<textarea name="reason" required minlength="10" maxlength="4000" placeholder="依据任务要求和实际输出说明评分理由"></textarea></label><button class="text-button">保存评分（保留自动评分记录）</button></form>`;
+  }
+  async openEffect(id) {
+    const epoch = this.epoch, job = await this.api("/gateway/effects/" + id);
+    if (epoch !== this.epoch) return;
+    const expanded = new Set(this.effect?.id === id ? $$("[data-effect-row][open]").map((e) => e.dataset.effectRow) : []);
+    this.effect = job;
+    const percent = (v) => v == null ? "未测" : `${(v * 100).toFixed(1)}%`;
+    const state = { pass: "通过", fail: "失败", pending: "待人工评分", unmeasured: "未测" };
+    const rowStates = { capability_gap: "能力/评测缺口", execution_blocked: "执行未接通", budget_exhausted: "调用预算已用完", no_route: "无候选", error: "调用失败", completed: "输出已完成", incomplete: "输出未完成" };
+    $("#effect-result").hidden = false;
+    $("#effect-result").innerHTML = `<div class="panel-heading"><h2>效果结果 · ${this.esc(labels[job.status] || job.status)}</h2><button id="export-effect" class="text-button">导出完整 JSON ↓</button>${job.status === "running" ? '<button id="cancel-effect" class="text-button">停止后续评测</button>' : ""}</div>
+      <p>GPU ${job.started_gpu_calls} / ${job.planned_gpu_calls} · 目标调用尝试 ${job.target_model_calls} / ${job.max_target_calls} · 共享目标结果 ${job.reused_observations} 次 · 数据集 ${this.esc(job.dataset_version)}</p><p class="footnote">${this.esc(job.note)}</p>
+      ${(job.reference_errata || []).map((e) => `<p class="form-note">参考勘误 · ${this.esc(e.case_id)}：${this.esc(e.corrected)} ${this.esc(e.basis)} 原始场景快照保留在导出中。</p>`).join("")}
+      <div class="table-scroll"><table><thead><tr><th>决策模型</th><th>已记录/计划</th><th>输出完成</th><th>工作流相容/已查</th><th>质量通过/已评分</th><th>评分覆盖率</th><th>待评/缺口/调用失败</th><th>路由 P50/P95</th><th>目标 P50/P95</th><th>参考费用/已知样本</th><th>可避免失败/基线配对</th></tr></thead><tbody>${job.summary.map((s) => `<tr><td>${this.esc(s.provider)}</td><td>${s.recorded}/${s.planned}</td><td>${s.target_completed}</td><td>${s.workflow_fit}/${s.workflow_checked}</td><td>${s.quality_pass}/${s.quality_graded} (${percent(s.quality_pass_rate)})</td><td>${percent(s.quality_coverage)}</td><td>${s.pending}/${s.gaps}/${s.errors}</td><td>${this.ms(s.route_p50_ms)}/${this.ms(s.route_p95_ms)}</td><td>${this.ms(s.target_p50_ms)}/${this.ms(s.target_p95_ms)}</td><td>${s.cost_known_samples ? this.usd(s.known_reference_cost_usd) : "未知"} · ${s.cost_known_samples}/${s.target_observations}</td><td>${s.avoidable_failures_vs_tested_baselines}/${s.paired_quality_cases}</td></tr>`).join("")}</tbody></table></div>
+      <p class="footnote">质量率只对已评分样本计算，必须结合覆盖率阅读。延迟来自顺序调用；共享目标结果不是重复测量。费用为各路由方案的参考用量价格，不可把三行相加作为实际账单。</p>
+      <h3>逐场景证据与验收</h3>${job.results.filter((r) => r.arm === "routed").map((r) => {
+        const c = job.cases.find((c) => c.id === r.case_id), g = r.review || r.grade;
+        const others = job.results.filter((b) => b.case_id === r.case_id && b.provider === r.provider && b.arm !== "routed");
+        return `<details class="evaluation-row" data-effect-row="${r.id}"><summary>${this.esc(c.title)} · ${this.esc(r.provider)} · ${this.esc(state[g.status] || g.status)} · ${this.esc(rowStates[r.status] || r.status)}</summary>
+          <p>${this.esc(c.task.text)}</p><p class="footnote">验收：${this.esc(c.gap || job.reference_errata?.find((e) => e.case_id === c.id)?.corrected || c.judge.rubric)}${c.judge.expected !== null ? " · 参考 " + this.esc(JSON.stringify(c.judge.expected)) : ""}</p>
+          <p>${this.esc(r.selected_model?.name || "无目标模型")} · ${this.esc(r.profile?.workflow || "未执行分类")} · ${this.esc(r.configuration_id || "")}</p>
+          <p class="footnote">${this.esc(r.selection_reason || "")} ${this.esc(g.reason || "")}</p>${r.error ? `<p class="error">${this.esc(r.error.message)}</p>` : ""}
+          ${r.profile ? `<details><summary>分类属性、选模依据与耗时</summary><pre>${this.esc(JSON.stringify({ profile: r.profile, assessed_profile: r.assessed_profile, candidate_count: r.candidate_count, cost_context: r.cost_context, classifier_timings: r.classifier_timings, route_ms: r.route_ms, target_timings: r.output?.timings, usage: r.output?.usage, reference_cost_usd: r.output?.observed_reference_cost_usd, reused: r.reused }, null, 2))}</pre></details>` : ""}
+          ${mediaHTML(r.task?.attachments)}${r.output ? `<pre>${this.esc(r.output.text || "")}</pre>${mediaHTML(r.output.artifacts)}` : ""}
+          ${r.review ? `<p>${{ user_review: "人工评审", assistant_review: "助手辅助评审", isolated_tests: "隔离测试" }[r.review.method] || "人工评审"}：${this.esc(r.review.reviewer)} · ${this.esc(r.review.reason)}</p>` : ""}
+          ${others.length ? `<h4>同一分类下的对照策略</h4>${others.map((b) => `<details><summary>${b.arm === "low" ? "低价" : "高能力"} · ${this.esc(b.selected_model?.name || "无候选")} · ${this.esc(state[(b.review || b.grade).status])} ${b.reused ? "· 共享结果" : ""}</summary><pre>${this.esc(b.output?.text || b.error?.message || b.status)}</pre>${b.review ? `<p>${this.esc(b.review.method)} · ${this.esc(b.review.reason)}</p>` : this.effectReviewForm(job, b)}</details>`).join("")}` : ""}
+          ${this.effectReviewForm(job, r)}
+        </details>`;
+      }).join("")}`;
+    $$("[data-effect-row]").forEach((e) => { e.open = expanded.has(e.dataset.effectRow); });
+    clearTimeout(this.effectPollTimer);
+    if (job.status === "running") this.effectPollTimer = setTimeout(() => this.action(() => this.openEffect(id)), 3000);
+    else this.refreshEffects().catch((e) => this.notify(e.message));
+  }
   budget() {
     const providers = $$('input[name="eval-provider"]:checked').length, cases = $$('input[name="eval-case"]:checked').length;
     $("#evaluation-budget").textContent = `${providers} 个决策模型 × ${cases} 个任务 = ${providers * cases} 次 GPU 调用尝试；Bedrock 目标模型调用为 0。每次最多选择 16 个任务。`;
@@ -217,6 +281,38 @@ export class Workspace {
     $("#refresh-evaluations").onclick = (e) => this.action(() => this.refreshEvaluations(), e.currentTarget);
     $("#evaluation-history").onclick = (e) => { const id = e.target.closest("[data-evaluation]")?.dataset.evaluation; if (id) this.action(() => this.openEvaluation(id)); };
     $("#evaluation-result").onclick = (e) => { if (e.target.id === "export-evaluation") this.download(this.evaluation, `evaluation-${this.evaluation.id}.json`); };
+    $("#effect-form").oninput = () => this.effectBudget();
+    $("#effect-form").onchange = () => this.effectBudget();
+    $("#effect-family").onchange = () => {
+      $$("[data-effect-family]").forEach((e) => { e.hidden = Boolean($("#effect-family").value && e.dataset.effectFamily !== $("#effect-family").value); });
+      this.effectBudget();
+    };
+    $("#effect-select").onclick = () => { $$("[data-effect-family]").filter((e) => !e.hidden).forEach((e) => { e.querySelector("input").checked = true; }); this.effectBudget(); };
+    $("#effect-clear").onclick = () => { $$('input[name="effect-case"]').forEach((e) => { e.checked = false; }); this.effectBudget(); };
+    $("#effect-form").onsubmit = (e) => { e.preventDefault(); this.action(async () => {
+      const text = $("#effect-custom").value.trim(), rubric = $("#effect-rubric").value.trim();
+      if (text && !rubric) throw new Error("请填写自定义任务的验收标准");
+      const job = await this.api("/gateway/effects", {
+        providers: $$('input[name="effect-provider"]:checked').map((e) => e.value),
+        case_ids: $$('input[name="effect-case"]:checked').map((e) => e.value),
+        custom_cases: text ? [{ title: text.slice(0, 80), task: { text }, rubric, expected_text: $("#effect-expected").value || null }] : [],
+        baselines: $("#effect-baselines").checked,
+        max_target_calls: Number($("#effect-call-cap").value), max_output_tokens: Number($("#effect-token-cap").value),
+      });
+      await this.openEffect(job.id); await this.refreshEffects();
+    }, $("#effect-start")); };
+    $("#refresh-effects").onclick = (e) => this.action(() => this.refreshEffects(), e.currentTarget);
+    $("#effect-history").onclick = (e) => { const id = e.target.closest("[data-effect]")?.dataset.effect; if (id) this.action(() => this.openEffect(id)); };
+    $("#effect-result").onclick = (e) => {
+      if (e.target.id === "export-effect") this.download(this.effect, `effect-${this.effect.id}.json`);
+      if (e.target.id === "cancel-effect") this.action(async () => { await this.api(`/gateway/effects/${this.effect.id}/cancel`, {}); await this.openEffect(this.effect.id); }, e.target);
+    };
+    $("#effect-result").onsubmit = (e) => {
+      const form = e.target.closest("[data-effect-review]");
+      if (!form) return;
+      e.preventDefault();
+      this.action(async () => { await this.api(`/gateway/effects/${this.effect.id}/reviews/${form.dataset.effectReview}`, { status: form.elements.status.value, reason: form.elements.reason.value }); await this.openEffect(this.effect.id); }, form.querySelector("button"));
+    };
     $("#password-form").onsubmit = (e) => { e.preventDefault(); this.action(async () => {
       if ($("#new-password").value !== $("#confirm-password").value) throw new Error("两次新密码不一致");
       await this.api("/gateway/account/password", { current_password: $("#current-password").value, new_password: $("#new-password").value });

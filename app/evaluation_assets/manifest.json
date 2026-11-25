@@ -1,0 +1,26 @@
+{
+  "red.png": {
+    "bytes": 757,
+    "sha256": "ba7fc9794d3db90790d76cdf0b4faf0a1b66ff8acc685667ffb318c06e6d66b6"
+  },
+  "blue.png": {
+    "bytes": 758,
+    "sha256": "3c5a92cecb3f7b408eac12b8c09edad458f89e6f4bbc548391830068bdf88505"
+  },
+  "digits.png": {
+    "bytes": 6343,
+    "sha256": "1a07f0199a1c1a36a993489af9ef4e70742c18fcb58fcfd726511497f67d125a"
+  },
+  "chart.png": {
+    "bytes": 3999,
+    "sha256": "c7d735fdebd35bdbdd495abe91614c864f1ab1b71d54adfeb9027b9bcb1cf5bc"
+  },
+  "speech.wav": {
+    "bytes": 124844,
+    "sha256": "77965438a9d1b7f0f2431abb93c5effb5379480c382037d594c8221e80ab4a3d"
+  },
+  "flower.mp4": {
+    "bytes": 1128375,
+    "sha256": "0cd83d944a6ca7822b4a8306cecc60a36e859b041f6702c6a1ad9ead78924451"
+  }
+}

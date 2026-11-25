@@ -1,0 +1,12 @@
+{
+  "providers": [
+    "h2o"
+  ],
+  "case_ids": [
+    "plan",
+    "concurrency"
+  ],
+  "baselines": true,
+  "max_target_calls": 6,
+  "max_output_tokens": 8192
+}

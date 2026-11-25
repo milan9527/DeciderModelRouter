@@ -1,0 +1,27 @@
+{
+  "size": [
+    512,
+    384
+  ],
+  "background_pixel": [
+    255,
+    255,
+    255,
+    0
+  ],
+  "red_bar": [
+    255,
+    0,
+    0,
+    7
+  ],
+  "blue_bar": [
+    0,
+    0,
+    255,
+    0
+  ],
+  "transparent_pixels": 180957,
+  "opaque_pixels": 1,
+  "total_pixels": 196608
+}

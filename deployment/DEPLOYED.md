@@ -8,11 +8,15 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-最新部署为 **ECS revision 4 / Python 3.12 ARM64**，镜像 `sha256:2ec944a2f47d05440e4071835c269de32c93a96a6878b9ec81e0f5f62409416b`，CloudFront 刷新 `I1ADIRWKMEW6C5HH753VAGD9Z2` 已完成。通用输入无需选模板，`hi` 已真实选模并回复；35 个模板、24 个带标签参考任务（每次最多 16 个）。
+最新部署为 **ECS revision 6 / Python 3.12 ARM64**，镜像 `sha256:614fb07416138116912ead1d9e8ddd1b581a66382bec19bd8fe32ef626cb448c`。新增端到端效果评测：87 个用例、25 类、低价/高能力对照、自定义任务、逐项质量与性能、数据库历史及评分来源。方法和全部场景见[评测说明](../docs/effectiveness-evaluation.zh.md)。沿用现有独立GPU与资源，未创建新EC2。CloudFront 刷新 `I9F76QCCOECTXM7I7XGDZXQOQZ` 已完成。
+
+[全面效果实测](../validation/independent_gateway/full-effects-2026-11-25/README.zh.md)：主批次 213 次 GPU 分类、166 次目标调用；另外对两个截断场景进行 2 次分类、6 次目标调用的预算补测，分开报告。保留每项输出、失败、16 个能力/评测数据缺口、参考勘误及评分来源，不把接口完成当质量通过。488 项软件测试和正式域名浏览器检查通过；两批 537 行记录可完整读取。主批次使用 revision 5，revision 6 完善读出与预算控制，分类、选模与目标调用配置源文件未变。本机审计目录 `.deployment/effects-20261125/`。
+
+前一版 revision 4 镜像为 `sha256:2ec944a2f47d05440e4071835c269de32c93a96a6878b9ec81e0f5f62409416b`，CloudFront 刷新 `I1ADIRWKMEW6C5HH753VAGD9Z2` 已完成。通用输入无需选模板，默认 H2O 的 `hi` 已真实选模并回复；35 个模板、24 个带标签参考任务（每次最多 16 个）。不同分类器仍可能误判，不能将默认模型的验证推广至所有分类器。
 
 已接入图片/视频理解、音频转写、英语语音生成、图片编辑、文档重排和图片向量接口。附件与生成文件保存至独立私有媒体桶，支持历史预览、播放和下载。当前区域无可用纯文生图、视频生成型号；媒体质量与完整费用尚未校准，能力匹配不代表成本或质量最优。
 
-[最新验收与已知问题](../validation/independent_gateway/general-media-2026-11-25/README.zh.md)：458 项软件测试；正式域名 10 次 GPU 分类、8 次 Bedrock 调用，链路状态与预期一致。五条独立语义检查中四条通过；Nova 2 Lite 对纯红色图片描述错误，已保存为人工验收不通过，不将完整执行算作业务正确。
+[前一版验收与已知问题](../validation/independent_gateway/general-media-2026-11-25/README.zh.md)：458 项软件测试；正式域名 10 次 GPU 分类、8 次 Bedrock 调用，链路状态与预期一致。五条独立语义检查中四条通过；Nova 2 Lite 对纯红色图片描述错误，已保存为人工验收不通过，不将完整执行算作业务正确。
 
 [根域名验收](../validation/independent_gateway/root-entry-2026-11-24/verification.json)通过：HTTP 200、无 HTTP 或 HTML 跳转，五个静态文件与发布内容一致；登录、20 个模板、历史刷新、已保存评测和账户管理正常，浏览器无错误。本次未调用模型推理，ECS 保持 revision 3。前端刷新 `IEVT4HF56ZWINOCB87TMY2G1BG`、默认首页切换后的根路径刷新 `I7A8QBUMTOGR106KQCNZPB59W2` 均已完成。
 

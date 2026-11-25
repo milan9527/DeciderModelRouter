@@ -306,6 +306,33 @@ def smoke(output):
                 expect(page.locator("#evaluation-result h2")).to_have_text("评测结果 · 已完成", timeout=20000)
                 expect(page.locator("#evaluation-result")).to_contain_text("2 / 2")
                 page.screenshot(path=str(output / "evaluation.png"), full_page=True)
+                from app.gateway_effect_cases import suite
+
+                expect(page.locator('input[name="effect-case"]')).to_have_count(len(suite()["items"]))
+                page.locator("#effect-clear").click()
+                for checkbox in page.locator('input[name="effect-provider"]').all():
+                    if checkbox.input_value() != "h2o":
+                        checkbox.uncheck()
+                for case in ("greeting", "web-search"):
+                    page.locator(f'input[name="effect-case"][value="{case}"]').check()
+                page.locator("#effect-start").click()
+                expect(page.locator("#effect-result h2")).to_have_text("效果结果 · 已完成", timeout=20000)
+                expect(page.locator("#effect-result")).to_contain_text("目标调用尝试 1")
+                expect(page.locator("#effect-result")).to_contain_text("能力/评测缺口")
+                effect_row = page.locator("#effect-result .evaluation-row").first
+                effect_row.locator("summary").first.click()
+                review = effect_row.locator("[data-effect-review]")
+                review.locator('[name="status"]').select_option("fail")
+                review.locator('[name="reason"]').fill("合成响应谈论幂等而不是问候，按任务要求不通过。")
+                review.locator("button").click()
+                expect(page.locator("#effect-result")).to_contain_text("人工评审：tester")
+                with page.expect_download() as downloaded:
+                    page.locator("#export-effect").click()
+                effect = json.loads(Path(downloaded.value.path()).read_text())
+                assert effect["summary"][0]["quality_pass_rate"] == 0
+                assert effect["summary"][0]["gaps"] == 1
+                assert "route_token" not in json.dumps(effect)
+                page.screenshot(path=str(output / "effect-evaluation.png"), full_page=True)
                 page.locator('[data-page="account"]').click()
                 expect(page.locator("#admin-panel")).to_be_visible()
                 page.locator("#new-user-name").fill("reviewer")
@@ -366,7 +393,7 @@ def smoke(output):
                 assert all(url.startswith(base) for url in requests), requests
                 browser.close()
             stats = httpx.get(f"http://127.0.0.1:{gpu_port}/stats").json()
-            assert stats["calls"] == 6, stats
+            assert stats["calls"] == 7, stats
             verification = {
                 "fixture": "synthetic; not a GPU performance benchmark",
                 "processes": [

@@ -1,0 +1,20 @@
+{
+  "recorded_at": "2026-11-25T01:00:34.385943+00:00",
+  "job_id": "e4b68284d372843309817a6d",
+  "old_version": "957492f464b65171",
+  "new_version": "3b5b7c321b6ac42c",
+  "target_video_not_started": true,
+  "progress_gpu_calls": 73,
+  "all_model_prompts_unchanged": true,
+  "reference_errata": [
+    {
+      "affected_version": "957492f464b65171",
+      "case_id": "video-caption",
+      "original": "参考视频主体是花及昆虫活动；人工查看视频核对，不能只以返回文字判通过。",
+      "corrected": "参考视频是红色花苞逐渐绽放，背景有绿叶；根据实际视频核对主体与变化，不能只以返回文字判通过。",
+      "basis": "在目标视频用例执行前，检查原始5.055秒视频的0.05、1、2、3、4秒画面；没有昆虫。",
+      "fixture_sha256": "0cd83d944a6ca7822b4a8306cecc60a36e859b041f6702c6a1ad9ead78924451",
+      "date": "2026-11-25"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "software_tests_passed": 488,
+  "latest_effect_tests_passed": 30,
+  "browser_fixture_calls": 7,
+  "browser_fixture_real_model_calls": 0,
+  "production_browser_model_calls": 0,
+  "pipeline_unchanged_between_trial_and_readout": {
+    "app/gateway_decision.py": "9233b96b0ea8b7796fd8a4f681e013a253b9b4411518890580ef47469be8a2b1",
+    "app/routing.py": "859b38dc25cce4e1e4ab3b3ddc4a31c82bf324247865b92cfb0afe52ed827d9c",
+    "app/routing_profile.py": "24d7c0a8b29deec1e4ee7017ddc0bbdd343c7133691f2931c54c1d2752f59953",
+    "app/routing_selector.py": "b27611761106fdab75253f809a84452fefac07b2963b10778b40f4735beb91bb",
+    "app/routing_balance.py": "0786a714e2634bc38ee2595f73be7b9ac90eff24c31e597b67a6c18ff67e1441",
+    "app/routing_media.py": "a1a8a9754bb1c38109ffee69929d6eedcea87b7740d83301ce4ccd7cc1706f8c",
+    "app/media_execution.py": "6f9886b8280edada2e774f6945965893e214724b5155156716535b36d5edd953",
+    "app/media_speech.py": "9dc992d20b2af80f04aae293e99225872f9487b42c711cdcac24b087cc6512e3",
+    "app/bedrock_catalog.json": "07e1af09375bc3d5faabf34afd7af3bcc5f301d4901ee8449b503822599b54fe",
+    "app/routing_rankings.json": "a57dcd35734b167df46990e702896fad26a914e223bb7b7d3d9498c83898afb6",
+    "app/routing_calibration.json": "27001ae2e4835971babaca415a3e280c48047c6d5d6f32c3292084340a0272e1"
+  },
+  "original_judge_version": "effect-judge-v1",
+  "current_judge_version": "effect-judge-v2",
+  "note": "Original scores and case snapshot retained; pagination and disclosed review corrections do not alter trial prompts, classifier runtime or routing policy."
+}

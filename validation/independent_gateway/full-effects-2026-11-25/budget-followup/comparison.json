@@ -1,0 +1,189 @@
+{
+  "main_job": "e4b68284d372843309817a6d",
+  "followup_job": "ff3c22292d248171f41346e9",
+  "selected_failed_cases": true,
+  "output_caps": [
+    2048,
+    8192
+  ],
+  "pairs": [
+    {
+      "case_id": "plan",
+      "arm": "routed",
+      "main_row_id": "0175",
+      "followup_row_id": "0000",
+      "selected_model": "openai.gpt-6.1-sol",
+      "same_profile": true,
+      "same_configuration": true,
+      "same_request_fields": true,
+      "before": {
+        "status": "incomplete",
+        "tokens": 2048,
+        "ms": 34906.831,
+        "reference_cost_usd": "0.020556"
+      },
+      "after": {
+        "status": "completed",
+        "grade": {
+          "status": "pass",
+          "reason": "行程以坐赏、休息和就近午饭为主，控制50至100米短距离与无台阶，3.5小时安排明确；40+30+10+20=100元，并要求交通超预算时换更近地点，符合约束。",
+          "method": "assistant_review",
+          "source": "account_review",
+          "reviewer": "admin",
+          "created_at": 1795569971634
+        },
+        "tokens": 3109,
+        "ms": 55625.328,
+        "reference_cost_usd": "0.031166"
+      }
+    },
+    {
+      "case_id": "plan",
+      "arm": "low",
+      "main_row_id": "0176",
+      "followup_row_id": "0001",
+      "selected_model": "openai.gpt-6-luna",
+      "same_profile": true,
+      "same_configuration": true,
+      "same_request_fields": true,
+      "before": {
+        "status": "incomplete",
+        "tokens": 2048,
+        "ms": 16458.466,
+        "reference_cost_usd": "0.0010278"
+      },
+      "after": {
+        "status": "completed",
+        "grade": {
+          "status": "pass",
+          "reason": "采用单一无障碍公共场所和坐着活动，避免多点转场与长步行；交通40至50、茶点25至35、预留15合计80至100元，时间约4小时并允许提前结束，满足约束。",
+          "method": "assistant_review",
+          "source": "account_review",
+          "reviewer": "admin",
+          "created_at": 1795569971709
+        },
+        "tokens": 5078,
+        "ms": 40285.464,
+        "reference_cost_usd": "0.0025428"
+      }
+    },
+    {
+      "case_id": "plan",
+      "arm": "high",
+      "main_row_id": "0177",
+      "followup_row_id": "0002",
+      "selected_model": "openai.gpt-6-astra",
+      "same_profile": true,
+      "same_configuration": true,
+      "same_request_fields": true,
+      "before": {
+        "status": "incomplete",
+        "tokens": 2048,
+        "ms": 33476.275,
+        "reference_cost_usd": "0.10278"
+      },
+      "after": {
+        "status": "completed",
+        "grade": {
+          "status": "pass",
+          "reason": "半天安排以公园坐赏和同一店用餐为主，步行分段50至100米且要求无台阶；50+15+25+10=100元，明确价格需提前确认和不适时调整，符合预算及行动限制。",
+          "method": "assistant_review",
+          "source": "account_review",
+          "reviewer": "admin",
+          "created_at": 1795569971784
+        },
+        "tokens": 3502,
+        "ms": 53950.468,
+        "reference_cost_usd": "0.17548"
+      }
+    },
+    {
+      "case_id": "concurrency",
+      "arm": "routed",
+      "main_row_id": "0342",
+      "followup_row_id": "0003",
+      "selected_model": "openai.gpt-6.1-sol",
+      "same_profile": true,
+      "same_configuration": true,
+      "same_request_fields": true,
+      "before": {
+        "status": "incomplete",
+        "tokens": 2048,
+        "ms": 40732.287,
+        "reference_cost_usd": "0.020556"
+      },
+      "after": {
+        "status": "completed",
+        "grade": {
+          "status": "pass",
+          "reason": "使用稳定业务幂等键和数据库唯一约束，只有插入新流水的事务更新余额，流水、余额、状态同事务；原子余额增量且检查更新行数，明确提交前回滚、提交后重试和提交结果未知的恢复边界，并区分至多一次与对账重试保证最终入账，满足验收规则。SQL明确为伪代码，本项为内容评审，不是执行证明。",
+          "method": "assistant_review",
+          "source": "account_review",
+          "reviewer": "admin",
+          "created_at": 1795569971851
+        },
+        "tokens": 6058,
+        "ms": 116646.351,
+        "reference_cost_usd": "0.060656"
+      }
+    },
+    {
+      "case_id": "concurrency",
+      "arm": "low",
+      "main_row_id": "0343",
+      "followup_row_id": "0004",
+      "selected_model": "openai.gpt-6-luna",
+      "same_profile": true,
+      "same_configuration": true,
+      "same_request_fields": true,
+      "before": {
+        "status": "incomplete",
+        "tokens": 2048,
+        "ms": 16456.746,
+        "reference_cost_usd": "0.0010278"
+      },
+      "after": {
+        "status": "incomplete",
+        "grade": {
+          "status": "fail",
+          "reason": "目标输出未完成或被截断",
+          "source": "automatic"
+        },
+        "tokens": 8192,
+        "ms": 64695.768,
+        "reference_cost_usd": "0.0040998"
+      }
+    },
+    {
+      "case_id": "concurrency",
+      "arm": "high",
+      "main_row_id": "0344",
+      "followup_row_id": "0005",
+      "selected_model": "openai.gpt-6-astra",
+      "same_profile": true,
+      "same_configuration": true,
+      "same_request_fields": true,
+      "before": {
+        "status": "incomplete",
+        "tokens": 2048,
+        "ms": 32351.13,
+        "reference_cost_usd": "0.10278"
+      },
+      "after": {
+        "status": "completed",
+        "grade": {
+          "status": "pass",
+          "reason": "以业务支付单唯一键约束入账，解释并发冲突等待、胜者提交或回滚的分支；流水与原子余额增量同事务，检查更新行数，重复时核对账户、金额、币种；覆盖提交前后及未知提交结果的恢复，同键重试和主动对账均说明。满足设计验收，本项为内容评审，未执行数据库故障注入。",
+          "method": "assistant_review",
+          "source": "account_review",
+          "reviewer": "admin",
+          "created_at": 1795569971918
+        },
+        "tokens": 4655,
+        "ms": 68899.607,
+        "reference_cost_usd": "0.23313"
+      }
+    }
+  ],
+  "followup_known_reference_cost_usd": "0.5070746"
+}

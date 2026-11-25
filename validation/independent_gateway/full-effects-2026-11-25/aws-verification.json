@@ -1,0 +1,64 @@
+{
+  "checked_at": "2026-11-25T01:26:38.029742+00:00",
+  "ecs": {
+    "taskDefinition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:6",
+    "runningCount": 1,
+    "pendingCount": 0,
+    "desiredCount": 1
+  },
+  "rollout": "COMPLETED",
+  "target_health": [
+    "healthy"
+  ],
+  "cloudfront_status": "Deployed",
+  "cloudfront_default_root": "gateway/index.html",
+  "invalidation_status": "Completed",
+  "s3_public_access_block": {
+    "BlockPublicAcls": true,
+    "IgnorePublicAcls": true,
+    "BlockPublicPolicy": true,
+    "RestrictPublicBuckets": true
+  },
+  "gpu": [
+    {
+      "id": "i-0ae7eb0abcb815af3",
+      "state": "running",
+      "type": "g6.xlarge",
+      "launch_time": "2026-11-24T10:16:20+00:00",
+      "vpc": "vpc-0c036c30b82b3703f",
+      "public_ip": "174.129.189.193"
+    },
+    {
+      "id": "i-01180cf02d12e6e31",
+      "state": "running",
+      "type": "g5.xlarge",
+      "launch_time": "2026-11-24T15:32:58+00:00",
+      "vpc": "vpc-05ac5abdb873adec9",
+      "public_ip": null
+    }
+  ],
+  "original_ecs_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:36",
+  "root_status": 200,
+  "root_http_redirect": false,
+  "unauthenticated_effects_status": 401,
+  "persistent_jobs": [
+    {
+      "id": "e4b68284d372843309817a6d",
+      "status": "completed",
+      "recorded_rows": 531,
+      "started_gpu_calls": 213,
+      "target_model_calls": 166,
+      "max_output_tokens": 2048
+    },
+    {
+      "id": "ff3c22292d248171f41346e9",
+      "status": "completed",
+      "recorded_rows": 6,
+      "started_gpu_calls": 2,
+      "target_model_calls": 6,
+      "max_output_tokens": 8192
+    }
+  ],
+  "new_model_calls": 0,
+  "resource_mutations": 0
+}
