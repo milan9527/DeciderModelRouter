@@ -1,5 +1,127 @@
 [
   {
+    "id": "greeting-en",
+    "title": "英文问候",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "hi",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "greeting-zh",
+    "title": "中文问候",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "你好",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "everyday-question",
+    "title": "日常知识",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "为什么天空是蓝色的？请用通俗中文解释。",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "creative-writing",
+    "title": "自由写作",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "写一个关于迷路小猫的温暖小故事。",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "clarify-request",
+    "title": "澄清需求",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "我需要一点帮助",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "everyday-advice",
+    "title": "生活建议",
+    "description": "通用自由输入示例；不需要命中模板才能路由。",
+    "task": "请给我三个整理书桌的小建议。",
+    "category": "通用对话",
+    "rubric": [
+      "按用户的语言作答",
+      "直接回应；信息不足时自然澄清"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 256,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "translate",
+    "title": "中英翻译",
+    "category": "文本",
+    "description": "把这句话翻译成英文，只输出译文：我们已经收到您的付款，订单将在两个工作日内处理。",
+    "task": "把这句话翻译成英文，只输出译文：我们已经收到您的付款，订单将在两个工作日内处理。",
+    "rubric": [
+      "使用给定信息",
+      "遵循请求格式",
+      "核对事实与完整性"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 512,
+      "max_output_tokens": 1024
+    }
+  },
+  {
+    "id": "summarize",
+    "title": "会议摘要",
+    "category": "文本",
+    "description": "用三条中文要点总结会议记录：周一完成接口验签；周三进行并发测试；小王负责接口，小李负责测试；上线时间尚未确定。不得增加未提供的信息。",
+    "task": "用三条中文要点总结会议记录：周一完成接口验签；周三进行并发测试；小王负责接口，小李负责测试；上线时间尚未确定。不得增加未提供的信息。",
+    "rubric": [
+      "使用给定信息",
+      "遵循请求格式",
+      "核对事实与完整性"
+    ],
+    "routing_preferences": {
+      "expected_output_tokens": 512,
+      "max_output_tokens": 1024
+    }
+  },
+  {
     "id": "industry-retail",
     "title": "大促缺货与履约补救",
     "description": "你是零售运营负责人。活动后有缺货和迟发，需平衡毛利、履约承诺和老客体验。金额单位元。",

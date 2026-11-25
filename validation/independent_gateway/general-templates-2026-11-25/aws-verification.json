@@ -1,0 +1,54 @@
+{
+  "verified_at": "2026-11-25T16:26:52.803747+00:00",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "root_http_status": 200,
+  "root_redirect": false,
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:17",
+  "ecs_rollout": "COMPLETED",
+  "running": 1,
+  "pending": 0,
+  "image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router@sha256:35a0e61d2999225b4820591864fec8973b02d8ce7bdc60019f2ca5bed0e2404c",
+  "task_health": "HEALTHY",
+  "cloudfront_invalidation": {
+    "id": "I8SL8CHGOFEUL5AVX2530TMXMQ",
+    "status": "Completed"
+  },
+  "static_assets": [
+    {
+      "key": "gateway/gateway.css",
+      "sha256": "0f324df3f2e363112f712bc08c2b03472c58c418b867510cae1083bd0e0ce086"
+    },
+    {
+      "key": "gateway/workspace.js",
+      "sha256": "5336b128b20530530f3c01b224be402f9efe7092febc6fc9bbc0b3e27add7c40"
+    },
+    {
+      "key": "gateway/agents.js",
+      "sha256": "72fd4b33c6485e188e46a313eafe7175d7983826c0b193b2eb3d6c47822642dc"
+    },
+    {
+      "key": "gateway/gateway.js",
+      "sha256": "712110b6c6ab631a2b1b9ae06a8bbe328ffb79314107063d0f85891f01dda3c7"
+    },
+    {
+      "key": "gateway/mark.svg",
+      "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb"
+    },
+    {
+      "key": "gateway/index.html",
+      "sha256": "631ec93073440a887e868b6e1efbe1a8021ccbb5af9f8690a7de78f22b250803"
+    }
+  ],
+  "runtime": {
+    "id": "decider_model_router_industry-Fg8vWeEOIs",
+    "version": "3",
+    "status": "READY",
+    "platform_version": "V2"
+  },
+  "gpu": {
+    "id": "i-01180cf02d12e6e31",
+    "type": "g5.xlarge",
+    "state": "running"
+  },
+  "new_model_calls": 0
+}

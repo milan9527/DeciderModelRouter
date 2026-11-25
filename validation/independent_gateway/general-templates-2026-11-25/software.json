@@ -1,0 +1,10 @@
+{
+  "command": ".venv/bin/pytest -q tests/test_gateway.py tests/test_gateway_effects.py tests/test_gateway_agents.py",
+  "passed": 79,
+  "failed": 0,
+  "seconds": 6.2,
+  "warnings": [
+    "Existing StarletteDeprecationWarning: httpx with starlette.testclient is deprecated"
+  ],
+  "scope": "Existing gateway, effectiveness evaluation and industry-agent software regressions; no real model calls"
+}

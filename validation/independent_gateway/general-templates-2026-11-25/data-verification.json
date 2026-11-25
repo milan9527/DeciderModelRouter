@@ -1,0 +1,30 @@
+{
+  "template_count": 29,
+  "restored_ids": [
+    "greeting-en",
+    "greeting-zh",
+    "everyday-question",
+    "creative-writing",
+    "clarify-request",
+    "everyday-advice",
+    "translate",
+    "summarize"
+  ],
+  "preserved_templates": 21,
+  "preserved_agent_scenarios": 12,
+  "reference_cases": 24,
+  "template_version": "1436b6e4ebc2fa83",
+  "reference_version": "c225691af95fa1a4",
+  "unchanged_sha256": {
+    "app/gateway_reference_templates.json": "c225691af95fa1a46e7610dcc964371d2167e8d0603f1bf788d1678baac242bf",
+    "app/industry_scenarios.py": "ca62761abee8324f3b4fe182bc8b5e88d16a55220f9c8df5593e8d525a121aeb",
+    "validation/independent_gateway/overall-metrics-2026-11-25/evaluation.json": "187b310813a31fe8b762d605351d27692af667e9c1a9eda269fda1cfde62d6b3"
+  },
+  "new_model_calls": 0,
+  "checks": [
+    "restored eight original prompts, rubrics and budgets",
+    "all previous 21 templates unchanged",
+    "unique ids, task lengths and budgets valid",
+    "frozen classification reference, industry scenarios and historic evaluation unchanged"
+  ]
+}
