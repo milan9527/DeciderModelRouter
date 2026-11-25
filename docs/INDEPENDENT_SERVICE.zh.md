@@ -6,6 +6,15 @@
 
 ## 已部署服务架构
 
+[![DeciderModelRouter 独立模型网关 AWS 部署架构](diagrams/decider-model-router-aws.zh.png)](diagrams/decider-model-router-aws.zh.svg)
+
+[SVG 矢量图](diagrams/decider-model-router-aws.zh.svg) · [高清 PNG（3840 × 3060）](diagrams/decider-model-router-aws.zh.png) · [生成脚本](../scripts/generate_gateway_architecture.py) · [AWS 官方图标来源](diagrams/aws-icons/README.md)
+
+图中按2026-11-25部署状态绘制：CloudFront位于区域边界外，ALB、ECS和GPU位于专用VPC的私有子网；S3、DynamoDB和Bedrock作为托管服务单独展示。私有子网框是逻辑汇总，当前为一个API任务和一台GPU；图中省略网络出口与运维路径。
+
+<details>
+<summary>展开 Mermaid 关系图</summary>
+
 ```mermaid
 flowchart TB
     U["浏览器：登录、任务、过程与历史"] -->|HTTPS| CF["专用 CloudFront"]
@@ -19,6 +28,8 @@ flowchart TB
     API -->|"上传与生成文件"| MEDIA[("私有 S3<br/>媒体桶")]
     API <-->|"IAM 授权<br/>真实任务、附件与结果"| BR["Amazon Bedrock<br/>目标模型"]
 ```
+
+</details>
 
 内网ALB、ECS和GPU均在专用VPC中。图中只有一个独立API服务；分类传输、选型规则和目标适配器都是该服务中的模块。GPU运行独立HTTP服务，每次请求只调用选定的一个分类器，默认H2O；不会同时让三个分类器投票。浏览器通过CloudFront调用API，GPU没有浏览器直连入口。
 

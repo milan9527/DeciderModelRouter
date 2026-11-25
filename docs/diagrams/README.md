@@ -1,6 +1,27 @@
-# 演示图表
+# 架构与流程图
 
-仓库提供五张 SVG 图，可直接在 GitHub 或浏览器中查看、下载：
+## DeciderModelRouter 独立服务
+
+[![独立模型网关 AWS 部署架构](decider-model-router-aws.zh.png)](decider-model-router-aws.zh.svg)
+
+[SVG 矢量图](decider-model-router-aws.zh.svg) · [高清 PNG（3840 × 3060）](decider-model-router-aws.zh.png) · [架构与请求时序说明](../INDEPENDENT_SERVICE.zh.md#已部署服务架构)
+
+按2026-11-25部署状态绘制，使用[AWS官方图标](aws-icons/README.md)并保留官方配色。区分全局CloudFront、区域、专用VPC和私有子网，展示OAC静态资源路径、VPC Origin API路径、ECS选型、独立GPU分类、Bedrock执行，以及认证、会话、评测和媒体存储。子网采用逻辑汇总，当前一个API任务和一台GPU；省略网络出口与运维路径。
+
+图内同时说明GPU与后端的职责、证据快照的位置和当前校准状态。历史评测不自动更新选型，媒体桶经登录后的API访问。下方历史实验图中的共享GPU、Jev和AgentCore不属于此独立服务架构。
+
+SVG已内联所有图标，可独立打开；PNG固定中文字体，适合报告和演示。生成器复用本目录的官方图标，不请求外部图片。修改[生成脚本](../../scripts/generate_gateway_architecture.py)后，在仓库根目录执行：
+
+```bash
+# 仅生成 SVG：Python 标准库即可
+python scripts/generate_gateway_architecture.py
+# 同时生成 2 倍分辨率 PNG：需 Playwright、Chromium 和 Noto Sans CJK SC 字体
+.venv/bin/python scripts/generate_gateway_architecture.py --png
+```
+
+## 历史实验图
+
+以下五张图保留各实验项目的架构与业务背景，可直接在GitHub或浏览器中查看、下载：
 
 1. **[AWS 部署架构](architecture.svg)**：私有 S3 + CloudFront OAC、内网 ALB / ECS、文字 vLLM 与图片视觉服务、Bedrock / DynamoDB、Jev 转发及密钥注入。
 2. **[Decider vs Jev vs GPT](model-comparison.svg)**：同一候选决策任务的三条调用路径，以及共同的应用执行策略。
@@ -10,7 +31,7 @@
 
 SVG 文件可用于 README 或演示材料，不依赖外部图片、字体下载或脚本；显示中文需要本机支持中文字体。
 
-部署架构图采用 **AWS 官方服务 / 资源图标与架构图风格**：保留官方配色，区分 AWS Cloud、us-east-1、VPC 和私有子网边界。CloudFront 位于区域边界外，API 位于应用 VPC 的私有子网，vLLM 位于另一 VPC；橙色虚线表示启动时注入密钥。图标来源与版本见 [AWS 图标说明](aws-icons/README.md)。
+历史实验的[部署架构图](architecture.svg)采用 **AWS 官方服务 / 资源图标与架构图风格**：保留官方配色，区分 AWS Cloud、us-east-1、VPC 和私有子网边界。CloudFront 位于区域边界外，API 位于应用 VPC 的私有子网，vLLM 位于另一 VPC；橙色虚线表示启动时注入密钥。图标来源与版本见 [AWS 图标说明](aws-icons/README.md)。
 
 图中简化了网络细节，ECS 后端直接连到 EC2 模型服务、Bedrock 和 DynamoDB，不单独绘制网络端点。文字决策通过 VPC Peering 调用共享 vLLM `g6.xlarge`；2026-10-23 新增图片决策，通过同一应用 VPC 的 TCP 18123 调用另一台现有 `g6.xlarge` 上的官方视觉服务。两路独立计时，不将图片原生推理称为 vLLM。历史 PPT 保留其采集时的架构与数据，详见 [部署记录](../../deployment/DEPLOYED.md)。
 

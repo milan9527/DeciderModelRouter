@@ -6,6 +6,10 @@
 
 [服务架构图](docs/INDEPENDENT_SERVICE.zh.md#已部署服务架构) · [请求时序图](docs/INDEPENDENT_SERVICE.zh.md#一次请求的调用顺序) · [决策流程图](docs/BEDROCK_CLASSIFIED_ROUTING.zh.md#决策流程总览) · [评测证据与校准流程](docs/BEDROCK_CLASSIFIED_ROUTING.zh.md#评测证据如何进入选型)
 
+[![独立模型网关 AWS 部署架构](docs/diagrams/decider-model-router-aws.zh.png)](docs/diagrams/decider-model-router-aws.zh.svg)
+
+[下载 SVG 矢量图](docs/diagrams/decider-model-router-aws.zh.svg) · [下载高清 PNG](docs/diagrams/decider-model-router-aws.zh.png)
+
 GPU负责判断七项任务属性，后端负责依据证据选型。文本/向量当前使用公开榜单分项与参考费用；多模态按能力和适配器过滤后采用固定型号顺序。87项效果评测已有真实结果，但尚未自动接入在线业务校准，报告更新不会直接改变模型选择。
 
 - **会话与历史**：按账户隔离，跨登录和容器重启保存请求、阶段事件、输出、Token、费用、错误及人工验收，可检索、复用任务和导出。
