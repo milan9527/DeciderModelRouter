@@ -1,0 +1,182 @@
+[
+  {
+    "case_id": "ambiguous",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "询问具体需要，列出示例但没有代替用户编造任务。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "09cde5edf508b4d404d5fae99781b03fb67e4738b902757a80877f47b5e3de89"
+  },
+  {
+    "case_id": "summary",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "包含证书过期、恢复、提醒和无数据丢失；36个汉字，不超过40汉字。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "23a697f4e2e8b44d8dfd93ca3a3870e3ebc45e57b0c46e28fa1da78fd9fbfdb8"
+  },
+  {
+    "case_id": "short-story",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "钥匙、雨、误以为门已锁的误会和温暖结尾齐全；79个汉字，不超过预设100汉字。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "2446c3a572f521357da7af5d03f81371f54e4fe48deefb313f5691218752b7d6"
+  },
+  {
+    "case_id": "marketing",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "编造300g重量、金属/硅胶结构、防漏密封、食品级不锈钢等未知参数。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "cd0b162dcf231ba75c2fe3b2c255d886116c96fa59aec953da10b6830013a9d0"
+  },
+  {
+    "case_id": "causality",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "虽提到相关不等于因果，却把气温认定为本城已证实驱动力，并断言控制气温后关联消失；现有数据不支持这些实证断言。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "98dfc81f9f5bd297b89dd263675322c91acdbb4018978a9bd4c0b22ecb70424c"
+  },
+  {
+    "case_id": "refund",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "把不能承诺今天到账说成今天无法到账；又断言到账后会收到银行通知，这些状态未由题目提供。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "2219fb32fbd34d62bd5baeb60cf53480b8ff83fcc65a302581b4ac9fa84568b9"
+  },
+  {
+    "case_id": "medical",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "说明病毒性感冒不常规用抗生素、严重症状就医，不作个人处方。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "6ab760ba5b953e421b853930b0ff71e6c04bb3f873ef0fd8a3b72c90fa476fe4"
+  },
+  {
+    "case_id": "video-caption",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "核对同一视频六帧：红色花苞逐渐打开、黄色花心、绿叶背景正确；没有延续上次颜色幻觉。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "eb7d387853428296f53e54d1a35df5185293376c0e71af41b6800ec40f10fda8"
+  },
+  {
+    "case_id": "manufacturing-causal-regression",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "B702为5%，全批800件追溯且40件已隔离时新增最多760件为条件判断；供应商/产线/温度混杂处理准确，交叉分组与随机复验能区分因素，放行需质量工程师；0/50单侧95%上限约5.8%及3%对5%每组约1500样本估计均明确假设。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "f9caba666262375121a235b74489c36dfce70993767fce25efdaae59a4983bc1"
+  },
+  {
+    "case_id": "probability",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "推导与最终1/3正确，但输出长解释，违反只输出最简分数要求。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "f3a18b94ae40849f16a7334728178c52dff9dce784e6c9401df7a42d10cf06b2"
+  },
+  {
+    "case_id": "new-history-correction",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "记住最终17件及ORBIT-629，但顺序和分隔格式不符合17,ORBIT-629要求。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "871b2817eff016bb4d34b7b3cec694793a0118ec73fe4ef4a73270a58ded88d0"
+  },
+  {
+    "case_id": "heldout-insurance",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "赔付20000正确，但带加粗与单位，原数字格式验收仍失败。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "5f19b6f93d0411fe82dabd1b3175caf52965646238f940bbd8cba6d03dac522d"
+  },
+  {
+    "case_id": "heldout-energy",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "176-70.4=105.6核算正确，未作额外物理效果断言；长解释违反只输出数字要求。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "e33f3bf6211f72d9653c1a7eff595fe5b42e6c5a9065ad06cae21e31f3edc0d3"
+  },
+  {
+    "case_id": "quality-holdout-causal",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "正确识别混杂与抽样偏差并给出四组设计；但无样本数/周期却断言一周样本量不足，且500汉字超过400字上限。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "e7a7995a2397125071e9877b8520e92f10e1757eac891175712c792984f66378"
+  },
+  {
+    "case_id": "quality-holdout-incident",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "时间顺序及记录缺口正确，泄漏/请求突增列为假设，提出连接栈和网关/DB指标取证；111字符。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "8d1a79d6dcd17c7959c86d77169eaef747b20b040a74e2d1865dc3d58963f12d"
+  },
+  {
+    "case_id": "quality-holdout-aggregation",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "A83%、B91%、分层90/20和95/90正确并保留因果限制；含数字公式的可见答复超过200字要求（原文310字符），内容正确但未足够简洁。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "1fe62c893b480877d58e8ea04b17a99e423b34caf5db15b8f093c3253882e3a2"
+  },
+  {
+    "case_id": "agent-retail-1",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "缺口及当前500补偿正确，但编造补偿每24小时累加约200元，违反现有一次性补偿规则；影响等待方案比较。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "4d286081699499228681ee7fccb11807af2c4df86f7a6ee50b66c49a81a944d8"
+  },
+  {
+    "case_id": "agent-retail-2",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "30/5分货、缺口15、补偿500、毛利2250和扣补偿1750正确；未知额外运费和取消成本单列。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "6c2f1886c323d4fa0eb6233d6a47a19396805da6cc253214627f97eaf0d86312"
+  },
+  {
+    "case_id": "agent-finance-1",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "正确标出E1重复、P12未匹配和P13负退款，不重复计收入；生成结算记录仅列为待办建议，真实环境仍须确认业务凭据。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "e65a5727b34a64994ffc35cde236647dbad9565d03dafed68d11083e2d23e564"
+  },
+  {
+    "case_id": "agent-finance-2",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "5000/-7500/8300正确，但额外把账本总额45800算成40800，继而给出错误差值48300；还把负净额解释为银行须向商户结付75元，缺少依据。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "d06505a26396f219d45d1f4a5ac340848e34f8a7869838782944ffec325c8b4c"
+  }
+]

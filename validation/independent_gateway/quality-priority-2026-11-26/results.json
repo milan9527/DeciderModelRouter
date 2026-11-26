@@ -1,0 +1,333 @@
+{
+  "suite_version": "25741276b26c3c96937cb236",
+  "overall": {
+    "planned": 56,
+    "passed": 40,
+    "pass_percent": 71.43,
+    "content_passed": 48,
+    "content_percent": 85.71,
+    "status_counts": {
+      "pass": 40,
+      "fail": 16
+    },
+    "completed": 56,
+    "wilson_95_percent": [
+      58.52,
+      81.58
+    ]
+  },
+  "categories": {
+    "通用文本与历史": {
+      "planned": 13,
+      "passed": 8,
+      "pass_percent": 61.54,
+      "content_passed": 10,
+      "content_percent": 76.92,
+      "status_counts": {
+        "pass": 8,
+        "fail": 5
+      },
+      "completed": 13,
+      "wilson_95_percent": [
+        35.52,
+        82.29
+      ]
+    },
+    "代码": {
+      "planned": 7,
+      "passed": 4,
+      "pass_percent": 57.14,
+      "content_passed": 7,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 4,
+        "fail": 3
+      },
+      "completed": 7,
+      "wilson_95_percent": [
+        25.05,
+        84.18
+      ]
+    },
+    "检索": {
+      "planned": 1,
+      "passed": 0,
+      "pass_percent": 0.0,
+      "content_passed": 0,
+      "content_percent": 0.0,
+      "status_counts": {
+        "fail": 1
+      },
+      "completed": 1,
+      "wilson_95_percent": [
+        0.0,
+        79.35
+      ]
+    },
+    "多模态": {
+      "planned": 6,
+      "passed": 6,
+      "pass_percent": 100.0,
+      "content_passed": 6,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 6
+      },
+      "completed": 6,
+      "wilson_95_percent": [
+        60.97,
+        100.0
+      ]
+    },
+    "12行业业务题": {
+      "planned": 12,
+      "passed": 9,
+      "pass_percent": 75.0,
+      "content_passed": 11,
+      "content_percent": 91.67,
+      "status_counts": {
+        "pass": 9,
+        "fail": 3
+      },
+      "completed": 12,
+      "wilson_95_percent": [
+        46.77,
+        91.11
+      ]
+    },
+    "复杂产线分析": {
+      "planned": 1,
+      "passed": 1,
+      "pass_percent": 100.0,
+      "content_passed": 1,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 1
+      },
+      "completed": 1,
+      "wilson_95_percent": [
+        20.65,
+        100.0
+      ]
+    },
+    "新增能力优先场景": {
+      "planned": 12,
+      "passed": 10,
+      "pass_percent": 83.33,
+      "content_passed": 11,
+      "content_percent": 91.67,
+      "status_counts": {
+        "pass": 10,
+        "fail": 2
+      },
+      "completed": 12,
+      "wilson_95_percent": [
+        55.2,
+        95.3
+      ]
+    },
+    "Agent多轮": {
+      "planned": 4,
+      "passed": 2,
+      "pass_percent": 50.0,
+      "content_passed": 2,
+      "content_percent": 50.0,
+      "status_counts": {
+        "fail": 2,
+        "pass": 2
+      },
+      "completed": 4,
+      "wilson_95_percent": [
+        15.0,
+        85.0
+      ]
+    }
+  },
+  "regression44": {
+    "planned": 44,
+    "passed": 30,
+    "pass_percent": 68.18,
+    "content_passed": 37,
+    "content_percent": 84.09,
+    "status_counts": {
+      "pass": 30,
+      "fail": 14
+    },
+    "completed": 44,
+    "wilson_95_percent": [
+      53.44,
+      80.0
+    ]
+  },
+  "new12": {
+    "planned": 12,
+    "passed": 10,
+    "pass_percent": 83.33,
+    "content_passed": 11,
+    "content_percent": 91.67,
+    "status_counts": {
+      "pass": 10,
+      "fail": 2
+    },
+    "completed": 12,
+    "wilson_95_percent": [
+      55.2,
+      95.3
+    ]
+  },
+  "routes": 58,
+  "high_preference_routes": 13,
+  "high_preference_quality_checks_passed": 13,
+  "quality_reselections": 0,
+  "all_candidates_in_first_selection": true,
+  "gpu_call_counts": {
+    "2": 58
+  },
+  "selected_models": {
+    "anthropic.claude-sonnet-4-6": 4,
+    "mistral.voxtral-small-24b-2507": 1,
+    "minimax.minimax-m2.1": 2,
+    "amazon.titan-embed-text-v1": 1,
+    "openai.gpt-oss-20b-1:0": 7,
+    "minimax.minimax-m2": 2,
+    "openai.gpt-oss-safeguard-120b": 5,
+    "moonshot.kimi-k2-thinking": 1,
+    "openai.gpt-6.2-astra": 3,
+    "openai.gpt-oss-120b-1:0": 3,
+    "openai.gpt-5.4": 4,
+    "openai.gpt-6.2-sol": 2,
+    "moonshotai.kimi-k2.5": 2,
+    "nvidia.nemotron-super-3-120b": 1,
+    "mistral.devstral-2-123b": 2,
+    "zai.glm-4.7": 1,
+    "zai.glm-4.7-flash": 2,
+    "anthropic.claude-opus-5-5": 1,
+    "anthropic.claude-fable-5-1": 3,
+    "anthropic.claude-fable-5-2": 4,
+    "openai.gpt-5.6-sol": 1,
+    "openai.gpt-5.5": 2,
+    "anthropic.claude-haiku-5-5": 2,
+    "amazon.nova-lite-v1:0": 1,
+    "anthropic.claude-sonnet-4-5-20250929-v1:0": 1
+  },
+  "timings": {
+    "assessment_ms": {
+      "p50": 119.942,
+      "p95": 271.791
+    },
+    "selection_ms": {
+      "p50": 865.642,
+      "p95": 1024.757
+    },
+    "decision_ms": {
+      "p50": 997.715,
+      "p95": 1180.022
+    }
+  },
+  "failures": [
+    {
+      "case_id": "marketing",
+      "content_status": "fail",
+      "execution_status": "completed",
+      "reason": "编造300g重量、金属/硅胶结构、防漏密封、食品级不锈钢等未知参数。"
+    },
+    {
+      "case_id": "probability",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "reason": "推导与最终1/3正确，但输出长解释，违反只输出最简分数要求。"
+    },
+    {
+      "case_id": "causality",
+      "content_status": "fail",
+      "execution_status": "completed",
+      "reason": "虽提到相关不等于因果，却把气温认定为本城已证实驱动力，并断言控制气温后关联消失；现有数据不支持这些实证断言。"
+    },
+    {
+      "case_id": "python-brackets",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "reason": "isolated_functional_tests"
+    },
+    {
+      "case_id": "python-merge",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "reason": "isolated_functional_tests"
+    },
+    {
+      "case_id": "refund",
+      "content_status": "fail",
+      "execution_status": "completed",
+      "reason": "把不能承诺今天到账说成今天无法到账；又断言到账后会收到银行通知，这些状态未由题目提供。"
+    },
+    {
+      "case_id": "embed-en",
+      "content_status": "fail",
+      "execution_status": "completed",
+      "reason": "all four queries must rank the relevant document first"
+    },
+    {
+      "case_id": "new-history-correction",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "reason": "记住最终17件及ORBIT-629，但顺序和分隔格式不符合17,ORBIT-629要求。"
+    },
+    {
+      "case_id": "new-code-events",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "reason": "isolated_functional_tests"
+    },
+    {
+      "case_id": "heldout-finance",
+      "content_status": "fail",
+      "execution_status": "completed",
+      "reason": "number 对照检查；只代表此用例的明确验收条件"
+    },
+    {
+      "case_id": "heldout-insurance",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "reason": "赔付20000正确，但带加粗与单位，原数字格式验收仍失败。"
+    },
+    {
+      "case_id": "heldout-energy",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "reason": "176-70.4=105.6核算正确，未作额外物理效果断言；长解释违反只输出数字要求。"
+    },
+    {
+      "case_id": "quality-holdout-causal",
+      "content_status": "fail",
+      "execution_status": "completed",
+      "reason": "正确识别混杂与抽样偏差并给出四组设计；但无样本数/周期却断言一周样本量不足，且500汉字超过400字上限。"
+    },
+    {
+      "case_id": "quality-holdout-aggregation",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "reason": "A83%、B91%、分层90/20和95/90正确并保留因果限制；含数字公式的可见答复超过200字要求（原文310字符），内容正确但未足够简洁。"
+    },
+    {
+      "case_id": "agent-retail-1",
+      "content_status": "fail",
+      "execution_status": "completed",
+      "reason": "缺口及当前500补偿正确，但编造补偿每24小时累加约200元，违反现有一次性补偿规则；影响等待方案比较。"
+    },
+    {
+      "case_id": "agent-finance-2",
+      "content_status": "fail",
+      "execution_status": "completed",
+      "reason": "5000/-7500/8300正确，但额外把账本总额45800算成40800，继而给出错误差值48300；还把负净额解释为银行须向商户结付75元，缺少依据。"
+    }
+  ],
+  "limits": [
+    "All 56 tasks have already been executed; this final run is visible development regression.",
+    "The new_holdout split denotes the 12 tasks' initial origin only; final results are not blind holdout accuracy.",
+    "Open answers receive unblinded assistant review against frozen rubrics; output hashes bind reviews.",
+    "Agent scenarios here use the production adapter locally; real AgentCore V2 is checked separately.",
+    "Content correctness and strict task acceptance are separate; truncation/errors stay in the denominator.",
+    "Public benchmark comparison is an auditable routing constraint, not proof of optimal model or task correctness."
+  ]
+}

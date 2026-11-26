@@ -1,0 +1,6 @@
+{
+  "task": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:26",
+  "catalog_status": 200,
+  "routing_version": "gpu-evidence-two-stage-public-v2",
+  "verified_at": "2026-11-26T12:57:13.581735+00:00"
+}

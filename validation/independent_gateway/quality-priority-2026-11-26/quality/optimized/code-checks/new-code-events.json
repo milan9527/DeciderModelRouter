@@ -1,0 +1,20 @@
+{
+  "case_id": "new-code-events",
+  "status": "fail",
+  "source": "isolated_functional_tests",
+  "bare_code_format": false,
+  "functional_pass": true,
+  "variants": [
+    {
+      "status": "pass",
+      "result": {
+        "tests": 162,
+        "passed": 162,
+        "failures": []
+      },
+      "source_sha256": "f1536818942d0711b50d474974784e7c6163a598fa8070a6ba0ff4be7796ecc5"
+    }
+  ],
+  "image": "sha256:f1c922516f2691073617de8d44af581e2f554287c7463a1099e205a445de896d",
+  "output_sha256": "4cfd97a36d09dc0cf80634b31feb554734fd1bf07d3a6e1a7d739bd849877060"
+}

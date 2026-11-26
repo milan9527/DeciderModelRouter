@@ -11,7 +11,7 @@ from types import SimpleNamespace
 import httpx
 
 from app.agent_model import AgentConversation
-from app.gateway_model_pool import build_pool
+from app.gateway_model_pool import MODEL_ROUTING_VERSION, build_pool
 from app.public_benchmarks import load_public_benchmarks
 from app.routing import exclusion
 from app.routing_media import resolve_workflow
@@ -24,6 +24,13 @@ class LatencyEvaluation(Evaluation):
 
     def suite(self):
         frozen = read(self.args.suite)
+        if getattr(self.args, "repeat_regression", False):
+            frozen["phase"] = "repeated_after_configuration_quality_fix"
+            frozen["evaluation_limits"] = [
+                "All 56 tasks have already been executed; this final run is visible development regression.",
+                "The new_holdout split denotes the 12 tasks' initial origin only; final results are not blind holdout accuracy.",
+                *frozen.get("evaluation_limits", [])[2:],
+            ]
         return {
             **frozen, "arm": self.args.arm,
             "public_benchmark_version": load_public_benchmarks()["version"],
@@ -36,7 +43,7 @@ class LatencyEvaluation(Evaluation):
         }
 
     def __init__(self, args, http):
-        self.policy_version = "gpu-evidence-two-stage-public-v2"
+        self.policy_version = MODEL_ROUTING_VERSION
         super().__init__(args, http)
         self.decision.services["liquid"]["path"] = args.gpu_path
         self.router_lock = asyncio.Lock()
@@ -133,6 +140,7 @@ async def main():
     parser.add_argument("--gpu-url", default="http://127.0.0.1:23124")
     parser.add_argument("--gpu-path", default="/v1/systemone/liquid")
     parser.add_argument("--group", choices=["base", "industries", "all"], default="all")
+    parser.add_argument("--repeat-regression", action="store_true")
     args = parser.parse_args()
     args.resume_blocked = False
     async with httpx.AsyncClient(trust_env=False) as client:

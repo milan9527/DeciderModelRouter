@@ -606,7 +606,10 @@ async def run_classified_route(body, request, *, infer=None, emit=None, model_se
                         "ranking_version": rankings["version"],
                         "calibration_version": calibration["version"],
                         **({"routing_source": "gpu_decision_model",
-                            "measurement_version": selection["measurement_version"]}
+                            "measurement_version": selection["measurement_version"],
+                            "routing_version": selection["routing_version"],
+                            "quality_feedback_version": selection.get("quality_feedback_version"),
+                            "public_benchmark_version": selection.get("public_benchmark_version")}
                            if gpu_selected else {}),
                         **({"gateway_run_id": runtime.run_id,
                             "conversation_hash": fingerprint(runtime.messages)}
@@ -708,12 +711,20 @@ async def auto_execute(body: AutoExecute, request: Request):
     gpu_selected = record.get("routing_source") == "gpu_decision_model"
     if gpu_selected:
         from app.gateway_model_pool import build_pool
+        from app.routing_quality import accepted, attach_quality
 
         selection = build_pool(task, profile, data, rankings, exclusion, runtime)
         if selection["measurement_version"] != record["measurement_version"]:
             raise HTTPException(409, "Bedrock评测证据已更新，请重新决策。")
+        if any(selection.get(k) != record.get(k) for k in (
+            "routing_version", "quality_feedback_version", "public_benchmark_version",
+        )):
+            raise HTTPException(409, "质量策略或评测快照已更新，请重新决策。")
         if record["configuration_id"] not in {r["candidate_id"] for r in selection["candidates"]}:
             raise HTTPException(409, "决策模型选择的配置已不满足当前能力或硬约束。")
+        quality = attach_quality(selection, task, agent=bool(getattr(runtime, "agent_tools", False)))
+        if not accepted(quality, record["configuration_id"]):
+            raise HTTPException(409, "所选配置未通过当前能力优先校验，请重新决策。")
         selection["selected_candidate_id"] = record["configuration_id"]
         if runtime:
             # Preserve the actual GPU decision audit; never re-run a deterministic ranker.
@@ -721,6 +732,7 @@ async def auto_execute(body: AutoExecute, request: Request):
                 "decision_calls", "decision_model", "decision_ms", "stickiness", "reason",
                 "evaluated_configurations", "decision_mode", "decision_rejection",
                 "assessment_ms", "selection_ms",
+                "quality_policy", "quality_reselection_count",
             ) if k in (runtime.selection or {})})
             runtime.selection = selection
     else:

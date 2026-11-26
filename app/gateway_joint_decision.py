@@ -135,6 +135,15 @@ def card(row, previous, references):
             parts.append(key + "=" + f"{value.get('content_passed')}/{value.get('content_scored')}")
     if safety := counts(row.get("specialized_evidence")):
         parts.append("safety=" + f"{safety[0]}/{safety[1]}")
+    if feedback := row.get("quality_feedback"):
+        parts.append(
+            f"new-regression content={feedback['content_passed']}/{feedback['samples']}"
+            f",complete={feedback['strict_passed']}/{feedback['samples']}"
+            ",failures=" + ",".join(feedback["failure_categories"])
+            + " (different tasks/budgets; nonrandom development)"
+        )
+    if quality := row.get("quality_assessment"):
+        parts.append("quality-policy=" + ("PASS" if quality["accepted"] else "REJECT"))
     if row["candidate_id"] == previous:
         parts.append("previous")
     return ";".join(parts)
@@ -173,9 +182,17 @@ def joint_payload(body, request, profile_input, rows, *, assessed=False):
         "All listed configurations remain eligible for at least one workflow. "
         "Use the matching workflow's tests, cost and latency. "
     )
+    priority = (
+        "QUALITY FIRST is a hard selection requirement. Select only a quality-policy=PASS candidate "
+        "when policy labels are supplied. Missing comparable evidence is uncertainty, not equivalent "
+        "capability. Prefer relevant quality evidence and reviewed regressions before cost or previous "
+        "model. Lower price must NEVER compensate for materially weaker quality. "
+        if policy.cost_tier == "high" else
+        "Balance task adequacy and cost according to the stated preference. "
+    )
     instructions = (
         "Select the best execution model for the current request in context. " + assessment_instruction +
-        "For equal cost and capabilities, select higher measured task correctness. "
+        priority +
         "Respect tools/schema and workflow capabilities. "
         "cap=two symbols for tools/schema: Y=verified yes,N=no,?=unknown; out=execution output-token ceiling. "
         "w workflow codes: g=general/support,c=coding,r=reasoning,e=embedding,i=image understanding,"
@@ -185,6 +202,8 @@ def joint_payload(body, request, profile_input, rows, *, assessed=False):
         "p95s=measured P95 seconds rounded to 0.01s. "
         "Small development samples are not production success probabilities; missing means unknown, not zero. "
         "A small 6/6 development result does not establish equal capability between models. "
+        "new-regression is separately reviewed task evidence: consider its failures, not just old 6/6 scores. "
+        "Do not treat combined regression counts as population success probabilities. "
         "Use task-relevant OpenRouter and LiveBench public evidence to distinguish capabilities, "
         "especially for complex tasks, high stronger_model_benefit or quality preference. "
         "Public tested= names the tested configuration/effort, not this candidate's execution settings. "
@@ -214,6 +233,7 @@ def joint_payload(body, request, profile_input, rows, *, assessed=False):
 
 async def assess_and_select(service, body, request, profile_input, catalog, rankings, exclusion):
     from app.gateway_model_decision import finish_selection
+    from app.routing_quality import accepted, attach_quality
 
     started = perf_counter()
     rows, evidence = all_candidates(body, request, catalog, rankings, exclusion)
@@ -227,6 +247,7 @@ async def assess_and_select(service, body, request, profile_input, catalog, rank
     profile = profile.model_copy(update={"workflow": workflow})
     runtime = getattr(request.state, "gateway_runtime", None)
     selection = build_pool(body.task, profile, catalog, rankings, exclusion, runtime, evidence=evidence)
+    quality = attach_quality(selection, body.task, agent=bool(getattr(runtime, "agent_tools", False)))
     answer = result["answers"].get("action", {}).get("choice")
     chosen = aliases.get(answer)
     selected = chosen["candidate_id"] if chosen else None
@@ -237,6 +258,13 @@ async def assess_and_select(service, body, request, profile_input, catalog, rank
         selected = None
         selection["reason"] = "同次GPU返回的模型与任务能力或硬约束不一致，本次不执行。"
         selection["decision_rejection"] = "incompatible_joint_answers"
+    elif selected and not accepted(quality, selected):
+        selected = None
+        selection.update(
+            reason="联合决策未通过能力优先校验，本次不执行。",
+            decision_rejection="quality_requirement_not_met", execution_ready=False,
+            execution_notice="能力优先校验未通过。",
+        )
     calls = [{
         "round": 1, "mode": "joint", "candidate_ids": [r["candidate_id"] for r in rows],
         "selected_candidate_id": chosen["candidate_id"] if chosen else None,
@@ -244,6 +272,7 @@ async def assess_and_select(service, body, request, profile_input, catalog, rank
         "input_hash": hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest(),
         "usage": result.get("usage"), "timings": result["timings"],
         "assessment_count": len(payload["questions"]),
+        "quality_check": {"accepted": selected is not None, "policy_version": quality["version"]},
         "candidate_model_ids": {r["candidate_id"]: r["model"]["id"] for r in rows},
     }]
     elapsed = (perf_counter() - started) * 1000

@@ -1,0 +1,10 @@
+{
+  "phase": "final_configuration_guard_regression",
+  "routes": 58,
+  "gpu_inputs": 116,
+  "routing_version": "gpu-evidence-quality-priority-v4",
+  "quality_policy_version": "quality-priority-v2",
+  "no_judge_or_gold_fields_in_gpu_state": true,
+  "first_selection_card_count_matches_pool": true,
+  "note": "Schema audit of all final GPU states plus implementation review; task facts and candidate benchmark cards are intentionally present. Previous development feedback is disclosed; this is not proof of blind evaluation."
+}

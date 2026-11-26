@@ -7,10 +7,12 @@ import json
 from app.bedrock_evidence import load_evidence, measured, measured_scores, public_summary
 from app.bedrock_limits import model_limits, output_limit
 from app.public_benchmarks import evidence_for, load_public_benchmarks
+from app.quality_feedback import evidence_for as regression_for
+from app.quality_feedback import load_feedback
 from app.routing_balance import balanced_pool, preferences
 from app.routing_selector import configuration_id
 
-MODEL_ROUTING_VERSION = "gpu-evidence-two-stage-public-v2"
+MODEL_ROUTING_VERSION = "gpu-evidence-quality-priority-v4"
 
 
 def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evidence=None):
@@ -18,6 +20,7 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
 
     evidence = evidence if evidence is not None else load_evidence()
     public_snapshot = load_public_benchmarks()
+    feedback = load_feedback()
     policy = preferences(task)
     rows, excluded = [], {}
     media = profile.workflow in MEDIA_WORKFLOWS or bool(task.attachments)
@@ -148,6 +151,7 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
     }, rankings)
     for row in pool["candidates"]:
         row["selection_cost_usd"] = row["cost_evidence"]["expected_usd"]
+        row["quality_feedback"] = regression_for(row, profile.workflow, feedback)
     if runtime:
         # The ordinary context/health checks remain; the Agent's old model allowlist does not.
         from app.gateway_conversation import Conversation
@@ -157,6 +161,7 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
     return {
         **pool, "routing_version": MODEL_ROUTING_VERSION, "measurement_version": evidence["version"],
         "public_benchmark_version": public_snapshot["version"],
+        "quality_feedback_version": feedback["version"],
         "profile": profile.model_dump(), "requested_tier": policy.cost_tier,
         "effective_tier": policy.cost_tier, "tier_reason": "成本偏好随评测证据交给决策模型判断。",
         "evidence_mode": "bedrock_measurements_and_public_evidence",

@@ -1,0 +1,324 @@
+{
+  "scope": "post-deployment functional checks, separate from frozen quality suite",
+  "checks": {
+    "root_direct_https": true,
+    "anonymous_history_rejected": true,
+    "catalog_new_policy": true,
+    "read_sessions": true,
+    "read_history": true,
+    "read_performance": true,
+    "read_evaluations/cases": true,
+    "read_effects/cases": true,
+    "read_agent/scenarios": true,
+    "read_account": true,
+    "read_users": true,
+    "duplicate_manufacturing-liquid": true,
+    "duplicate_manufacturing-h2o": true,
+    "duplicate_manufacturing-decider": true,
+    "duplicate_manufacturing-stream": true,
+    "duplicate_history-first": true,
+    "duplicate_history-followup": true,
+    "duplicate_cache-write": true,
+    "duplicate_cache-read": true,
+    "logout": true,
+    "logout_revokes_session": true
+  },
+  "runs": [
+    {
+      "case": "manufacturing-liquid",
+      "run_id": "c9967a895b74d96051e024a3",
+      "status": "selected",
+      "route_ms": 1451.616,
+      "assessment_ms": 133.976,
+      "selection_ms": 978.561,
+      "model_id": "openai.gpt-6.1-sol",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": null,
+      "streamed": null,
+      "deltas": 0,
+      "history_turns": 0,
+      "stickiness": {
+        "enabled": false,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": null,
+      "first_selection_full_pool": true
+    },
+    {
+      "case": "manufacturing-h2o",
+      "run_id": "b6e252514706213c4459bc47",
+      "status": "selected",
+      "route_ms": 5069.232,
+      "assessment_ms": 820.623,
+      "selection_ms": 4072.697,
+      "model_id": "openai.gpt-6.1-terra",
+      "provider": "h2o",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": null,
+      "streamed": null,
+      "deltas": 0,
+      "history_turns": 0,
+      "stickiness": {
+        "enabled": false,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": null,
+      "first_selection_full_pool": true
+    },
+    {
+      "case": "manufacturing-decider",
+      "run_id": "81558bc4c182959abb8c3bcc",
+      "status": "selected",
+      "route_ms": 1786.85,
+      "assessment_ms": 299.533,
+      "selection_ms": 1315.568,
+      "model_id": "anthropic.claude-opus-5-5",
+      "provider": "decider",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": null,
+      "streamed": null,
+      "deltas": 0,
+      "history_turns": 0,
+      "stickiness": {
+        "enabled": false,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": null,
+      "first_selection_full_pool": true
+    },
+    {
+      "case": "manufacturing-stream",
+      "run_id": "47fc07c490726f9b633625ca",
+      "status": "error",
+      "route_ms": 1329.808,
+      "assessment_ms": 131.03,
+      "selection_ms": 976.328,
+      "model_id": "openai.gpt-6.1-sol",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": null,
+      "streamed": null,
+      "deltas": 67,
+      "history_turns": 0,
+      "stickiness": {
+        "enabled": false,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": null,
+      "first_selection_full_pool": true
+    },
+    {
+      "case": "history-first",
+      "run_id": "0a36c98e352ab285346a9859",
+      "status": "executed",
+      "route_ms": 983.431,
+      "assessment_ms": 110.352,
+      "selection_ms": 703.978,
+      "model_id": "anthropic.claude-fable-5-1",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": {
+        "enabled": true,
+        "supported": false,
+        "checkpoints": 0,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 47,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "streamed": false,
+      "deltas": 0,
+      "history_turns": 0,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": "{\"recorded\":true}",
+      "first_selection_full_pool": true,
+      "strict_pass": true
+    },
+    {
+      "case": "history-followup",
+      "run_id": "16e1b935b6729ee8736c6ba3",
+      "status": "executed",
+      "route_ms": 994.203,
+      "assessment_ms": 118.888,
+      "selection_ms": 715.101,
+      "model_id": "anthropic.claude-fable-5-1",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": {
+        "enabled": true,
+        "supported": false,
+        "checkpoints": 0,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 97,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "streamed": false,
+      "deltas": 0,
+      "history_turns": 1,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": "78c152cfa64e31572c2ae0ff",
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": "{\"project\":\"DELTA-273\",\"budget\":57}",
+      "first_selection_full_pool": true,
+      "strict_pass": true
+    },
+    {
+      "case": "cache-write",
+      "run_id": "3687fb3f5c89179178831753",
+      "status": "executed",
+      "route_ms": 594.543,
+      "assessment_ms": 268.318,
+      "selection_ms": 195.043,
+      "model_id": "anthropic.claude-sonnet-4-6",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 2,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 3843,
+        "total_input_tokens": 3863,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "streamed": true,
+      "deltas": 2,
+      "history_turns": 1,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": "CACHE-724",
+      "first_selection_full_pool": true
+    },
+    {
+      "case": "cache-read",
+      "run_id": "913667f12b8c37bb2084e239",
+      "status": "executed",
+      "route_ms": 598.718,
+      "assessment_ms": 273.606,
+      "selection_ms": 194.739,
+      "model_id": "anthropic.claude-sonnet-4-6",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 3,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 3843,
+        "write_tokens": 24,
+        "total_input_tokens": 3889,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "streamed": true,
+      "deltas": 1,
+      "history_turns": 2,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "c7550f72bc9ce2dc02f1ce3d",
+        "reason": "决策模型选择沿用上次配置。"
+      },
+      "answer": "CACHE-724",
+      "first_selection_full_pool": true
+    }
+  ],
+  "agents": [
+    {
+      "case": "agent-first",
+      "job_id": "521ca936f5ce544ef4d976f2",
+      "status": "completed",
+      "platform": "V2",
+      "models": [
+        "anthropic.claude-fable-5-2",
+        "anthropic.claude-fable-5-2",
+        "anthropic.claude-fable-5-2"
+      ],
+      "calls": [
+        2,
+        2,
+        2
+      ],
+      "selected_before_target": true,
+      "metrics": {
+        "model_calls": 3,
+        "tool_calls": 3,
+        "model_switches": 0,
+        "retained_calls": 2,
+        "cache_read_tokens": 0
+      },
+      "answer": "{\"raw_net_cents\":5000}",
+      "error": null
+    },
+    {
+      "case": "agent-followup",
+      "job_id": "b0d8b73a9b196727cc3ce669",
+      "status": "completed",
+      "platform": "V2",
+      "models": [
+        "anthropic.claude-fable-5-2"
+      ],
+      "calls": [
+        2
+      ],
+      "selected_before_target": true,
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 0,
+        "retained_calls": 1,
+        "cache_read_tokens": 0
+      },
+      "answer": "{\"dedup_net_cents\":-7500}\n\n说明：这个数不是计算工具直接算出的，因为计算工具只能对整列求和、不能按条件去重，所以无法按您要求的方式执行。\n\n- **算法**：工具已核验的去重前净额 5000 分，减去重复投递的一笔 P11/E1（12500 分），得 -7500 分；即 E1 首次 12500 分加 E3 退款 -20000 分。\n- **缺少的信息**：结算记录里没有租户字段，“同租户”无法核验，这里按三条记录属于同一租户处理。",
+      "error": null
+    }
+  ]
+}

@@ -16,6 +16,8 @@ def verify_review(review, text):
 
 
 def category(case):
+    if case.get("category"):
+        return case["category"]
     cid = case["id"]
     if cid.startswith("heldout-"):
         return "12行业业务题"
@@ -115,7 +117,7 @@ def summarize(folder):
             "scope": "resolved workflow in frozen allowed set; not seven-label classifier accuracy",
         },
         "rows": rows,
-        "limits": [
+        "limits": manifest.get("evaluation_limits") or [
             "Targeted regression plus 12 new industry tasks; not a random population sample.",
             "The new_holdout label records initial suite construction; these inputs were subsequently reused for performance and fidelity regression, so final results are not blind holdout validation.",
             "Open answers reviewed by an unblinded assistant against frozen rubrics.",

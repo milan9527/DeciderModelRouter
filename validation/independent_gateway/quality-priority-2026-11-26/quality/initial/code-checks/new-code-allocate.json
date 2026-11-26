@@ -1,0 +1,20 @@
+{
+  "case_id": "new-code-allocate",
+  "status": "pass",
+  "source": "isolated_functional_tests",
+  "bare_code_format": true,
+  "functional_pass": true,
+  "variants": [
+    {
+      "status": "pass",
+      "result": {
+        "tests": 165,
+        "passed": 165,
+        "failures": []
+      },
+      "source_sha256": "a011b74c18e0f9176c50dc0966ee9c23f174ef330bf13b58b0f1219130f29bac"
+    }
+  ],
+  "image": "sha256:dd80cea9cf1399d78bddfde75bc5dd0aeb2216412eb505fa4a388b477a1b880d",
+  "output_sha256": "a011b74c18e0f9176c50dc0966ee9c23f174ef330bf13b58b0f1219130f29bac"
+}

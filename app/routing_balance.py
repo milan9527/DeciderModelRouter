@@ -18,8 +18,8 @@ TIER_GUIDANCE = {
         "routine work; pay more only when relevant evidence supports a benefit for this request."
     ),
     "high": (
-        "Favor task-relevant capability for difficult work when the expected benefit justifies "
-        "the extra cost. A higher price alone is not evidence of better capability."
+        "Prioritize task-relevant quality before cost. Price or model stickiness cannot justify "
+        "materially weaker quality; explicit caller budget limits still apply."
     ),
 }
 

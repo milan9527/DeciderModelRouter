@@ -57,6 +57,11 @@ sequenceDiagram
         GW->>GW: 按实测工具协议、能力、预算筛选
         GW->>GPU: 全部合格配置、评测证据与上次模型
         GPU-->>GW: 选出的目标配置
+        GW->>GW: 校验能力优先的质量依据
+        opt 首次选择未通过质量约束
+            GW->>GPU: 通过约束的配置，最多重选一次
+            GPU-->>GW: 新选择；仍不合格则停止
+        end
         GW->>DB: 先保存选型，供页面在生成期间展示
         GW->>BR: system + messages + toolConfig
         BR-->>GW: 文本或原生toolUse

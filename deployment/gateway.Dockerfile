@@ -5,7 +5,9 @@ COPY deployment/api-requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt \
     && useradd --uid 10001 --create-home app
 COPY --chown=10001:10001 app /srv/app
+COPY deployment/check_gateway_image.py /tmp/check_gateway_image.py
 USER 10001
+RUN PYTHONPATH=/srv python /tmp/check_gateway_image.py
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/live', timeout=3)"

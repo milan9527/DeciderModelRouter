@@ -242,7 +242,7 @@
                     /></label>
                   </div>
                   <p class="footnote">
-                    代码示例预设期望 8192、上限 16384 Token，可自行调整。推理会占用输出预算；增大上限可能增加费用，参考费用约束按上限核算。
+                    行业和代码场景输出上限预设 16384 Token，可自行调整。推理会占用输出预算；增大上限可能增加费用，参考费用约束按上限核算。
                   </p>
                   <details class="advanced">
                     <summary>更多约束与运行模式</summary>
@@ -473,12 +473,13 @@
           <section data-view="evaluations" hidden>
             <div class="page-heading"><div><p class="eyebrow">REPRODUCIBLE EVALUATIONS</p><h1>从选模到实际任务效果</h1><p class="muted">比较输出质量、能力覆盖、耗时与成本。分类标签诊断保留在下方。</p></div></div>
             <section id="latest-routing-validation" class="panel padded-panel" aria-labelledby="latest-routing-validation-title">
-              <h2 id="latest-routing-validation-title">最新路由复测 · 2026-11-26</h2>
-              <p><strong>选模更快：</strong>同输入第二阶段 P50 从 1061 降至 784 毫秒，减少 26.1%；P95 从 1159 降至 867 毫秒。仍先判断需求，再由 GPU 选模。</p>
-              <p><strong>完整遵循要求：</strong>原版 31/44（70.5%）→ 优化后 30/44（68.2%）。<strong>内容正确：</strong>39/44（88.6%）→ 37/44（84.1%），格式错误仍计入主验收失败。</p>
-              <p class="footnote">44 项定向开发回归，覆盖文本、代码、行业、多模态和 Agent 多轮；不是全场景准确率。时间为 GPU 服务耗时，不含目标回答。重新生成的答案存在波动，本次未证明质量提高。正式固定输入的 46 次选模一致，计入额外产线用例为 46/47。</p>
-              <p><a href="https://github.com/milan9527/DeciderModelRouter/blob/main/validation/independent_gateway/latency-quality-2026-11-26/README.zh.md" target="_blank" rel="noopener noreferrer">查看分类通过率、失败原因和原始记录 ↗</a></p>
-              <p class="footnote">这是公开复测摘要；离线批次未导入下方个人评测历史。</p>
+              <h2 id="latest-routing-validation-title">能力优先修复与模块验证 · 2026-11-26</h2>
+              <p><strong>能力优先：</strong>同时核验型号能力与具体推理档的实测依据，费用与沿用模型不能越过质量要求。正常两次 GPU 调用，未通过时最多增加一次重选。</p>
+              <p><strong>完整遵循要求：40/56（71.4%）。内容正确：48/56（85.7%）。</strong>56项全部执行完成，624项软件测试通过；原44项回归验收30项，能力优先专项12题验收10项。均为已见题目复测，不是全场景准确率。</p>
+              <p>复杂产线改选GPT‑6.2 Sol已实测默认配置，约11.5秒完成回答并通过复核；代码功能7/7、完整要求4/7，多模态6/6，本地Agent多轮2/4。</p>
+              <p class="footnote">58次路由均为两次GPU调用，决策合计P50 998ms、P95 1180ms（本地后端与私有HTTP，不含目标生成）。首轮验收44/56、内容50/56，max档曾超时，原记录保留。本轮仍有16项未完全遵循要求，未证明整体质量提高。</p>
+              <p><a href="https://github.com/milan9527/DeciderModelRouter/blob/main/validation/independent_gateway/quality-priority-2026-11-26/README.zh.md" target="_blank" rel="noopener noreferrer">查看两轮结果、模块检查、失败项与线上验证 ↗</a></p>
+              <p class="footnote">公开复测摘要；开放题按预设要求进行非盲复核。离线批次未导入下方个人评测历史，线上功能验证另列。</p>
             </section>
             <div class="evaluation-grid">
               <section class="panel padded-panel">

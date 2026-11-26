@@ -105,7 +105,7 @@
     "agent_scenario_id": "retail",
     "routing_preferences": {
       "expected_output_tokens": 1024,
-      "max_output_tokens": 4096
+      "max_output_tokens": 16384
     }
   },
   {
@@ -122,7 +122,7 @@
     "agent_scenario_id": "manufacturing",
     "routing_preferences": {
       "expected_output_tokens": 1024,
-      "max_output_tokens": 4096
+      "max_output_tokens": 16384
     }
   },
   {
@@ -139,7 +139,7 @@
     "agent_scenario_id": "finance",
     "routing_preferences": {
       "expected_output_tokens": 1024,
-      "max_output_tokens": 4096
+      "max_output_tokens": 16384
     }
   },
   {
@@ -156,7 +156,7 @@
     "agent_scenario_id": "insurance",
     "routing_preferences": {
       "expected_output_tokens": 1024,
-      "max_output_tokens": 4096
+      "max_output_tokens": 16384
     }
   },
   {
@@ -173,7 +173,7 @@
     "agent_scenario_id": "healthcare",
     "routing_preferences": {
       "expected_output_tokens": 1024,
-      "max_output_tokens": 4096
+      "max_output_tokens": 16384
     }
   },
   {
@@ -190,7 +190,7 @@
     "agent_scenario_id": "logistics",
     "routing_preferences": {
       "expected_output_tokens": 1024,
-      "max_output_tokens": 4096
+      "max_output_tokens": 16384
     }
   },
   {
@@ -207,7 +207,7 @@
     "agent_scenario_id": "energy",
     "routing_preferences": {
       "expected_output_tokens": 1024,
-      "max_output_tokens": 4096
+      "max_output_tokens": 16384
     }
   },
   {
@@ -241,7 +241,7 @@
     "agent_scenario_id": "telecom",
     "routing_preferences": {
       "expected_output_tokens": 1024,
-      "max_output_tokens": 4096
+      "max_output_tokens": 16384
     }
   },
   {
@@ -258,7 +258,7 @@
     "agent_scenario_id": "public-services",
     "routing_preferences": {
       "expected_output_tokens": 1024,
-      "max_output_tokens": 4096
+      "max_output_tokens": 16384
     }
   },
   {
@@ -275,7 +275,7 @@
     "agent_scenario_id": "education",
     "routing_preferences": {
       "expected_output_tokens": 1024,
-      "max_output_tokens": 4096
+      "max_output_tokens": 16384
     }
   },
   {
@@ -292,7 +292,7 @@
     "agent_scenario_id": "legal",
     "routing_preferences": {
       "expected_output_tokens": 1024,
-      "max_output_tokens": 4096
+      "max_output_tokens": 16384
     }
   },
   {

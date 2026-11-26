@@ -1,0 +1,20 @@
+{
+  "case_id": "python-merge",
+  "status": "fail",
+  "source": "isolated_functional_tests",
+  "bare_code_format": false,
+  "functional_pass": true,
+  "variants": [
+    {
+      "status": "pass",
+      "result": {
+        "tests": 105,
+        "passed": 105,
+        "failures": []
+      },
+      "source_sha256": "bd9625cb6ae1488d8bf898c9e14007cafc87858511384ed3096906983862bc38"
+    }
+  ],
+  "image": "sha256:dd80cea9cf1399d78bddfde75bc5dd0aeb2216412eb505fa4a388b477a1b880d",
+  "output_sha256": "9b9172300622a056b43f11118176d3ca6c61b498d1152d775b2947ba7ca1294f"
+}

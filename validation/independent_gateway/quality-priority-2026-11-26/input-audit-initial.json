@@ -1,0 +1,7 @@
+{
+  "routes": 58,
+  "gpu_inputs": 116,
+  "no_judge_or_gold_fields_in_gpu_state": true,
+  "first_selection_card_count_matches_pool": true,
+  "note": "Field/schema audit plus code inspection; task facts and candidate benchmark scores are intentionally present."
+}

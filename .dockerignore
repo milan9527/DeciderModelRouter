@@ -10,6 +10,7 @@ app/**
 !app/bedrock_evaluations.json
 !app/bedrock_limits.json
 !app/public_benchmarks.json
+!app/quality_feedback.json
 !app/comparison_cases.json
 !app/vision_assets/
 !app/vision_assets/**

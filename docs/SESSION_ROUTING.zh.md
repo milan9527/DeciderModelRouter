@@ -1,6 +1,6 @@
 # 多轮会话、模型粘性与缓存复用
 
-更新于2026-11-26。独立网关会话策略为 `gateway-session-v1`，实时型号选择为 `gpu-evidence-two-stage-v1`，执行协议为 `bedrock-classified-v4`。GPU根据候选评测选择型号；旧87场景报告保留原始结果。详见[当前选模机制](BEDROCK_CLASSIFIED_ROUTING.zh.md)。
+更新于2026-11-26。独立网关会话策略为 `gateway-session-v1`，实时型号选择为 `gpu-evidence-quality-priority-v4`，执行协议为 `bedrock-classified-v4`。GPU根据候选评测选择型号；能力优先还需通过质量校验，费用和沿用模型不能越过该约束。旧87场景报告保留原始结果。详见[当前选模机制](BEDROCK_CLASSIFIED_ROUTING.zh.md)。
 
 ## 与 OpenRouter 的对应关系
 
@@ -49,10 +49,12 @@ sequenceDiagram
     API->>DB: 读取上次完整对话、模型配置与短期错误
     API->>API: 按完整轮次裁剪并校验所有附件权限
     API-->>UI: 带入轮数、裁剪数
-    API->>API: 枚举可能用途，执行能力/配额/预算过滤
-    API->>GPU: 当前问题、历史片段、附件类型、全部候选及评测
-    GPU-->>API: 同时返回七项任务属性与目标配置
-    API->>API: 复核选中配置与任务属性、硬约束一致
+    API->>GPU: 当前问题、历史片段、附件类型
+    GPU-->>API: 七项任务需求
+    API->>API: 执行能力/配额/预算过滤，标记质量依据
+    API->>GPU: 已评估需求、全部合格候选及评测
+    GPU-->>API: 目标配置
+    API->>API: 核验能力与质量约束；需要时最多一次GPU重选
     API-->>UI: 候选、选择依据、沿用或切换原因
     API->>BR: 完整角色消息 + 已测配置 + 合法缓存检查点
     BR-->>API: 文本增量、停止原因与缓存用量

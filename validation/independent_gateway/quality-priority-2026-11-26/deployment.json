@@ -1,0 +1,31 @@
+{
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "root_http_status": 200,
+  "root_redirect": false,
+  "s3_anonymous_status": 403,
+  "oac_verified": true,
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:29",
+  "image_digest": "sha256:dcec050d21fa47e6e540931d4d71d92eabf2793b9577fc3d161debed7b9fef25",
+  "running": 1,
+  "pending": 0,
+  "rollout": "COMPLETED",
+  "assets": {
+    "index.html": "92255675fe4fa42471cd0fe60e03ca04a15d33f8af46140fd21c56f3f52fce52",
+    "gateway.js": "593ec60603550e8b29d47a37ce69f6a0b6db8a358f92abfd0d517a7ec2c8b651",
+    "workspace.js": "be50a5d19d0931d404697047a1da83f0ff7b1d26d25cb8bd51ea9328d18399e5",
+    "agents.js": "8be2c8702a984a49d3f749143341b7ad77336704bade10825aad6a70f5b03668",
+    "gateway.css": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67"
+  },
+  "gpu_instance": "i-01180cf02d12e6e31",
+  "gpu_recreated": false,
+  "cloudfront_invalidation": "I2KF50C6CJ604VQGL7Q608ZYB1",
+  "invalidation_status": "Completed",
+  "gpu_instance_type": "g5.xlarge",
+  "gpu_state": "running",
+  "agent_runtime_id": "decider_model_router_industry-Fg8vWeEOIs",
+  "agent_runtime_version": "3",
+  "agent_runtime_status": "READY",
+  "agent_runtime_platform": "V2 (verified in live invocation responses)",
+  "routing_version": "gpu-evidence-quality-priority-v4",
+  "quality_policy_version": "quality-priority-v2"
+}

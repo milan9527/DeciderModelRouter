@@ -1,0 +1,356 @@
+{
+  "scope": "post-deployment functional checks, separate from frozen quality suite",
+  "checks": {
+    "root_direct_https": true,
+    "anonymous_history_rejected": true,
+    "catalog_new_policy": true,
+    "read_sessions": true,
+    "read_history": true,
+    "read_performance": true,
+    "read_evaluations/cases": true,
+    "read_effects/cases": true,
+    "read_agent/scenarios": true,
+    "read_account": true,
+    "read_users": true,
+    "duplicate_manufacturing-liquid": true,
+    "duplicate_manufacturing-h2o": true,
+    "duplicate_manufacturing-decider": true,
+    "duplicate_manufacturing-stream": true,
+    "duplicate_history-first": true,
+    "duplicate_history-followup": true,
+    "duplicate_cache-write": true,
+    "duplicate_cache-read": true,
+    "logout": true,
+    "logout_revokes_session": true
+  },
+  "runs": [
+    {
+      "case": "manufacturing-liquid",
+      "run_id": "05adc79d2443b2e7f4400f0c",
+      "status": "selected",
+      "route_ms": 1776.029,
+      "assessment_ms": 201.162,
+      "selection_ms": 985.915,
+      "model_id": "openai.gpt-6.2-sol",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": null,
+      "streamed": null,
+      "deltas": 0,
+      "history_turns": 0,
+      "stickiness": {
+        "enabled": false,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": null,
+      "first_selection_full_pool": true
+    },
+    {
+      "case": "manufacturing-h2o",
+      "run_id": "c7baa574fb8a367983411c9b",
+      "status": "selected",
+      "route_ms": 4969.034,
+      "assessment_ms": 646.241,
+      "selection_ms": 3902.643,
+      "model_id": "openai.gpt-6.1-terra",
+      "provider": "h2o",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": null,
+      "streamed": null,
+      "deltas": 0,
+      "history_turns": 0,
+      "stickiness": {
+        "enabled": false,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": null,
+      "first_selection_full_pool": true
+    },
+    {
+      "case": "manufacturing-decider",
+      "run_id": "009b1d618e5dbc81e150c407",
+      "status": "selected",
+      "route_ms": 1999.612,
+      "assessment_ms": 272.39,
+      "selection_ms": 1545.436,
+      "model_id": "openai.gpt-6.2-astra",
+      "provider": "decider",
+      "calls": 3,
+      "quality_pass": true,
+      "quality_reselection_count": 1,
+      "cache": null,
+      "streamed": null,
+      "deltas": 0,
+      "history_turns": 0,
+      "stickiness": {
+        "enabled": false,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": null,
+      "first_selection_full_pool": true
+    },
+    {
+      "case": "manufacturing-stream",
+      "run_id": "8b3be91f523fc5f5447540c4",
+      "status": "executed",
+      "route_ms": 1295.514,
+      "assessment_ms": 131.772,
+      "selection_ms": 984.846,
+      "model_id": "openai.gpt-6.2-sol",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": {
+        "enabled": true,
+        "supported": false,
+        "checkpoints": 0,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "observed": false,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 286,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "streamed": true,
+      "deltas": 66,
+      "history_turns": 0,
+      "stickiness": {
+        "enabled": false,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": "**立即隔离并复验 B702，原批规模为 800 件。** B702 不良率为 5.0%，是唯一超过 3% 隔离阈值的批次。现有记录不能判定异常来自供应商、产线还是温度，不能据此扩大到全部 S1 来料或全部 L2 产品。\n\n### 三种解释的比较\n\n| 批次 | 供应商 / 产线 | 生产不良率 | 记录温度 | 检查失败数 |\n|---|---|---:|---:|---:|\n| B701 | S1 / L1 | 18/1200＝1.5% | 180℃，范围内 | 1/50 |\n| B702 | S1 / L2 | 40/800＝5.0% | 196℃，高于上限 11℃ | 5/50 |\n| B703 | S2 / L2 | 12/1000＝1.2% | 181℃，范围内 | 0/50 |\n\n- **供应商：**S1 汇总不良率为 2.9%，S2 为 1.2%，但差异主要来自 B702；同为 S1 的 B701 仅为 1.5%。应追溯 B702 使用的**供应商来料批号**，而不是把 S1 当成一个批次。现有记录没有来料批号，无法确认 B701 和 B702 是否用了同一来料批。\n- **产线：**L2 汇总为 2.89%，L1 为 1.5%，但 L2 上的 B703 仅为 1.2%。L2 整体异常的解释证据不足，仍需检查特定时段、工装或换线条件。\n- **温度：**B702 是唯一记录温度超限的批次，值得优先核查温度日志、测点和校准状态。但 196℃ 只出现在 B702，无法与该批来料和生产条件分开，也不能据单条记录判断整批暴露了多久。\n\n### 隔离与复验计划\n\n1. **盘点并追溯隔离范围。**按 B702 原批 **800 件**核对在制、库存、已发货、返工和报废数量；实际待隔离量以仍可控制的实物为准，已发货部分单列追踪。40 件不良已包含在 800 件内，不能假定其已报废并直接扣除。查明 B702 对应的来料批号和超温时段；若其他批次共用该来料批、落入同一异常时段，或无法可靠划清边界，先暂扣关联产品，待质量工程师确认范围。B701、B703 不因现有不良率触发隔离。\n2. **先确认 B702 的批内分布。**按生产时段、容器和可追溯的来料批号分层随机抽样，沿用一致的缺陷判定标准，分别记录缺陷类型和不良率。把检验结果与温度时间戳对齐；若需评估能否筛出合格品，由质量工程师决定是否采用经验证的全检方法及放行条件。\n3. **用交叉对照区分原因。**在批准的正常温度窗口内，让 S1、S2 各提供多个独立来料批，每个来料批拆分到 L1、L2，尽量平衡班次、工装和检验条件。这样可在同一来料批内比较产线，也可在同一产线上比较供应商及其批间差异。温度效应优先用可追溯的历史数据，在同来料批、同产线内比较正常与异常时段；若没有可比数据，就保留“温度效应未分离”的结论。若确需验证超限条件，仅由授权人员在获批的离线试验中执行，试验品不进入放行流程。本方案不直接控制设备。\n\n### 样本量局限\n\n每批检查 50 件只适合初筛。即使 B703 为 **0/50**，在独立随机抽样假设下，真实不良率的单侧 95% 置信上限仍约为 **5.8%**，不能据此证明低于 3%。检查样本与生产不良记录是否重叠也未知，不能直接将两组分子和分母相加。\n\n若要区分 **1.5% 与 5.0%** 的不良率，按两组等量、独立抽样、双侧显著性水平 5%、检验功效 80% 粗估，约需**每组 400 件**。这是两组比较的量级，不是交叉试验或放行的固定抽样数；同一来料批内的零件可能相关，因此还需要足够多的独立批次，不能只在单批内增加件数。**3% 是隔离触发阈值，不是自动放行标准；放行须由质量工程师批准。**",
+      "first_selection_full_pool": true
+    },
+    {
+      "case": "history-first",
+      "run_id": "a2d9e2d6f584f1c4f4ee1d80",
+      "status": "executed",
+      "route_ms": 983.244,
+      "assessment_ms": 111.193,
+      "selection_ms": 704.349,
+      "model_id": "anthropic.claude-fable-5-1",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": {
+        "enabled": true,
+        "supported": false,
+        "checkpoints": 0,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 47,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "streamed": false,
+      "deltas": 0,
+      "history_turns": 0,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": "{\"recorded\":true}",
+      "first_selection_full_pool": true,
+      "strict_pass": true
+    },
+    {
+      "case": "history-followup",
+      "run_id": "f2acede257505f892a78ef17",
+      "status": "executed",
+      "route_ms": 1015.517,
+      "assessment_ms": 116.54,
+      "selection_ms": 715.555,
+      "model_id": "anthropic.claude-fable-5-1",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": {
+        "enabled": true,
+        "supported": false,
+        "checkpoints": 0,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 0,
+        "total_input_tokens": 97,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "streamed": false,
+      "deltas": 0,
+      "history_turns": 1,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "cf21615b726c2b77a3069b90",
+        "reason": "决策模型选择沿用上次配置。"
+      },
+      "answer": "{\"project\":\"DELTA-273\",\"budget\":57}",
+      "first_selection_full_pool": true,
+      "strict_pass": true
+    },
+    {
+      "case": "cache-write",
+      "run_id": "64aea255731c57974a80c485",
+      "status": "executed",
+      "route_ms": 605.795,
+      "assessment_ms": 268.522,
+      "selection_ms": 195.134,
+      "model_id": "anthropic.claude-sonnet-4-6",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 2,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 0,
+        "write_tokens": 3843,
+        "total_input_tokens": 3863,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "streamed": true,
+      "deltas": 2,
+      "history_turns": 1,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "answer": "CACHE-724",
+      "first_selection_full_pool": true
+    },
+    {
+      "case": "cache-read",
+      "run_id": "6a42d2600e2bf208c2cac963",
+      "status": "executed",
+      "route_ms": 810.934,
+      "assessment_ms": 273.498,
+      "selection_ms": 194.693,
+      "model_id": "anthropic.claude-sonnet-4-6",
+      "provider": "liquid",
+      "calls": 2,
+      "quality_pass": true,
+      "quality_reselection_count": 0,
+      "cache": {
+        "enabled": true,
+        "supported": true,
+        "checkpoints": 3,
+        "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+        "minimum_tokens": 1024,
+        "ttl_seconds": 300,
+        "observed": true,
+        "read_tokens": 3843,
+        "write_tokens": 24,
+        "total_input_tokens": 3889,
+        "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+      },
+      "streamed": true,
+      "deltas": 1,
+      "history_turns": 2,
+      "stickiness": {
+        "enabled": true,
+        "retained": true,
+        "previous_configuration_id": "c7550f72bc9ce2dc02f1ce3d",
+        "reason": "决策模型选择沿用上次配置。"
+      },
+      "answer": "CACHE-724",
+      "first_selection_full_pool": true
+    }
+  ],
+  "agents": [
+    {
+      "case": "agent-first",
+      "job_id": "88310dbeac8a93a2ab4e55d7",
+      "status": "completed",
+      "platform": "V2",
+      "models": [
+        "anthropic.claude-fable-5-2",
+        "anthropic.claude-fable-5-2",
+        "anthropic.claude-fable-5-2"
+      ],
+      "calls": [
+        2,
+        2,
+        2
+      ],
+      "selected_before_target": true,
+      "metrics": {
+        "model_calls": 3,
+        "tool_calls": 3,
+        "model_switches": 0,
+        "retained_calls": 2,
+        "cache_read_tokens": 0
+      },
+      "answer": "{\"raw_net_cents\":5000}",
+      "error": null
+    },
+    {
+      "case": "agent-followup",
+      "job_id": "b5d60d314ca2b68060a051a2",
+      "status": "completed",
+      "platform": "V2",
+      "models": [
+        "anthropic.claude-fable-5-2"
+      ],
+      "calls": [
+        2
+      ],
+      "selected_before_target": true,
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 0,
+        "retained_calls": 1,
+        "cache_read_tokens": 0
+      },
+      "answer": "{\"dedup_net_cents\":-7500}",
+      "error": null
+    },
+    {
+      "case": "agent-code",
+      "job_id": "00e6b020258fa1b980ce835c",
+      "status": "completed",
+      "platform": "V2",
+      "models": [
+        "anthropic.claude-fable-5-1"
+      ],
+      "calls": [
+        2
+      ],
+      "selected_before_target": true,
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 1,
+        "retained_calls": 0,
+        "cache_read_tokens": 0
+      },
+      "answer": "def dedupe_net(events):\n    seen = {}\n    total = 0\n    for record in events:\n        event = record[\"event\"]\n        amount = record[\"amount\"]\n        if event in seen:\n            if seen[event] != amount:\n                raise ValueError(\n                    f\"event {event} amount conflict: {seen[event]} vs {amount}\"\n                )\n            continue\n        seen[event] = amount\n        total += amount\n    return total",
+      "error": null
+    }
+  ]
+}
