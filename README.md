@@ -12,7 +12,9 @@
 
 GPU默认使用 **Liquid d1-2B** 完成任务判断和型号选择，也可切换 Decider 或 H2O。实时路由采用 `gpu-evidence-two-stage-v1`：第一次GPU返回七项需求，后端筛选后，第二次GPU依据评测选择配置；全部合格配置参与判断，不再按榜单批次、程序Top-K或Agent固定名单提前淘汰。直接评测绑定精确Bedrock端点；内容正确、格式、接口支持、延迟和样本量分别提供给决策模型。[新机制与补测方法](docs/BEDROCK_CLASSIFIED_ROUTING.zh.md) · [逐型号补测报告](validation/independent_gateway/bedrock-evidence-2026-11-26/README.zh.md)。历史87场景通过率保留，不能当作新策略准确率。
 
-**两阶段及前端已上线**：ECS revision 24，普通文本、代码与多轮线上完整路由实测892–952ms；前端分别展示需求判断、选模、历史和性能统计。591项软件测试通过，10次线上请求完成。另做真实AgentCore V2的4行业×4轮复测，16/16执行完成，但内容仅5/16（31.3%）通过：零售2/4、支付对账1/4、能源0/4、法务2/4；代码只做静态复核。仍有算术、损耗公式及虚构业务事实问题，不能用模型切换或执行成功替代质量。[部署、前端截图与定向复测](validation/independent_gateway/two-stage-release-2026-11-26/README.zh.md) · [行业逐项结论](validation/independent_gateway/two-stage-release-2026-11-26/agents.zh.md)。
+**Agent从第一次调用先决策**：GPU收到完整用户任务、实际工具说明和系统约束，先判断需求、再依据评测选择目标，之后目标模型才回答或调用工具。工具结果不再混入用户要求；前端在目标生成期间即可显示已选型号。正常每步仍为两次GPU，用户后续追问仍可切换模型。已部署ECS revision 25；594项软件测试通过，3个真实Agent请求的6次目标调用均验证先选模后执行。[首轮决策实现、发布与定向验证](validation/independent_gateway/agent-initial-decision-2026-11-26/README.zh.md)。
+
+**此前两阶段首次发布验证**：ECS revision 24，普通文本、代码与多轮线上完整路由实测892–952ms；前端分别展示需求判断、选模、历史和性能统计。591项软件测试通过，10次线上请求完成。另做真实AgentCore V2的4行业×4轮复测，16/16执行完成，但内容仅5/16（31.3%）通过：零售2/4、支付对账1/4、能源0/4、法务2/4；代码只做静态复核。仍有算术、损耗公式及虚构业务事实问题，不能用模型切换或执行成功替代质量。[部署、前端截图与定向复测](validation/independent_gateway/two-stage-release-2026-11-26/README.zh.md) · [行业逐项结论](validation/independent_gateway/two-stage-release-2026-11-26/agents.zh.md)。
 
 2026-11-26此前发布的一次联合决策：普通对话、连续会话与代码的线上路由实测 **1.24–1.41秒**，前一版同类样本仅选模为3.12–5.45秒。默认Liquid每次 **1个GPU请求、1次实际前向计算、8项决策**，134个候选也无需逐组淘汰。四项质量/价格交换对照全部通过；Decider的两项质量对照未通过，保留为比较选项，不将接口完成视作选模效果通过。[性能对照、限制与原始记录](validation/independent_gateway/single-pass-2026-11-26/README.zh.md)。
 

@@ -113,7 +113,7 @@ export class IndustryAgents {
     $("#agent-result").innerHTML = `<div class="panel-heading"><h2>第 ${job.turn} 轮 · ${this.esc({ running: "处理中", completed: "已完成", error: "失败", interrupted: "已中断" }[job.status])}</h2><span class="tiny">${this.esc(job.id)}</span></div>
       <p>${this.esc(job.prompt)}</p>
       <div class="agent-table"><table><thead><tr><th>调用</th><th>实际模型</th><th>判断与切换依据</th><th>性能</th><th>参考费用</th></tr></thead><tbody>${steps.map((s) =>
-        `<tr><td>#${s.step}<br>${this.esc(s.stop_reason || s.status)}</td><td>${this.esc(s.model_id || (job.status === "running" && s.status === "started" ? "处理中" : "未完成，请查看历史记录"))}
+        `<tr><td>#${s.step}<br>${this.esc(s.stop_reason || ({ preparing: "准备决策", assessing: "GPU 判断需求", selecting: "GPU 选择模型", selected: "已选模型", executing: "目标模型生成中" }[s.phase]) || s.status)}</td><td>${this.esc(s.model_id || (job.status === "running" && s.status === "started" ? "等待决策模型选型" : "未完成，请查看历史记录"))}
         ${s.previous_model_id ? `<small>上次：${this.esc(s.previous_model_id)}</small>` : ""}</td>
         <td>${s.model_changed ? '<strong class="agent-switch">已切换模型</strong>' : s.stickiness?.retained ? "沿用模型" : "重新评估"}
         <small>${this.esc(s.profile ? `${s.profile.workflow} · ${s.profile.difficulty}` : "")}</small>
@@ -121,10 +121,11 @@ export class IndustryAgents {
         <details><summary>选型依据与用量</summary><p>${this.esc(s.selection_reason)}</p><pre>${this.esc(JSON.stringify({
           profile: s.profile, configuration_id: s.configuration_id,
           configuration_changed: s.configuration_changed, usage: s.usage,
+          selected_at: s.selected_at, target_started_at: s.target_started_at,
         }, null, 2))}</pre></details></td>
         <td>${s.decision_mode === "two_stage" ? `需求判断 ${this.ms(s.assessment_ms)}<br>模型选择 ${this.ms(s.selection_ms)}<small>合计 ${this.ms(s.model_decision_ms)} · ${s.model_decision_calls || 0} 次GPU请求</small>` : s.decision_mode === "joint" ? `联合决策 ${this.ms(s.model_decision_ms)}（${s.model_decision_calls || 0} 次请求）<small>含 GPU 往返 ${this.ms(s.gpu_ms)}，不重复相加</small>` : `GPU 分类 ${this.ms(s.gpu_ms)}<br>GPU 选模 ${this.ms(s.model_decision_ms)}（${s.model_decision_calls || 0} 次）`}<br>目标 ${this.ms(s.target_ms)}<small>缓存读 ${s.cache?.read_tokens || 0}</small></td>
         <td>${this.usd(s.reference_cost_usd)}<small>缓存计价未知时不估算折扣</small></td></tr>`).join("") ||
-        '<tr><td colspan="5">等待AgentCore启动与第一次模型调用…</td></tr>'}</tbody></table></div>
+        '<tr><td colspan="5">等待AgentCore启动；第一次目标调用前，由GPU先判断需求并选择模型。</td></tr>'}</tbody></table></div>
       <details class="agent-tools" open><summary>工具过程与业务依据</summary>${events.filter((e) => e.type === "tool_result").map((e) =>
         `<article><strong>${this.esc(e.name)} · ${this.esc(e.status)} · ${this.ms(e.elapsed_ms)}</strong>
         <pre>${this.esc(JSON.stringify({ arguments: e.arguments, result: e.result }, null, 2))}</pre></article>`).join("") ||

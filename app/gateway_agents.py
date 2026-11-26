@@ -396,9 +396,7 @@ async def model_step(body: ModelStep, request: Request):
         await run_in_threadpool(a.records.acquire_lease, pk, lease, run_id, 300)
         acquired = True
         data, rankings = routing.load_catalog(), routing.load_rankings()
-        suffix = "\n当前Agent步骤：工具已返回结果，请据此完成任务。" if any(
-            "toolResult" in b for b in body.messages[-1]["content"]) else ""
-        run = GatewayRun(task=routing.Task(text=(job["prompt"][:1300] + suffix),
+        run = GatewayRun(task=routing.Task(text=job["prompt"],
                                           output_modality="text", routing_preferences=job["routing_preferences"]),
                          provider=job["provider"], mode="live", execute_target=True,
                          session_id=job["session_id"], client_request_id=job["id"] + "-" + str(body.step),
@@ -408,6 +406,36 @@ async def model_step(body: ModelStep, request: Request):
                                   "stream": False, "fallback": True})
         runtime = await run_in_threadpool(AgentConversation, run, a.history, user, run_id,
                                          body.messages, scenario(job["scenario_id"]))
+        progress = {"step": body.step, "run_id": run_id, "status": "started",
+                    "phase": "preparing", "routing_started_at": millis(),
+                    "routing_context_version": "agent-initial-decision-v1"}
+
+        async def publish_progress(stage, status, data):
+            if stage == "classification":
+                progress["phase"] = "assessing" if status == "started" else "selecting"
+                if status == "completed":
+                    progress["profile"] = data["profile"]
+                    progress["decision_model"] = data["model"]
+            elif stage == "selection":
+                progress["phase"] = "selecting" if status == "started" else "selected"
+                if status == "completed":
+                    selected, selection = data.get("selected_model") or {}, data["selection"]
+                    progress.update(
+                        model_id=selected.get("id"), configuration_id=selection.get("selected_candidate_id"),
+                        selected_at=millis() if selected else None, selection_reason=selection.get("reason"),
+                        stickiness=selection.get("stickiness"), decision_mode=selection.get("decision_mode"),
+                        model_decision_ms=selection.get("decision_ms"),
+                        model_decision_calls=len(selection.get("decision_calls", [])),
+                        assessment_ms=selection.get("assessment_ms"), selection_ms=selection.get("selection_ms"),
+                    )
+            elif stage == "execution":
+                progress["phase"] = "executing" if status == "started" else "completed"
+                progress["target_started_at" if status == "started" else "target_finished_at"] = millis()
+            else:
+                return
+            await run_in_threadpool(a.records.put, key, sk, dict(progress))
+
+        runtime.route_progress = publish_progress
         request.state.gateway_runtime = runtime
         record = await run_in_threadpool(a.history.begin, user, run, run_id)
         run = run.model_copy(update={"task": runtime.task(run.task)})
@@ -416,7 +444,7 @@ async def model_step(body: ModelStep, request: Request):
             if line.strip():
                 events.append(json.loads(line))
         if events[-1]["type"] != "completed" or events[-1]["data"]["status"] != "executed":
-            failed = {"step": body.step, "run_id": run_id, "status": "failed",
+            failed = {**progress, "step": body.step, "run_id": run_id, "status": "failed", "phase": "failed",
                       "error": events[-1]["data"]}
             await run_in_threadpool(a.records.put, key, sk, failed)
             raise HTTPException(502, "Agent模型步骤未完成，请查看该步骤历史记录")
@@ -425,7 +453,7 @@ async def model_step(body: ModelStep, request: Request):
         selection = next(e["data"] for e in events if e.get("stage") == "selection" and e.get("status") == "completed")
         previous_config = runtime.previous.get("configuration_id") if runtime.previous else None
         previous_model = runtime.previous.get("model_id") if runtime.previous else None
-        summary = {"step": body.step, "run_id": run_id, "status": "completed", "provider": job["provider"],
+        summary = {**progress, "step": body.step, "run_id": run_id, "status": "completed", "provider": job["provider"],
                    "decision_model": decision["model"], "profile": decision["profile"],
                    "model_id": output["model_id"], "configuration_id": output["configuration_id"],
                    "previous_model_id": previous_model, "previous_configuration_id": previous_config,

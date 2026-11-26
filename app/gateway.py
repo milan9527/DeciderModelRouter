@@ -155,6 +155,10 @@ async def event_stream(body, request, *, run_id=None, record=None):
         nonlocal stage
         stage = name
         await send("stage", data, stage=name, status=state)
+        if runtime and (observer := getattr(runtime, "route_progress", None)):
+            # Await publication before executing the selected target so Agent
+            # history can show selection while that target is still generating.
+            await observer(name, state, data)
 
     async def worker():
         nonlocal stage

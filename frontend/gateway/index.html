@@ -407,7 +407,7 @@
                   <div class="dialog-actions"><button class="primary" id="agent-send">发送本轮任务</button><button class="secondary" type="button" id="agent-new">新建会话</button></div>
                 </form>
                 <button type="button" class="secondary" id="agent-run-all">新会话运行四轮验证</button>
-                <p class="footnote">每轮最多6次模型调用，四轮最多24次，按实际调用产生费用；首次运行可能等待Runtime启动。</p>
+                <p class="footnote">从第一次调用起，GPU先判断需求、选择模型，再由目标模型回答或调用工具。每轮最多6次模型调用，四轮最多24次；按实际调用产生费用，首次可能等待Runtime启动。</p>
                 <p id="agent-session-label" aria-live="polite"></p>
               </section>
               <div><div class="metrics" id="agent-metrics"></div><section class="panel" id="agent-result" aria-live="polite"></section></div>

@@ -1,0 +1,70 @@
+{
+  "scope": "three focused live requests; not a new overall quality score",
+  "cases": [
+    {
+      "id": "finance-sum",
+      "job_id": "ecb555492c2c0c778a63d58d",
+      "session_id": "613dfa35f87de1e52b8648a4",
+      "complete": true,
+      "calls": 3,
+      "selected_before_every_target": true,
+      "observed_while_generating": true,
+      "visible_while_generating": true,
+      "models": [
+        "minimax.minimax-m2.5",
+        "minimax.minimax-m2.5",
+        "minimax.minimax-m2.5"
+      ],
+      "decision_ms": [
+        703.779,
+        742.185,
+        783.983
+      ],
+      "content_pass": true,
+      "content_method": "exact JSON oracle"
+    },
+    {
+      "id": "finance-code",
+      "job_id": "bfea893e02d6f932deca3922",
+      "session_id": "613dfa35f87de1e52b8648a4",
+      "complete": true,
+      "calls": 1,
+      "selected_before_every_target": true,
+      "observed_while_generating": true,
+      "visible_while_generating": true,
+      "models": [
+        "minimax.minimax-m2"
+      ],
+      "decision_ms": [
+        755.04
+      ],
+      "content_pass": null,
+      "content_method": "not scored; generated code not executed"
+    },
+    {
+      "id": "energy-shift",
+      "job_id": "f68d21f4197e1824b5850c4e",
+      "session_id": "73161cdaef45de8f30113386",
+      "complete": true,
+      "calls": 2,
+      "selected_before_every_target": true,
+      "observed_while_generating": true,
+      "visible_while_generating": true,
+      "models": [
+        "openai.gpt-6.2-astra",
+        "openai.gpt-6.2-astra"
+      ],
+      "decision_ms": [
+        709.204,
+        832.455
+      ],
+      "content_pass": true,
+      "content_method": "exact JSON oracle"
+    }
+  ],
+  "browser_errors": [],
+  "assets": {
+    "index.html": "5911ddf4a8d19401eef210ea1fbfd3b87a3c0f49d08ccce083c17f771f722ca8",
+    "agents.js": "8be2c8702a984a49d3f749143341b7ad77336704bade10825aad6a70f5b03668"
+  }
+}

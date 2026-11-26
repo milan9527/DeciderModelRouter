@@ -48,9 +48,17 @@ def test_agent_routing_sees_current_tool_result_prior_constraint_and_first_stage
         {"role": "assistant", "text": "Reading invoices."},
         {"role": "user", "text": "tool result"},
     ]
-    runtime.native_messages = [{"role": "user", "content": [{
+    runtime.native_messages = [
+        {"role": "user", "content": [{"text": runtime.messages[0]["text"]}]},
+        {"role": "assistant", "content": [{"text": "Please supply the invoice."}]},
+        {"role": "user", "content": [{"text": "Prepare a short handoff."}]},
+        {"role": "assistant", "content": [{"toolUse": {
+            "toolUseId": "id1", "name": "query_records", "input": {"dataset": "invoices"},
+        }}]},
+        {"role": "user", "content": [{
         "toolResult": {"toolUseId": "id1", "content": [{"json": {"invoice": "I32", "amount": 37}}]},
     }]}]
+    runtime.agent_system = "Only read records; do not send payments."
     runtime.options = SessionOptions()
     runtime.context = {"history_turns": 1}
     runtime.previous = None
@@ -60,6 +68,8 @@ def test_agent_routing_sees_current_tool_result_prior_constraint_and_first_stage
     state = json.loads(payload["state"])
     assert "I32" in state["current_tool_results"]
     assert "deduplicate" in state["prior_user_requirements"][0]
+    assert "I32" not in json.dumps(state["prior_user_requirements"])
+    assert state["agent_execution"]["current_user_request"] == task.text
     state["task_profile"] = profile.model_dump()
     body = SimpleNamespace(task=task)
     request = SimpleNamespace(state=SimpleNamespace(gateway_runtime=runtime))
