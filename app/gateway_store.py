@@ -353,6 +353,9 @@ class History:
             )
         if event.get("stage") == "selection" and event.get("status") == "completed":
             model = data.get("selected_model") or {}
+            selection = data.get("selection", {})
+            calls = selection.get("decision_calls") or []
+            passes = [c.get("timings", {}).get("forward_passes") for c in calls]
             item.update(
                 model_id=model.get("id"),
                 model=model.get("name"),
@@ -361,9 +364,14 @@ class History:
                 model_decision_ms=data.get("selection", {}).get("decision_ms"),
                 model_decision_calls=len(data.get("selection", {}).get("decision_calls", [])),
                 decision_mode=data.get("selection", {}).get("decision_mode"),
-                decision_forward_passes=(data.get("selection", {}).get("decision_calls") or [{}])[0].get("timings", {}).get("forward_passes"),
+                decision_forward_passes=sum(passes) if passes and all(type(p) is int for p in passes) else None,
+                assessment_ms=selection.get("assessment_ms"),
+                selection_ms=selection.get("selection_ms"),
                 model_selection_source=data.get("source"),
             )
+            if selection.get("decision_mode") == "two_stage":
+                upstream = [c.get("timings", {}).get("upstream_ms") for c in calls]
+                item["gpu_ms"] = sum(upstream) if upstream and all(v is not None for v in upstream) else None
         if event["type"] == "route":
             item["route_ms"] = data.get("route_total_ms")
         if event.get("stage") == "execution" and event.get("status") == "completed":
@@ -456,9 +464,12 @@ class History:
                 break
         live = [r for r in rows if r["mode"] == "live"]
         decision_stats = {}
-        for prefix, joint in (("joint_decision", True), ("legacy_selection", False)):
+        for prefix, mode in (("joint_decision", "joint"), ("two_stage_decision", "two_stage"),
+                             ("legacy_selection", "legacy")):
             samples = [r["model_decision_ms"] for r in live if
-                       (r.get("decision_mode") == "joint") == joint and r.get("model_decision_ms") is not None]
+                       (r.get("decision_mode") == mode if mode != "legacy" else
+                        r.get("decision_mode") not in {"joint", "two_stage"})
+                       and r.get("model_decision_ms") is not None]
             decision_stats.update({prefix + "_p50_ms": percentile(samples, 0.5),
                                    prefix + "_p95_ms": percentile(samples, 0.95),
                                    prefix + "_samples": len(samples)})

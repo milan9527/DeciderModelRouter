@@ -1,0 +1,19 @@
+{
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "root_http_status": 200,
+  "root_redirect": false,
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:24",
+  "image_digest": "sha256:779278e77a364bbc98750a6faa513658475d99d4efd407a8aebf3ed9d3298902",
+  "running": 1,
+  "pending": 0,
+  "rollout": "COMPLETED",
+  "assets": {
+    "index.html": "3f1c088cc198ca81d49e20a57ded131c7e8beb54f1ca3804160478276073a14f",
+    "gateway.js": "1ab9043fec2c315cd1e12208d179070d7174a4cbf597d11f25b116868e38853c",
+    "workspace.js": "be50a5d19d0931d404697047a1da83f0ff7b1d26d25cb8bd51ea9328d18399e5",
+    "agents.js": "8a7b4e2bd9a65b7192bb1d092e17765c71f000338ffcb9ce14c0344a1007d57d",
+    "gateway.css": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67"
+  },
+  "gpu_instance": "i-01180cf02d12e6e31",
+  "gpu_recreated": false
+}

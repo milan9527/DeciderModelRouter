@@ -183,7 +183,8 @@ async def event_stream(body, request, *, run_id=None, record=None):
                 infer=request.app.state.gateway_decision.infer,
                 emit=progress,
                 model_select=request.app.state.gateway_decision.select,
-                joint_decide=request.app.state.gateway_decision.assess,
+                joint_decide=(request.app.state.gateway_decision.assess
+                              if request.app.state.gateway_decision.routing_mode == "joint" else None),
             )
             await send("route", route)
             executed = None

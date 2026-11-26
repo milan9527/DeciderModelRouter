@@ -26,6 +26,7 @@ def task_definition(resources, gpu, image):
         "AUTH_ORIGIN": origin,
         "GPU_PROVIDER": "vllm",
         "GATEWAY_DECISION_PROVIDER": "liquid",
+        "GATEWAY_DECISION_MODE": "two_stage",
         "GATEWAY_DECIDER_URL": f"http://{gpu['private_ip']}:8100" if gpu else "",
         "GATEWAY_DECIDER_MODEL": "strands-decider-2B-hobson-v19-vllm",
         "OPEN_MODELS_URL": f"http://{gpu['private_ip']}:18124" if gpu else "",

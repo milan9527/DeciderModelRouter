@@ -267,8 +267,9 @@ class EffectEvaluations(Evaluations):
                 task=task, provider=provider, mode="live",
                 **{k: job[k] for k in ("catalog_version", "ranking_version", "policy_version")},
             )
-            route = await routing.run_classified_route(body, request, infer=counted_infer,
-                                                      model_select=counted_select, joint_decide=counted_assess)
+            route = await routing.run_classified_route(
+                body, request, infer=counted_infer, model_select=counted_select,
+                joint_decide=counted_assess if self.decision.routing_mode == "joint" else None)
             flow, step = route["steps"]
             selection = step["selection"]
             candidate = next((c for c in selection["candidates"] if c["candidate_id"] == step["choice"]), None)

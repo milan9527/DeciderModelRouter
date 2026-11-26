@@ -558,6 +558,13 @@ async def run_classified_route(body, request, *, infer=None, emit=None, model_se
         from app.gateway_model_pool import build_pool
 
         selection = build_pool(body.task, profile, data, rankings, exclusion, runtime)
+        selection["assessment"] = {
+            "round": 1, "mode": "profile", "candidate_ids": [],
+            "selected_candidate_id": None, "model": result["model"], "provider": body.provider,
+            "input_hash": flow["input_hash"], "usage": result.get("usage"),
+            "timings": result["timings"], "assessment_count": len(payload["questions"]),
+        }
+        selection["profile_input"] = payload
         selection = await model_select(body, request, selection)
     else:
         selection = auto_selection(body.task, profile, data, rankings, calibration, runtime)
@@ -568,7 +575,8 @@ async def run_classified_route(body, request, *, infer=None, emit=None, model_se
             "calibration": calibration["version"], "policy": SELECTOR_VERSION,
         })
     policy_ms = round(max(0, (perf_counter() - selection_started) * 1000 -
-                          (0 if joint_selection is not None else selection.get("decision_ms") or 0)), 3)
+                          (0 if joint_selection is not None else
+                           selection.get("selection_ms", selection.get("decision_ms")) or 0)), 3)
     chosen = next(
         (
             r
@@ -645,6 +653,8 @@ async def run_classified_route(body, request, *, infer=None, emit=None, model_se
             "backend_total_ms": round((perf_counter() - selection_started) * 1000, 3),
             "policy_ms": policy_ms,
             "model_decision_ms": selection.get("decision_ms"),
+            "assessment_ms": selection.get("assessment_ms"),
+            "selection_ms": selection.get("selection_ms"),
             "receipt_ms": receipt_ms,
             "shared_with_classification": joint_selection is not None,
         }
@@ -710,6 +720,7 @@ async def auto_execute(body: AutoExecute, request: Request):
             selection.update({k: runtime.selection[k] for k in (
                 "decision_calls", "decision_model", "decision_ms", "stickiness", "reason",
                 "evaluated_configurations", "decision_mode", "decision_rejection",
+                "assessment_ms", "selection_ms",
             ) if k in (runtime.selection or {})})
             runtime.selection = selection
     else:

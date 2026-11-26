@@ -1,0 +1,399 @@
+{
+  "started_at": "2026-11-26T08:03:35.378782+00:00",
+  "turns": [
+    {
+      "scenario": "retail",
+      "turn": 1,
+      "job_id": "723009b9f9180d4a460d4500",
+      "session_id": "bbfc271873402726fd8c6279",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 4,
+        "tool_calls": 3,
+        "model_switches": 1,
+        "retained_calls": 2,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-oss-120b-1:0",
+        "openai.gpt-oss-120b-1:0",
+        "openai.gpt-6-astra",
+        "openai.gpt-6-astra"
+      ],
+      "decision_ms": [
+        565.538,
+        608.732,
+        684.244,
+        716.763
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "retail",
+      "turn": 2,
+      "job_id": "624bc314d0c871c61582cdd4",
+      "session_id": "bbfc271873402726fd8c6279",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 1,
+        "retained_calls": 0,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-5.5"
+      ],
+      "decision_ms": [
+        857.563
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "retail",
+      "turn": 3,
+      "job_id": "782988fb66ccb2ac8cc46334",
+      "session_id": "bbfc271873402726fd8c6279",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 1,
+        "retained_calls": 0,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-6-astra"
+      ],
+      "decision_ms": [
+        938.736
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "retail",
+      "turn": 4,
+      "job_id": "a742eb78672eac12553f453d",
+      "session_id": "bbfc271873402726fd8c6279",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 1,
+        "retained_calls": 0,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "decision_ms": [
+        903.933
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "finance",
+      "turn": 1,
+      "job_id": "5c367398d9f2bb6a323342b3",
+      "session_id": "7bab2be17f95f3aafbe12d22",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 4,
+        "tool_calls": 3,
+        "model_switches": 1,
+        "retained_calls": 2,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-oss-20b-1:0",
+        "openai.gpt-oss-120b-1:0",
+        "openai.gpt-oss-120b-1:0",
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "decision_ms": [
+        646.976,
+        604.498,
+        673.688,
+        706.298
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "finance",
+      "turn": 2,
+      "job_id": "d1ae1af2f21ece79cc8bb78d",
+      "session_id": "7bab2be17f95f3aafbe12d22",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 0,
+        "retained_calls": 1,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "decision_ms": [
+        855.516
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "finance",
+      "turn": 3,
+      "job_id": "bf23378333cd65f6bae193a9",
+      "session_id": "7bab2be17f95f3aafbe12d22",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 1,
+        "retained_calls": 0,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-5.6-sol"
+      ],
+      "decision_ms": [
+        924.234
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "finance",
+      "turn": 4,
+      "job_id": "3ab4eb75380b7291f57b05a7",
+      "session_id": "7bab2be17f95f3aafbe12d22",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 1,
+        "retained_calls": 0,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-5.5"
+      ],
+      "decision_ms": [
+        896.576
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "energy",
+      "turn": 1,
+      "job_id": "627ad8497d53dc00c43c7661",
+      "session_id": "b02e5a70bb3de535ccef9eb4",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 3,
+        "tool_calls": 2,
+        "model_switches": 1,
+        "retained_calls": 1,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-oss-20b-1:0",
+        "openai.gpt-oss-120b-1:0",
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "decision_ms": [
+        581.904,
+        626.591,
+        694.889
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "energy",
+      "turn": 2,
+      "job_id": "c0603193cf75e43640ba2645",
+      "session_id": "b02e5a70bb3de535ccef9eb4",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 0,
+        "retained_calls": 1,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "decision_ms": [
+        783.392
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "energy",
+      "turn": 3,
+      "job_id": "c4da57c70312a7eacc7fa24e",
+      "session_id": "b02e5a70bb3de535ccef9eb4",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 2,
+        "tool_calls": 1,
+        "model_switches": 2,
+        "retained_calls": 0,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-6.2-sol",
+        "openai.gpt-oss-20b-1:0"
+      ],
+      "decision_ms": [
+        935.645,
+        846.611
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "energy",
+      "turn": 4,
+      "job_id": "a914e10536de459455620be5",
+      "session_id": "b02e5a70bb3de535ccef9eb4",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 1,
+        "retained_calls": 0,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "decision_ms": [
+        789.136
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "legal",
+      "turn": 1,
+      "job_id": "522d13b5816d0bfb16ece221",
+      "session_id": "2524d5f6310df652df35aa1c",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 4,
+        "tool_calls": 3,
+        "model_switches": 1,
+        "retained_calls": 2,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "nvidia.nemotron-super-3-120b",
+        "openai.gpt-oss-120b-1:0",
+        "openai.gpt-oss-120b-1:0",
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "decision_ms": [
+        562.958,
+        604.84,
+        672.911,
+        701.763
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "legal",
+      "turn": 2,
+      "job_id": "3363c8e7a2e7026c85b03ea6",
+      "session_id": "2524d5f6310df652df35aa1c",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 1,
+        "retained_calls": 0,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-6-sol"
+      ],
+      "decision_ms": [
+        853.777
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "legal",
+      "turn": 3,
+      "job_id": "85f51d624b70f828df55d031",
+      "session_id": "2524d5f6310df652df35aa1c",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 0,
+        "retained_calls": 1,
+        "cache_read_tokens": 1629
+      },
+      "models": [
+        "openai.gpt-6-sol"
+      ],
+      "decision_ms": [
+        908.183
+      ],
+      "two_stage": true,
+      "error": null
+    },
+    {
+      "scenario": "legal",
+      "turn": 4,
+      "job_id": "5c6404fc957c7fab79235c22",
+      "session_id": "2524d5f6310df652df35aa1c",
+      "status": "completed",
+      "platform_version": "V2",
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 1,
+        "retained_calls": 0,
+        "cache_read_tokens": 0
+      },
+      "models": [
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "decision_ms": [
+        857.552
+      ],
+      "two_stage": true,
+      "error": null
+    }
+  ],
+  "scope": "live AgentCore V2 calls through deployed two-stage router; content reviewed separately",
+  "finished_at": "2026-11-26T08:09:26.589380+00:00"
+}

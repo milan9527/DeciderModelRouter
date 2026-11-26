@@ -1,0 +1,23 @@
+{
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "root_redirect": false,
+  "session_id": "f51a07431c438df0efc08fef",
+  "browser_errors": [],
+  "gpu_calls": 2,
+  "mobile_page_overflow": false,
+  "asset_sha256": {
+    "index.html": "3f1c088cc198ca81d49e20a57ded131c7e8beb54f1ca3804160478276073a14f",
+    "gateway.js": "cb9644fc129efd77172a32aa8bd4b817ec68f0d9945b9b358debc5e57b9b6e80",
+    "workspace.js": "48b0bb22ede13f2a1f9db20ceb154339a33f9d4df2cf560c5d0b0fd2b961a8f6",
+    "agents.js": "8a7b4e2bd9a65b7192bb1d092e17765c71f000338ffcb9ce14c0344a1007d57d",
+    "gateway.css": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67"
+  },
+  "checks": [
+    "real authenticated browser request",
+    "two stage timing",
+    "persisted two-stage history",
+    "separate performance populations",
+    "root HTTPS without redirect",
+    "deployed assets match workspace"
+  ]
+}

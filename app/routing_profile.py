@@ -6,7 +6,7 @@ from typing import Literal
 from app.routing_workflows import WORKFLOWS
 from app.schemas import StrictModel
 
-PROFILE_VERSION = "task-profile-v2"
+PROFILE_VERSION = "task-profile-v3"
 
 
 class RequestProfile(StrictModel):
@@ -82,11 +82,13 @@ QUESTIONS = {
         },
     ),
     "structured_output": (
-        "Does the request require provider-enforced JSON/schema output? Writing code or "
-        "merely illustrating JSON does not require provider-enforced structured output.",
+        "Does the request explicitly require API-level constrained decoding or a provider-enforced "
+        "JSON Schema? Return no for 'only JSON', exact keys, valid JSON, machine-readable output, "
+        "code, or a JSON example: these are response-format instructions, not API enforcement. "
+        "Return yes only when the user explicitly requires the provider API to enforce a schema.",
         {
-            "no": "Ordinary text, code, or vector output is sufficient.",
-            "yes": "Explicitly requires strict machine-validated JSON/schema output.",
+            "no": "Text, code, JSON formatting instructions or vector output; no API schema enforcement.",
+            "yes": "Explicit provider API constrained decoding / enforced JSON Schema requirement.",
         },
     ),
     "languages": (

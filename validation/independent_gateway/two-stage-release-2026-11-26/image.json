@@ -1,0 +1,5 @@
+{
+  "image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router:two-stage-20261126-v1",
+  "digest": "sha256:779278e77a364bbc98750a6faa513658475d99d4efd407a8aebf3ed9d3298902",
+  "pinned": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router@sha256:779278e77a364bbc98750a6faa513658475d99d4efd407a8aebf3ed9d3298902"
+}

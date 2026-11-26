@@ -164,7 +164,7 @@ def build():
     for i, (kind, label) in enumerate(
         [
             ("request", "入口与静态资源"),
-            ("gpu", "GPU 联合决策"),
+            ("gpu", "GPU 两阶段决策"),
             ("model", "目标模型执行"),
             ("data", "数据持久化"),
         ]
@@ -210,7 +210,7 @@ def build():
 
     arrow([(940, 850), (940, 955)], "gpu", both=True)
     text(962, 891, "私网 HTTP + Bearer", 20, ORANGE)
-    text(962, 924, "任务与证据 ⇄ 联合决策", 20, ORANGE)
+    text(962, 924, "判断需求 → 选择模型", 20, ORANGE)
     service(
         "ec2",
         730,
@@ -218,7 +218,7 @@ def build():
         500,
         165,
         "Amazon EC2 · g5.xlarge",
-        ["A10G 24GB · 独立 GPU 服务", "Decider / Liquid / H2O", "一次联合决策 · 默认 Liquid"],
+        ["A10G 24GB · 独立 GPU 服务", "Decider / Liquid / H2O", "两次 GPU 调用 · 默认 Liquid"],
     )
     text(390, 1002, "GPU 根据评测选择模型", 21, weight="600")
     text(390, 1038, "输入：任务、候选、实测与价格", 19, MUTED)
@@ -263,8 +263,8 @@ def build():
     text(40, 1330, "一次任务的主要流程", 25, weight="600")
     steps = [
         ("01", "任务与用户约束"),
-        ("02", "候选与评测准备"),
-        ("03", "GPU 一次联合决策"),
+        ("02", "GPU 评估全部需求"),
+        ("03", "筛选后 GPU 选模"),
         ("04", "Bedrock 按需执行"),
         ("05", "保存结果与性能"),
     ]

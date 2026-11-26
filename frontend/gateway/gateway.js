@@ -19,8 +19,8 @@ const usd = (value) =>
     : "未知";
 const stageNames = {
   catalog: "目录校验",
-  classification: "GPU 联合决策",
-  selection: "选模结果与约束校验",
+  classification: "GPU 判断需求",
+  selection: "GPU 选择模型",
   execution: "Bedrock 执行",
 };
 const stateNames = {
@@ -119,7 +119,7 @@ function resetRun() {
   $("#response").innerHTML =
     '<p class="empty-copy">执行后，模型的实际输出将显示在这里。</p>';
   $("#decision").innerHTML =
-    '<div class="empty-state"><div class="route-art" aria-hidden="true"><span>任务</span><i></i><b>◈</b><i></i><span>模型</span></div><h3>等待模型决策</h3><p>一次请求同时判断任务需求，并依据评测选择模型。</p></div>';
+    '<div class="empty-state"><div class="route-art" aria-hidden="true"><span>任务</span><i></i><b>◈</b><i></i><span>模型</span></div><h3>等待模型决策</h3><p>GPU 判断任务需求，并依据评测选择模型。</p></div>';
   $("#request-id").textContent = "REQUEST ID · —";
   $("#wall-clock").textContent = "等待开始";
   $("#export").disabled = true;
@@ -322,17 +322,21 @@ function metric(label, value, note, icon) {
   return `<div class="metric"><div class="metric-label">${esc(label)}<span>${icon}</span></div><div class="metric-value">${esc(value)}</div><small>${esc(note)}</small></div>`;
 }
 function renderMetrics() {
+  const calls = selection?.selection?.decision_calls;
+  const gpuMs = calls?.length
+    ? calls.reduce((sum, c) => sum + (c.timings?.upstream_ms || 0), 0)
+    : flow?.timings?.upstream_ms;
   $("#metrics").innerHTML = [
     metric(
       "GPU 请求往返",
-      ms(flow?.timings?.upstream_ms),
-      "API → GPU 服务 → API",
+      ms(gpuMs),
+      "全部已完成 GPU 请求的往返合计",
       "◈",
     ),
     metric(
       "路由总耗时",
       ms(route?.route_total_ms),
-      "目录、GPU 联合决策、路由凭据",
+      "需求判断、模型选择、路由凭据",
       "↗",
     ),
     metric(
@@ -408,7 +412,7 @@ function renderDecision() {
     <small>${esc(s?.selected_benchmark?.benchmark_configuration || "等待策略筛选")}</small></div></div>
     <div class="profile-chips">${chips.map(([k, v]) => `<span>${esc(k)} · ${esc(v)}</span>`).join("")}</div>
     ${flow.profile_adjustment ? `<p class="footnote">${esc(flow.profile_adjustment)} GPU 原始类别：${esc(flow.assessed_profile?.workflow)}。</p>` : ""}
-    ${s ? `<div class="reason">${esc(s.tier_reason)} ${esc(s.reason)}</div><div class="selection-meta"><span>${s.candidate_count} 个符合本轮判断的配置</span><span>${s.selection_source === "gpu_decision_model" ? `${s.evaluated_configurations || 0} 个参与 GPU 判断 · ${s.decision_calls?.length || 0} 次${s.decision_mode === "joint" ? "联合决策" : "选模"}请求` : `${s.frontier.length} 个非劣候选`}</span><span>${s.selection_source === "gpu_decision_model" ? `${s.decision_mode === "joint" ? "联合决策" : "选模"}耗时 ${ms(s.decision_ms)} · 直接实测 + 外部参考` : "流程回放"}</span></div>${s.benchmark_group ? `<p class="footnote">本轮评测：${esc(s.benchmark_group.source)} ${esc(s.benchmark_group.release || "")} · ${s.benchmark_group.metrics.map(esc).join(" / ")}。</p>` : ""}` : ""}
+    ${s ? `<div class="reason">${esc(s.tier_reason)} ${esc(s.reason)}</div><div class="selection-meta"><span>${s.candidate_count} 个符合本轮判断的配置</span><span>${s.selection_source === "gpu_decision_model" ? `${s.evaluated_configurations || 0} 个参与 GPU 判断 · ${s.decision_calls?.length || 0} 次 GPU 请求` : `${s.frontier.length} 个非劣候选`}</span><span>${s.selection_source === "gpu_decision_model" ? `${s.decision_mode === "two_stage" ? "两阶段决策" : s.decision_mode === "joint" ? "联合决策" : "选模"}耗时 ${ms(s.decision_ms)} · 直接实测 + 外部参考` : "流程回放"}</span></div>${s.benchmark_group ? `<p class="footnote">本轮评测：${esc(s.benchmark_group.source)} ${esc(s.benchmark_group.release || "")} · ${s.benchmark_group.metrics.map(esc).join(" / ")}。</p>` : ""}` : ""}
     </div>`;
 }
 function renderCandidates() {
@@ -425,9 +429,9 @@ function renderCandidates() {
   );
   if (s.selection_source === "gpu_decision_model") {
     const names = Object.fromEntries(rows.map(r => [r.candidate_id, r.model.name]));
-    $("#candidates").innerHTML = `<p class="footnote">${s.decision_mode === "joint" ? "所有可能适用的配置一次交给 GPU，同时判断任务属性和模型选择；下表显示符合本轮任务属性的配置。" : s.decision_mode === "single_choice" ? "全部合格配置在一次GPU请求中比较。" : "此历史记录使用分组比较。"}没有按榜单批次或程序排名预先淘汰。小样本实测仅反映这些测试题；外部成绩不跨批次直接比较。</p>
+    $("#candidates").innerHTML = `<p class="footnote">${s.decision_mode === "joint" ? "所有可能适用的配置一次交给 GPU，同时判断任务属性和模型选择；下表显示符合本轮任务属性的配置。" : s.decision_mode === "two_stage" ? "第一次GPU判断需求，筛选后第二次GPU比较全部合格配置。" : s.decision_mode === "single_choice" ? "全部合格配置在一次GPU请求中比较。" : "此历史记录使用分组比较。"}没有按榜单批次或程序排名预先淘汰。小样本实测仅反映这些测试题；外部成绩不跨批次直接比较。</p>
       <div class="table-scroll"><table class="candidate-table"><thead><tr><th>模型 / 配置</th><th>预计费用</th><th>本类任务实测</th><th>GPU 结果</th></tr></thead><tbody>${rows.map(r => `<tr class="${r.candidate_id === s.selected_candidate_id ? "selected" : ""}"><td>${esc(r.model.name)}<small>${esc(JSON.stringify(r.benchmark.request_fields || {}))} · ${r.measurement_configuration ? (r.measurement_configuration.max_output_tokens != null ? `实测上限 ${r.measurement_configuration.max_output_tokens} Token` : "专用接口实测") : "此配置没有直接实测"}</small><small>本次输出上限 ${esc(r.output_token_limit ?? "由专用接口决定")}</small></td><td>${usd(r.cost_evidence?.expected_usd)}<small>${esc(r.price_scope)}</small></td><td>${measurementHTML(r.measured_evidence)}${(r.public_evidence || []).map(e => `<small>外部参考：${esc(e.source)} ${esc(e.release)} · ${esc(JSON.stringify(e.scores))}</small>`).join("")}</td><td>${r.candidate_id === s.selected_candidate_id ? "✓ GPU 已选择" : "已参与判断，未选中"}</td></tr>`).join("")}</tbody></table></div>
-      <details class="excluded"><summary>GPU 分组决策过程（${s.decision_calls?.length || 0} 次）</summary>${(s.decision_calls || []).map(c => `<p>第 ${c.round} 轮 · ${esc(c.model)} · ${ms(c.timings?.backend_total_ms)}<br>候选：${c.candidate_ids.map(id => esc(names[id] || id)).join("、")}<br>选择：${esc(names[c.selected_candidate_id] || "不执行")}<small>输入摘要 ${esc(c.input_hash)}</small></p>`).join("")}</details>
+      <details class="excluded"><summary>GPU 决策过程（${s.decision_calls?.length || 0} 次）</summary>${(s.decision_calls || []).map(c => `<p>${c.mode === "profile" ? "需求判断" : c.mode === "selection" ? "模型选择" : `第 ${c.round} 轮`} · ${esc(c.model)} · ${ms(c.timings?.backend_total_ms)}<br>候选：${c.mode === "profile" ? "一次评估全部7项需求" : c.candidate_ids.map(id => esc(names[id] || id)).join("、")}<br>选择：${c.mode === "profile" ? "见上方任务属性" : esc(names[c.selected_candidate_id] || "不执行")}<small>输入摘要 ${esc(c.input_hash)}</small></p>`).join("")}</details>
       <details class="excluded"><summary>未进入本次决策的原因（${Object.keys(s.excluded).length}）</summary>${Object.entries(s.excluded).map(([k,v]) => `<p><code>${esc(k)}</code><br>${esc(v)}</p>`).join("")}</details>
       <p class="footnote">证据版本 ${esc(s.measurement_version)}。费用不含 GPU，不代表账单；图片、视频、音频的完整费用未知时保持未知。</p>`;
     return;
@@ -463,12 +467,18 @@ function renderTiming() {
     st = selection?.timings,
     et = execution?.timings;
   const joint = selection?.selection?.decision_mode === "joint";
+  const twoStage = selection?.selection?.decision_mode === "two_stage";
+  const second = selection?.selection?.decision_calls?.find(c => c.mode === "selection");
   const rows = [
-    ["API 决策排队", ft?.queue_ms],
-    ["GPU HTTP 往返", ft?.upstream_ms],
-    ["决策结果校验", ft?.validation_ms],
+    ["需求判断 · API 排队", ft?.queue_ms],
+    ["需求判断 · GPU 往返", ft?.upstream_ms],
+    ["需求判断 · 结果校验", ft?.validation_ms],
     ["能力与硬约束筛选", st?.policy_ms],
-    [joint ? "联合决策总耗时（含上项）" : "GPU 选模总耗时", st?.model_decision_ms],
+    ...(twoStage ? [
+      ["模型选择 · API 排队", second?.timings?.queue_ms],
+      ["模型选择 · GPU 往返", second?.timings?.upstream_ms],
+      ["两阶段决策合计（含上项）", st?.model_decision_ms],
+    ] : [[joint ? "联合决策总耗时（含上项）" : "GPU 选模总耗时", st?.model_decision_ms]]),
     ["路由凭据存储", st?.receipt_ms],
     ["Bedrock 排队", et?.queue_ms],
     ["Bedrock 调用", et?.upstream_ms],
@@ -481,8 +491,8 @@ function renderTiming() {
           `<div class="timing-row"><span>${name}</span><div class="timing-track">${Number.isFinite(value) ? `<div class="timing-fill" style="width:${Math.max(1, (100 * value) / maximum)}%"></div>` : ""}</div><strong>${ms(value)}</strong></div>`,
       )
       .join("") +
-    `<p class="footnote">GPU 服务自报耗时：${ms(ft?.service_reported_ms)}，属于 HTTP 往返的内部观测，不重复累加。${Number.isInteger(ft?.forward_passes) ? `实际前向计算 ${ft.forward_passes} 次。` : ""}<br>后端总耗时：${ms(completed?.backend_total_ms)}；浏览器等待：${currentMode === "live" ? ms(lastBrowserMs) : "回放不记入性能"}。${joint ? "任务判断与模型选择共享同一次GPU请求；联合决策总耗时包含证据准备和HTTP往返，各项不能重复相加。" : "选模总耗时包含该记录的全部选模调用。"}均不是纯 GPU 计算时间。流式首字时间见回答详情。</p>
-    <p class="footnote">GPU ${joint ? "联合决策" : "分类"} Token：${flow?.usage ? `${flow.usage.input_tokens} 输入 / ${flow.usage.output_tokens} 输出` : "未提供"}。GPU 单请求成本未配置，不计入目标参考费用。</p>`;
+    `<p class="footnote">GPU 服务自报耗时：${ms(ft?.service_reported_ms)}，属于 HTTP 往返的内部观测，不重复累加。${Number.isInteger(ft?.forward_passes) ? `该阶段实际前向计算 ${ft.forward_passes} 次。` : ""}<br>后端总耗时：${ms(completed?.backend_total_ms)}；浏览器等待：${currentMode === "live" ? ms(lastBrowserMs) : "回放不记入性能"}。${joint ? "任务判断与模型选择共享同一次GPU请求；联合决策总耗时包含证据准备和HTTP往返，各项不能重复相加。" : twoStage ? "两阶段决策合计包含两次GPU调用及选模准备；无候选时仅执行需求判断。" : "选模总耗时包含该记录的全部选模调用。"}均不是纯 GPU 计算时间。流式首字时间见回答详情。</p>
+    <p class="footnote">GPU ${joint ? "联合决策" : "需求判断"} Token：${flow?.usage ? `${flow.usage.input_tokens} 输入 / ${flow.usage.output_tokens} 输出` : "未提供"}。${twoStage && second ? `模型选择 Token：${second.usage ? `${second.usage.input_tokens} 输入 / ${second.usage.output_tokens} 输出` : "未提供"}；该阶段前向 ${second.timings?.forward_passes ?? "未知"} 次。` : ""}GPU 单请求成本未配置，不计入目标参考费用。</p>`;
 }
 function renderTrace() {
   $("#trace").innerHTML = events.length

@@ -1,0 +1,59 @@
+{
+  "release_id": "0e0edef3d19c47e39589ebeb35a90aec",
+  "resources": {
+    "cluster": "decider-model-router",
+    "service": "decider-model-router",
+    "bucket": "decider-model-router-632930644527-us-east-1",
+    "distribution_id": "E3OCAAF3NQ1LYX",
+    "region": "us-east-1"
+  },
+  "previous_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:23",
+  "new_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:24",
+  "phase": "complete",
+  "objects": [
+    {
+      "key": "gateway/gateway.css",
+      "sha256": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67",
+      "size": 26651,
+      "previous_version": "69lc4EJb3wNhre3hv70nsxfOBq6gTBHy",
+      "version": "8UuoZti6ohOWR53xA18tCG1GdVXxMFrB"
+    },
+    {
+      "key": "gateway/workspace.js",
+      "sha256": "76ee7593b9f4fb212d0e353b5ee1ea66d50b66ba5d3fbb5a2121a6d966adce56",
+      "size": 40245,
+      "previous_version": "2sQDyYKAcyyE8Kpa19Y9G1UOWeAqt5bu",
+      "version": "zw7pzHtrX43JIw2_N6bXX5HeXOlud1Dm"
+    },
+    {
+      "key": "gateway/agents.js",
+      "sha256": "8a7b4e2bd9a65b7192bb1d092e17765c71f000338ffcb9ce14c0344a1007d57d",
+      "size": 11784,
+      "previous_version": "R8B9wTTRVVscSnohloU03WLQdnf0yT8t",
+      "version": "IweqF8eslkNrsAWDr8EIx3DYLDPRleJT"
+    },
+    {
+      "key": "gateway/gateway.js",
+      "sha256": "0b258fc0ef63a5237db10ac7609c5c5e69f6b78f5cc5bd3b2290396c1df52e49",
+      "size": 47859,
+      "previous_version": "INuGXwDVjViL4PsgNrxj_8jbCzQXwtsk",
+      "version": "N3GLYC.fIo41ZSi95UQ_lBLRwWxQH4rk"
+    },
+    {
+      "key": "gateway/mark.svg",
+      "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+      "size": 276,
+      "previous_version": "ENX_907eD11m8b6oBYnuuEWFqOykooIS",
+      "version": "29EfqyG.AE55n1k.Uajqa1qtksJjnCSt"
+    },
+    {
+      "key": "gateway/index.html",
+      "sha256": "3f1c088cc198ca81d49e20a57ded131c7e8beb54f1ca3804160478276073a14f",
+      "size": 35452,
+      "previous_version": "Hf5MT4vPUCBdpoqUFA6HpIFem6xL1lEi",
+      "version": "V7JaqVTWdH2wrIgYgMZmLBGzL2AenNO_"
+    }
+  ],
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "invalidation_id": "I6T8BX9S8A4IF01Q94T9W29GFW"
+}

@@ -72,7 +72,7 @@ def behavior_for(config, path):
     return config["DefaultCacheBehavior"]
 
 
-def task_revision(definition, image, container, provider, allowed_keys):
+def task_revision(definition, image, container, provider, allowed_keys, decision_mode=None):
     result = {key: copy.deepcopy(value) for key, value in definition.items() if key in allowed_keys}
     # AWS-owned tags cannot be supplied to RegisterTaskDefinition by callers.
     if "tags" in result:
@@ -108,6 +108,10 @@ def task_revision(definition, image, container, provider, allowed_keys):
             else env.get("DECIDER_MODEL", "strands-decider-2B-hobson-v19")
         ),
     }
+    if decision_mode is not None:
+        if decision_mode not in {"two_stage", "joint"}:
+            raise ValueError("Decision mode must be two_stage or joint")
+        updates["GATEWAY_DECISION_MODE"] = decision_mode
     api["environment"] = [e for e in api.get("environment", []) if e["name"] not in updates] + [
         {"name": key, "value": value} for key, value in updates.items()
     ]
@@ -368,13 +372,14 @@ def main():
     )
     parser.add_argument("--container", default="api")
     parser.add_argument("--provider", choices=("decider", "h2o", "liquid"))
+    parser.add_argument("--decision-mode", choices=("two_stage", "joint"))
     parser.add_argument(
         "--dry-run", action="store_true", help="Read AWS state and print plan; no writes"
     )
     parser.add_argument("--output", type=Path, help="New local release directory")
     args = parser.parse_args()
-    if args.frontend_only and args.provider:
-        parser.error("--provider changes the API task; use --image")
+    if args.frontend_only and (args.provider or args.decision_mode):
+        parser.error("--provider / --decision-mode changes the API task; use --image")
     cfg = resources(args.resources, args.region)
     assets = files(ROOT / "frontend/gateway")
     publisher = Publisher(cfg)
@@ -390,6 +395,7 @@ def main():
             args.container,
             args.provider,
             allowed,
+            args.decision_mode,
         )
     image = next(
         c["image"]
@@ -406,7 +412,7 @@ def main():
             for c in (definition or current["taskDefinition"])["containerDefinitions"]
             if c["name"] == args.container
             for e in c.get("environment", [])
-            if e["name"] in ("SERVE_FRONTEND", "GATEWAY_DECISION_PROVIDER", "GATEWAY_DECIDER_MODEL")
+            if e["name"] in ("SERVE_FRONTEND", "GATEWAY_DECISION_PROVIDER", "GATEWAY_DECIDER_MODEL", "GATEWAY_DECISION_MODE")
         },
         "frontend": [{k: a[k] for k in ("key", "size", "sha256")} for a in assets],
         "invalidation_paths": ["/", "/gateway/*"],

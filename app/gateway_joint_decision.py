@@ -116,7 +116,8 @@ def card(row, previous, references):
                      + (" AWS" if row.get("price_scope", "").startswith("AWS") else " ref"))
     else:
         parts.append("cost=unknown")
-    capability = lambda value: "Y" if value is True else "N" if value is False else "?"
+    def capability(value):
+        return "Y" if value is True else "N" if value is False else "?"
     parts.append("cap=" + capability(caps.get("tools")) + capability(caps.get("structured_output")))
     parts.append("out=" + str(row.get("output_token_limit", "?")))
     for key, value in (row.get("protocol_evidence") or {}).items():
@@ -129,7 +130,7 @@ def card(row, previous, references):
     return ";".join(parts)
 
 
-def joint_payload(body, request, profile_input, rows):
+def joint_payload(body, request, profile_input, rows, *, assessed=False):
     runtime = getattr(request.state, "gateway_runtime", None)
     previous = None
     if runtime and runtime.options.stickiness and runtime.context["history_turns"]:
@@ -141,17 +142,29 @@ def joint_payload(body, request, profile_input, rows):
         criteria["none"] = "The sole candidate cannot perform the requested task."
     policy = preferences(body.task)
     state = json.loads(profile_input["state"])
-    if state.get("recent_conversation"):
+    if state.get("recent_conversation") and not assessed:
         state["recent_conversation"] = [
             {"role": m["role"], "text": m["text"][-200:]}
             for m in state["recent_conversation"][-2:]
         ]
     # Candidate evidence belongs to the action question. Liquid's set attention isolates
     # the task questions from it, so benchmark names cannot alter task classification.
+    assessment_instruction = (
+        "The task_profile in state is the completed first-stage GPU assessment. "
+        "All listed configurations satisfy its hard constraints. Choose using that assessment "
+        "and the matching workflow tests, cost and latency. "
+        "For complex tasks or high stronger_model_benefit, prioritize correctness and complete-output "
+        "acceptance before price. A summary or handoff can still require accurate calculation, "
+        "history recall and strict format; do not downgrade merely because the answer is short. "
+        "Keep user corrections and verified facts from earlier turns. Tool success does not prove "
+        "business correctness. Unknown or zero-pass protocol evidence is a risk, not a guarantee. "
+        if assessed else
+        "Infer its needs directly; the other questions are answered simultaneously, not prior results. "
+        "All listed configurations remain eligible for at least one workflow. "
+        "Use the matching workflow's tests, cost and latency. "
+    )
     instructions = (
-        "Select the best execution model for the current request in context. Infer its needs directly; "
-        "the other questions are answered simultaneously, not prior results. All listed configurations "
-        "remain eligible for at least one workflow. Use the matching workflow's tests, cost and latency. "
+        "Select the best execution model for the current request in context. " + assessment_instruction +
         "For equal cost and capabilities, select higher measured task correctness. "
         "Respect tools/schema and workflow capabilities. "
         "cap=two symbols for tools/schema: Y=verified yes,N=no,?=unknown; out=execution output-token ceiling. "

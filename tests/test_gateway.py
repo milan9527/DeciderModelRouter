@@ -105,10 +105,11 @@ def test_private_gpu_classifies_then_selects_every_eligible_configuration(client
         "usage": {"inputTokens": 12, "outputTokens": 8},
     }
     result = events(client.post("/api/gateway/runs", json=body(execute_target=True)))
-    assert len(calls) == 1
+    assert len(calls) == 2
     assert str(calls[0].url) == "http://private-gpu.test:18124/v1/systemone/h2o"
     assert calls[0].headers["authorization"] == "Bearer test-private-service-token"
-    assert len(json.loads(calls[0].content)["questions"]) == 8
+    assert len(json.loads(calls[0].content)["questions"]) == 7
+    assert set(json.loads(calls[1].content)["questions"]) == {"action"}
     assert result[-1]["type"] == "completed"
     assert result[-1]["data"]["status"] == "executed"
     assert [(e["stage"], e["status"]) for e in result if e["type"] == "stage"] == [
@@ -126,11 +127,13 @@ def test_private_gpu_classifies_then_selects_every_eligible_configuration(client
     selected = next(
         e["data"] for e in result if e.get("stage") == "selection" and e["status"] == "completed"
     )
-    assert len(calls) == len(selected["selection"]["decision_calls"]) == 1
+    assert len(calls) == len(selected["selection"]["decision_calls"]) == 2
     assert selected["source"] == "gpu_decision_model"
     assert selected["selection"]["evaluated_configurations"] >= selected["candidate_count"]
-    assert selected["selection"]["decision_mode"] == "joint"
-    assert assessment["timings"]["shared_with_model_selection"] is True
+    assert selected["selection"]["decision_mode"] == "two_stage"
+    assert not assessment["timings"].get("shared_with_model_selection")
+    assert json.loads(json.loads(calls[1].content)["state"])["task_profile"] == assessment["profile"]
+    assert selected["selection"]["decision_calls"][0]["mode"] == "profile"
     assert selected["timings"]["policy_ms"] >= 0 and selected["timings"]["receipt_ms"] >= 0
     assert (
         selected["selected_model"]["invoke_id"]
@@ -153,7 +156,7 @@ def test_bedrock_throttle_has_actionable_error_without_retry_or_model_switch(cli
     )
     result = events(client.post("/api/gateway/runs", json=body(
         execute_target=True, session={"fallback": False})))
-    assert len(calls) == 1 and app.state.bedrock.converse.call_count == 1
+    assert len(calls) == 2 and app.state.bedrock.converse.call_count == 1
     assert result[-1]["type"] == "error"
     assert result[-1]["stage"] == "execution"
     assert result[-1]["data"]["code"] == 429
@@ -279,13 +282,14 @@ def test_invalid_gpu_model_choice_never_reaches_bedrock(client):
     calls = gpu_mock(client, handle)
     app.state.bedrock = MagicMock()
     result = events(client.post("/api/gateway/runs", json=body(execute_target=True)))
-    assert len(calls) == 1
-    assert result[-1]["type"] == "error" and result[-1]["stage"] == "classification"
+    assert len(calls) == 2
+    assert result[-1]["type"] == "error" and result[-1]["stage"] == "selection"
     assert result[-1]["data"]["code"] == 502
     app.state.bedrock.converse.assert_not_called()
 
 
 def test_joint_answer_conflict_never_executes_or_adds_another_gpu_call(client):
+    app.state.gateway_decision.routing_mode = "joint"
     def handle(request):
         payload = json.loads(request.content)
         reply = gpu_reply()
@@ -348,7 +352,8 @@ def test_disconnect_cancels_owned_worker(monkeypatch):
         monkeypatch.setattr(routing, "run_classified_route", wait_forever)
         request = SimpleNamespace(
             app=SimpleNamespace(
-                state=SimpleNamespace(gateway_decision=SimpleNamespace(infer=AsyncMock(), select=AsyncMock(), assess=AsyncMock()))
+                state=SimpleNamespace(gateway_decision=SimpleNamespace(
+                    infer=AsyncMock(), select=AsyncMock(), assess=AsyncMock(), routing_mode="two_stage"))
             )
         )
         stream = gateway.event_stream(gateway.GatewayRun(**body(provider="h2o")), request)

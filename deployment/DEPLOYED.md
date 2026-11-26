@@ -8,7 +8,9 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-2026-11-26 联合决策更新：当前 **ECS revision 23 / Python 3.12 ARM64**，API镜像 `sha256:056cfbc1218f4663daf23a2815dc070adee6e00000925185f40e048120745599`。默认Liquid在一次GPU请求中同时完成七项任务判断与全部候选选模，实际记录前向计算次数；取消逐组串行淘汰。前端和历史展示共享的联合决策时间，新旧P50/P95分别统计。542项软件测试通过，ECS健康1/1，CloudFront初次刷新 `IMLJ6BJA23J75WPJHWI5CAQJU` 及最终文案刷新 `ICLIZWDO9FWSSJ3YT77D9C11OP` 完成，六项公网资源与本地一致；根域名直接返回页面，S3匿名访问403。沿用独立g5.xlarge和AgentCore Runtime V2 / 应用版本3。[性能、控制实验与实测记录](../validation/independent_gateway/single-pass-2026-11-26/README.zh.md)。本机审计目录 `.deployment/single-pass-20261126/`。
+2026-11-26 两阶段更新：当前 **ECS revision 24 / Python 3.12 ARM64**，API镜像 `sha256:779278e77a364bbc98750a6faa513658475d99d4efd407a8aebf3ed9d3298902`。默认Liquid先一次评估七项需求，再一次读取全部合格候选评测后选模；前端、历史和性能区分两阶段及旧版记录。591项软件回归通过，ECS健康1/1。修复JSON格式要求误判、Agent最新工具结果缺失、空白文本工具响应兼容及无适配器候选；精确端点可用性另行核验。沿用现有g5.xlarge与AgentCore Runtime V2。[发布、线上检查和行业复测](../validation/independent_gateway/two-stage-release-2026-11-26/README.zh.md)。本机审计目录 `.deployment/two-stage-release-20261126/`。
+
+2026-11-26 前一版联合决策：**ECS revision 23 / Python 3.12 ARM64**，API镜像 `sha256:056cfbc1218f4663daf23a2815dc070adee6e00000925185f40e048120745599`。默认Liquid在一次GPU请求中同时完成七项任务判断与全部候选选模，实际记录前向计算次数；取消逐组串行淘汰。前端和历史展示共享的联合决策时间，新旧P50/P95分别统计。542项软件测试通过，ECS健康1/1，CloudFront初次刷新 `IMLJ6BJA23J75WPJHWI5CAQJU` 及最终文案刷新 `ICLIZWDO9FWSSJ3YT77D9C11OP` 完成，六项公网资源与本地一致；根域名直接返回页面，S3匿名访问403。沿用独立g5.xlarge和AgentCore Runtime V2 / 应用版本3。[性能、控制实验与实测记录](../validation/independent_gateway/single-pass-2026-11-26/README.zh.md)。本机审计目录 `.deployment/single-pass-20261126/`。
 
 前一版GPU评测选模更新为 **ECS revision 22 / Python 3.12 ARM64**，API镜像 `sha256:dbc49b5c2aa8f779dd0a21d6dfa20b7ac073ec72c2d3208f122144f79142a320`。默认Liquid分组读取全部合格配置的直接评测、公开参考、费用及会话信息；移除榜单批次淘汰和固定Agent名单。128个型号中112个有测量、16个受限，1,446条有效记录；补充83个端点输出参数检查和原生媒体适配。前端、历史、性能均区分GPU分类与选模，展示实测覆盖和实际输出上限。
 

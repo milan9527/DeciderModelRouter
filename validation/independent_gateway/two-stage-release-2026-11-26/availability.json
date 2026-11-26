@@ -1,0 +1,23 @@
+[
+  {
+    "model_id": "deepseek.r1-v1:0",
+    "invoke_id": "us.deepseek.r1-v1:0",
+    "checked_at": "2026-11-26T07:55:30.439022+00:00",
+    "region": "us-east-1",
+    "available": false,
+    "error": {
+      "Message": "Access denied. This Model is marked by provider as Legacy and you have not been actively using the model in the last 30 days. Please upgrade to an active model on Amazon Bedrock",
+      "Code": "ResourceNotFoundException"
+    },
+    "request_id": "c6186c64-b9ad-427d-8661-395e1a302697",
+    "elapsed_ms": 143.034
+  },
+  {
+    "model_id": "twelvelabs.marengo-embed-2-7-v1:0",
+    "invoke_id": "us.twelvelabs.marengo-embed-2-7-v1:0",
+    "checked_at": "2026-11-26T07:55:30.582115+00:00",
+    "region": "us-east-1",
+    "available": true,
+    "elapsed_ms": 239.447
+  }
+]

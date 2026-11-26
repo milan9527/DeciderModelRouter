@@ -9,7 +9,7 @@ from app.bedrock_limits import model_limits, output_limit
 from app.routing_balance import balanced_pool, preferences
 from app.routing_selector import configuration_id
 
-MODEL_ROUTING_VERSION = "gpu-evidence-single-pass-v2"
+MODEL_ROUTING_VERSION = "gpu-evidence-two-stage-v1"
 
 
 def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evidence=None):
@@ -34,7 +34,8 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
         if "include_legacy" not in task.model_fields_set:
             effective_task = task.model_copy(update={"include_legacy": True})
         reason = eligible(model, effective_task, profile.workflow, exclusion) if media else exclusion(model, effective_task, profile.workflow)
-        if media and reason and "专用执行适配器" in reason and caps.get(profile.workflow):
+        if (media and reason and "专用执行适配器" in reason and caps.get(profile.workflow)
+                and profile.workflow in {"vision", "video_understanding"}):
             reason = None
         if not media and profile.workflow != "embedding" and caps.get("converse") is False:
             reason = "该端点的Converse文本调用实测不支持，详见Bedrock评测记录"
@@ -54,6 +55,8 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
                 reason = "上下文上限缺少可核验依据或低于本次要求"
         if limits.get("context_tokens") and len(task.text.encode()) + 64 + effective_cap > limits["context_tokens"]:
             reason = "当前输入和输出预算的保守估算超过已核验上下文上限"
+        if observation.get("availability", {}).get("available") is False:
+            reason = "该精确端点最近实测不可调用：" + observation["availability"]["reason"]
         if reason:
             excluded[mid] = reason
             continue

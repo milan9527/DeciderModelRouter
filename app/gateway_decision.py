@@ -44,11 +44,15 @@ class GatewayDecisionService:
         self.default_provider = os.getenv("GATEWAY_DECISION_PROVIDER", "liquid")
         if self.default_provider not in self.services:
             raise RuntimeError("GATEWAY_DECISION_PROVIDER must be decider, liquid or h2o")
+        self.routing_mode = os.getenv("GATEWAY_DECISION_MODE", "two_stage")
+        if self.routing_mode not in {"two_stage", "joint"}:
+            raise RuntimeError("GATEWAY_DECISION_MODE must be two_stage or joint")
         self.slots = {provider: asyncio.Semaphore(2) for provider in self.services}
 
     def public_config(self):
         return {
             "default_provider": self.default_provider,
+            "routing_mode": self.routing_mode,
             "providers": [
                 {
                     "id": provider,

@@ -3003,6 +3003,13 @@
       "pricing": null,
       "errors": {
         "ValidationException": 1
+      },
+      "availability": {
+        "available": false,
+        "reason": "Access denied. This Model is marked by provider as Legacy and you have not been actively using the model in the last 30 days. Please upgrade to an active model on Amazon Bedrock",
+        "checked_at": "2026-11-26T07:55:30.439022+00:00",
+        "error_code": "ResourceNotFoundException",
+        "source": "validation/independent_gateway/two-stage-release-2026-11-26/availability.json"
       }
     },
     "deepseek.v3.2": {
@@ -9839,5 +9846,5 @@
     "version": "bd44ebbb4c1e2b350259c26c"
   },
   "source": "validation/independent_gateway/bedrock-evidence-2026-11-26/README.zh.md",
-  "version": "ce73abe40e311da92266e0ac"
+  "version": "c7321b98e520d9fbf69449df"
 }

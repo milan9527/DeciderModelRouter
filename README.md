@@ -1,6 +1,6 @@
 # DeciderModelRouter
 
-独立的 Amazon Bedrock 模型网关：GPU 决策模型一次请求同时判断任务属性，并依据 Bedrock 实测、公开评测、价格和延迟选择目标模型；后端校验能力、预算与配额，前端展示完整决策过程。
+独立的 Amazon Bedrock 模型网关：GPU先一次评估全部任务需求，再一次依据Bedrock实测、公开评测、价格和延迟选择目标模型；后端校验能力、预算与配额，前端展示完整决策过程。
 
 生产服务使用专用 **CloudFront + OAC + 私有 S3、ECS Fargate、DynamoDB、g5.xlarge GPU 和 VPC**。自建用户认证，不使用 Cognito；基础设施通过 AWS SDK 创建，不使用 CloudFormation。[打开在线工作台](https://d3eipg2g3l3an3.cloudfront.net/)，当前状态和资源见 [部署记录](deployment/DEPLOYED.md)。
 
@@ -10,9 +10,11 @@
 
 [下载 SVG 矢量图](docs/diagrams/decider-model-router-aws.zh.svg) · [下载高清 PNG](docs/diagrams/decider-model-router-aws.zh.png)
 
-GPU默认使用 **Liquid d1-2B** 完成任务判断和型号选择，也可切换 Decider 或 H2O。实时路由采用 `gpu-evidence-single-pass-v2`：全部可能适用的配置一次进入GPU判断，与七项任务属性同时返回，不再按榜单批次、程序Top-K或Agent固定名单提前淘汰。直接评测绑定精确Bedrock端点；内容正确、格式、接口支持、延迟和样本量分别提供给决策模型。[新机制与补测方法](docs/BEDROCK_CLASSIFIED_ROUTING.zh.md) · [逐型号补测报告](validation/independent_gateway/bedrock-evidence-2026-11-26/README.zh.md)。历史87场景通过率保留，不能当作新策略准确率。
+GPU默认使用 **Liquid d1-2B** 完成任务判断和型号选择，也可切换 Decider 或 H2O。实时路由采用 `gpu-evidence-two-stage-v1`：第一次GPU返回七项需求，后端筛选后，第二次GPU依据评测选择配置；全部合格配置参与判断，不再按榜单批次、程序Top-K或Agent固定名单提前淘汰。直接评测绑定精确Bedrock端点；内容正确、格式、接口支持、延迟和样本量分别提供给决策模型。[新机制与补测方法](docs/BEDROCK_CLASSIFIED_ROUTING.zh.md) · [逐型号补测报告](validation/independent_gateway/bedrock-evidence-2026-11-26/README.zh.md)。历史87场景通过率保留，不能当作新策略准确率。
 
-2026-11-26已发布一次联合决策：普通对话、连续会话与代码的线上路由实测 **1.24–1.41秒**，前一版同类样本仅选模为3.12–5.45秒。默认Liquid每次 **1个GPU请求、1次实际前向计算、8项决策**，134个候选也无需逐组淘汰。四项质量/价格交换对照全部通过；Decider的两项质量对照未通过，保留为比较选项，不将接口完成视作选模效果通过。[性能对照、限制与原始记录](validation/independent_gateway/single-pass-2026-11-26/README.zh.md)。
+**两阶段及前端已上线**：ECS revision 24，普通文本、代码与多轮线上完整路由实测892–952ms；前端分别展示需求判断、选模、历史和性能统计。591项软件测试通过，10次线上请求完成。另做真实AgentCore V2的4行业×4轮复测，16/16执行完成，但内容仅5/16（31.3%）通过：零售2/4、支付对账1/4、能源0/4、法务2/4；代码只做静态复核。仍有算术、损耗公式及虚构业务事实问题，不能用模型切换或执行成功替代质量。[部署、前端截图与定向复测](validation/independent_gateway/two-stage-release-2026-11-26/README.zh.md) · [行业逐项结论](validation/independent_gateway/two-stage-release-2026-11-26/agents.zh.md)。
+
+2026-11-26此前发布的一次联合决策：普通对话、连续会话与代码的线上路由实测 **1.24–1.41秒**，前一版同类样本仅选模为3.12–5.45秒。默认Liquid每次 **1个GPU请求、1次实际前向计算、8项决策**，134个候选也无需逐组淘汰。四项质量/价格交换对照全部通过；Decider的两项质量对照未通过，保留为比较选项，不将接口完成视作选模效果通过。[性能对照、限制与原始记录](validation/independent_gateway/single-pass-2026-11-26/README.zh.md)。
 
 新增[三种路由方案的同题质量对照](validation/independent_gateway/paired-quality-2026-11-26/README.zh.md)：三组均使用Liquid，在相同候选证据下重新运行每组159项，输出上限16,384 tokens，无目标重试/回退。以下通过率保留失败、待复核和未测项：
 
@@ -25,7 +27,7 @@ GPU默认使用 **Liquid d1-2B** 完成任务判断和型号选择，也可切�
 | 新增诊断16项 | 9/16（56.2%） | 9/16（56.2%） | 8/16（50.0%） |
 | 同99项独立请求：路由P50/P95 | 1425/1434ms | 787/855ms | 117/129ms |
 
-两次GPU的行业代码设计通过6/12（静态复核），其余两组0/12；新增4个独立函数功能通过4/4，其余两组2/4。每组12项能力缺口未测；政务产能字段口径歧义和未核实历史说法保留待复核。两次GPU虽选模更快，目标生成P95为44.7秒，高于联合一步的16.4秒；费用覆盖也不完整，不能据此宣称总体响应或成本都下降。**实验未部署**，仍保留生产一次联合决策。行业使用本地原生适配器，非AgentCore端到端测试；[逐项结果](validation/independent_gateway/paired-quality-2026-11-26/cases.zh.md)与[分类明细](validation/independent_gateway/paired-quality-2026-11-26/categories.zh.md)已公开，未导入线上历史。
+两次GPU的行业代码设计通过6/12（静态复核），其余两组0/12；新增4个独立函数功能通过4/4，其余两组2/4。每组12项能力缺口未测；政务产能字段口径歧义和未核实历史说法保留待复核。两次GPU虽选模更快，目标生成P95为44.7秒，高于联合一步的16.4秒；费用覆盖也不完整，不能据此宣称总体响应或成本都下降。上述分数属于发布前的冻结实验；之后按用户要求上线两阶段及兼容性优化，见[发布与定向复测](validation/independent_gateway/two-stage-release-2026-11-26/README.zh.md)。这些分数不代表优化版本的新通过率。行业使用本地原生适配器，非AgentCore端到端测试；[逐项结果](validation/independent_gateway/paired-quality-2026-11-26/cases.zh.md)与[分类明细](validation/independent_gateway/paired-quality-2026-11-26/categories.zh.md)已公开，未导入线上历史。
 
 新增[一次需求评估 + CPU策略选模实验](validation/independent_gateway/profile-policy-2026-11-26/README.zh.md)：参考OpenRouter的评估与策略分工，同机Liquid实测普通/代码约 **96毫秒**、合成长历史约 **204毫秒**，CPU选模约1.1–1.2毫秒；不含ECS网络、建池和目标生成。60次正式路由调用完成，额外3次目标调用均完整，但2项回答发现内容错误。**实验尚未部署，速度提升不能代替效果验收。**
 
@@ -35,7 +37,7 @@ GPU默认使用 **Liquid d1-2B** 完成任务判断和型号选择，也可切�
 - **多轮会话与粘性**：下一轮真正带入完整成功的历史对话，支持显式角色消息、轮次裁剪、会话并发保护和私有附件复用。每轮仍进行分类与约束检查，由GPU结合评测和本轮需求决定是否沿用原模型配置。[OpenRouter 对照、决策流程与 API](docs/SESSION_ROUTING.zh.md)。
 - **缓存、流式与回退**：对已核验型号启用 Bedrock 原生提示词缓存，展示真实读写 Token；目标回答逐步显示。限流等明确错误且尚未输出时，由GPU在满足原约束的剩余候选中重新选择，含首选最多尝试三个端点；部分输出或超时不自动重试。
 - **会话与历史**：按账户隔离，跨登录和容器重启保存对话、阶段事件、输出、Token、费用、错误及人工验收，可检索、复用任务和导出。
-- **性能**：按时间与会话筛选，区分新版联合决策与旧版分类/选模耗时，同一次推理不重复累加，并显示路由 P50/P95、目标首字 P50、上下文/沿用模型次数、缓存命中、回退次数、完整执行数、目标模型对比和已知费用；回放不计入性能，缓存费用未知时不猜测节省比例。
+- **性能**：按时间与会话筛选，分别统计两阶段、历史联合决策及更早的选模耗时，同一次推理不重复累加，并显示路由 P50/P95、目标首字 P50、上下文/沿用模型次数、缓存命中、回退次数、完整执行数、目标模型对比和已知费用；回放不计入性能，缓存费用未知时不猜测节省比例。
 - **自由输入与27个场景模板**：保留6个简单通用场景（日常知识、自由写作、澄清需求、生活建议、中英翻译、会议摘要），同时提供12个行业任务及检索、多模态场景；可按类别筛选，模板只填写示例，不参与分类匹配，仍可直接输入任意问题或通用对话。
 - **多模态**：图片/视频理解、音频转写、英语语音生成、图片编辑和文档重排；附件及生成结果私有保存，可从历史播放、预览和下载。当前区域无可用纯文生图或视频生成型号，页面明确提示。媒体同样由GPU读取专项评测后选型，完整媒体费用未知时不使用文本价格替代。
 - **端到端效果评测**：87 个用例、25 类场景，支持自定义任务；实际运行分类、选模与目标模型，对比低价/高能力策略，保存输出、质量、耗时、费用和缺口。明确答案自动校验，开放答案区分用户/助手评审，代码用隔离功能测试；未测与未知价格不补零。[方法](docs/effectiveness-evaluation.zh.md) · [完整场景](docs/effectiveness-scenarios.zh.md) · [16384-token 全量复测](validation/independent_gateway/full-effects-16384-2026-11-25/README.zh.md) · [2048-token 原报告](validation/independent_gateway/full-effects-2026-11-25/README.zh.md)。

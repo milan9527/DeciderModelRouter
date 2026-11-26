@@ -12,7 +12,7 @@ flowchart LR
     CF -->|OAC 签名读取| S3[私有 S3 静态前端]
     CF -->|同源 /api · VPC Origin| ALB[内网 ALB]
     ALB --> API[ECS Fargate · FastAPI 网关]
-    API -->|一次 HTTP · 七项分类| GPU[独立 GPU 决策服务]
+    API -->|两次 HTTP · 需求评估及选模| GPU[独立 GPU 决策服务]
     GPU --> Policy[任务画像 + Bedrock 目录 + 评测证据]
     Policy --> Select[程序筛选与成本能力平衡]
     Select -->|可选执行| Bedrock[Amazon Bedrock]

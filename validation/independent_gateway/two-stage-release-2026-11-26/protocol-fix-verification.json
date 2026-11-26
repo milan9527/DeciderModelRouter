@@ -1,0 +1,17 @@
+{
+  "source": "protocol-legal.json",
+  "method": "replay the captured real provider response through corrected adapter; no regenerated output",
+  "complete": true,
+  "stop_reason": "tool_use",
+  "provider_metadata_omitted": {
+    "reasoningContent": 0,
+    "empty_text": 1
+  },
+  "tool_calls": [
+    {
+      "toolUseId": "tooluse_n8TfQsVlO7weXVYyfs83S1",
+      "name": "read_policy",
+      "input": {}
+    }
+  ]
+}

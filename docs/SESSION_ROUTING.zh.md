@@ -1,12 +1,12 @@
 # 多轮会话、模型粘性与缓存复用
 
-更新于2026-11-26。独立网关会话策略为 `gateway-session-v1`，实时型号选择为 `gpu-evidence-single-pass-v2`，执行协议为 `bedrock-classified-v4`。GPU根据候选评测选择型号；旧87场景报告保留原始结果。详见[当前选模机制](BEDROCK_CLASSIFIED_ROUTING.zh.md)。
+更新于2026-11-26。独立网关会话策略为 `gateway-session-v1`，实时型号选择为 `gpu-evidence-two-stage-v1`，执行协议为 `bedrock-classified-v4`。GPU根据候选评测选择型号；旧87场景报告保留原始结果。详见[当前选模机制](BEDROCK_CLASSIFIED_ROUTING.zh.md)。
 
 ## 与 OpenRouter 的对应关系
 
 | 能力 | OpenRouter 公开机制 | 当前项目 |
 |---|---|---|
-| 请求评估 | Auto Router 分析请求属性，再选模型与推理配置 | 一次GPU请求同时判断七项属性并根据全部候选的评测证据选模；附最近对话片段 |
+| 请求评估 | Auto Router 分析请求属性，再选模型与推理配置 | 第一次GPU评估七项属性，第二次依据评估结果与全部合格候选的评测选模；附历史要求和最新工具结果 |
 | 多轮输入 | 统一消息协议，结合会话上下文路由 | 网关接收当前 `task` 和显式 `history`，或从登录用户的会话数据库恢复历史 |
 | 会话粘性 | 尽量复用模型、提供商及已缓存上下文，需求变化时调整 | 优先保留上次成功的精确模型配置；每轮仍分类、过滤并核验约束 |
 | 提示词缓存 | 供应商原生缓存，实际缓存影响有效成本 | Bedrock Converse 的显式 cachePoint，按精确型号允许列表启用；保存实际缓存读写 token |
@@ -16,7 +16,7 @@
 | 动态健康 | 大量流量的可用性、延迟、吞吐和格式质量 | 当前登录账户观察到的端点错误触发 60 秒冷却；实际耗时展示，但未自动训练排序 |
 | 生态与兼容 | 多供应商、API key、工具协议、额度等完整平台 | 目前限定 Bedrock、自建登录与现有网关 API；没有完整 OpenAI 协议、跨云供应商市场或账户账单限额 |
 
-参考：[Auto Router](https://openrouter.ai/docs/guides/routing/routers/auto-router)、[Provider Routing](https://openrouter.ai/docs/guides/routing/provider-selection)、[AWS prompt caching](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)。这是公开机制的工程借鉴；本项目采用可审计的候选约束与GPU联合判断，未经独立业务优化实验，不代表 OpenRouter 内部权重。
+参考：[Auto Router](https://openrouter.ai/docs/guides/routing/routers/auto-router)、[Provider Routing](https://openrouter.ai/docs/guides/routing/provider-selection)、[AWS prompt caching](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)。这是公开机制的工程借鉴；本项目采用可审计的候选约束与GPU两阶段判断，未经独立业务优化实验，不代表 OpenRouter 内部权重。
 
 本次范围不包含行情数据接入或实时搜索。向量与文档重排保留原有能力。
 

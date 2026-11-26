@@ -8,7 +8,7 @@ from starlette.concurrency import run_in_threadpool
 
 from app.bedrock_limits import output_limit
 from app.gateway_adapter import CACHE_MODELS, cache_usage
-from app.gateway_conversation import Conversation
+from app.gateway_conversation import Conversation, routing_excerpt
 from app.industry_scenarios import TOOL_SPECS, system_prompt
 from app.routing_balance import preferences
 
@@ -109,6 +109,17 @@ class AgentConversation(Conversation):
             "input_tokens": max(policy.input_tokens or 0, self.context["text_bytes"] + 64 * len(self.messages)),
         })})
 
+    def classify(self, payload):
+        payload = super().classify(payload)
+        state = json.loads(payload["state"])
+        state["agent_execution"] = {
+            "tools": "read-only query_records, read_policy and calculate; no business writes",
+            "facts": "Reuse completed tool results; recommendations are not completed actions.",
+        }
+        if any("toolResult" in block for block in self.native_messages[-1]["content"]):
+            state["current_tool_results"] = routing_excerpt(readable(self.native_messages[-1]), 2400)
+        return {**payload, "state": json.dumps(state, ensure_ascii=False)}
+
     def filter_pool(self, pool, task):
         pool = super().filter_pool(pool, task)
         rows, excluded = [], dict(pool["excluded"])
@@ -194,7 +205,12 @@ async def agent_converse(client, row, task, runtime):
     # metadata is not a user-visible answer and cannot be forwarded across model families.
     original_blocks = message["content"]
     omitted = sum(set(b) == {"reasoningContent"} for b in original_blocks)
-    blocks = message["content"] = [b for b in original_blocks if set(b) != {"reasoningContent"}]
+    empty_text = sum(set(b) == {"text"} and isinstance(b["text"], str) and not b["text"].strip()
+                     for b in original_blocks)
+    blocks = message["content"] = [
+        b for b in original_blocks if set(b) != {"reasoningContent"}
+        and not (set(b) == {"text"} and isinstance(b["text"], str) and not b["text"].strip())
+    ]
     if any(not set(b) <= {"text", "toolUse"} for b in blocks):
         kinds = sorted({k for b in blocks for k in b if k not in {"text", "toolUse"}})
         raise HTTPException(502, "Agent目标返回未支持的内容块：" + ", ".join(kinds))
@@ -220,5 +236,6 @@ async def agent_converse(client, row, task, runtime):
     return {"text": text, "message": message, "has_final_text": bool(text.strip()),
             "complete": complete, "turn_complete": stop == "end_turn" and complete,
             "stop_reason": stop, "usage": response.get("usage"), "tool_calls": tools,
-            "provider_metadata_omitted": {"reasoningContent": omitted},
+            "provider_metadata_omitted": {"reasoningContent": omitted,
+                                         **({"empty_text": empty_text} if empty_text else {})},
             "cache": cache_usage(response.get("usage"), cache), "streamed": False, "ttft_ms": None}
