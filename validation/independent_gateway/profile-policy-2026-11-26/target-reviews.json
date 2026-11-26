@@ -1,0 +1,24 @@
+{
+  "acceptance": "response correctness including supplied implementations and explanation; completion alone is insufficient",
+  "scope": "post-generation diagnostic review, not a held-out evaluation",
+  "rows": [
+    {
+      "case": "general",
+      "status": "pass",
+      "method": "assistant_review",
+      "reason": "Responds appropriately to hi: Hello! How can I help you today?"
+    },
+    {
+      "case": "coding",
+      "status": "fail",
+      "method": "isolated_tests_and_assistant_review",
+      "reason": "Main closed-interval merge passes 105/105 functional tests; supplied refined implementation passes 31/105 and omits disjoint intervals because there is no append branch. Claims of handling both open/closed endpoints are not fully supported. No input-immutability requirement was added."
+    },
+    {
+      "case": "long-history",
+      "status": "fail",
+      "method": "assistant_review",
+      "reason": "Concurrency test incorrectly says request B can match version=1 after A changes it to 2, then expects A rather than B to fail. REFUNDING -> REFUNDED is declared legal in tests but absent from transition switch, so default returns false. Java service was not compiled or executed."
+    }
+  ]
+}

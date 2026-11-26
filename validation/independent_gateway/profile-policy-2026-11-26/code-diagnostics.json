@@ -1,0 +1,333 @@
+{
+  "case": "coding",
+  "model_id": "mistral.ministral-3-14b-instruct",
+  "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+  "source_sha256": "66c28d3ca3b1f7a4b55a0c71e62bd6137954edfd2e88024499b27f67fb8a63af",
+  "boundary": "closed interval semantics; return values checked, input immutability not required",
+  "method": "post-generation functional diagnostics, not hidden held-out evaluation",
+  "isolation": "no network/credentials, read-only, non-root, 128MB, 0.5CPU, 15s limit",
+  "results": [
+    {
+      "function": "merge_intervals",
+      "tests": 105,
+      "passed": 105,
+      "failures": []
+    },
+    {
+      "function": "merge_intervals_refined",
+      "tests": 105,
+      "passed": 31,
+      "failures": [
+        {
+          "index": 4,
+          "input": [
+            [
+              1,
+              2
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "expected": [
+            [
+              1,
+              2
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "actual": [
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "index": 5,
+          "input": [
+            [
+              19,
+              25
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              18,
+              23
+            ],
+            [
+              -5,
+              1
+            ],
+            [
+              16,
+              23
+            ],
+            [
+              9,
+              14
+            ],
+            [
+              -18,
+              -10
+            ],
+            [
+              10,
+              19
+            ]
+          ],
+          "expected": [
+            [
+              -18,
+              -10
+            ],
+            [
+              -5,
+              1
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              9,
+              25
+            ]
+          ],
+          "actual": [
+            [
+              -18,
+              -10
+            ]
+          ]
+        },
+        {
+          "index": 6,
+          "input": [
+            [
+              5,
+              12
+            ],
+            [
+              1,
+              9
+            ],
+            [
+              -19,
+              -15
+            ],
+            [
+              19,
+              24
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              11,
+              15
+            ],
+            [
+              16,
+              21
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              -8,
+              -2
+            ],
+            [
+              -15,
+              -13
+            ],
+            [
+              17,
+              18
+            ],
+            [
+              8,
+              11
+            ],
+            [
+              -13,
+              -6
+            ],
+            [
+              -20,
+              -16
+            ],
+            [
+              -8,
+              -2
+            ],
+            [
+              14,
+              16
+            ],
+            [
+              3,
+              12
+            ],
+            [
+              9,
+              18
+            ]
+          ],
+          "expected": [
+            [
+              -20,
+              -2
+            ],
+            [
+              1,
+              24
+            ]
+          ],
+          "actual": [
+            [
+              -20,
+              -2
+            ]
+          ]
+        },
+        {
+          "index": 8,
+          "input": [
+            [
+              0,
+              6
+            ],
+            [
+              -12,
+              -4
+            ],
+            [
+              17,
+              23
+            ],
+            [
+              -16,
+              -12
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -4,
+              4
+            ],
+            [
+              12,
+              16
+            ],
+            [
+              4,
+              6
+            ]
+          ],
+          "expected": [
+            [
+              -16,
+              6
+            ],
+            [
+              12,
+              16
+            ],
+            [
+              17,
+              23
+            ]
+          ],
+          "actual": [
+            [
+              -16,
+              6
+            ]
+          ]
+        },
+        {
+          "index": 9,
+          "input": [
+            [
+              12,
+              13
+            ],
+            [
+              11,
+              13
+            ],
+            [
+              -17,
+              -15
+            ],
+            [
+              -14,
+              -9
+            ],
+            [
+              -18,
+              -17
+            ],
+            [
+              3,
+              12
+            ],
+            [
+              -16,
+              -16
+            ],
+            [
+              17,
+              21
+            ],
+            [
+              -2,
+              3
+            ],
+            [
+              8,
+              13
+            ]
+          ],
+          "expected": [
+            [
+              -18,
+              -15
+            ],
+            [
+              -14,
+              -9
+            ],
+            [
+              -2,
+              13
+            ],
+            [
+              17,
+              21
+            ]
+          ],
+          "actual": [
+            [
+              -18,
+              -15
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

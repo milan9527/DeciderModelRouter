@@ -1,0 +1,82 @@
+{
+  "created_at": "2026-11-26T06:25:47.672276+00:00",
+  "production_changed": false,
+  "live_gateway_version": "gpu-evidence-single-pass-v2",
+  "experimental_policy_version": "profile-cpu-policy-experiment-v1",
+  "timing": [
+    {
+      "case": "general",
+      "new_samples": 20,
+      "previous_samples": 3,
+      "joint_ms": 1307.971,
+      "two_gpu_ms": 732.142,
+      "profile_policy_ms": 96.20456550328527,
+      "cpu_policy_ms": 1.1075170041294768,
+      "local_pool_ms_separate_host": 4.30407197563909,
+      "selected_models": [
+        "openai.gpt-oss-20b-1:0"
+      ],
+      "input_tokens": 989,
+      "candidates": 107,
+      "reduction_vs_two_gpu_percent": 86.85984884034991,
+      "reduction_vs_joint_percent": 92.6447478190812
+    },
+    {
+      "case": "coding",
+      "new_samples": 20,
+      "previous_samples": 3,
+      "joint_ms": 1308.916,
+      "two_gpu_ms": 731.344,
+      "profile_policy_ms": 96.04907149332576,
+      "cpu_policy_ms": 1.16861799324397,
+      "local_pool_ms_separate_host": 4.388362489407882,
+      "selected_models": [
+        "mistral.ministral-3-14b-instruct"
+      ],
+      "input_tokens": 1001,
+      "candidates": 107,
+      "reduction_vs_two_gpu_percent": 86.86677247733957,
+      "reduction_vs_joint_percent": 92.66193770315851
+    },
+    {
+      "case": "long-history",
+      "new_samples": 20,
+      "previous_samples": 3,
+      "joint_ms": null,
+      "two_gpu_ms": 944.016,
+      "profile_policy_ms": 203.62314200610854,
+      "cpu_policy_ms": 1.166482994449325,
+      "local_pool_ms_separate_host": 4.467404971364886,
+      "selected_models": [
+        "zai.glm-4.7-flash"
+      ],
+      "input_tokens": 2253,
+      "candidates": 106,
+      "reduction_vs_two_gpu_percent": 78.43011749736142
+    }
+  ],
+  "measured_gpu_runs": 60,
+  "warmup_gpu_runs": 3,
+  "all_one_gpu_request_and_forward": true,
+  "all_profiles_matched_prebuilt_pool": true,
+  "policy_tests": 27,
+  "existing_pool_integration_tests": 9,
+  "total_software_tests_passed": 36,
+  "target_calls_completed": 3,
+  "target_quality": {
+    "pass": 1,
+    "fail": 2,
+    "scope": "three illustrative post-generation checks, not independent quality benchmark"
+  },
+  "limitations": [
+    "new and previous strategies measured in separate runs, unequal repetitions",
+    "GPU-host HTTP + CPU policy excludes ECS network, pool construction, persistence and targets",
+    "pool construction separately measured on workspace CPU using warm snapshots",
+    "synthetic repeated-text long-history task, not general long-context accuracy test",
+    "seven profile fields, not eleven OpenRouter aspects",
+    "snapshot prices; cache discount not modeled; no trained business calibration",
+    "existing measured development samples drive policy; public evidence only breaks comparable equal-cost/evidence ties",
+    "no real AgentCore, multimodal target execution or cross-turn cache experiment in this batch"
+  ],
+  "ruff": "passed"
+}

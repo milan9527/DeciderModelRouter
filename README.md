@@ -14,6 +14,8 @@ GPU默认使用 **Liquid d1-2B** 完成任务判断和型号选择，也可切�
 
 2026-11-26已发布一次联合决策：普通对话、连续会话与代码的线上路由实测 **1.24–1.41秒**，前一版同类样本仅选模为3.12–5.45秒。默认Liquid每次 **1个GPU请求、1次实际前向计算、8项决策**，134个候选也无需逐组淘汰。四项质量/价格交换对照全部通过；Decider的两项质量对照未通过，保留为比较选项，不将接口完成视作选模效果通过。[性能对照、限制与原始记录](validation/independent_gateway/single-pass-2026-11-26/README.zh.md)。
 
+新增[一次需求评估 + CPU策略选模实验](validation/independent_gateway/profile-policy-2026-11-26/README.zh.md)：参考OpenRouter的评估与策略分工，同机Liquid实测普通/代码约 **96毫秒**、合成长历史约 **204毫秒**，CPU选模约1.1–1.2毫秒；不含ECS网络、建池和目标生成。60次正式路由调用完成，额外3次目标调用均完整，但2项回答发现内容错误。**实验尚未部署，速度提升不能代替效果验收。**
+
 - **行业 Agent**：12个行业、每个4轮业务任务，支持自由追问。Strands Agent运行在AgentCore Runtime **V2**，模型入口指定为本项目`model-router`；每次模型调用都经过Liquid任务判断与基于评测的选模，展示原生工具调用、实际模型及沿用/切换原因。[打开行业Agent](https://d3eipg2g3l3an3.cloudfront.net/#agents) · [行业说明与AWS架构图](docs/INDUSTRY_AGENTS.zh.md) · [真实多轮测试](validation/independent_gateway/industry-agents-2026-11-25/README.zh.md)。数据为明确标注的合成业务记录。
 - **多轮会话与粘性**：下一轮真正带入完整成功的历史对话，支持显式角色消息、轮次裁剪、会话并发保护和私有附件复用。每轮仍进行分类与约束检查，由GPU结合评测和本轮需求决定是否沿用原模型配置。[OpenRouter 对照、决策流程与 API](docs/SESSION_ROUTING.zh.md)。
 - **缓存、流式与回退**：对已核验型号启用 Bedrock 原生提示词缓存，展示真实读写 Token；目标回答逐步显示。限流等明确错误且尚未输出时，由GPU在满足原约束的剩余候选中重新选择，含首选最多尝试三个端点；部分输出或超时不自动重试。

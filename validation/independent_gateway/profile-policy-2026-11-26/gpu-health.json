@@ -1,0 +1,4 @@
+{
+  "ssm_status": "Success",
+  "observations": "{\"provider\": \"decider\", \"http\": 200, \"model\": \"strands-decider-2B-hobson-v19-vllm\", \"status\": \"ok\"}\n{\"provider\": \"liquid\", \"http\": 200, \"model\": \"LiquidAI/d1-2B\", \"status\": \"ok\"}\n{\"provider\": \"h2o\", \"http\": 200, \"model\": \"h2oai/h2o-lightning-4b\", \"status\": null}\n21163 MiB\n\n"
+}

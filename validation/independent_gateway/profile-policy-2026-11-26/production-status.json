@@ -1,0 +1,10 @@
+{
+  "serviceName": "decider-model-router",
+  "taskDefinition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:23",
+  "desiredCount": 1,
+  "runningCount": 1,
+  "status": "ACTIVE",
+  "deployment_revisions": [
+    "23"
+  ]
+}
