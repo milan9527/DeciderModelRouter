@@ -1,0 +1,597 @@
+{
+  "verified_at": "2026-11-26T06:03:58.823434+00:00",
+  "input_artifact": "gpu-inputs.json.gz",
+  "rows": [
+    {
+      "case": "general",
+      "provider": "liquid",
+      "candidates": 134,
+      "ms": 1383.262,
+      "service_ms": 1376.296820002608,
+      "forward_passes": 1,
+      "usage": {
+        "input_tokens": 14870,
+        "output_tokens": 0
+      },
+      "process_peak_allocated_bytes": 5029966336,
+      "process_reserved_after_bytes": 4104126464,
+      "answers": {
+        "workflow": "general_text",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "en",
+        "action": "m116"
+      },
+      "selected": {
+        "id": "2dacea61db0084c4e84c1817",
+        "model_id": "anthropic.claude-haiku-5-5",
+        "workflows": [
+          "coding",
+          "customer_support",
+          "general_text",
+          "reasoning",
+          "vision"
+        ]
+      },
+      "expected": null,
+      "status": "ok"
+    },
+    {
+      "case": "coding",
+      "provider": "liquid",
+      "candidates": 134,
+      "ms": 1308.058,
+      "service_ms": 1302.5156290095765,
+      "forward_passes": 1,
+      "usage": {
+        "input_tokens": 14885,
+        "output_tokens": 0
+      },
+      "process_peak_allocated_bytes": 5030258176,
+      "process_reserved_after_bytes": 4104126464,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "other",
+        "action": "m034"
+      },
+      "selected": {
+        "id": "0a5ab7e218a22ad27559894b",
+        "model_id": "mistral.devstral-2-123b",
+        "workflows": [
+          "coding",
+          "customer_support",
+          "general_text",
+          "reasoning"
+        ]
+      },
+      "expected": null,
+      "status": "ok"
+    },
+    {
+      "case": "coding",
+      "provider": "decider",
+      "candidates": 134,
+      "ms": 1502.313,
+      "service_ms": 1469.85,
+      "forward_passes": null,
+      "usage": {
+        "input_tokens": 17878,
+        "output_tokens": 8
+      },
+      "process_peak_allocated_bytes": null,
+      "process_reserved_after_bytes": null,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh",
+        "action": "m000"
+      },
+      "selected": {
+        "id": "e984b87d469f151c5176f5b2",
+        "model_id": "openai.gpt-6.1-sol",
+        "workflows": [
+          "coding",
+          "customer_support",
+          "general_text",
+          "reasoning",
+          "vision"
+        ]
+      },
+      "expected": null,
+      "status": "ok"
+    },
+    {
+      "case": "coding",
+      "provider": "h2o",
+      "candidates": 134,
+      "ms": 8469.337,
+      "service_ms": null,
+      "forward_passes": null,
+      "usage": {
+        "input_tokens": 17270,
+        "processed_input_tokens": 17851,
+        "output_tokens": 8,
+        "latency_ms": 8463.9
+      },
+      "process_peak_allocated_bytes": null,
+      "process_reserved_after_bytes": null,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "moderate",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh",
+        "action": "m119"
+      },
+      "selected": {
+        "id": "b8c39b029dc48d143d96eec5",
+        "model_id": "openai.gpt-6.2-astra",
+        "workflows": [
+          "coding",
+          "customer_support",
+          "general_text",
+          "reasoning",
+          "vision"
+        ]
+      },
+      "expected": null,
+      "status": "ok"
+    },
+    {
+      "case": "reasoning",
+      "provider": "liquid",
+      "candidates": 134,
+      "ms": 1330.084,
+      "service_ms": 1299.409066006774,
+      "forward_passes": 1,
+      "usage": {
+        "input_tokens": 14902,
+        "output_tokens": 0
+      },
+      "process_peak_allocated_bytes": 5031582720,
+      "process_reserved_after_bytes": 4104126464,
+      "answers": {
+        "workflow": "reasoning",
+        "difficulty": "complex",
+        "stronger_model_benefit": "high",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh",
+        "action": "m077"
+      },
+      "selected": {
+        "id": "141b2ee3d79b6b725f15c352",
+        "model_id": "openai.gpt-oss-120b-1:0",
+        "workflows": [
+          "coding",
+          "customer_support",
+          "general_text",
+          "reasoning"
+        ]
+      },
+      "expected": null,
+      "status": "ok"
+    },
+    {
+      "case": "long-history",
+      "provider": "liquid",
+      "candidates": 133,
+      "ms": 1421.366,
+      "service_ms": 1415.6568640028127,
+      "forward_passes": 1,
+      "usage": {
+        "input_tokens": 15989,
+        "output_tokens": 0
+      },
+      "process_peak_allocated_bytes": 5116430848,
+      "process_reserved_after_bytes": 4104126464,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "complex",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh",
+        "action": "m070"
+      },
+      "selected": {
+        "id": "3758b427feeab99b76d9df7a",
+        "model_id": "minimax.minimax-m2.5",
+        "workflows": [
+          "coding",
+          "customer_support",
+          "general_text",
+          "reasoning"
+        ]
+      },
+      "expected": null,
+      "status": "ok"
+    },
+    {
+      "case": "long-history",
+      "provider": "decider",
+      "candidates": 133,
+      "ms": 2071.44,
+      "service_ms": 2044.6,
+      "forward_passes": null,
+      "usage": {
+        "input_tokens": 26342,
+        "output_tokens": 8
+      },
+      "process_peak_allocated_bytes": null,
+      "process_reserved_after_bytes": null,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "complex",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh",
+        "action": "m064"
+      },
+      "selected": {
+        "id": "780ac14046bdb3cc4a662aea",
+        "model_id": "minimax.minimax-m2.1",
+        "workflows": [
+          "coding",
+          "customer_support",
+          "general_text",
+          "reasoning"
+        ]
+      },
+      "expected": null,
+      "status": "ok"
+    },
+    {
+      "case": "long-history",
+      "provider": "h2o",
+      "candidates": 133,
+      "ms": 9450.541,
+      "service_ms": null,
+      "forward_passes": null,
+      "usage": {
+        "input_tokens": 18148,
+        "processed_input_tokens": 25503,
+        "output_tokens": 8,
+        "latency_ms": 9445.2
+      },
+      "process_peak_allocated_bytes": null,
+      "process_reserved_after_bytes": null,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "complex",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh",
+        "action": "m075"
+      },
+      "selected": {
+        "id": "46c3dd81c3db41663ea6e465",
+        "model_id": "openai.gpt-6.2-sol",
+        "workflows": [
+          "coding",
+          "customer_support",
+          "general_text",
+          "reasoning",
+          "vision"
+        ]
+      },
+      "expected": null,
+      "status": "ok"
+    },
+    {
+      "case": "vision",
+      "provider": "liquid",
+      "candidates": 73,
+      "ms": 526.997,
+      "service_ms": 489.15642700740136,
+      "forward_passes": 1,
+      "usage": {
+        "input_tokens": 5774,
+        "output_tokens": 0
+      },
+      "process_peak_allocated_bytes": 4314314752,
+      "process_reserved_after_bytes": 4104126464,
+      "answers": {
+        "workflow": "vision",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "en",
+        "action": "m017"
+      },
+      "selected": {
+        "id": "f15e6b397633b5bfc43157b8",
+        "model_id": "openai.gpt-5.4",
+        "workflows": [
+          "vision"
+        ]
+      },
+      "expected": null,
+      "status": "ok"
+    },
+    {
+      "case": "embedding",
+      "provider": "liquid",
+      "candidates": 9,
+      "ms": 177.605,
+      "service_ms": 173.62455400871113,
+      "forward_passes": 1,
+      "usage": {
+        "input_tokens": 1849,
+        "output_tokens": 0
+      },
+      "process_peak_allocated_bytes": 4005532672,
+      "process_reserved_after_bytes": 4104126464,
+      "answers": {
+        "workflow": "embedding",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "zh",
+        "action": "m006"
+      },
+      "selected": {
+        "id": "380f24e6ef92e2efd649c8aa",
+        "model_id": "twelvelabs.marengo-embed-2-7-v1:0",
+        "workflows": [
+          "embedding"
+        ]
+      },
+      "expected": null,
+      "status": "ok"
+    },
+    {
+      "case": "quality-original",
+      "provider": "liquid",
+      "candidates": 128,
+      "ms": 996.714,
+      "service_ms": 967.6106790138874,
+      "forward_passes": 1,
+      "usage": {
+        "input_tokens": 6614,
+        "output_tokens": 0
+      },
+      "process_peak_allocated_bytes": 4378670080,
+      "process_reserved_after_bytes": 4104126464,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "en",
+        "action": "m097"
+      },
+      "selected": {},
+      "expected": "m097",
+      "status": "ok",
+      "control_passed": true
+    },
+    {
+      "case": "quality-reversed",
+      "provider": "liquid",
+      "candidates": 128,
+      "ms": 565.249,
+      "service_ms": 559.8025520157535,
+      "forward_passes": 1,
+      "usage": {
+        "input_tokens": 6614,
+        "output_tokens": 0
+      },
+      "process_peak_allocated_bytes": 4378670080,
+      "process_reserved_after_bytes": 4104126464,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "en",
+        "action": "m007"
+      },
+      "selected": {},
+      "expected": "m007",
+      "status": "ok",
+      "control_passed": true
+    },
+    {
+      "case": "quality-original",
+      "provider": "decider",
+      "candidates": 128,
+      "ms": 737.008,
+      "service_ms": 733.33,
+      "forward_passes": null,
+      "usage": {
+        "input_tokens": 8795,
+        "output_tokens": 8
+      },
+      "process_peak_allocated_bytes": null,
+      "process_reserved_after_bytes": null,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "simple",
+        "stronger_model_benefit": "medium",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "en",
+        "action": "m000"
+      },
+      "selected": {},
+      "expected": "m097",
+      "status": "ok",
+      "control_passed": false
+    },
+    {
+      "case": "quality-reversed",
+      "provider": "decider",
+      "candidates": 128,
+      "ms": 705.291,
+      "service_ms": 702.99,
+      "forward_passes": null,
+      "usage": {
+        "input_tokens": 8795,
+        "output_tokens": 8
+      },
+      "process_peak_allocated_bytes": null,
+      "process_reserved_after_bytes": null,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "simple",
+        "stronger_model_benefit": "medium",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "en",
+        "action": "m000"
+      },
+      "selected": {},
+      "expected": "m007",
+      "status": "ok",
+      "control_passed": false
+    },
+    {
+      "case": "quality-original",
+      "provider": "h2o",
+      "candidates": 128,
+      "ms": 1887.28,
+      "service_ms": null,
+      "forward_passes": null,
+      "usage": {
+        "input_tokens": 8255,
+        "processed_input_tokens": 8780,
+        "output_tokens": 8,
+        "latency_ms": 1882.7
+      },
+      "process_peak_allocated_bytes": null,
+      "process_reserved_after_bytes": null,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "en",
+        "action": "m097"
+      },
+      "selected": {},
+      "expected": "m097",
+      "status": "ok",
+      "control_passed": true
+    },
+    {
+      "case": "quality-reversed",
+      "provider": "h2o",
+      "candidates": 128,
+      "ms": 1730.515,
+      "service_ms": null,
+      "forward_passes": null,
+      "usage": {
+        "input_tokens": 8255,
+        "processed_input_tokens": 8780,
+        "output_tokens": 8,
+        "latency_ms": 1726.3
+      },
+      "process_peak_allocated_bytes": null,
+      "process_reserved_after_bytes": null,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "en",
+        "action": "m007"
+      },
+      "selected": {},
+      "expected": "m007",
+      "status": "ok",
+      "control_passed": true
+    },
+    {
+      "case": "cost-original",
+      "provider": "liquid",
+      "candidates": 128,
+      "ms": 588.222,
+      "service_ms": 558.4400520019699,
+      "forward_passes": 1,
+      "usage": {
+        "input_tokens": 6614,
+        "output_tokens": 0
+      },
+      "process_peak_allocated_bytes": 4378670080,
+      "process_reserved_after_bytes": 4104126464,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "en",
+        "action": "m097"
+      },
+      "selected": {},
+      "expected": "m097",
+      "status": "ok",
+      "control_passed": true
+    },
+    {
+      "case": "cost-reversed",
+      "provider": "liquid",
+      "candidates": 128,
+      "ms": 563.483,
+      "service_ms": 558.6303270247299,
+      "forward_passes": 1,
+      "usage": {
+        "input_tokens": 6614,
+        "output_tokens": 0
+      },
+      "process_peak_allocated_bytes": 4378670080,
+      "process_reserved_after_bytes": 4104126464,
+      "answers": {
+        "workflow": "coding",
+        "difficulty": "simple",
+        "stronger_model_benefit": "low",
+        "latency": "normal",
+        "tools": "no",
+        "structured_output": "no",
+        "languages": "en",
+        "action": "m007"
+      },
+      "selected": {},
+      "expected": "m007",
+      "status": "ok",
+      "control_passed": true
+    }
+  ],
+  "scope": "single requests; not latency percentiles or business accuracy"
+}

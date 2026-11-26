@@ -1,0 +1,160 @@
+{
+  "scope": "four-turn AgentCore V2 routing regression",
+  "fixture": false,
+  "turns": [
+    {
+      "turn": 1,
+      "job_id": "d9dc528d73cbba5785879c7f",
+      "session_id": "d61879b58b899962b125100f",
+      "status": "completed",
+      "models": [
+        "openai.gpt-oss-120b-1:0",
+        "openai.gpt-oss-120b-1:0",
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "metrics": {
+        "model_calls": 3,
+        "tool_calls": 2,
+        "model_switches": 0,
+        "retained_calls": 2,
+        "cache_read_tokens": 0
+      },
+      "joint_ms": [
+        865.068,
+        912.224,
+        877.5
+      ]
+    },
+    {
+      "turn": 2,
+      "job_id": "fc743e488af271d4c756d984",
+      "session_id": "d61879b58b899962b125100f",
+      "status": "completed",
+      "models": [
+        "openai.gpt-oss-120b-1:0",
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "metrics": {
+        "model_calls": 2,
+        "tool_calls": 1,
+        "model_switches": 0,
+        "retained_calls": 2,
+        "cache_read_tokens": 0
+      },
+      "joint_ms": [
+        886.232,
+        878.833
+      ]
+    },
+    {
+      "turn": 3,
+      "job_id": "5a1105c76eb86950ee57f2b3",
+      "session_id": "d61879b58b899962b125100f",
+      "status": "completed",
+      "models": [
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 0,
+        "retained_calls": 1,
+        "cache_read_tokens": 0
+      },
+      "joint_ms": [
+        887.185
+      ]
+    },
+    {
+      "turn": 4,
+      "job_id": "b81ed5a4ec697068589f3744",
+      "session_id": "d61879b58b899962b125100f",
+      "status": "completed",
+      "models": [
+        "openai.gpt-oss-120b-1:0"
+      ],
+      "metrics": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 0,
+        "retained_calls": 1,
+        "cache_read_tokens": 0
+      },
+      "joint_ms": [
+        915.758
+      ]
+    }
+  ],
+  "gateway_step_audit": [
+    {
+      "id": "b43942018117a93f3d2dc51c",
+      "provider": "liquid",
+      "decision_mode": "joint",
+      "decision_forward_passes": 1,
+      "model_decision_calls": 1,
+      "model_decision_ms": 865.068,
+      "fallback_count": 0,
+      "status": "executed"
+    },
+    {
+      "id": "e1af7b15be9487a68567b1c2",
+      "provider": "liquid",
+      "decision_mode": "joint",
+      "decision_forward_passes": 1,
+      "model_decision_calls": 1,
+      "model_decision_ms": 912.224,
+      "fallback_count": 0,
+      "status": "executed"
+    },
+    {
+      "id": "f219d7848bf937af1322f401",
+      "provider": "liquid",
+      "decision_mode": "joint",
+      "decision_forward_passes": 1,
+      "model_decision_calls": 1,
+      "model_decision_ms": 877.5,
+      "fallback_count": 0,
+      "status": "executed"
+    },
+    {
+      "id": "1411b19cb52f35e31bb2b166",
+      "provider": "liquid",
+      "decision_mode": "joint",
+      "decision_forward_passes": 1,
+      "model_decision_calls": 1,
+      "model_decision_ms": 886.232,
+      "fallback_count": 0,
+      "status": "executed"
+    },
+    {
+      "id": "1e341d58c10b58d5a1d19518",
+      "provider": "liquid",
+      "decision_mode": "joint",
+      "decision_forward_passes": 1,
+      "model_decision_calls": 1,
+      "model_decision_ms": 878.833,
+      "fallback_count": 0,
+      "status": "executed"
+    },
+    {
+      "id": "3959e219e61cf22699b53fda",
+      "provider": "liquid",
+      "decision_mode": "joint",
+      "decision_forward_passes": 1,
+      "model_decision_calls": 1,
+      "model_decision_ms": 887.185,
+      "fallback_count": 0,
+      "status": "executed"
+    },
+    {
+      "id": "ce9a036eb88188f4ac71439f",
+      "provider": "liquid",
+      "decision_mode": "joint",
+      "decision_forward_passes": 1,
+      "model_decision_calls": 1,
+      "model_decision_ms": 915.758,
+      "fallback_count": 0,
+      "status": "executed"
+    }
+  ]
+}

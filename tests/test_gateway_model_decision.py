@@ -4,7 +4,8 @@ import json
 from types import SimpleNamespace
 
 from app.bedrock_evidence import load_evidence, measured
-from app.gateway_model_decision import BATCH_SIZE, evidence_card, payload, select_all
+from app.gateway_model_decision import select_all
+from app.gateway_joint_decision import all_candidates, joint_payload
 from app.gateway_model_pool import build_pool
 from app.routing import Task, exclusion, load_catalog, load_rankings
 from app.routing_profile import replay_profile
@@ -41,22 +42,24 @@ def test_measured_scores_are_bound_to_exact_endpoint_and_configuration():
             assert candidate["measurement_configuration"] is None
 
 
-def test_router_evidence_fits_choice_schema_without_dropping_current_request():
-    from app.schemas import DecisionRequest
-
+def test_joint_request_keeps_all_configurations_evidence_and_complete_current_request():
+    from app.routing_profile import profile_payload
+    from deployment.open_models.gateway import validate
     task = Task(text=("处理订单的并发状态变更，提供代码与测试。" * 100)[:1400])
-    pool = pool_for(task)
-    assert BATCH_SIZE == 6
-    rows = sorted(pool["candidates"], key=lambda row: len(evidence_card(row, None)), reverse=True)
-    assert all(len(evidence_card(row, None)) <= 1000 for row in rows)
-    data, _ = payload(task, replay_profile(task, "coding"), rows[:BATCH_SIZE], None, [], 1)
-    DecisionRequest(**data)
-    assert json.loads(data["state"])["request_as_data"] == task.text
-    original = rows[0]["measured_evidence"]
-    sent = json.loads(data["questions"]["action"]["criteria"]["m00"])["bedrock_same_suite"]
-    assert sent["content_passed"] == original["content_passed"]
-    assert sent["samples"] == original["samples"]
-    assert sent["p95_ms"] == original["p95_ms"]
+    body = SimpleNamespace(task=task, provider="liquid")
+    request = SimpleNamespace(state=SimpleNamespace())
+    rows, _ = all_candidates(body, request, load_catalog(), load_rankings(), exclusion)
+    data, aliases = joint_payload(body, request, profile_payload(task), rows)
+    validate(data)
+    assert json.loads(data["state"])["request"] == task.text
+    assert len(data["questions"]) == 8
+    assert len(aliases) > 100
+    assert {r["candidate_id"] for r in pool_for(task)["candidates"]} <= {
+        r["candidate_id"] for r in aliases.values()}
+    for key, row in aliases.items():
+        original = row["workflow_evidence"].get("coding", {}).get("measured")
+        if original:
+            assert f"Coding correctness {original['content_passed']}/{original['content_scored']}" in data["questions"]["action"]["criteria"][key]
 
 
 def test_output_limits_use_exact_endpoint_and_never_raise_caller_budget():
@@ -74,25 +77,28 @@ def test_output_limits_use_exact_endpoint_and_never_raise_caller_budget():
     assert args["inferenceConfig"]["maxTokens"] == 8192
 
 
-def test_gpu_tournament_sees_every_candidate_and_changes_winner_with_evidence():
+def test_single_gpu_call_sees_every_candidate_and_changes_winner_with_evidence():
     base = pool_for()
     sample = base["candidates"][0]
     rows = [{**copy.deepcopy(sample), "candidate_id": f"candidate-{i:02}",
              "model": {**sample["model"], "name": f"Model {i}"},
-             "measured_evidence": {"content_passed": i + 1, "content_scored": 50}}
+             "measured_evidence": {"samples": 50, "content_passed": i + 1, "content_scored": 50}}
             for i in range(37)]
     body = SimpleNamespace(task=Task(text="Implement correct Python"), provider="liquid")
     runtime = SimpleNamespace(options=SimpleNamespace(stickiness=True),
                               context={"history_turns": 1},
-                              previous={"configuration_id": "candidate-00"}, messages=[])
+                              previous={"configuration_id": "candidate-00"}, messages=[],
+                              classify=lambda payload: payload)
     request = SimpleNamespace(state=SimpleNamespace(gateway_runtime=runtime))
 
     class Service:
         async def infer(self, body, request, payload, *, selection=False):
             assert selection
             criteria = payload["questions"]["action"]["criteria"]
-            cards = {key: json.loads(value) for key, value in criteria.items() if key != "none"}
-            key = max(cards, key=lambda k: cards[k]["bedrock_same_suite"]["content_passed"])
+            import re
+            cards = {key: value for key, value in criteria.items() if key != "none"}
+            assert len(cards) == 37
+            key = max(cards, key=lambda k: int(re.search(r"Coding correctness (\d+)/", cards[k])[1]))
             return {"answers": {"action": {"choice": key}}, "model": "test-gpu",
                     "timings": {"backend_total_ms": 1}, "usage": None}
 
@@ -103,6 +109,7 @@ def test_gpu_tournament_sees_every_candidate_and_changes_winner_with_evidence():
         seen = {cid for call in first["decision_calls"] for cid in call["candidate_ids"]}
         assert seen == {r["candidate_id"] for r in rows}
         assert first["evaluated_configurations"] == 37
+        assert len(first["decision_calls"]) == 1
         rows[0]["measured_evidence"]["content_passed"] = 50
         second = await select_all(Service(), body, request, {**base, "candidates": rows})
         assert second["selected_candidate_id"] == "candidate-00"

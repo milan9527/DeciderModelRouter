@@ -26,8 +26,12 @@ def validate(payload):
     for q in questions.values():
         if not isinstance(q, dict) or q.get("type") != "choice" or not isinstance(q.get("criteria"), dict):
             raise HTTPException(422, "Only typed choice questions are supported")
-        if not 2 <= len(q["criteria"]) <= 32:
+        if not 2 <= len(q["criteria"]) <= 256:
             raise HTTPException(422, "Invalid candidate count")
+        if not isinstance(q.get("instructions"), str) or len(q["instructions"]) > 16000:
+            raise HTTPException(422, "Invalid question instructions")
+        if any(not isinstance(v, str) or len(v) > 8000 for v in q["criteria"].values()):
+            raise HTTPException(422, "Invalid candidate evidence")
 
 
 @asynccontextmanager

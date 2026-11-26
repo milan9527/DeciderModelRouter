@@ -116,7 +116,7 @@ def build():
     # not a claim that the deployment fits in one subnet or is highly available.
     text(40, 64, "DeciderModelRouter", 38, weight="700")
     text(40, 105, "独立模型网关 · AWS 部署架构", 25, MUTED)
-    text(1875, 65, "部署状态  2026-11-25", 20, MUTED, anchor="end")
+    text(1875, 65, "部署状态  2026-11-26", 20, MUTED, anchor="end")
     text(1875, 103, "静态前端 / API / GPU 分离", 21, MUTED, anchor="end")
     ET.SubElement(g, "path", d="M40,132 H1880", stroke="#ff9900", **{"stroke-width": "4"})
     rect(275, 160, 1605, 1115, "#879196")
@@ -164,7 +164,7 @@ def build():
     for i, (kind, label) in enumerate(
         [
             ("request", "入口与静态资源"),
-            ("gpu", "GPU 分类与选模"),
+            ("gpu", "GPU 联合决策"),
             ("model", "目标模型执行"),
             ("data", "数据持久化"),
         ]
@@ -210,7 +210,7 @@ def build():
 
     arrow([(940, 850), (940, 955)], "gpu", both=True)
     text(962, 891, "私网 HTTP + Bearer", 20, ORANGE)
-    text(962, 924, "任务描述 ⇄ 七项属性", 20, ORANGE)
+    text(962, 924, "任务与证据 ⇄ 联合决策", 20, ORANGE)
     service(
         "ec2",
         730,
@@ -218,7 +218,7 @@ def build():
         500,
         165,
         "Amazon EC2 · g5.xlarge",
-        ["A10G 24GB · 独立 GPU 服务", "Decider / Liquid / H2O", "分类与证据选模 · 默认 Liquid"],
+        ["A10G 24GB · 独立 GPU 服务", "Decider / Liquid / H2O", "一次联合决策 · 默认 Liquid"],
     )
     text(390, 1002, "GPU 根据评测选择模型", 21, weight="600")
     text(390, 1038, "输入：任务、候选、实测与价格", 19, MUTED)
@@ -263,8 +263,8 @@ def build():
     text(40, 1330, "一次任务的主要流程", 25, weight="600")
     steps = [
         ("01", "任务与用户约束"),
-        ("02", "GPU 返回七项属性"),
-        ("03", "GPU 读取证据选模"),
+        ("02", "候选与评测准备"),
+        ("03", "GPU 一次联合决策"),
         ("04", "Bedrock 按需执行"),
         ("05", "保存结果与性能"),
     ]

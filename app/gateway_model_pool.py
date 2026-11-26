@@ -9,13 +9,13 @@ from app.bedrock_limits import model_limits, output_limit
 from app.routing_balance import balanced_pool, preferences
 from app.routing_selector import configuration_id
 
-MODEL_ROUTING_VERSION = "gpu-evidence-v1"
+MODEL_ROUTING_VERSION = "gpu-evidence-single-pass-v2"
 
 
-def build_pool(task, profile, catalog, rankings, exclusion, runtime=None):
+def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evidence=None):
     from app.routing_media import MEDIA_WORKFLOWS, adapter, eligible, readiness
 
-    evidence = load_evidence()
+    evidence = evidence if evidence is not None else load_evidence()
     policy = preferences(task)
     rows, excluded = [], {}
     media = profile.workflow in MEDIA_WORKFLOWS or bool(task.attachments)

@@ -485,7 +485,7 @@ async def auto_route(body: AutoRoute, request: Request):
     return await run_classified_route(body, request)
 
 
-async def run_classified_route(body, request, *, infer=None, emit=None, model_select=None):
+async def run_classified_route(body, request, *, infer=None, emit=None, model_select=None, joint_decide=None):
     """Shared policy pipeline; the gateway supplies its independent GPU transport."""
 
     async def progress(stage, status, data=None):
@@ -507,6 +507,7 @@ async def run_classified_route(body, request, *, infer=None, emit=None, model_se
     if runtime:
         payload = runtime.classify(payload)
     await progress("classification", "started")
+    joint_selection = None
     if body.mode == "replay":
         profile = replay_profile(body.task, replay_choice(body.task))
         result = {
@@ -516,7 +517,10 @@ async def run_classified_route(body, request, *, infer=None, emit=None, model_se
             "answers": {k: {"choice": v} for k, v in profile.model_dump().items()},
         }
     else:
-        result = await (infer or infer_profile)(body, request, payload)
+        if joint_decide:
+            result, joint_selection = await joint_decide(body, request, payload, data, rankings, exclusion)
+        else:
+            result = await (infer or infer_profile)(body, request, payload)
         try:
             profile = parse_profile(result)
         except (ValueError, KeyError, TypeError) as exc:
@@ -526,6 +530,7 @@ async def run_classified_route(body, request, *, infer=None, emit=None, model_se
     assessed_profile = profile.model_dump()
     effective_workflow, adjustment = resolve_workflow(body.task, profile)
     profile = profile.model_copy(update={"workflow": effective_workflow})
+    actual_input = result.pop("joint_input", payload)
     flow = {
         **result,
         "profile": profile.model_dump(),
@@ -538,16 +543,18 @@ async def run_classified_route(body, request, *, infer=None, emit=None, model_se
         "choice": profile.workflow,
         "label": CLASSIFIED_WORKFLOWS[profile.workflow]["label"],
         "workflow": {"id": profile.workflow, **CLASSIFIED_WORKFLOWS[profile.workflow]},
-        "model_input": payload,
-        "input_hash": fingerprint(payload),
+        "model_input": actual_input,
+        "input_hash": result.get("joint_input_hash") or fingerprint(actual_input),
         "candidate_count": len(CLASSIFIED_WORKFLOWS),
         "selected_model": None,
-        "assessment_count": len(payload["questions"]),
+        "assessment_count": len(actual_input["questions"]),
     }
     await progress("classification", "completed", flow)
     await progress("selection", "started")
     selection_started = perf_counter()
-    if model_select and body.mode == "live":
+    if joint_selection is not None:
+        selection = joint_selection
+    elif model_select and body.mode == "live":
         from app.gateway_model_pool import build_pool
 
         selection = build_pool(body.task, profile, data, rankings, exclusion, runtime)
@@ -561,7 +568,7 @@ async def run_classified_route(body, request, *, infer=None, emit=None, model_se
             "calibration": calibration["version"], "policy": SELECTOR_VERSION,
         })
     policy_ms = round(max(0, (perf_counter() - selection_started) * 1000 -
-                          (selection.get("decision_ms") or 0)), 3)
+                          (0 if joint_selection is not None else selection.get("decision_ms") or 0)), 3)
     chosen = next(
         (
             r
@@ -639,6 +646,7 @@ async def run_classified_route(body, request, *, infer=None, emit=None, model_se
             "policy_ms": policy_ms,
             "model_decision_ms": selection.get("decision_ms"),
             "receipt_ms": receipt_ms,
+            "shared_with_classification": joint_selection is not None,
         }
         if body.mode == "live"
         else None,
@@ -701,7 +709,7 @@ async def auto_execute(body: AutoExecute, request: Request):
             # Preserve the actual GPU decision audit; never re-run a deterministic ranker.
             selection.update({k: runtime.selection[k] for k in (
                 "decision_calls", "decision_model", "decision_ms", "stickiness", "reason",
-                "evaluated_configurations",
+                "evaluated_configurations", "decision_mode", "decision_rejection",
             ) if k in (runtime.selection or {})})
             runtime.selection = selection
     else:

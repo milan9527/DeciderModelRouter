@@ -1,0 +1,40 @@
+{
+  "python_full_suite_passed": 542,
+  "frontend_syntax": "passed",
+  "image_joint_module_sha256": "97cd728e58db0ed17053da6055fc6e52f44d9d4df4a220bf21aa52016929d890",
+  "gpu_health": [
+    {
+      "provider": "decider",
+      "http": 200,
+      "model": "strands-decider-2B-hobson-v19-vllm",
+      "status": "ok"
+    },
+    {
+      "provider": "liquid",
+      "http": 200,
+      "model": "LiquidAI/d1-2B",
+      "status": "ok"
+    },
+    {
+      "provider": "h2o",
+      "http": 200,
+      "model": "h2oai/h2o-lightning-4b",
+      "status": null
+    }
+  ],
+  "gateway_checks": 8,
+  "gateway_target_executions": 6,
+  "agent_turns": 4,
+  "agent_model_calls": 7,
+  "liquid_control_passes": 4,
+  "liquid_control_total": 4,
+  "h2o_quality_control_passes": 2,
+  "h2o_quality_control_total": 2,
+  "decider_quality_control_passes": 0,
+  "decider_quality_control_total": 2,
+  "limitations": [
+    "small-sample functional and performance checks; not full business accuracy",
+    "Decider large-candidate evidence control failed",
+    "Agent run retained one model and observed no cache hits"
+  ]
+}

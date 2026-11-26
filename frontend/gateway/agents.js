@@ -122,7 +122,7 @@ export class IndustryAgents {
           profile: s.profile, configuration_id: s.configuration_id,
           configuration_changed: s.configuration_changed, usage: s.usage,
         }, null, 2))}</pre></details></td>
-        <td>GPU 分类 ${this.ms(s.gpu_ms)}<br>GPU 选模 ${this.ms(s.model_decision_ms)}（${s.model_decision_calls || 0} 次）<br>目标 ${this.ms(s.target_ms)}<small>缓存读 ${s.cache?.read_tokens || 0}</small></td>
+        <td>${s.decision_mode === "joint" ? `联合决策 ${this.ms(s.model_decision_ms)}（${s.model_decision_calls || 0} 次请求）<small>含 GPU 往返 ${this.ms(s.gpu_ms)}，不重复相加</small>` : `GPU 分类 ${this.ms(s.gpu_ms)}<br>GPU 选模 ${this.ms(s.model_decision_ms)}（${s.model_decision_calls || 0} 次）`}<br>目标 ${this.ms(s.target_ms)}<small>缓存读 ${s.cache?.read_tokens || 0}</small></td>
         <td>${this.usd(s.reference_cost_usd)}<small>缓存计价未知时不估算折扣</small></td></tr>`).join("") ||
         '<tr><td colspan="5">等待AgentCore启动与第一次模型调用…</td></tr>'}</tbody></table></div>
       <details class="agent-tools" open><summary>工具过程与业务依据</summary>${events.filter((e) => e.type === "tool_result").map((e) =>

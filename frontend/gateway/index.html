@@ -60,7 +60,7 @@
         <div class="sidebar-bottom">
           <span class="tiny">ROUTING ARCHITECTURE</span>
           <p>
-            GPU 决策服务<br /><i>↓</i> 确定性选模策略<br /><i>↓</i> Amazon
+            GPU 联合决策<br /><i>↓</i> 评测与约束校验<br /><i>↓</i> Amazon
             Bedrock
           </p>
           <div class="sidebar-rule"></div>
@@ -332,8 +332,7 @@
                       </div>
                       <h3>让任务决定模型</h3>
                       <p>
-                        一次 GPU 分类，评估七项任务属性。<br />结合能力证据、费用和约束选择
-                        Bedrock 配置。
+                        一次 GPU 请求，同时判断任务需求，<br />依据评测、费用和约束选择 Bedrock 配置。
                       </p>
                     </div>
                   </div>

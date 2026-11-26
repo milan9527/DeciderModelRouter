@@ -435,6 +435,7 @@ async def model_step(body: ModelStep, request: Request):
                    "selection_reason": selection["selection"]["reason"],
                    "model_decision_ms": selection["selection"].get("decision_ms"),
                    "model_decision_calls": len(selection["selection"].get("decision_calls", [])),
+                   "decision_mode": selection["selection"].get("decision_mode"),
                    "measurement_version": selection["selection"].get("measurement_version"),
                    "gpu_ms": decision["timings"]["upstream_ms"], "target_ms": output["backend_total_ms"],
                    "usage": output["usage"], "cache": output["cache"],

@@ -93,7 +93,7 @@ class GatewayDecisionService:
             "message": "GPU 决策服务可连接" if connected else "GPU 决策服务未就绪或不可连接",
         }
 
-    async def infer(self, body, request, payload, *, selection=False):
+    async def infer(self, body, request, payload, *, selection=False, joint=False):
         config = self.service(body.provider)
         started = perf_counter()
         try:
@@ -116,11 +116,15 @@ class GatewayDecisionService:
             result = response.json()
             if result.get("model") != config["model"]:
                 raise ValueError("Unexpected classifier identity")
-            if selection:
+            if selection or joint:
                 answer = result["answers"]["action"]["choice"]
                 if answer not in payload["questions"]["action"]["criteria"]:
                     raise ValueError("GPU returned a model outside the supplied candidates")
                 answers = {"action": {"choice": answer}}
+                if joint:
+                    from app.routing_profile import QUESTIONS
+                    profile = parse_profile({"answers": {k: result["answers"][k] for k in QUESTIONS}})
+                    answers.update({key: {"choice": value} for key, value in profile.model_dump().items()})
             else:
                 profile = parse_profile(result)
                 answers = {key: {"choice": value} for key, value in profile.model_dump().items()}
@@ -138,6 +142,9 @@ class GatewayDecisionService:
                 type(latency) not in (int, float) or not math.isfinite(latency) or latency < 0
             ):
                 raise ValueError("Invalid service timing")
+            passes = result.get("forward_passes")
+            if passes is not None and (type(passes) is not int or passes < 1):
+                raise ValueError("Invalid forward-pass count")
             # A service-reported latency may include its own queue/tokenization. Never label it
             # CUDA kernel time, TTFT, or a second additive stage alongside the HTTP round trip.
             return {
@@ -152,6 +159,7 @@ class GatewayDecisionService:
                     "validation_ms": round((perf_counter() - returned_at) * 1000, 3),
                     "service_reported_ms": latency,
                     "backend_total_ms": round((perf_counter() - started) * 1000, 3),
+                    "forward_passes": passes,
                 },
             }
         except (TimeoutError, httpx.TimeoutException) as exc:
@@ -167,3 +175,8 @@ class GatewayDecisionService:
         from app.gateway_model_decision import select_all
 
         return await select_all(self, body, request, pool)
+
+    async def assess(self, body, request, payload, catalog, rankings, exclusion):
+        from app.gateway_joint_decision import assess_and_select
+
+        return await assess_and_select(self, body, request, payload, catalog, rankings, exclusion)

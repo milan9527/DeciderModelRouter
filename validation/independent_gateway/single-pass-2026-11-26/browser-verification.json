@@ -1,0 +1,20 @@
+{
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "root_redirect": false,
+  "browser_errors": [],
+  "gpu_requests": 1,
+  "checks": [
+    "real login",
+    "one joint request",
+    "one measured forward pass",
+    "shared timing explanation",
+    "persisted history",
+    "mobile no page overflow"
+  ],
+  "final_frontend_checks": [
+    "joint-decision sidebar",
+    "Decider comparison label",
+    "stored joint decision details",
+    "no new model invocation"
+  ]
+}

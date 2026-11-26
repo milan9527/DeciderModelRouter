@@ -1,0 +1,132 @@
+{
+  "verified_at": "2026-11-26T06:03:33.680606+00:00",
+  "ecs": {
+    "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:23",
+    "running": 1,
+    "health": [
+      "HEALTHY"
+    ],
+    "image": "sha256:056cfbc1218f4663daf23a2815dc070adee6e00000925185f40e048120745599"
+  },
+  "original_service": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:36",
+  "gpus": [
+    {
+      "id": "i-0ae7eb0abcb815af3",
+      "type": "g6.xlarge",
+      "state": "running",
+      "launch_time": "2026-11-24T10:16:20+00:00"
+    },
+    {
+      "id": "i-01180cf02d12e6e31",
+      "type": "g5.xlarge",
+      "state": "running",
+      "launch_time": "2026-11-24T15:32:58+00:00"
+    }
+  ],
+  "agent": {
+    "agentRuntimeId": "decider_model_router_industry-Fg8vWeEOIs",
+    "agentRuntimeVersion": "3",
+    "status": "READY"
+  },
+  "public": {
+    "root_status": 200,
+    "redirect": false,
+    "s3_anonymous_status": 403,
+    "assets": [
+      {
+        "key": "gateway/gateway.css",
+        "sha256": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67",
+        "matches_local": true
+      },
+      {
+        "key": "gateway/workspace.js",
+        "sha256": "b0125eca3be1f6f5646f6ac85737821d13d438b8902d3f9e4dacf02c694b9634",
+        "matches_local": true
+      },
+      {
+        "key": "gateway/agents.js",
+        "sha256": "0028ef3002f08c9443fa0ae43dd583ce151e516887f677c3f0eb7f31085ea9c4",
+        "matches_local": true
+      },
+      {
+        "key": "gateway/gateway.js",
+        "sha256": "a6ac22807b6c4b705565210bf46485c4d68bb5c533cf33c42e4c4e6ad2cb7de5",
+        "matches_local": true
+      },
+      {
+        "key": "gateway/mark.svg",
+        "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+        "matches_local": true
+      },
+      {
+        "key": "gateway/index.html",
+        "sha256": "9338d791e21679526afcf871d27515cc3c473a4d694b08055b66c098f482f732",
+        "matches_local": true
+      }
+    ]
+  },
+  "cloudfront": {
+    "id": "E3OCAAF3NQ1LYX",
+    "status": "Deployed",
+    "invalidation_status": "Completed",
+    "release": {
+      "release_id": "1ac936cc31904529ac2b4f5a37d8d99d",
+      "resources": {
+        "cluster": "decider-model-router",
+        "service": "decider-model-router",
+        "bucket": "decider-model-router-632930644527-us-east-1",
+        "distribution_id": "E3OCAAF3NQ1LYX",
+        "region": "us-east-1"
+      },
+      "previous_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:23",
+      "new_task_definition": null,
+      "phase": "complete",
+      "objects": [
+        {
+          "key": "gateway/gateway.css",
+          "sha256": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67",
+          "size": 26651,
+          "previous_version": "C48t5E.V7UjixUD8tx92AK6KpU_tWI6X",
+          "version": "69lc4EJb3wNhre3hv70nsxfOBq6gTBHy"
+        },
+        {
+          "key": "gateway/workspace.js",
+          "sha256": "b0125eca3be1f6f5646f6ac85737821d13d438b8902d3f9e4dacf02c694b9634",
+          "size": 40002,
+          "previous_version": "OkXJofXpgpnZedubM_VSLqxBzZVK9n4U",
+          "version": "2sQDyYKAcyyE8Kpa19Y9G1UOWeAqt5bu"
+        },
+        {
+          "key": "gateway/agents.js",
+          "sha256": "0028ef3002f08c9443fa0ae43dd583ce151e516887f677c3f0eb7f31085ea9c4",
+          "size": 11562,
+          "previous_version": "Y5snN6.xNGEToueK_c0frqol5EU4.ajk",
+          "version": "R8B9wTTRVVscSnohloU03WLQdnf0yT8t"
+        },
+        {
+          "key": "gateway/gateway.js",
+          "sha256": "a6ac22807b6c4b705565210bf46485c4d68bb5c533cf33c42e4c4e6ad2cb7de5",
+          "size": 46590,
+          "previous_version": "Pz26jXz22unlBQdqytLFuPDB6WTHQX_t",
+          "version": "INuGXwDVjViL4PsgNrxj_8jbCzQXwtsk"
+        },
+        {
+          "key": "gateway/mark.svg",
+          "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+          "size": 276,
+          "previous_version": "4rKiX4oA5sKJyNEWNSqrW1H4RwWlEi6e",
+          "version": "ENX_907eD11m8b6oBYnuuEWFqOykooIS"
+        },
+        {
+          "key": "gateway/index.html",
+          "sha256": "9338d791e21679526afcf871d27515cc3c473a4d694b08055b66c098f482f732",
+          "size": 35444,
+          "previous_version": "ebeiI6bqDVV0r1_RTKWDbxEIqekJvZXW",
+          "version": "Hf5MT4vPUCBdpoqUFA6HpIFem6xL1lEi"
+        }
+      ],
+      "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+      "invalidation_id": "ICLIZWDO9FWSSJ3YT77D9C11OP"
+    }
+  }
+}

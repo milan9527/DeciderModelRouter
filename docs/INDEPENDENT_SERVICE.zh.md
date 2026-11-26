@@ -12,7 +12,7 @@
 
 [SVG 矢量图](diagrams/decider-model-router-aws.zh.svg) · [高清 PNG（3840 × 3060）](diagrams/decider-model-router-aws.zh.png) · [生成脚本](../scripts/generate_gateway_architecture.py) · [AWS 官方图标来源](diagrams/aws-icons/README.md)
 
-图中按2026-11-25部署状态绘制：CloudFront位于区域边界外，ALB、ECS和GPU位于专用VPC的私有子网；S3、DynamoDB和Bedrock作为托管服务单独展示。私有子网框是逻辑汇总，当前为一个API任务和一台GPU；图中省略网络出口与运维路径。
+图中按2026-11-26部署状态绘制：CloudFront位于区域边界外，ALB、ECS和GPU位于专用VPC的私有子网；S3、DynamoDB和Bedrock作为托管服务单独展示。私有子网框是逻辑汇总，当前为一个API任务和一台GPU；图中省略网络出口与运维路径。
 
 <details>
 <summary>展开 Mermaid 关系图</summary>
@@ -33,9 +33,9 @@ flowchart TB
 
 </details>
 
-内网ALB、ECS和GPU均在专用VPC中。图中只有一个独立API服务；分类传输、选型规则和目标适配器都是该服务中的模块。GPU运行独立HTTP服务，每次请求只使用选定的一种决策模型，先分类，再分组选择目标型号，默认Liquid d1-2B；不会同时让三个分类器投票。浏览器通过CloudFront调用API，GPU没有浏览器直连入口。
+内网ALB、ECS和GPU均在专用VPC中。图中只有一个独立API服务；分类传输、选型规则和目标适配器都是该服务中的模块。GPU运行独立HTTP服务，每次请求只使用选定的一种决策模型，一次请求同时判断任务属性并选择目标型号，默认Liquid d1-2B；不会同时让三个分类器投票。浏览器通过CloudFront调用API，GPU没有浏览器直连入口。
 
-GPU接收任务文字、附件类型、输出要求及最近两轮对话的限长文本片段，选模阶段另接收全部合格候选的型号、评测与价格；不接收图片/音视频字节、文件地址或测试题标准答案。目标模型接收保留的完整角色消息和真实附件。媒体桶通过登录后的API访问，与由OAC读取的静态前端桶分开。
+GPU接收任务文字、附件类型、输出要求及最近两轮对话的限长文本片段，同次请求接收全部可能适用候选的型号、评测与价格；不接收图片/音视频字节、文件地址或测试题标准答案。目标模型接收保留的完整角色消息和真实附件。媒体桶通过登录后的API访问，与由OAC读取的静态前端桶分开。
 
 用于选型的目录、Bedrock直接实测、榜单和校准状态来自部署镜像中的版本化快照。DynamoDB里的87项效果评测及人工/助手评审用于展示、追溯和离线分析，当前不会自动更新这些快照，也不会自动训练GPU模型。证据流转与选型步骤见[决策流程](BEDROCK_CLASSIFIED_ROUTING.zh.md#决策流程总览)和[评测证据如何进入选型](BEDROCK_CLASSIFIED_ROUTING.zh.md#评测证据如何进入选型)。
 
@@ -49,7 +49,7 @@ GPU接收任务文字、附件类型、输出要求及最近两轮对话的限�
 
 ## 路由与模板
 
-GPU先识别七项任务属性，后端应用能力、目录、配额和用户硬约束；全部合格配置再交给GPU读取实测、公开参考、费用与延迟并选择。自动模式不按榜单批次排除型号，媒体也由GPU依据专项评测选择。只执行Bedrock目录中的目标标识。[决策流程与证据](BEDROCK_CLASSIFIED_ROUTING.zh.md)。
+后端先按明确的输入输出、目录、配额和用户硬约束枚举所有可能适用的配置；GPU在一次请求中同时判断七项任务属性，并读取全部候选的实测、公开参考、费用与延迟后选择。自动模式不按榜单批次排除型号，媒体也由GPU依据专项评测选择。只执行Bedrock目录中的目标标识。[决策流程与证据](BEDROCK_CLASSIFIED_ROUTING.zh.md)。
 
 27个工作台模板包含6个简单通用场景（日常知识、自由写作、澄清需求、生活建议、中英翻译、会议摘要）、12个行业任务以及检索、多模态场景。通用场景显示在前，可按类别筛选；行业模板提供业务背景、材料和验收说明，各模板带有Token预算。“行业Agent”另提供12个行业各4轮连续任务，运行在独立AgentCore Runtime V2，使用Model Router作为模型入口。[架构与调用说明](INDUSTRY_AGENTS.zh.md)。模板不参与分类匹配；登录后任务框为空，`hi`等任意文字仍直接进入一次真实GPU属性判断。分类使用`task-profile-v2`与12个通用能力类别，旧分类参考集单独冻结。工作台代码模板显式使用期望8192、最大16384 Token，可在运行前调整。
 
@@ -64,22 +64,22 @@ sequenceDiagram
     participant UI as 浏览器
     participant API as ECS 网关 API
     participant DB as DynamoDB
-    participant GPU as 选定的 GPU 分类服务
+    participant GPU as 选定的 GPU 决策服务
     participant SEL as API 内的选型模块
     participant BR as Bedrock 目标模型
     UI->>API: POST /api/gateway/runs：任务、版本、是否执行目标
     API->>API: 检查登录、版本、附件引用和配置
     API->>DB: 创建运行记录；保存 accepted 事件
     API-->>UI: accepted
-    API->>GPU: 请求文字、附件类型、输出要求、七项分类说明
-    GPU-->>API: 任务属性及分类耗时
+    API->>SEL: 明确输入输出、目录、评测与用户硬约束
+    SEL-->>API: 全部可能适用候选与排除原因
+    API->>GPU: 请求文字、历史片段、七项任务问题、全部候选评测及选模问题
+    GPU-->>API: 同时返回任务属性和目标配置；一次请求的耗时与前向次数
     API->>API: 校验七项属性；按明确输出要求和实际附件调整流程
     API->>DB: 保存 classification 事件和原始分类
     API-->>UI: classification 事件
-    API->>SEL: 任务属性、目录、评测与校准快照、用户约束
-    SEL-->>API: 全部合格候选与排除原因
-    API->>GPU: 分组候选、实测与外部证据、费用、上次配置
-    GPU-->>API: 选出的目标配置与各次选模耗时
+    API->>SEL: 复核目标配置与任务属性、能力和预算约束一致
+    SEL-->>API: 可执行配置或明确拒绝，不重新排名
     API->>DB: 保存 selection 和 route 事件
     API-->>UI: selection 和 route 事件
     alt 无候选
@@ -112,7 +112,7 @@ sequenceDiagram
 | 文档重排 | Cohere Rerank | 查询和最多 20 条候选 → 排序及相关度 |
 | 图片向量 | Cohere Embed v4 | 单张图片 → 向量维度和预览 |
 
-目录能力、账户可用性、调用端点、实际输入/输出模态与已接入适配器共同过滤。媒体候选不套用文本 LiveBench 分数；目前按稳定型号顺序选型，质量、P95 和完整媒体费用没有测量时显示未知。指定无法核验的费用、成功率、延迟或上下文硬约束会阻止选择。模型价格档位不能解释为已经验证的媒体成本优化。
+目录能力、账户可用性、调用端点、实际输入/输出模态与已接入适配器共同过滤。媒体候选由GPU根据对应的专项评测选择，不套用文本 LiveBench 分数；质量、P95 和完整媒体费用没有测量时显示未知。指定无法核验的费用、成功率、延迟或上下文硬约束会阻止选择。模型价格档位不能解释为已经验证的媒体成本优化。
 
 截至 2026-11-25，当前 `us-east-1` 目录没有可调用的纯文生图或视频生成型号；对应入口给出无可用模型，不改用视频理解模型冒充生成。已保留 Canvas/Titan 图片与 Nova Reel 异步视频适配器，后续需更新真实目录并验收后才能使用。异步视频完成由单独任务状态表示，原始运行保留提交时状态。
 
@@ -171,6 +171,8 @@ CLI 的 `reset` 属于运维恢复操作，会重新启用账户。日常重置�
 ## 直接 AWS 部署
 
 入口脚本只调用 AWS SDK，不创建 CloudFormation 栈。`resources.json` 是本次独立部署的恢复检查点，必须使用同一目录恢复中断的创建步骤；不要混用旧项目的 `.deployment/outputs.json`。
+
+已有独立GPU的联合决策升级脚本为 `python -m deployment.enable_joint_decision --output .deployment/joint-gpu-update`，固定作用于 `i-01180cf02d12e6e31`，会备份并重启该实例上的服务，不创建EC2。当前配置：Decider窗口24576 Token、H2O窗口16384 Token与固定1GiB KV缓存；Liquid保持原生模型窗口，每次请求结束后释放未使用的CUDA缓存。启动顺序为Decider、Liquid、H2O。升级后需等待三个健康接口就绪，并验证完整候选请求，再发布ECS镜像和前端。
 
 ```bash
 # 1. 建立专用网络、存储、身份、镜像、ALB 与 CloudFront

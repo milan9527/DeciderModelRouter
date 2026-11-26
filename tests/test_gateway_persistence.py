@@ -220,6 +220,19 @@ def test_replays_excluded_unknown_cost_and_reviews_kept_separate(client):
     assert routing.load_rankings()["version"]
 
 
+def test_joint_latency_does_not_mix_old_selection_or_replays(client, monkeypatch):
+    h = gateway_main.app.state.history
+    monkeypatch.setattr(h, "runs", lambda *args, **kwargs: {"items": [
+        {"mode": "live", "status": "selected", "decision_mode": "joint", "model_decision_ms": 1000},
+        {"mode": "live", "status": "selected", "model_decision_ms": 5000},
+        {"mode": "replay", "status": "selected", "decision_mode": "joint", "model_decision_ms": 1},
+    ], "next_cursor": None})
+    stats = client.get("/api/gateway/performance").json()
+    assert stats["joint_decision_samples"] == stats["legacy_selection_samples"] == 1
+    assert stats["joint_decision_p50_ms"] == stats["joint_decision_p95_ms"] == 1000
+    assert stats["legacy_selection_p50_ms"] == stats["legacy_selection_p95_ms"] == 5000
+
+
 def test_database_failure_stops_before_inference(client, monkeypatch):
     h = gateway_main.app.state.history
     monkeypatch.setattr(h, "begin", MagicMock(side_effect=RuntimeError("database unavailable")))

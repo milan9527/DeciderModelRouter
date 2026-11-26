@@ -19,7 +19,7 @@
   <g font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif" fill="#232f3e">
     <text x="40" y="64" font-size="38" fill="#232f3e" font-weight="700" text-anchor="start">DeciderModelRouter</text>
     <text x="40" y="105" font-size="25" fill="#526171" font-weight="400" text-anchor="start">独立模型网关 · AWS 部署架构</text>
-    <text x="1875" y="65" font-size="20" fill="#526171" font-weight="400" text-anchor="end">部署状态  2026-11-25</text>
+    <text x="1875" y="65" font-size="20" fill="#526171" font-weight="400" text-anchor="end">部署状态  2026-11-26</text>
     <text x="1875" y="103" font-size="21" fill="#526171" font-weight="400" text-anchor="end">静态前端 / API / GPU 分离</text>
     <path d="M40,132 H1880" stroke="#ff9900" stroke-width="4" />
     <rect x="275" y="160" width="1605" height="1115" stroke="#879196" fill="white" stroke-width="1.6" />
@@ -94,7 +94,7 @@
     <polyline points="52,951 89,951" fill="none" stroke="#526171" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-request)" />
     <text x="101" y="958" font-size="18" fill="#526171" font-weight="400" text-anchor="start">入口与静态资源</text>
     <polyline points="52,997 89,997" fill="none" stroke="#b85a00" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-gpu)" />
-    <text x="101" y="1004" font-size="18" fill="#526171" font-weight="400" text-anchor="start">GPU 分类与选模</text>
+    <text x="101" y="1004" font-size="18" fill="#526171" font-weight="400" text-anchor="start">GPU 联合决策</text>
     <polyline points="52,1043 89,1043" fill="none" stroke="#693bc5" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-model)" />
     <text x="101" y="1050" font-size="18" fill="#526171" font-weight="400" text-anchor="start">目标模型执行</text>
     <polyline points="52,1089 89,1089" fill="none" stroke="#245da8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-data)" />
@@ -159,7 +159,7 @@
     <text x="768" y="798" font-size="19" fill="#526171" font-weight="400" text-anchor="start">Bedrock 目录 / 榜单 / 价格 / 校准配置</text>
     <polyline points="940,850 940,955" fill="none" stroke="#b85a00" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-gpu)" marker-start="url(#arrow-gpu)" />
     <text x="962" y="891" font-size="20" fill="#b85a00" font-weight="400" text-anchor="start">私网 HTTP + Bearer</text>
-    <text x="962" y="924" font-size="20" fill="#b85a00" font-weight="400" text-anchor="start">任务描述 ⇄ 七项属性</text>
+    <text x="962" y="924" font-size="20" fill="#b85a00" font-weight="400" text-anchor="start">任务与证据 ⇄ 联合决策</text>
     <rect x="730" y="955" width="500" height="165" stroke="#c7d0d9" fill="white" stroke-width="1.6" />
     <svg width="64" height="64" viewBox="0 0 80 80" version="1.1" x="750" y="977" aria-hidden="true">
       <title>Icon-Architecture/64/Arch_Amazon-EC2_64</title>
@@ -173,7 +173,7 @@
     <text x="833" y="1002" font-size="24" fill="#232f3e" font-weight="600" text-anchor="start">Amazon EC2 · g5.xlarge</text>
     <text x="833" y="1036" font-size="20" fill="#526171" font-weight="400" text-anchor="start">A10G 24GB · 独立 GPU 服务</text>
     <text x="833" y="1065" font-size="20" fill="#526171" font-weight="400" text-anchor="start">Decider / Liquid / H2O</text>
-    <text x="833" y="1094" font-size="20" fill="#526171" font-weight="400" text-anchor="start">分类与证据选模 · 默认 Liquid</text>
+    <text x="833" y="1094" font-size="20" fill="#526171" font-weight="400" text-anchor="start">一次联合决策 · 默认 Liquid</text>
     <text x="390" y="1002" font-size="21" fill="#232f3e" font-weight="600" text-anchor="start">GPU 根据评测选择模型</text>
     <text x="390" y="1038" font-size="19" fill="#526171" font-weight="400" text-anchor="start">输入：任务、候选、实测与价格</text>
     <text x="390" y="1072" font-size="19" fill="#526171" font-weight="400" text-anchor="start">不传媒体字节或测试标准答案</text>
@@ -234,11 +234,11 @@
     <polyline points="389,1385 409,1385" fill="none" stroke="#526171" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-request)" />
     <rect x="416" y="1353" width="344" height="64" stroke="#d8dee6" fill="#f7f8fa" stroke-width="1.6" />
     <text x="432" y="1393" font-size="23" fill="#b85a00" font-weight="600" text-anchor="start">02</text>
-    <text x="476" y="1393" font-size="22" fill="#232f3e" font-weight="500" text-anchor="start">GPU 返回七项属性</text>
+    <text x="476" y="1393" font-size="22" fill="#232f3e" font-weight="500" text-anchor="start">候选与评测准备</text>
     <polyline points="765,1385 785,1385" fill="none" stroke="#526171" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-request)" />
     <rect x="792" y="1353" width="344" height="64" stroke="#d8dee6" fill="#f7f8fa" stroke-width="1.6" />
     <text x="808" y="1393" font-size="23" fill="#b85a00" font-weight="600" text-anchor="start">03</text>
-    <text x="852" y="1393" font-size="22" fill="#232f3e" font-weight="500" text-anchor="start">GPU 读取证据选模</text>
+    <text x="852" y="1393" font-size="22" fill="#232f3e" font-weight="500" text-anchor="start">GPU 一次联合决策</text>
     <polyline points="1141,1385 1161,1385" fill="none" stroke="#526171" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-request)" />
     <rect x="1168" y="1353" width="344" height="64" stroke="#d8dee6" fill="#f7f8fa" stroke-width="1.6" />
     <text x="1184" y="1393" font-size="23" fill="#b85a00" font-weight="600" text-anchor="start">04</text>

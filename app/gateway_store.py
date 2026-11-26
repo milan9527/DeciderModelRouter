@@ -360,6 +360,8 @@ class History:
                 stickiness=data.get("selection", {}).get("stickiness"),
                 model_decision_ms=data.get("selection", {}).get("decision_ms"),
                 model_decision_calls=len(data.get("selection", {}).get("decision_calls", [])),
+                decision_mode=data.get("selection", {}).get("decision_mode"),
+                decision_forward_passes=(data.get("selection", {}).get("decision_calls") or [{}])[0].get("timings", {}).get("forward_passes"),
                 model_selection_source=data.get("source"),
             )
         if event["type"] == "route":
@@ -453,6 +455,13 @@ class History:
             if not cursor:
                 break
         live = [r for r in rows if r["mode"] == "live"]
+        decision_stats = {}
+        for prefix, joint in (("joint_decision", True), ("legacy_selection", False)):
+            samples = [r["model_decision_ms"] for r in live if
+                       (r.get("decision_mode") == "joint") == joint and r.get("model_decision_ms") is not None]
+            decision_stats.update({prefix + "_p50_ms": percentile(samples, 0.5),
+                                   prefix + "_p95_ms": percentile(samples, 0.95),
+                                   prefix + "_samples": len(samples)})
         costs = [Decimal(r["reference_cost"]) for r in live if r.get("reference_cost") is not None]
         reviewed = [r for r in live if r.get("review")]
         groups = {}
@@ -466,6 +475,7 @@ class History:
             if r.get("target_ms") is not None:
                 group["times"].append(r["target_ms"])
         return {
+            **decision_stats,
             "days": days,
             "scope": "selected_session" if session_id else "all_user_sessions",
             "total_records": len(rows),

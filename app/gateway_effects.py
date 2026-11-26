@@ -163,7 +163,7 @@ class EffectEvaluations(Evaluations):
                 "planned_gpu_calls": len([c for c in cases if not c["gap"]]) * len(body.providers),
                 "started_gpu_calls": 0, "target_model_calls": 0, "reused_observations": 0,
                 "started_model_selection_calls": 0, "total_gpu_calls": 0,
-                "gpu_call_accounting": "classification_and_selection_v1",
+                "gpu_call_accounting": "joint_decision_v2",
                 "recorded_rows": 0, "summary": [],
                 "note": (
                     "开发回归集；缺口和待人工评审单独计数。低价/高能力基线使用同一实际分类及原规则策略，"
@@ -245,11 +245,17 @@ class EffectEvaluations(Evaluations):
         job["started_gpu_calls"] += 1
         await run_in_threadpool(self.save, user, job)
 
-        async def counted_infer(body, request, payload, *, selection=False):
+        async def counted_infer(body, request, payload, *, selection=False, joint=False):
             job["total_gpu_calls"] += 1
-            job["started_model_selection_calls"] += int(selection)
+            job["started_model_selection_calls"] += int(selection or joint)
             await run_in_threadpool(self.save, user, job)
-            return await self.decision.infer(body, request, payload, selection=selection)
+            return await self.decision.infer(body, request, payload, selection=selection, joint=joint)
+
+        async def counted_assess(body, request, payload, catalog, rankings, exclusion):
+            from app.gateway_joint_decision import assess_and_select
+
+            return await assess_and_select(SimpleNamespace(infer=counted_infer), body, request,
+                                           payload, catalog, rankings, exclusion)
 
         async def counted_select(body, request, pool):
             from app.gateway_model_decision import select_all
@@ -262,7 +268,7 @@ class EffectEvaluations(Evaluations):
                 **{k: job[k] for k in ("catalog_version", "ranking_version", "policy_version")},
             )
             route = await routing.run_classified_route(body, request, infer=counted_infer,
-                                                      model_select=counted_select)
+                                                      model_select=counted_select, joint_decide=counted_assess)
             flow, step = route["steps"]
             selection = step["selection"]
             candidate = next((c for c in selection["candidates"] if c["candidate_id"] == step["choice"]), None)
