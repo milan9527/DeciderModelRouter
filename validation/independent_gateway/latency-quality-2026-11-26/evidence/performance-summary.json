@@ -1,0 +1,134 @@
+{
+  "input_count": 92,
+  "decisions": 368,
+  "matching_decisions": 366,
+  "differences": [
+    {
+      "input": "heldout-saas-1",
+      "field": "difficulty",
+      "eager": {
+        "choice": "moderate"
+      },
+      "compiled": {
+        "choice": "simple"
+      }
+    },
+    {
+      "input": "new-code-overlap-1",
+      "field": "languages",
+      "eager": {
+        "choice": "zh"
+      },
+      "compiled": {
+        "choice": "other"
+      }
+    }
+  ],
+  "same_input_token_counts": true,
+  "timing": "service wall time, includes tokenizer/inference/allocator; private comparison process; H2O paused in both arms; no target execution",
+  "warmup": [
+    {
+      "arm": "eager",
+      "input": "warmup-selection",
+      "ms": 3959.4443819951266
+    },
+    {
+      "arm": "compiled",
+      "input": "warmup-selection",
+      "ms": 66747.21779199899
+    },
+    {
+      "arm": "eager",
+      "input": "warmup-assessment",
+      "ms": 125.3176589962095
+    },
+    {
+      "arm": "compiled",
+      "input": "warmup-assessment",
+      "ms": 71598.28980101156
+    }
+  ],
+  "assessment": {
+    "eager": {
+      "count": 46,
+      "p50_ms": 103.129,
+      "p95_ms": 246.677,
+      "max_ms": 299.105
+    },
+    "compiled": {
+      "count": 46,
+      "p50_ms": 75.633,
+      "p95_ms": 180.438,
+      "max_ms": 218.463
+    },
+    "p50_ms_reduction_percent": 26.66,
+    "p95_ms_reduction_percent": 26.85
+  },
+  "selection": {
+    "eager": {
+      "count": 46,
+      "p50_ms": 1061.057,
+      "p95_ms": 1159.035,
+      "max_ms": 1175.038
+    },
+    "compiled": {
+      "count": 46,
+      "p50_ms": 783.732,
+      "p95_ms": 866.8,
+      "max_ms": 871.262
+    },
+    "p50_ms_reduction_percent": 26.14,
+    "p95_ms_reduction_percent": 25.21
+  },
+  "sum_of_two_service_calls": {
+    "eager": {
+      "count": 46,
+      "p50_ms": 1165.055,
+      "p95_ms": 1298.439,
+      "max_ms": 1430.553
+    },
+    "compiled": {
+      "count": 46,
+      "p50_ms": 859.241,
+      "p95_ms": 962.913,
+      "max_ms": 1058.863
+    }
+  },
+  "peak_allocated_bytes": {
+    "eager": 4906867200,
+    "compiled": 4574103040
+  },
+  "production_hybrid": {
+    "assessment": "unchanged eager BF16",
+    "selection": "compiled BF16 with precision casts",
+    "selected_model_agreement": {
+      "passed": 46,
+      "total": 46,
+      "scope": "46 formal frozen route selections; excludes additional warmup selection"
+    },
+    "service_sum": {
+      "count": 46,
+      "p50_ms": 888.536,
+      "p95_ms": 994.664,
+      "max_ms": 1139.504
+    },
+    "scope": "component sums from alternating same-input measurements; live pipeline tested separately",
+    "selected_model_agreement_including_extra_warmup": {
+      "passed": 46,
+      "total": 47,
+      "percent": 97.87,
+      "difference": {
+        "input": "warmup-selection (manufacturing, max_output_tokens=4096)",
+        "eager": "anthropic.claude-opus-5-5",
+        "compiled": "minimax.minimax-m2.1"
+      },
+      "target_followup": {
+        "eager": "incomplete (max_tokens)",
+        "compiled": "incomplete (max_tokens)",
+        "acceptance": "both fail; diagnostic separate from 44-item suite"
+      },
+      "limit": "Finite sample agreement, not a bitwise guarantee or task accuracy."
+    }
+  },
+  "experiment_mode": "both stages compiled offline; final production uses eager assessment and compiled selection"
+}

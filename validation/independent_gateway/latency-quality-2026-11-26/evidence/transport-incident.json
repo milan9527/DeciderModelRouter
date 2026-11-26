@@ -1,0 +1,7 @@
+{
+  "arm": "optimized-transport-failed",
+  "reason": "Local SSM port forwarding session was absent; all attempts failed before successful GPU response or target model execution. Preserved separately; replacement full batch follows explicit connection health check.",
+  "planned": 44,
+  "successful_gpu_responses": 0,
+  "target_calls": 0
+}

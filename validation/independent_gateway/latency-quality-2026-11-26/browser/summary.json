@@ -1,0 +1,31 @@
+{
+  "errors": [],
+  "scope": "real catalog UI and one route-only GPU request; no target inference",
+  "latest_validation_displayed": true,
+  "sol_public_score_displayed": true,
+  "source_links": [
+    "https://livebench.ai/#/release/20261106",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers"
+  ],
+  "mobile_body_overflow": false,
+  "run_id": "64fc04ed28ac5bcd08bd32b8",
+  "model_id": "minimax.minimax-m2.1",
+  "candidate_public_evidence_displayed": true,
+  "public_benchmark_version": "90ec5a0626a24cf809474d44",
+  "hashes": {
+    "index.html": "04996d19e850e262f95b3807826eceb3d749a1c8644e2d3e10986fb0b4a8d7f3",
+    "gateway.js": "6a4e1035f0ec48ec97b5dced2074423a675ec949431209f46c076f9657f2ea3a",
+    "workspace.js": "be50a5d19d0931d404697047a1da83f0ff7b1d26d25cb8bd51ea9328d18399e5",
+    "agents.js": "8be2c8702a984a49d3f749143341b7ad77336704bade10825aad6a70f5b03668",
+    "gateway.css": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67"
+  }
+}

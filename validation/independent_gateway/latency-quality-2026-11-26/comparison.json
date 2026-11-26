@@ -1,0 +1,139 @@
+{
+  "quality": {
+    "baseline": {
+      "planned": 44,
+      "passed": 31,
+      "pass_percent": 70.45,
+      "content_passed": 39,
+      "content_percent": 88.64,
+      "status_counts": {
+        "pass": 31,
+        "fail": 13
+      },
+      "completed": 44,
+      "wilson_95_percent": [
+        55.78,
+        81.84
+      ]
+    },
+    "optimized": {
+      "planned": 44,
+      "passed": 30,
+      "pass_percent": 68.18,
+      "content_passed": 37,
+      "content_percent": 84.09,
+      "status_counts": {
+        "pass": 30,
+        "fail": 14
+      },
+      "completed": 44,
+      "wilson_95_percent": [
+        53.44,
+        80.0
+      ]
+    }
+  },
+  "quality_changes": [
+    {
+      "case_id": "refund",
+      "baseline": "fail",
+      "optimized": "pass",
+      "baseline_content": "fail",
+      "optimized_content": "pass"
+    },
+    {
+      "case_id": "video-caption",
+      "baseline": "pass",
+      "optimized": "fail",
+      "baseline_content": "pass",
+      "optimized_content": "fail"
+    },
+    {
+      "case_id": "new-code-allocate",
+      "baseline": "fail",
+      "optimized": "fail",
+      "baseline_content": "pass",
+      "optimized_content": "fail"
+    },
+    {
+      "case_id": "heldout-retail",
+      "baseline": "pass",
+      "optimized": "fail",
+      "baseline_content": "pass",
+      "optimized_content": "pass"
+    },
+    {
+      "case_id": "heldout-finance",
+      "baseline": "pass",
+      "optimized": "fail",
+      "baseline_content": "pass",
+      "optimized_content": "fail"
+    },
+    {
+      "case_id": "heldout-energy",
+      "baseline": "fail",
+      "optimized": "fail",
+      "baseline_content": "pass",
+      "optimized_content": "fail"
+    },
+    {
+      "case_id": "agent-finance-2",
+      "baseline": "fail",
+      "optimized": "pass",
+      "baseline_content": "fail",
+      "optimized_content": "pass"
+    }
+  ],
+  "timing": {
+    "baseline": {
+      "routes": 46,
+      "gpu_calls": 92,
+      "two_calls_one_forward_each": true,
+      "local_route": {
+        "count": 46,
+        "p50_ms": 1245.445,
+        "p95_ms": 2013.546
+      },
+      "service_assessment": {
+        "count": 46,
+        "p50_ms": 103.319,
+        "p95_ms": 257.108
+      },
+      "service_selection": {
+        "count": 46,
+        "p50_ms": 1062.056,
+        "p95_ms": 1639.042
+      }
+    },
+    "optimized": {
+      "routes": 46,
+      "gpu_calls": 92,
+      "two_calls_one_forward_each": true,
+      "local_route": {
+        "count": 46,
+        "p50_ms": 967.928,
+        "p95_ms": 1105.249
+      },
+      "service_assessment": {
+        "count": 46,
+        "p50_ms": 101.814,
+        "p95_ms": 243.098
+      },
+      "service_selection": {
+        "count": 46,
+        "p50_ms": 785.507,
+        "p95_ms": 866.748
+      }
+    }
+  },
+  "timing_scope": "local evaluation CPU + tunneled private HTTP, excludes evaluation queue and target generation; not ECS end-to-end",
+  "shared_route_steps": 46,
+  "model_changes": [
+    {
+      "case": "agent-finance-2-step-1",
+      "baseline": "openai.gpt-oss-20b-1:0",
+      "optimized": "openai.gpt-5.5"
+    }
+  ],
+  "agent_limit": "Fresh tool/answer histories can diverge between arms; exact-input replay is reported separately."
+}

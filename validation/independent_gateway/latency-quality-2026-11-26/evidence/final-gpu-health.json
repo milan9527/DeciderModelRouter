@@ -1,0 +1,86 @@
+{
+  "scope": "health and one two-choice inference on unchanged H2O/Decider; not quality evaluation",
+  "health": {
+    "18124": {
+      "status": "ok",
+      "resident": true,
+      "models": {
+        "liquid": true,
+        "h2o": true
+      },
+      "per_model_concurrency": 1,
+      "instance": "i-01180cf02d12e6e31"
+    },
+    "18801": {
+      "status": "ok",
+      "model": "LiquidAI/d1-2B",
+      "device": "cuda",
+      "dtype": "BF16",
+      "decision_mode": "native_multi_question",
+      "max_candidates": 256,
+      "inference_engine": "compiled_selection_eager_assessment_bf16",
+      "warmup_count": 95,
+      "warmup_ms": 109145.4,
+      "new_shapes": "eager_cuda",
+      "worker_precision_preserved": true
+    },
+    "8100": {
+      "status": "ok",
+      "engine": "vllm",
+      "model": "strands-decider-2B-hobson-v19-vllm",
+      "pending_requests": 0
+    }
+  },
+  "inference": {
+    "h2o": {
+      "model": "h2oai/h2o-lightning-4b",
+      "answers": {
+        "action": {
+          "type": "choice",
+          "choice": "heat",
+          "probabilities": {
+            "cool": 0.04170016455947366,
+            "heat": 0.9582998354405263
+          },
+          "confidence": 0.9165996708810527
+        }
+      },
+      "probability_source": "native",
+      "effort_used": {
+        "tier": "fast",
+        "passes_per_decision": 1
+      },
+      "usage": {
+        "input_tokens": 77,
+        "processed_input_tokens": 77,
+        "output_tokens": 1,
+        "latency_ms": 76.4
+      },
+      "attention_mode": "bidirectional",
+      "deployment": "FP8 W8A16 / Marlin · vLLM 0.30.0 · resident"
+    },
+    "decider": {
+      "model": "strands-decider-2B-hobson-v19-vllm",
+      "answers": {
+        "action": {
+          "type": "choice",
+          "choice": "heat",
+          "probabilities": {
+            "cool": 0.0096,
+            "heat": 0.9904
+          },
+          "confidence": 0.9809
+        }
+      },
+      "usage": {
+        "input_tokens": 60,
+        "output_tokens": 1
+      },
+      "latency_ms": 686.54
+    }
+  },
+  "source_sha256": {
+    "liquid_server.py": "8643ed47daf42a87f71a21f150b9da4dea88a37f6c1e5f0ac37e8db9bc2e260b",
+    "gateway.py": "abc442197ea1a490086477a20442f916c655ce7d422a5108550b33c0f0b6fe7d"
+  }
+}

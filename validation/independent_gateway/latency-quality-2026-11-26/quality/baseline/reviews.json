@@ -1,0 +1,124 @@
+[
+  {
+    "case_id": "ambiguous",
+    "status": "pass",
+    "reason": "询问具体需求，未自行编造任务；附简短示例。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "b954aaede5ef794d321e0a929cd92b7da75e9d361ebccc142c92471ba49ca775"
+  },
+  {
+    "case_id": "summary",
+    "status": "pass",
+    "reason": "保留周一、证书过期、12分钟、恢复、提醒和无数据丢失。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "a53e456eebf420950d654f52d8a680aaf3ab7d749f23ba8afb5f50d0748cd118"
+  },
+  {
+    "case_id": "short-story",
+    "status": "pass",
+    "reason": "钥匙、雨、误会和温暖结尾齐全，长度未超过100汉字；文笔生硬不单独作为失败。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "078a1f85d60aebb223d06058a52ef35afc11ad1fe24150030163b7f66571ee6d"
+  },
+  {
+    "case_id": "marketing",
+    "status": "fail",
+    "reason": "擅自加入食品级材质、双层结构、防漏盖、硅胶握把和颜色等未知产品参数。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "3d0c408652e5dde001c73c25dbed3423af9b6619e8c4570adcc630a399e300de"
+  },
+  {
+    "case_id": "causality",
+    "status": "pass",
+    "reason": "明确不能由相关推出因果，并识别气温、季节、活动量等共同因素。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "e2eb762f03e4d653e663526706031e0b5bf64de398cf195cb2c422242c0c413c"
+  },
+  {
+    "case_id": "refund",
+    "status": "fail",
+    "reason": "提交与到账有区分，3–5工作日正确；但擅自确认“我司退款审批已完成”，题目未提供此内部状态。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "c3256ee66f02d90281a3b56e31d96e6009a1512f7286fd71e3cf0643d0316cd6"
+  },
+  {
+    "case_id": "medical",
+    "status": "pass",
+    "reason": "说明普通病毒性感冒不常规使用抗生素、严重症状就医，未提供个体处方。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "1f2377af29b037c5fee2b7252b6245be143cc94e790adb9f14abe5e693af7dad"
+  },
+  {
+    "case_id": "video-caption",
+    "status": "pass",
+    "reason": "正确识别花由未开放到绽放的主体与运动；用户未要求颜色或背景，未以缺少这些细节判错。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "f415d1606fb7b535b9f873b69178286f710a51b772361f2243dd3989eeb9f8e0"
+  },
+  {
+    "case_id": "manufacturing-causal-regression",
+    "status": "fail",
+    "reason": "虽算对5%及800件并提到混杂，仍声称非显著结果可排除供应商，凭空称200件源于功效分析，并把未控制时间/重加工因素的前后复验作为主因依据。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "3f3c3cd750aa84d6246cff66d97ea155426400fdebcc27388787124858704b4f"
+  },
+  {
+    "case_id": "heldout-logistics",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "数值及计算正确，但违反只输出数值要求；原始自动验收失败保留。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "6bcafc7cfde215c81f44fca07d662c7caaa215780f12899f34cf77b565791596"
+  },
+  {
+    "case_id": "heldout-energy",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "数值及计算正确，但违反只输出数值要求；原始自动验收失败保留。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "6470e652945e620c4755b0f32236c997e9ea608f66e3dd5864e3fbabaae4d446"
+  },
+  {
+    "case_id": "agent-finance-1",
+    "status": "pass",
+    "reason": "识别重复E1、待结算P12以及P13负退款，未把重复视为额外收入。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "20b39d666394ce06b26199ead8f45b97931593d733af38a95c99da83bb55a756"
+  },
+  {
+    "case_id": "agent-finance-2",
+    "status": "fail",
+    "reason": "去重前净额12500+12500-20000应为5000分，输出误为12500分；去重后-7500和待结算8300正确。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "83cb20db73df1b22bfa5f80f692a6e9b949c7c0c5cab0d6f1eeb3e9f9851b85d"
+  },
+  {
+    "case_id": "agent-retail-1",
+    "status": "pass",
+    "reason": "现货35、需求50、缺口15、超时O101/O103均正确；发货措辞位于明确标注未执行的待办表。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "ac98ddd8705624a7a257b30ec92c50adab74a325d13e3633f9affae09203449b"
+  },
+  {
+    "case_id": "agent-retail-2",
+    "status": "pass",
+    "reason": "分配30/5、缺口15、补偿300/200、最终毛利2250与补偿后1750正确，未把未知额外运费或取消损失补为数值。",
+    "source": "assistant_rubric_review",
+    "blind": false,
+    "output_sha256": "b8578d071154d751bb7d825082c36c7075cd3114fd24b0d89742e7de33b84859"
+  }
+]

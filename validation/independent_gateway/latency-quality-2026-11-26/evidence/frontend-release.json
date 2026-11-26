@@ -1,0 +1,59 @@
+{
+  "release_id": "2b385558d33a40f381557ebb0474427f",
+  "resources": {
+    "cluster": "decider-model-router",
+    "service": "decider-model-router",
+    "bucket": "decider-model-router-632930644527-us-east-1",
+    "distribution_id": "E3OCAAF3NQ1LYX",
+    "region": "us-east-1"
+  },
+  "previous_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:26",
+  "new_task_definition": null,
+  "phase": "complete",
+  "objects": [
+    {
+      "key": "gateway/gateway.css",
+      "sha256": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67",
+      "size": 26651,
+      "previous_version": "hHtKNDniw5jZ_R8Fb4JUslvLys5H_392",
+      "version": "k1Tj2gz4Y8JyJGB2W9lzCAc.ctoNpZo5"
+    },
+    {
+      "key": "gateway/workspace.js",
+      "sha256": "be50a5d19d0931d404697047a1da83f0ff7b1d26d25cb8bd51ea9328d18399e5",
+      "size": 40794,
+      "previous_version": "Hrm22Q51kYk5ryGxcOCbxGp_05hmdHrL",
+      "version": "8oxGqqm58Pz8rFhRxDUj7cPYstYMTbo1"
+    },
+    {
+      "key": "gateway/agents.js",
+      "sha256": "8be2c8702a984a49d3f749143341b7ad77336704bade10825aad6a70f5b03668",
+      "size": 12087,
+      "previous_version": "_XWNr5J6_q08DLd6tmsdW.mhnQdbW4pp",
+      "version": "19pi0Zs3UDcLBe_IZyO5sG8JadQNK63j"
+    },
+    {
+      "key": "gateway/gateway.js",
+      "sha256": "6a4e1035f0ec48ec97b5dced2074423a675ec949431209f46c076f9657f2ea3a",
+      "size": 49421,
+      "previous_version": "eulQtzSKqvJkikCulmnP.yVuOQPA3NEA",
+      "version": "ghWAEmXfPIo94rGujDZSkGKOupfWlJSG"
+    },
+    {
+      "key": "gateway/mark.svg",
+      "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+      "size": 276,
+      "previous_version": "H4x33vGQOOvZzhzz47FxwZ3ZBb4k7eRi",
+      "version": "_BjIr.QvwSs2.bRvY.TQpniwDXDTbfJn"
+    },
+    {
+      "key": "gateway/index.html",
+      "sha256": "04996d19e850e262f95b3807826eceb3d749a1c8644e2d3e10986fb0b4a8d7f3",
+      "size": 36934,
+      "previous_version": "1PoPnBouWapQy3_D_46_DgcOwe8sshVc",
+      "version": "hlfcEn4QGwY4OSywHbMaQu.grz8eZjYR"
+    }
+  ],
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "invalidation_id": "I9AZ9VY6FWVXHXSTFSXM87SM3A"
+}

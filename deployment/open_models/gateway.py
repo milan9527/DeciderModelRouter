@@ -92,7 +92,12 @@ async def decide(provider: str, payload: dict, request: Request):
         if data.get("model") != MODEL_IDS[provider]:
             raise ValueError("Unexpected model identity")
         h2o_precision = "FP8 W8A16 / Marlin" if os.getenv("H2O_LINEAR_BACKEND") == "marlin" else "FP8"
-        data["deployment"] = f"{h2o_precision} · vLLM 0.30.0 · resident" if provider == "h2o" else "BF16 · Transformers · resident"
+        liquid_engine = (
+            "BF16 · torch.compile (preserved casts; new shapes use CUDA eager) · resident"
+            if data.get("inference_engine") == "compiled_bf16_preserve_casts"
+            else "BF16 · Transformers · resident"
+        )
+        data["deployment"] = f"{h2o_precision} · vLLM 0.30.0 · resident" if provider == "h2o" else liquid_engine
         return data
     except (httpx.HTTPError, TimeoutError, ValueError) as exc:
         raise HTTPException(503, "常驻模型尚未就绪或本次调用失败；没有切换模型") from exc

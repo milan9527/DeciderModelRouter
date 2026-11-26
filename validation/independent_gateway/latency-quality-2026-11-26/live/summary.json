@@ -1,0 +1,96 @@
+{
+  "scope": "live ECS/HTTPS and AgentCore integration; separate from 44-item quality suite",
+  "runs": [
+    {
+      "case": "json",
+      "run_id": "b34e188508f917364e2fe6ea",
+      "status": "error",
+      "route_ms": 1002.764,
+      "assessment_ms": 110.362,
+      "selection_ms": 732.419,
+      "model_id": "openai.gpt-oss-120b-1:0",
+      "candidate_count": 106,
+      "calls": 2,
+      "forward_passes": [
+        1,
+        1
+      ],
+      "answer": null,
+      "all_eligible_candidates_supplied": true,
+      "strict_json_pass": false,
+      "error": "Bedrock ConnectionClosedError"
+    },
+    {
+      "case": "history-first",
+      "run_id": "f38a3341a3ee5b5e47100f19",
+      "status": "executed",
+      "route_ms": 874.692,
+      "assessment_ms": 109.549,
+      "selection_ms": 624.308,
+      "model_id": "moonshotai.kimi-k2.5",
+      "candidate_count": 106,
+      "calls": 2,
+      "forward_passes": [
+        1,
+        1
+      ],
+      "answer": " ```json\n{\"recorded\":true}\n```",
+      "all_eligible_candidates_supplied": true,
+      "strict_json_pass": false,
+      "history_values_correct": true,
+      "format_failure": "Markdown code fences"
+    },
+    {
+      "case": "history-followup",
+      "run_id": "005e66d91b22ab70e56bd089",
+      "status": "executed",
+      "route_ms": 898.42,
+      "assessment_ms": 117.454,
+      "selection_ms": 632.366,
+      "model_id": "moonshotai.kimi-k2.5",
+      "candidate_count": 106,
+      "calls": 2,
+      "forward_passes": [
+        1,
+        1
+      ],
+      "answer": " ```json\n{\"project\":\"NOVA-915\",\"budget\":51}\n```",
+      "all_eligible_candidates_supplied": true,
+      "strict_json_pass": false,
+      "history_values_correct": true,
+      "format_failure": "Markdown code fences"
+    }
+  ],
+  "initial_agent_failure": {
+    "job_id": "60823b2295a2565589c323a9",
+    "status": "error",
+    "model_calls": 0,
+    "cause": "CloudWatch: botocore ConnectionClosedError invoking AgentCore before any model callback; no automatic retry."
+  },
+  "second_agent_failure": {
+    "job_id": "5f0a7c1b61c9d255b43fec81",
+    "status": "error",
+    "model_calls": 1,
+    "model": "mistral.mistral-large-2402-v1:0",
+    "cause": "Selected before target, but Bedrock ConnectionClosedError on first target call. No target retry."
+  },
+  "agent": {
+    "job_id": "e8d688879203b87c3e8b0942",
+    "platform": "V2",
+    "calls": 3,
+    "models": [
+      "mistral.mistral-large-2402-v1:0",
+      "openai.gpt-6.1-terra",
+      "openai.gpt-6.1-terra"
+    ],
+    "content_pass": true,
+    "answer": "{\"raw_net_cents\":5000}",
+    "selected_before_target": true
+  },
+  "agent_connectivity_diagnostics": {
+    "attempts": 3,
+    "completed": 1,
+    "failed": 2,
+    "note": "Each is a separate job. Initial two failures retained; third verifies recovered connectivity, not 100% reliability."
+  }
+}

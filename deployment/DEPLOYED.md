@@ -8,6 +8,10 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
+2026-11-26 最新GPU延迟优化：沿用 **i-01180cf02d12e6e31 / g5.xlarge / A10G**，Liquid第一阶段保持eager BF16，第二阶段启用保留精度转换的编译推理。启动95次预热约109秒，新形状使用同一GPU的eager路径。ECS保持 **revision 26** 和下述API镜像，AgentCore V2不变；前端增加本批次复测摘要。同输入第二阶段P50下降26.1%，完整44项验收从31项降至30项，不能宣称质量提升；已知额外输入有一次选模差异。609项软件测试通过。[结果、失败与部署原始记录](../validation/independent_gateway/latency-quality-2026-11-26/README.zh.md) · [编译、线程配置、预热与回滚方法](../validation/independent_gateway/latency-quality-2026-11-26/method.zh.md)。本机审计目录 `.deployment/latency-quality-20261126/`。
+
+本轮CloudFront刷新 `I9AZ9VY6FWVXHXSTFSXM87SM3A` 完成，根域名200无跳转、页面哈希及桌面/手机验证通过。线上历史值正确但JSON格式失败；一次普通目标调用及前两次Agent诊断发生连接关闭，均留档。第3次AgentCore V2诊断完成3步选模、2次工具调用并算对5000分；累计1/3完成，不作为可靠性100%的依据。
+
 2026-11-26 公开能力评测更新：当前 **ECS revision 26 / Python 3.12 ARM64**，API镜像 `sha256:04b91816cf420ee3ccaf6502d47b74dfcd4f3c39d6bdccab3b92dcf61e20faf4`。OpenRouter与LiveBench 1/2的64个型号、232条公开参考进入GPU选模输入，按任务保留分项、来源、测试档位和样本量，前端和历史展示快照版本。605项软件回归及最终44项相关回归通过；ECS健康1/1，根域名200无跳转，前端哈希一致，最终CloudFront刷新 `I9XP96EYX9CC2KVZ80NJ8VVYU6` 完成。Agent定向结算金额通过；产线原4096上限截断，16384补测完整但因果判断仍错误，不作为整体质量提升证明。沿用GPU及AgentCore V2。[依据机制](../docs/PUBLIC_BENCHMARK_EVIDENCE.zh.md) · [来源、对照、失败与发布核验](../validation/independent_gateway/public-benchmarks-2026-11-26/README.zh.md)。
 
 2026-11-26 此前Agent首轮决策更新：**ECS revision 25 / Python 3.12 ARM64**，API镜像 `sha256:17e415a4af51b8c7f84766830cf3704c9ff1773315a2e8c524c9d760909bebb7`。从第一次目标调用起，GPU接收完整用户任务、工具说明和系统约束后选模；工具结果与用户要求分开。选中的型号在目标生成前保存，前端提前展示；正常每步仍两次GPU。594项软件测试通过，ECS健康1/1，CloudFront刷新 `I33Q1NPXF5204N56CKKV9GWQBB` 完成。沿用既有GPU和AgentCore V2。[发布与真实验证](../validation/independent_gateway/agent-initial-decision-2026-11-26/README.zh.md)。

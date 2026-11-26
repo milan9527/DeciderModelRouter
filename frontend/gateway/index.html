@@ -472,6 +472,14 @@
           </section>
           <section data-view="evaluations" hidden>
             <div class="page-heading"><div><p class="eyebrow">REPRODUCIBLE EVALUATIONS</p><h1>从选模到实际任务效果</h1><p class="muted">比较输出质量、能力覆盖、耗时与成本。分类标签诊断保留在下方。</p></div></div>
+            <section id="latest-routing-validation" class="panel padded-panel" aria-labelledby="latest-routing-validation-title">
+              <h2 id="latest-routing-validation-title">最新路由复测 · 2026-11-26</h2>
+              <p><strong>选模更快：</strong>同输入第二阶段 P50 从 1061 降至 784 毫秒，减少 26.1%；P95 从 1159 降至 867 毫秒。仍先判断需求，再由 GPU 选模。</p>
+              <p><strong>完整遵循要求：</strong>原版 31/44（70.5%）→ 优化后 30/44（68.2%）。<strong>内容正确：</strong>39/44（88.6%）→ 37/44（84.1%），格式错误仍计入主验收失败。</p>
+              <p class="footnote">44 项定向开发回归，覆盖文本、代码、行业、多模态和 Agent 多轮；不是全场景准确率。时间为 GPU 服务耗时，不含目标回答。重新生成的答案存在波动，本次未证明质量提高。正式固定输入的 46 次选模一致，计入额外产线用例为 46/47。</p>
+              <p><a href="https://github.com/milan9527/DeciderModelRouter/blob/main/validation/independent_gateway/latency-quality-2026-11-26/README.zh.md" target="_blank" rel="noopener noreferrer">查看分类通过率、失败原因和原始记录 ↗</a></p>
+              <p class="footnote">这是公开复测摘要；离线批次未导入下方个人评测历史。</p>
+            </section>
             <div class="evaluation-grid">
               <section class="panel padded-panel">
                 <h2>端到端效果评测</h2>

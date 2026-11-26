@@ -1,0 +1,102 @@
+{
+  "arm": "eager",
+  "scope": "additional 4096-token manufacturing input whose selection differs; separate from 44-item suite",
+  "status": "incomplete",
+  "task": {
+    "text": "汽车零件工厂两条产线出现不良率差异。需要追溯供应商批次、制定隔离范围和复验计划，不得直接控制设备。\n业务记录：{\"batches\":[{\"batch\":\"B701\",\"line\":\"L1\",\"supplier\":\"S1\",\"produced\":1200,\"defects\":18},{\"batch\":\"B702\",\"line\":\"L2\",\"supplier\":\"S1\",\"produced\":800,\"defects\":40},{\"batch\":\"B703\",\"line\":\"L2\",\"supplier\":\"S2\",\"produced\":1000,\"defects\":12}],\"checks\":[{\"batch\":\"B701\",\"temperature\":180,\"sample\":50,\"failed\":1},{\"batch\":\"B702\",\"temperature\":196,\"sample\":50,\"failed\":5},{\"batch\":\"B703\",\"temperature\":181,\"sample\":50,\"failed\":0}]}\n规则：批次不良率超过3%需隔离并复验；目标温度180±5℃；相关性不能证明供应商或温度导致异常；放行由质量工程师批准。\n任务：比较供应商、产线和温度三个解释，设计能区分混杂因素的复验方案；估算隔离数量，说明样本量局限。 以上已提供全部演示资料，直接基于资料作答。",
+    "allow_cross_region": true,
+    "include_legacy": true,
+    "routing_preferences": {
+      "cost_tier": "high",
+      "benchmark_release": "auto",
+      "input_tokens": null,
+      "expected_output_tokens": 1024,
+      "max_output_tokens": 4096,
+      "min_success_rate": null,
+      "max_latency_ms": null,
+      "min_context_tokens": null,
+      "max_reference_cost_usd": null,
+      "allowed_models": null,
+      "excluded_models": []
+    },
+    "attachments": [],
+    "output_modality": "auto",
+    "media_options": {
+      "image_operation": "generate",
+      "voice": "tiffany",
+      "seed": 0,
+      "edit_target": "",
+      "outpaint_pixels": 128,
+      "documents": []
+    }
+  },
+  "candidate_id": "6f4a8678e68c4e207b0d3a82",
+  "model_id": "anthropic.claude-opus-5-5",
+  "gpu_selection": {
+    "arm": "eager",
+    "name": "warmup-selection",
+    "warmup": true,
+    "service_ms": 3959.4443819951266,
+    "result": {
+      "answers": {
+        "action": {
+          "choice": "m083"
+        }
+      },
+      "usage": {
+        "input_tokens": 13412,
+        "output_tokens": 0
+      }
+    },
+    "peak_allocated_bytes": 4906834944
+  },
+  "output": {
+    "text": "# 两条产线不良率差异分析：供应商批次追溯、隔离范围与复验计划\n\n> 本分析只提供数据分析和方案建议，不直接控制或调整任何设备。温度调整、试产和放行，须由工艺工程师和质量工程师按授权流程执行。\n\n## 一、基础数据整理\n\n| 批次 | 产线 | 供应商 | 生产量 | 不良数 | 生产不良率 | 温度(℃) | 温度是否在180±5 | 抽检失败/样本 | 抽检失败率 |\n|---|---|---|---|---|---|---|---|---|---|\n| B701 | L1 | S1 | 1200 | 18 | **1.50%** | 180 | 是 | 1/50 | 2% |\n| B702 | L2 | S1 | 800 | 40 | **5.00%** | 196 | **否（超上限11℃）** | 5/50 | 10% |\n| B703 | L2 | S2 | 1000 | 12 | **1.20%** | 181 | 是 | 0/50 | 0% |\n\n**按单一维度汇总：**\n\n| 维度 | 分组 | 合计不良率 |\n|---|---|---|\n| 产线 | L1 | 18/1200 = 1.50% |\n| 产线 | L2 | 52/1800 = 2.89% |\n| 供应商 | S1 | 58/2000 = 2.90% |\n| 供应商 | S2 | 12/1000 = 1.20% |\n| 温度 | 在规格内（B701+B703） | 30/2200 = 1.36% |\n| 温度 | 超规格（B702） | 40/800 = 5.00% |\n\n## 二、三个解释的比较\n\n关键事实：所有异常都集中在 B702 一个批次。它同时具备\"L2 + S1 + 温度超标\"三个特征，因此三个因素在现有数据中完全混杂。\n\n| 解释 | 支持证据 | 反对证据 | 评价 |\n|---|---|---|---|\n| **供应商 S1** | S1 合计不良率 2.90%，高于 S2 的 1.20% | S1 在 L1（B701）仅 1.5%，表现正常 | 单靠供应商解释不通。除非 B702 所用的 S1 来料批次与 B701 不同，需追溯来料批号 |\n| **产线 L2** | L2 合计不良率 2.89%，高于 L1 的 1.50% | L2 生产 S2 料（B703）仅 1.2%，是三批中最低 | 单靠产线解释不通。L2 汇总偏高完全由 B702 拉动 |\n| **温度超标** | 唯一超规格批次恰好是唯一高不良批次；两个在规格内批次都约1.2–1.5% | 仅1个超标批次，无剂量-反应证据 | 与数据最吻合，但仍只是相关，不能证明因果 |\n| **交互作用**（如 S1 料对高温更敏感、L2 某工位与 S1 料不匹配） | 无法排除 | 无数据 | 现有设计无法识别 |\n\n**结论：** 温度超标是目前最一致的候选解释，但证据强度低。原因有两点：\n- 分析单位实质上是批次，n=3，且每个\"因素组合\"只有1个批次。\n- 根据规则，相关性不能证明供应商或温度导致异常。\n\n此外还需排除三类非工艺因素：\n- 检验标准或检验员在两条线上是否一致；\n- 不良模式（缺陷类型）是否相同；\n- B702 的196℃是单点读数还是全程超温。\n\n## 三、隔离范围与数量估算\n\n| 范围 | 数量 | 依据 |\n|---|---|---|\n| **强制隔离：B702 全批** | **800 件**。其中40件已判不良，按不合格品处置；760件\"表观合格品\"需复验 | 不良率5.0% > 3%，按规则必须隔离并复验 |\n| B701、B703 | 不强制隔离（1.5%、1.2% < 3%） | 规则未触发 |\n| 建议的预防性措施（需质量工程师决定） | ① 追溯 B702 所用 S1 来料批号，同批号原料若用于其他在制或成品，暂缓使用，并对相关成品加严抽检；② 调取 L2 温度记录，若超温时段跨越 B702 前后批次，相应时段产品纳入隔离 | 防止潜在问题扩散，非规则强制 |\n\n还需确认 B702 是否已有部分发货。若已发货，需评估在途或客户端库存的追溯与通知，由质量工程师决定。\n\n**最低隔离数量：800件**。若触发上述预防性扩展，数量视追溯结果增加。\n\n## 四、能区分混杂因素的复验方案\n\n### 第1步：不需要新试产的追溯分析（优先执行）\n1. **来料追溯**：核对 B701 与 B702 使用的 S1 原料批号是否相同。\n   - 若相同，S1 来料单独致因的可能性显著下降。\n   - 若不同，对 B702 所用来料的留样做进料复检（尺寸、材料性能、证书比对），并与 S2 留样对照。\n2. **批次内自然对照**：调取 B702 全程温度曲线，按时间段把不良件归入\"超温时段\"和\"正常温度时段\"。\n   - 同一批次内料和线相同，只有温度不同，这是现有条件下区分温度效应的最佳方式。\n   - 前提是不良件有时间戳或序列号可追溯。\n3. **缺陷模式比对**：比较三批不良件的缺陷类型。若 B702 缺陷集中于热相关失效（如变形、过固化），支持温度解释。\n4. **检验一致性**：确认 L1、L2 使用同一检验标准，必要时做检验员交叉复判。\n\n### 第2步：B702 隔离品复验\n- 760件表观合格品建议 **100% 全检**（800件规模可行），而不是抽样，这样处置决策不依赖抽样误差。\n- 若采用抽样，抽样方案需由质量工程师按 AQL 标准确定。\n- 复验结果仅作为放行建议，**放行必须由质量工程师批准**。\n\n### 第3步：受控验证试验（需工艺和质量工程师批准并由授权人员执行）\n设计为在温度规格内的\"供应商 × 产线\"2×2交叉试验，以拆开供应商和产线：\n\n| | L1 | L2 |\n|---|---|---|\n| S1（尽量用 B702 同批号来料） | 试验组A | 试验组B |\n| S2 | 试验组C | 试验组D |\n\n- 所有组温度控制在180±5℃。\n  - 若 B 组在合规温度下不良率恢复正常，说明 L2 和 S1 本身不是主因，温度解释得到加强。\n  - 若 B 组仍偏高，而 A、D 组正常，指向 S1×L2 交互。\n  - 若 A、B 组均高，指向 S1 来料。\n- 随机化生产顺序，交替运行，以避免时间漂移与组别混杂。\n- **温度效应不建议用超规格量产来验证。** 若确需验证，只能由工艺工程师批准，以小批量 DOE 方式进行，或采用实验室或离线热试验，试验品全部隔离、不得放行。\n\n**每组样本量估算**：要以 α=0.05、检验功效80% 区分 1.5% 与 5% 的不良率，每组约需 **400件**。若只想检出更大的差异，可适当减少；若想检出1.5%对3%的差异，需要每组约1,500件以上。\n\n## 五、样本量与数据局限\n\n1. **抽检50件精度很低**（95%置信区间，Wilson法近似）：\n\n| 批次 | 抽检结果 | 95%置信区间 | 含义 |\n|---|---|---|---|\n| B702 | 5/50 = 10% | 约 ",
+    "has_final_text": true,
+    "complete": false,
+    "stop_reason": "max_tokens",
+    "usage": {
+      "inputTokens": 400,
+      "outputTokens": 4096,
+      "totalTokens": 4496,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "cache": {
+      "enabled": false,
+      "supported": false,
+      "checkpoints": 0,
+      "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+      "observed": true,
+      "read_tokens": 0,
+      "write_tokens": 0,
+      "total_input_tokens": 400,
+      "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+    },
+    "streamed": false,
+    "ttft_ms": null,
+    "model_id": "anthropic.claude-opus-5-5",
+    "invoke_id": "us.anthropic.claude-opus-5-5",
+    "backend_total_ms": 44980.008,
+    "timings": {
+      "queue_ms": 0.041,
+      "upstream_ms": 44979.953
+    },
+    "source": "live",
+    "ranking_version": "1d0a074a9e3a3fba",
+    "request_fields": {},
+    "strategy": "gpu_compilation_diagnostic",
+    "evidence_version": "gpu-evidence-two-stage-public-v2",
+    "cost_evidence": {
+      "expected_usd": null,
+      "at_output_cap_usd": null
+    },
+    "output_budget": {
+      "requested_max_tokens": 4096,
+      "effective_max_tokens": 4096,
+      "source": "exact_endpoint_parameter_probe",
+      "note": "不超过请求上限；已核验的端点限制可能更低。"
+    },
+    "observed_reference_cost_usd": null
+  }
+}

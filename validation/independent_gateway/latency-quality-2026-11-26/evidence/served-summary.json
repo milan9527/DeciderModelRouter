@@ -1,0 +1,28 @@
+{
+  "inputs": 92,
+  "decisions": 368,
+  "differences": [],
+  "health": {
+    "status": "ok",
+    "resident": true,
+    "models": {
+      "liquid": true,
+      "h2o": true
+    },
+    "per_model_concurrency": 1,
+    "instance": "i-01180cf02d12e6e31"
+  },
+  "scope": "actual resident HTTP worker, all three decision models resident; identical frozen input objects",
+  "assessment": {
+    "count": 46,
+    "p50_ms": 101.627,
+    "p95_ms": 243.303,
+    "max_ms": 295.947
+  },
+  "selection": {
+    "count": 46,
+    "p50_ms": 784.03,
+    "p95_ms": 866.385,
+    "max_ms": 870.814
+  }
+}
