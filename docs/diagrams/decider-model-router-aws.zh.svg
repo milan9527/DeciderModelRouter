@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1530" viewBox="0 0 1920 1530" role="img" aria-labelledby="diagram-title diagram-description">
   <title id="diagram-title">DeciderModelRouter — 独立模型网关 AWS 部署架构</title>
-  <desc id="diagram-description">浏览器通过专用 CloudFront 访问私有 S3 前端，API 经 VPC Origin、内网 ALB 进入私有 ECS Fargate。后端独立调用 g5.xlarge GPU 获取七项任务属性，结合镜像内证据快照选择 Bedrock 目标模型。两张 DynamoDB 表保存认证、会话、评测和性能，独立私有 S3 保存媒体。CloudFront 不直接读取媒体桶。GPU 不接收媒体字节，评测记录不会自动更新选型快照。</desc>
+  <desc id="diagram-description">浏览器通过专用 CloudFront 访问私有 S3 前端，API 经 VPC Origin、内网 ALB 进入私有 ECS Fargate。后端独立调用 g5.xlarge GPU 获取任务属性并依据评测选择目标型号，镜像内证据快照提供精确端点评测。两张 DynamoDB 表保存认证、会话、评测和性能，独立私有 S3 保存媒体。CloudFront 不直接读取媒体桶。GPU 不接收媒体字节，评测记录不会自动更新选型快照。</desc>
   <defs>
     <marker id="arrow-request" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
       <path d="M0,0 L9,4.5 L0,9 Z" fill="#526171" />
@@ -94,7 +94,7 @@
     <polyline points="52,951 89,951" fill="none" stroke="#526171" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-request)" />
     <text x="101" y="958" font-size="18" fill="#526171" font-weight="400" text-anchor="start">入口与静态资源</text>
     <polyline points="52,997 89,997" fill="none" stroke="#b85a00" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-gpu)" />
-    <text x="101" y="1004" font-size="18" fill="#526171" font-weight="400" text-anchor="start">GPU 属性判断</text>
+    <text x="101" y="1004" font-size="18" fill="#526171" font-weight="400" text-anchor="start">GPU 分类与选模</text>
     <polyline points="52,1043 89,1043" fill="none" stroke="#693bc5" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-model)" />
     <text x="101" y="1050" font-size="18" fill="#526171" font-weight="400" text-anchor="start">目标模型执行</text>
     <polyline points="52,1089 89,1089" fill="none" stroke="#245da8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-data)" />
@@ -173,10 +173,10 @@
     <text x="833" y="1002" font-size="24" fill="#232f3e" font-weight="600" text-anchor="start">Amazon EC2 · g5.xlarge</text>
     <text x="833" y="1036" font-size="20" fill="#526171" font-weight="400" text-anchor="start">A10G 24GB · 独立 GPU 服务</text>
     <text x="833" y="1065" font-size="20" fill="#526171" font-weight="400" text-anchor="start">Decider / Liquid / H2O</text>
-    <text x="833" y="1094" font-size="20" fill="#526171" font-weight="400" text-anchor="start">每次调用一个分类器 · 默认 Liquid</text>
-    <text x="390" y="1002" font-size="21" fill="#232f3e" font-weight="600" text-anchor="start">GPU 仅识别任务属性</text>
-    <text x="390" y="1038" font-size="19" fill="#526171" font-weight="400" text-anchor="start">输入：文字、附件类型、输出要求</text>
-    <text x="390" y="1072" font-size="19" fill="#526171" font-weight="400" text-anchor="start">不传媒体字节、型号或价格</text>
+    <text x="833" y="1094" font-size="20" fill="#526171" font-weight="400" text-anchor="start">分类与证据选模 · 默认 Liquid</text>
+    <text x="390" y="1002" font-size="21" fill="#232f3e" font-weight="600" text-anchor="start">GPU 根据评测选择模型</text>
+    <text x="390" y="1038" font-size="19" fill="#526171" font-weight="400" text-anchor="start">输入：任务、候选、实测与价格</text>
+    <text x="390" y="1072" font-size="19" fill="#526171" font-weight="400" text-anchor="start">不传媒体字节或测试标准答案</text>
     <text x="390" y="1148" font-size="19" fill="#526171" font-weight="400" text-anchor="start">当前：1 个 API 任务 + 1 台 GPU；网络出口与运维路径省略。</text>
     <polyline points="1230,678 1370,678" fill="none" stroke="#693bc5" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-model)" marker-start="url(#arrow-model)" />
     <rect x="1370" y="665" width="440" height="155" stroke="#c7d0d9" fill="white" stroke-width="1.6" />
@@ -238,7 +238,7 @@
     <polyline points="765,1385 785,1385" fill="none" stroke="#526171" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-request)" />
     <rect x="792" y="1353" width="344" height="64" stroke="#d8dee6" fill="#f7f8fa" stroke-width="1.6" />
     <text x="808" y="1393" font-size="23" fill="#b85a00" font-weight="600" text-anchor="start">03</text>
-    <text x="852" y="1393" font-size="22" fill="#232f3e" font-weight="500" text-anchor="start">ECS 依据证据选型</text>
+    <text x="852" y="1393" font-size="22" fill="#232f3e" font-weight="500" text-anchor="start">GPU 读取证据选模</text>
     <polyline points="1141,1385 1161,1385" fill="none" stroke="#526171" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-request)" />
     <rect x="1168" y="1353" width="344" height="64" stroke="#d8dee6" fill="#f7f8fa" stroke-width="1.6" />
     <text x="1184" y="1393" font-size="23" fill="#b85a00" font-weight="600" text-anchor="start">04</text>
@@ -247,7 +247,7 @@
     <rect x="1544" y="1353" width="344" height="64" stroke="#d8dee6" fill="#f7f8fa" stroke-width="1.6" />
     <text x="1560" y="1393" font-size="23" fill="#b85a00" font-weight="600" text-anchor="start">05</text>
     <text x="1604" y="1393" font-size="22" fill="#232f3e" font-weight="500" text-anchor="start">保存结果与性能</text>
-    <text x="40" y="1455" font-size="20" fill="#526171" font-weight="400" text-anchor="start">文本/向量：可比评测与参考费用；多模态：能力与适配器过滤后按固定顺序选择。业务校准当前未启用。</text>
+    <text x="40" y="1455" font-size="20" fill="#526171" font-weight="400" text-anchor="start">全部合格配置参与 GPU 判断；直接实测、公开参考与费用分开说明。小样本评测不等于业务成功率。</text>
     <text x="40" y="1493" font-size="19" fill="#526171" font-weight="400" text-anchor="start">阶段事件沿 API 原链路回传；历史评测不会自动更新选型快照。AWS 官方图标：2026-07-31 发布包。</text>
   </g>
 </svg>

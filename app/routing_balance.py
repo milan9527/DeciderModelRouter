@@ -102,8 +102,9 @@ def balanced_pool(task, workflow, pool, rankings):
             reason = "不在本次模型允许列表"
         if mid in policy.excluded_models:
             reason = "在本次模型排除列表"
-        expected = reference_cost(metrics, input_tokens, output_tokens)
-        at_cap = reference_cost(metrics, input_tokens, max_output_tokens)
+        ceiling = row.get("output_token_limit", max_output_tokens)
+        expected = reference_cost(metrics, input_tokens, min(output_tokens, ceiling))
+        at_cap = reference_cost(metrics, input_tokens, min(max_output_tokens, ceiling))
         if reason is None and policy.max_reference_cost_usd is not None:
             if at_cap is None:
                 reason = "参考价格未知，无法核验参考费用限制"

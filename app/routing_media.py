@@ -17,6 +17,12 @@ IMAGE_MODELS = {
     "sketch": "stability.stable-image-control-sketch-v1:0",
     "structure": "stability.stable-image-control-structure-v1:0",
     "inpaint": "stability.stable-image-inpaint-v1:0",
+    "erase": "stability.stable-image-erase-object-v1:0",
+    "outpaint": "stability.stable-outpaint-v1:0",
+    "recolor": "stability.stable-image-search-recolor-v1:0",
+    "replace": "stability.stable-image-search-replace-v1:0",
+    "style_guide": "stability.stable-image-style-guide-v1:0",
+    "style_transfer": "stability.stable-style-transfer-v1:0",
 }
 SOURCE = "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
 
@@ -45,15 +51,19 @@ def resolve_workflow(task, profile):
 def adapter(model, task, workflow):
     mid = model["id"]
     if workflow == "vision":
+        if model.get("routing_capabilities", {}).get("vision") is True:
+            return "converse_media"
         # These model families expose Bedrock Converse image content blocks.
         if mid.startswith(("amazon.nova-", "anthropic.", "google.gemma-", "meta.llama4-", "mistral.pixtral-")):
             return "converse_media"
     elif workflow == "video_understanding":
+        if mid.startswith("twelvelabs.pegasus-"):
+            return "pegasus_video"
         if mid.startswith("amazon.nova-") and "VIDEO" in model["input_modalities"]:
             return "converse_media"
     elif workflow == "audio_understanding" and mid.startswith("mistral.voxtral-"):
         return "voxtral_audio"
-    elif workflow == "speech" and mid == "amazon.nova-2-sonic-v1:0":
+    elif workflow == "speech" and mid in {"amazon.nova-2-sonic-v1:0", "amazon.nova-2-5-sonic"}:
         return "sonic_speech"
     elif workflow == "image":
         if mid == IMAGE_MODELS.get(task.media_options.image_operation):
@@ -114,10 +124,13 @@ def readiness(task, workflow):
         return f"请上传{ {'image': '图片', 'video': '视频', 'audio': '音频'}[needed]}后执行。"
     if workflow == "image" and task.media_options.image_operation != "generate" and not kinds:
         return "此图片编辑操作需要上传原图。"
-    if workflow == "image" and task.media_options.image_operation == "inpaint" and kinds.count("image") != 2:
-        return "局部重绘需要两张图片：原图和同尺寸黑白遮罩。"
-    if workflow == "image" and task.media_options.image_operation != "inpaint" and len(kinds) > 1:
+    paired = {"inpaint", "erase", "style_transfer"}
+    if workflow == "image" and task.media_options.image_operation in paired and kinds.count("image") != 2:
+        return "此操作需要两张图片：原图与遮罩；风格迁移使用原图与风格参考图。"
+    if workflow == "image" and task.media_options.image_operation not in paired and len(kinds) > 1:
         return "此图片操作每次处理一张原图。"
+    if workflow == "image" and task.media_options.image_operation in {"recolor", "replace"} and not task.media_options.edit_target.strip():
+        return "请填写需要修改的对象，例如红色汽车；任务正文描述修改后的效果。"
     if workflow == "embedding" and len(kinds) > 1:
         return "图片向量化每次处理一张图片。"
     if workflow == "video" and kinds:
@@ -218,12 +231,15 @@ def capability_catalog(catalog, exclusion):
             ("creative_upscale", "创意放大"), ("conservative_upscale", "保真放大"),
             ("sketch", "草图生成图片"), ("structure", "结构引导生成"),
             ("inpaint", "图片局部重绘"),
+            ("erase", "擦除对象"), ("outpaint", "向左扩图"),
+            ("recolor", "对象改色"), ("replace", "替换对象"),
+            ("style_guide", "参考风格生成"), ("style_transfer", "风格迁移"),
         )],
         ("video", "视频生成", "video", "generate"),
         ("rerank", "文档重排", "rerank", "generate"),
     ]
     for workflow, label, output, operation in scenarios:
-        task = Task(text="capability inventory", output_modality=output,
+        task = Task(text="capability inventory", output_modality=output, include_legacy=True,
                     media_options=MediaOptions(image_operation=operation))
         models = [m["id"] for m in catalog["models"] if eligible(m, task, workflow, exclusion) is None]
         entries.append({

@@ -13,6 +13,7 @@ from app.gateway_decision import GatewayDecisionService
 from app.main import app
 from app.routing_profile import replay_profile
 from app.routing_selector import SELECTOR_VERSION
+from tests.gateway_fakes import gpu_answers
 
 
 @pytest.fixture
@@ -59,7 +60,10 @@ def gpu_mock(client, handler=None):
         calls.append(request)
         if handler:
             return handler(request)
-        return httpx.Response(200, json=gpu_reply())
+        result = gpu_reply()
+        result["answers"] = gpu_answers(json.loads(request.content),
+                                       {k: v["choice"] for k, v in result["answers"].items()})
+        return httpx.Response(200, json=result)
 
     service = app.state.gateway_decision
     service.client = httpx.AsyncClient(transport=httpx.MockTransport(handle))
@@ -90,7 +94,7 @@ def test_code_preset_exposes_reasoning_budget_without_changing_api_defaults(clie
     assert RoutingPreferences().expected_output_tokens == 512
 
 
-def test_private_gpu_called_once_and_each_phase_observed(client, monkeypatch):
+def test_private_gpu_classifies_then_selects_every_eligible_configuration(client, monkeypatch):
     old = AsyncMock(side_effect=AssertionError("Gateway must use standalone GPU HTTP transport"))
     monkeypatch.setattr(routing, "infer_profile", old)
     calls = gpu_mock(client)
@@ -101,7 +105,7 @@ def test_private_gpu_called_once_and_each_phase_observed(client, monkeypatch):
         "usage": {"inputTokens": 12, "outputTokens": 8},
     }
     result = events(client.post("/api/gateway/runs", json=body(execute_target=True)))
-    assert len(calls) == 1
+    assert len(calls) > 1
     assert str(calls[0].url) == "http://private-gpu.test:18124/v1/systemone/h2o"
     assert calls[0].headers["authorization"] == "Bearer test-private-service-token"
     assert len(json.loads(calls[0].content)["questions"]) == 7
@@ -122,6 +126,9 @@ def test_private_gpu_called_once_and_each_phase_observed(client, monkeypatch):
     selected = next(
         e["data"] for e in result if e.get("stage") == "selection" and e["status"] == "completed"
     )
+    assert len(calls) == 1 + len(selected["selection"]["decision_calls"])
+    assert selected["source"] == "gpu_decision_model"
+    assert selected["selection"]["evaluated_configurations"] == selected["candidate_count"]
     assert selected["timings"]["policy_ms"] >= 0 and selected["timings"]["receipt_ms"] >= 0
     assert (
         selected["selected_model"]["invoke_id"]
@@ -142,8 +149,9 @@ def test_bedrock_throttle_has_actionable_error_without_retry_or_model_switch(cli
         },
         "Converse",
     )
-    result = events(client.post("/api/gateway/runs", json=body(execute_target=True)))
-    assert len(calls) == app.state.bedrock.converse.call_count == 1
+    result = events(client.post("/api/gateway/runs", json=body(
+        execute_target=True, session={"fallback": False})))
+    assert len(calls) > 1 and app.state.bedrock.converse.call_count == 1
     assert result[-1]["type"] == "error"
     assert result[-1]["stage"] == "execution"
     assert result[-1]["data"]["code"] == 429
@@ -259,6 +267,22 @@ def test_no_route_does_not_execute_even_when_requested(client):
     app.state.bedrock.converse.assert_not_called()
 
 
+def test_invalid_gpu_model_choice_never_reaches_bedrock(client):
+    def handle(request):
+        reply = gpu_reply()
+        if "action" in json.loads(request.content)["questions"]:
+            reply["answers"] = {"action": {"choice": "caller-injected-model"}}
+        return httpx.Response(200, json=reply)
+
+    calls = gpu_mock(client, handle)
+    app.state.bedrock = MagicMock()
+    result = events(client.post("/api/gateway/runs", json=body(execute_target=True)))
+    assert len(calls) == 2
+    assert result[-1]["type"] == "error" and result[-1]["stage"] == "selection"
+    assert result[-1]["data"]["code"] == 502
+    app.state.bedrock.converse.assert_not_called()
+
+
 def test_partial_target_and_target_error_preserve_completed_routing(client):
     gpu_mock(client)
     app.state.bedrock = MagicMock()
@@ -300,7 +324,7 @@ def test_disconnect_cancels_owned_worker(monkeypatch):
         monkeypatch.setattr(routing, "run_classified_route", wait_forever)
         request = SimpleNamespace(
             app=SimpleNamespace(
-                state=SimpleNamespace(gateway_decision=SimpleNamespace(infer=AsyncMock()))
+                state=SimpleNamespace(gateway_decision=SimpleNamespace(infer=AsyncMock(), select=AsyncMock()))
             )
         )
         stream = gateway.event_stream(gateway.GatewayRun(**body(provider="h2o")), request)

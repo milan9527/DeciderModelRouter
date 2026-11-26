@@ -344,6 +344,9 @@ class History:
             if data["status"] == "started":
                 item.update(model_id=data["model_id"], model=data.get("model_name", data["model_id"]),
                             configuration_id=data["configuration_id"])
+        if event["type"] == "reroute":
+            item["model_decision_ms"] = (item.get("model_decision_ms") or 0) + (data.get("model_decision_ms") or 0)
+            item["model_decision_calls"] = (item.get("model_decision_calls") or 0) + len(data.get("decision_calls", []))
         if event.get("stage") == "classification" and event.get("status") == "completed":
             item.update(
                 profile=data.get("profile"), gpu_ms=(data.get("timings") or {}).get("upstream_ms")
@@ -355,6 +358,9 @@ class History:
                 model=model.get("name"),
                 configuration_id=data.get("choice"),
                 stickiness=data.get("selection", {}).get("stickiness"),
+                model_decision_ms=data.get("selection", {}).get("decision_ms"),
+                model_decision_calls=len(data.get("selection", {}).get("decision_calls", [])),
+                model_selection_source=data.get("source"),
             )
         if event["type"] == "route":
             item["route_ms"] = data.get("route_total_ms")
@@ -471,6 +477,9 @@ class History:
             ),
             "running": sum(r["status"] == "running" for r in live),
             "gpu_p50_ms": percentile([r.get("gpu_ms") for r in live], 0.5),
+            "model_decision_p50_ms": percentile([r.get("model_decision_ms") for r in live], 0.5),
+            "model_decision_p95_ms": percentile([r.get("model_decision_ms") for r in live], 0.95),
+            "model_decision_samples": sum(r.get("model_decision_ms") is not None for r in live),
             "route_p50_ms": percentile([r.get("route_ms") for r in live], 0.5),
             "route_p95_ms": percentile([r.get("route_ms") for r in live], 0.95),
             "ttft_p50_ms": percentile([r.get("ttft_ms") for r in live], 0.5),

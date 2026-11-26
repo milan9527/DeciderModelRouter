@@ -81,7 +81,7 @@
   </svg>
   <text x="800.0" y="545.0" font-family="'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#232f3e" text-anchor="middle" font-weight="700">ECS Fargate</text>
   <text x="800.0" y="575.0" font-family="'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#232f3e" text-anchor="middle">内网 ALB / 自建登录</text>
-  <text x="800.0" y="605.0" font-family="'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#232f3e" text-anchor="middle">任务管理 / GPU分类 / 选模</text>
+  <text x="800.0" y="605.0" font-family="'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#232f3e" text-anchor="middle">任务管理 / 约束校验 / 执行</text>
   <text x="800.0" y="635.0" font-family="'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#232f3e" text-anchor="middle">原生消息 / 缓存 / 回退</text>
   <svg width="56" height="56" viewBox="0 0 80 80" fill="none" x="1287.0" y="220" aria-hidden="true">
     <g clip-path="url(#agent-icon-0-5)">
@@ -123,7 +123,7 @@
   </svg>
   <text x="802.5" y="915.0" font-family="'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#232f3e" text-anchor="middle" font-weight="700">Amazon EC2 · g5.xlarge</text>
   <text x="802.5" y="945.0" font-family="'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#232f3e" text-anchor="middle">Liquid d1-2B / A10G</text>
-  <text x="802.5" y="975.0" font-family="'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#232f3e" text-anchor="middle">每次判断七项任务属性</text>
+  <text x="802.5" y="975.0" font-family="'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#232f3e" text-anchor="middle">任务判断 + 依据评测选模</text>
   <svg width="56" height="56" viewBox="0 0 80 80" version="1.1" x="1292.0" y="835" aria-hidden="true">
     <title>Icon-Architecture/64/Arch_Amazon-DynamoDB_64</title>
     <g id="db-icon-0-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

@@ -1,12 +1,14 @@
 # 行业场景与 AgentCore Runtime V2
 
-行业 Agent 使用 **Strands Agent + 自定义 `RouterModel`**。它的模型配置是 `model-router`；没有另外指定固定的 Bedrock 推理模型。Strands 每次发起模型调用，都会请求 ECS 网关，由默认 Liquid d1-2B 判断任务属性，再按现有评测、费用和会话策略选择实际模型。
+行业 Agent 使用 **Strands Agent + 自定义 `RouterModel`**。它的模型配置是 `model-router`；没有另外指定固定的 Bedrock 推理模型。Strands 每次发起模型调用，都会请求 ECS 网关，由默认 Liquid d1-2B 判断任务属性，再读取端点实测、公开评测、费用和会话信息，选择实际模型。
 
 Agent 部署时显式指定 AWS `platformVersion: V2`，并读取 `GetAgentRuntime` 核验。这个值是运行平台版本，与每次发布产生的 `agentRuntimeVersion` 不同。Runtime 实现官方 HTTP 服务约定：ARM64、8080端口、`POST /invocations`、`GET /ping` 和 SSE。
 
 ![行业Agent AWS架构](diagrams/industry-agent-aws.zh.svg)
 
 [下载高清PNG](diagrams/industry-agent-aws.zh.png)
+
+2026-11-26起，Agent候选使用精确端点的可移植工具往返实测，不再使用固定7型号白名单或自动限制为一个公开评测批次。每一步单独记录GPU分类与选模耗时；历史48轮结果仍保留原策略口径。
 
 ## 行业模板
 
@@ -48,7 +50,9 @@ sequenceDiagram
         AC->>GW: RouterModel / 原生消息与工具结果
         GW->>GPU: 当前任务与最近对话片段
         GPU-->>GW: 七项任务属性
-        GW->>GW: 精确能力与评测过滤、成本质量权衡、粘性检查
+        GW->>GW: 按实测工具协议、能力、预算筛选
+        GW->>GPU: 全部合格配置、评测证据与上次模型
+        GPU-->>GW: 选出的目标配置
         GW->>BR: system + messages + toolConfig
         BR-->>GW: 文本或原生toolUse
         GW->>DB: 模型、依据、耗时、用量、缓存、实际结果
@@ -63,13 +67,17 @@ sequenceDiagram
 
 页面显示实际模型、模型是否变化及粘性原因；历史数据同时保存配置ID与配置是否变化。模型没有变化也可能是重新评估后仍胜出；不能仅凭ID不变判断没有重新路由。每轮最多6次模型调用，四轮最多24次；目标失败时沿用网关的受约束回退，Strands自身自动重试关闭。输出达到上限属于未完成；行业页面及未传预算的Agent API默认每次16384 tokens，页面可调整为4096或8192。页面也提供自动均衡、优先节省、优先能力三个偏好，不直接指定目标型号。
 
+实际发送的输出上限不超过端点已核验限制，例如选择Llama 4时最多8192 tokens；较低端点上限也进入GPU选模依据。执行记录同时保存请求上限与实际上限。
+
 复杂回答可能超过CloudFront等待首个响应的时间。Runtime模型回调通过 `Accept: application/x-ndjson` 协商保活响应：立即返回空白行，每5秒继续发送，最终返回一个完整JSON结果或结构化错误。它用于保持连接，**不是答案逐token流式输出**；行业页面持续展示阶段与工具记录，完整回答结束后显示。Agent专用Bedrock客户端等待上限为240秒，整轮任务约600秒，普通网关仍使用原120秒客户端。超时不自动重试，以免重复计费。
 
 连续对话采用原生 `user/assistant/toolUse/toolResult` 内容块。工具调用ID必须完整配对，不将工具结果冒充为普通用户消息。Claude返回的可选 `type: tool_use` 标识规范化为Strands的ID、名称、参数格式；未知工具类型仍拒绝。数据库恢复会话，不依赖Runtime进程内存；超过64KB或64条历史消息时按完整用户轮次裁剪，不拆散工具调用与结果。最近一轮始终保留；它单独超过80KB时，在推理前拒绝继续并提示用户提供摘要，避免静默丢失上一条回答。原生模型消息仍有96KB边界，完整输出及工具循环受此限制。页面显示带入消息数、字节数和裁剪轮数。
 
-当前Agent工具适配器逐型号核验 Nova Micro/Lite/Pro、Claude Haiku 4.5、Claude Sonnet 4.5、Claude Opus 4.1/4.5的原生工具能力，依据各型号的 [AWS官方模型卡](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html)及[工具调用协议](https://docs.aws.amazon.com/bedrock/latest/userguide/tool-use.html)。仍须满足目录可用性、配额和精确评测配置要求；旧版型号默认不加入候选。
+提供商附带的 `reasoningContent` 按已补测的可移植协议处理：正式答案和工具调用保留，推理元数据不转发到其他模型；记录省略的块数，Token用量保持原值。只返回推理且输出截断时仍记为未完成。其他未知内容块继续明确报错，不丢弃后假装成功。
 
-Agent的 `auto` 默认采用至少含两个可用工具模型的最新LiveBench批次，再沿用难度、能力与参考成本的选择策略。当前为2026-01-08批次的Haiku 4.5与Opus 4.5（low effort），代码场景含Agentic Coding分项。这修复了“旧Nova组有三个模型、覆盖优先导致新组始终落选”的问题；不同批次分数仍不混排，也不按行业或轮数指定目标模型。显式指定评测批次仍可复现旧策略。此规则优先证据的新鲜度，会增加部分请求的费用，不代表新批次分数就是行业业务通过率。
+当前Agent候选以Bedrock端点的可移植工具往返实测为依据，检查toolUse、toolResult及结果使用。支持Converse不自动等于支持工具；未经协议验证的配置不进入Agent执行。默认配置的测试结果不借给其他推理档位，仍须满足账户、配额、上下文和预算约束。
+
+`auto`提供所有通过检查的工具模型和各自评测，不限定为Haiku/Opus或一个LiveBench批次。Liquid逐轮读取证据和上次配置，决定沿用或切换。模型选择不由行业或轮数指定；不同批次成绩保留来源，不能当作同一数值标尺。
 
 其他Bedrock型号仍可在普通网关使用，但未核验原生工具协议前不加入Agent候选。跨供应商签名推理块、Agent图片/音视频工具消息尚未接入，普通网关已有多模态能力继续保留。
 

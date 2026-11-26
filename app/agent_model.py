@@ -6,6 +6,7 @@ import json
 from fastapi import HTTPException
 from starlette.concurrency import run_in_threadpool
 
+from app.bedrock_limits import output_limit
 from app.gateway_adapter import CACHE_MODELS, cache_usage
 from app.gateway_conversation import Conversation
 from app.industry_scenarios import TOOL_SPECS, system_prompt
@@ -182,16 +183,21 @@ async def agent_converse(client, row, task, runtime):
         "modelId": row["model"]["invoke_id"], "system": [{"text": runtime.agent_system}],
         "messages": messages, "toolConfig": {"tools": [{"toolSpec": s} for s in TOOL_SPECS]},
         "inferenceConfig": {**row["benchmark"].get("inference_config", {}),
-                            "maxTokens": preferences(task).max_output_tokens},
+                            "maxTokens": output_limit(row["model"], preferences(task).max_output_tokens)},
     }
     if row["benchmark"].get("request_fields"):
         kwargs["additionalModelRequestFields"] = row["benchmark"]["request_fields"]
     response = await run_in_threadpool(client.converse, **kwargs)
     message = copy.deepcopy(response["output"]["message"])
     message.setdefault("role", "assistant")
-    blocks = message["content"]
+    # The portable tool tests use answer/tool blocks only. Provider-specific reasoning
+    # metadata is not a user-visible answer and cannot be forwarded across model families.
+    original_blocks = message["content"]
+    omitted = sum(set(b) == {"reasoningContent"} for b in original_blocks)
+    blocks = message["content"] = [b for b in original_blocks if set(b) != {"reasoningContent"}]
     if any(not set(b) <= {"text", "toolUse"} for b in blocks):
-        raise HTTPException(502, "Agent目标返回未支持的内容块，已停止，未丢弃后继续")
+        kinds = sorted({k for b in blocks for k in b if k not in {"text", "toolUse"}})
+        raise HTTPException(502, "Agent目标返回未支持的内容块：" + ", ".join(kinds))
     for block in blocks:
         call = block.get("toolUse")
         if call and "type" in call:
@@ -204,13 +210,15 @@ async def agent_converse(client, row, task, runtime):
     tools = [b["toolUse"] for b in blocks if "toolUse" in b]
     probe = ([{"toolResult": {"toolUseId": t.get("toolUseId"), "content": [{"text": "validation"}]}}
               for t in tools] if tools else [{"text": "validation"}])
-    try:
-        validate_native_messages([*runtime.native_messages, message, {"role": "user", "content": probe}])
-    except (ValueError, KeyError, TypeError) as exc:
-        raise HTTPException(502, "Agent目标返回了无效的工具或消息结构") from exc
     stop = response.get("stopReason")
+    if blocks or stop != "max_tokens":
+        try:
+            validate_native_messages([*runtime.native_messages, message, {"role": "user", "content": probe}])
+        except (ValueError, KeyError, TypeError) as exc:
+            raise HTTPException(502, "Agent目标返回了无效的工具或消息结构") from exc
     complete = (stop == "tool_use" and bool(tools)) or (stop == "end_turn" and bool(text.strip()) and not tools)
     return {"text": text, "message": message, "has_final_text": bool(text.strip()),
             "complete": complete, "turn_complete": stop == "end_turn" and complete,
             "stop_reason": stop, "usage": response.get("usage"), "tool_calls": tools,
+            "provider_metadata_omitted": {"reasoningContent": omitted},
             "cache": cache_usage(response.get("usage"), cache), "streamed": False, "ttft_ms": None}

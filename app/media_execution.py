@@ -8,6 +8,7 @@ import time
 from fastapi import HTTPException
 from starlette.concurrency import run_in_threadpool
 
+from app.bedrock_limits import output_limit
 from app.routing_balance import preferences
 from app.routing_media import readiness
 
@@ -26,15 +27,29 @@ def invoke_json(client, model_id, body):
 def native(client, row, task, inputs):
     aid, mid = row["adapter"], row["model"]["invoke_id"]
     budget = preferences(task).max_output_tokens
+    if aid == "pegasus_video":
+        output = invoke_json(client, mid, {
+            "inputPrompt": task.text,
+            "mediaSource": {"base64String": base64.b64encode(inputs[0][1]).decode()},
+            "maxOutputTokens": max(512, budget),
+        })
+        return {"text": output["message"], "complete": bool(output["message"]),
+                "stop_reason": output.get("stopReason", "completed"),
+                "usage": output.get("usage")}
     if aid == "converse_media":
         content = [{"text": task.text}]
         for metadata, raw in inputs:
             kind = metadata["kind"]
             content.append({kind: {"format": metadata["format"], "source": {"bytes": raw}}})
-        response = client.converse(
-            modelId=mid, messages=[{"role": "user", "content": content}],
-            inferenceConfig={"maxTokens": budget},
-        )
+        benchmark = row.get("benchmark", {})
+        kwargs = {
+            "modelId": mid, "messages": [{"role": "user", "content": content}],
+            "inferenceConfig": {**benchmark.get("inference_config", {}),
+                                "maxTokens": output_limit(row["model"], budget)},
+        }
+        if fields := benchmark.get("request_fields"):
+            kwargs["additionalModelRequestFields"] = fields
+        response = client.converse(**kwargs)
         text = "\n".join(x["text"] for x in response["output"]["message"]["content"] if "text" in x)
         return {
             "text": text, "usage": response.get("usage"),
@@ -67,10 +82,17 @@ def native(client, row, task, inputs):
         if aid == "stability_image":
             operation = task.media_options.image_operation
             body = {"image": base64.b64encode(inputs[0][1]).decode(), "output_format": "png"}
-            if operation not in {"remove_background", "upscale"}:
+            if operation not in {"remove_background", "upscale", "erase"}:
                 body.update(prompt=task.text, seed=task.media_options.seed)
-            if operation == "inpaint":
+            if operation in {"inpaint", "erase"}:
                 body["mask"] = base64.b64encode(inputs[1][1]).decode()
+            if operation == "outpaint":
+                body["left"] = task.media_options.outpaint_pixels
+            if operation in {"recolor", "replace"}:
+                body["select_prompt" if operation == "recolor" else "search_prompt"] = task.media_options.edit_target
+            if operation == "style_transfer":
+                body["init_image"] = body.pop("image")
+                body["style_image"] = base64.b64encode(inputs[1][1]).decode()
         else:
             body = {
                 "taskType": "TEXT_IMAGE", "textToImageParams": {"text": task.text},

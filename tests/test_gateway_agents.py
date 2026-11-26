@@ -12,6 +12,7 @@ from test_gateway_persistence import client as client
 from app import gateway_main
 from app.agent_model import validate_native_messages
 from app.industry_scenarios import SCENARIOS, invoke_tool, scenario
+from tests.gateway_fakes import gpu_answers
 
 
 def seed(client, user="tester"):
@@ -136,7 +137,8 @@ def test_agent_complex_followup_can_change_model_without_template_model_ids(clie
         values = {"workflow": "coding", "difficulty": "complex", "stronger_model_benefit": "high",
                   "latency": "normal", "tools": "yes", "structured_output": "no", "languages": "zh"}
         return httpx.Response(200, json={"model": "h2oai/h2o-lightning-4b",
-                                        "answers": {k: {"choice": v} for k, v in values.items()}})
+                                        "answers": gpu_answers(json.loads(request.content), values,
+                                                               choose_other=True)})
 
     gateway_main.app.state.gateway_decision.client = httpx.AsyncClient(transport=httpx.MockTransport(complex_gpu))
     job["prompt"] = "为多租户并发幂等处理设计代码和边界测试"
@@ -228,6 +230,37 @@ def test_native_cache_respects_checkpoint_limit_and_nova_prefix_ceiling():
 def test_native_boundary_refuses_unsupported_messages(bad):
     with pytest.raises(ValueError):
         validate_native_messages(bad)
+
+
+@pytest.mark.parametrize("answer,stop,complete", [
+    ([{"text": "The amount is 129."}], "end_turn", True),
+    ([{"toolUse": {"toolUseId": "t1", "name": "query_records",
+                  "input": {"dataset": "inventory"}}}], "tool_use", True),
+    ([], "max_tokens", False),
+])
+def test_agent_returns_portable_answer_blocks_and_counts_provider_metadata(answer, stop, complete):
+    import asyncio
+    from types import SimpleNamespace
+
+    from app.agent_model import agent_converse
+    from app.gateway_conversation import SessionOptions
+    from app.routing import Task
+
+    client = MagicMock()
+    client.converse.return_value = {
+        "output": {"message": {"role": "assistant", "content": [
+            {"reasoningContent": {"reasoningText": {"text": "synthetic metadata", "signature": "fixture"}}},
+            *answer]}},
+        "stopReason": stop, "usage": {"inputTokens": 10, "outputTokens": 20},
+    }
+    runtime = SimpleNamespace(native_messages=messages(), agent_system="business rules", options=SessionOptions())
+    result = asyncio.run(agent_converse(client, {"model": {"id": "fixture", "invoke_id": "fixture"},
+                                                "benchmark": {}}, Task(text="lookup"), runtime))
+    assert result["message"]["content"] == answer
+    assert result["complete"] is complete
+    assert result["provider_metadata_omitted"] == {"reasoningContent": 1}
+    assert result["usage"]["outputTokens"] == 20
+    assert "synthetic metadata" not in json.dumps(result)
 
 
 def test_industry_tools_operate_on_records_and_reject_unscoped_access():

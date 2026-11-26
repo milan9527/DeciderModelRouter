@@ -42,6 +42,8 @@ class GatewayRun(StrictModel):
 
     @model_validator(mode="after")
     def replay_cannot_execute(self):
+        if self.mode == "live" and "include_legacy" not in self.task.model_fields_set:
+            self.task = self.task.model_copy(update={"include_legacy": True})
         if self.mode == "replay" and self.execute_target:
             raise ValueError("回放不能执行目标模型")
         if self.history is not None:
@@ -53,10 +55,23 @@ class GatewayRun(StrictModel):
 
 @router.get("/catalog")
 def catalog(request: Request):
+    from app.bedrock_evidence import load_evidence, measured
+    from app.gateway_model_pool import MODEL_ROUTING_VERSION, build_pool
+    from app.routing_profile import replay_profile
     data, rankings = routing.load_catalog(), routing.load_rankings()
+    evidence = load_evidence()
+    for model in data["models"]:
+        model["routing_capabilities"] = {**model.get("routing_capabilities", {}),
+                                          **measured(model, evidence).get("capabilities", {})}
     calibration = load_calibration()
     media = capability_catalog(data, routing.exclusion)
     grouped = categories(data, rankings, routing.Task(text="gateway catalog"), routing.exclusion)
+    for workflow, group in grouped.items():
+        task = routing.Task(text="gateway catalog")
+        pool = build_pool(task, replay_profile(task, workflow), data, rankings, routing.exclusion)
+        ids = sorted({r["model"]["id"] for r in pool["candidates"]})
+        group.update(available_model_ids=ids, available_model_count=len(ids),
+                     configuration_count=len(pool["candidates"]))
     for workflow in {s["workflow"] for s in media["scenarios"]}:
         ids = sorted({mid for s in media["scenarios"] if s["workflow"] == workflow for mid in s["model_ids"]})
         grouped[workflow].update(
@@ -69,6 +84,9 @@ def catalog(request: Request):
         "policy_version": SELECTOR_VERSION,
         "calibration_version": calibration["version"],
         "calibration_status": calibration["status"],
+        "model_routing": {"version": MODEL_ROUTING_VERSION, "selector": "gpu_decision_model",
+                          "measurement_version": load_evidence()["version"],
+                          "benchmark_cohort_exclusion": False},
         "region": data["region"],
         "captured_at": data.get("captured_at"),
         "models": data["models"],
@@ -164,6 +182,7 @@ async def event_stream(body, request, *, run_id=None, record=None):
                 request,
                 infer=request.app.state.gateway_decision.infer,
                 emit=progress,
+                model_select=request.app.state.gateway_decision.select,
             )
             await send("route", route)
             executed = None

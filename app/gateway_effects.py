@@ -8,6 +8,7 @@ import logging
 import secrets
 import time
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Literal
 
 from fastapi import APIRouter, HTTPException, Request
@@ -63,7 +64,9 @@ def execution_key(row, task, workflow):
     """Deduplicate only identical effective requests within this case and job."""
     request = {
         "invoke_id": row["model"]["invoke_id"], "workflow": workflow,
-        "adapter": row.get("adapter"), "benchmark": row["benchmark"],
+        "adapter": row.get("adapter"),
+        "request_fields": row["benchmark"].get("request_fields", {}),
+        "inference_config": row["benchmark"].get("inference_config", {}),
         "task": task.model_dump(mode="json", exclude={"routing_preferences"}),
         "max_output_tokens": preferences(task).max_output_tokens,
     }
@@ -159,9 +162,11 @@ class EffectEvaluations(Evaluations):
                 "max_output_tokens": body.max_output_tokens,
                 "planned_gpu_calls": len([c for c in cases if not c["gap"]]) * len(body.providers),
                 "started_gpu_calls": 0, "target_model_calls": 0, "reused_observations": 0,
+                "started_model_selection_calls": 0, "total_gpu_calls": 0,
+                "gpu_call_accounting": "classification_and_selection_v1",
                 "recorded_rows": 0, "summary": [],
                 "note": (
-                    "开发回归集；缺口和待人工评审单独计数。低价/高能力基线使用同一实际分类及当前候选池，"
+                    "开发回归集；缺口和待人工评审单独计数。低价/高能力基线使用同一实际分类及原规则策略，"
                     "不是全模型最优解。同用例同有效请求只调用目标一次，共享结果不算独立重复实验。"
                     "顺序执行，目标计数为调用尝试，不自动重试；参考价格不是AWS账单，未知价格不记为0。"
                 ),
@@ -239,12 +244,25 @@ class EffectEvaluations(Evaluations):
         }
         job["started_gpu_calls"] += 1
         await run_in_threadpool(self.save, user, job)
+
+        async def counted_infer(body, request, payload, *, selection=False):
+            job["total_gpu_calls"] += 1
+            job["started_model_selection_calls"] += int(selection)
+            await run_in_threadpool(self.save, user, job)
+            return await self.decision.infer(body, request, payload, selection=selection)
+
+        async def counted_select(body, request, pool):
+            from app.gateway_model_decision import select_all
+
+            return await select_all(SimpleNamespace(infer=counted_infer), body, request, pool)
+
         try:
             body = routing.AutoRoute(
                 task=task, provider=provider, mode="live",
                 **{k: job[k] for k in ("catalog_version", "ranking_version", "policy_version")},
             )
-            route = await routing.run_classified_route(body, request, infer=self.decision.infer)
+            route = await routing.run_classified_route(body, request, infer=counted_infer,
+                                                      model_select=counted_select)
             flow, step = route["steps"]
             selection = step["selection"]
             candidate = next((c for c in selection["candidates"] if c["candidate_id"] == step["choice"]), None)
@@ -255,6 +273,9 @@ class EffectEvaluations(Evaluations):
                 classifier_usage=flow["usage"], classifier_deployment=flow.get("deployment"),
                 input_hash=flow["input_hash"], configuration_id=step["choice"],
                 selected_model=step["selected_model"], candidate_count=step["candidate_count"],
+                model_decision_ms=selection.get("decision_ms"),
+                model_decision_calls=selection.get("decision_calls", []),
+                measurement_version=selection.get("measurement_version"),
                 selection_reason=step["notice"], cost_context=selection.get("cost_context"),
                 workflow_fit=flow["profile"]["workflow"] in case["allowed_workflows"] if case["allowed_workflows"] else None,
             )

@@ -93,6 +93,9 @@ def test_live_pipeline_persists_outputs_deduplicates_and_never_sends_gold(client
         }], "baselines": True,
     })
     assert job["target_model_calls"] == 1 and job["reused_observations"] == 2
+    assert job["started_gpu_calls"] == 1
+    assert job["started_model_selection_calls"] == 1
+    assert job["total_gpu_calls"] == 2
     assert len(job["results"]) == 3
     assert all(r["grade"]["status"] == "pass" for r in job["results"])
     assert job["summary"][0]["quality_pass"] == 1
@@ -102,7 +105,7 @@ def test_live_pipeline_persists_outputs_deduplicates_and_never_sends_gold(client
     assert "秘密" not in sent
     assert gateway_main.app.state.bedrock.converse.call_count == 1
     assert job["max_output_tokens"] == 16384
-    assert gateway_main.app.state.bedrock.converse.call_args.kwargs["inferenceConfig"]["maxTokens"] == 16384
+    assert gateway_main.app.state.bedrock.converse.call_args.kwargs["inferenceConfig"]["maxTokens"] == 10000
     assert client.get("/api/gateway/effects").json()["items"][0]["id"] == job["id"]
 
 
@@ -313,6 +316,7 @@ def test_cancellation_retains_started_attempt_and_stops_future_calls(client, mon
     job = response.json()
     assert job["status"] == "interrupted"
     assert job["started_gpu_calls"] == 1 and job["target_model_calls"] == 0
+    assert job["total_gpu_calls"] == 1 and job["started_model_selection_calls"] == 0
     assert infer.await_count == 1
     assert "未知" in job["note"]
 

@@ -1,0 +1,1 @@
+{"answers": {"action": {"type": "choice", "choice": "m00", "confidence": 0.881790743350347, "probabilities": {"m00": 0.881790743350347, "none": 0.11820925664965301}}}, "usage": {"input_tokens": 570, "output_tokens": 0}, "model": "LiquidAI/d1-2B", "latency_ms": 52.624802992795594, "deployment": "BF16 \u00b7 Transformers \u00b7 resident"}

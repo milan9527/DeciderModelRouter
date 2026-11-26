@@ -167,6 +167,12 @@
                       <option value="sketch">草图生成</option>
                       <option value="structure">结构引导</option>
                       <option value="inpaint">局部重绘（原图 + 遮罩）</option>
+                      <option value="erase">擦除对象（原图 + 遮罩）</option>
+                      <option value="outpaint">向左扩图</option>
+                      <option value="recolor">对象改色</option>
+                      <option value="replace">替换对象</option>
+                      <option value="style_guide">参考风格生成</option>
+                      <option value="style_transfer">风格迁移（原图 + 参考图）</option>
                     </select></label>
                     <label id="voice-options" hidden>音色<select id="speech-voice">
                       <option value="tiffany">Tiffany</option><option value="matthew">Matthew</option>
@@ -174,6 +180,7 @@
                       <option value="carlos">Carlos</option>
                     </select></label>
                   </div>
+                  <label id="edit-target-options" hidden>要修改的对象<input id="edit-target" maxlength="1000" placeholder="例如：红色汽车" /></label>
                   <label id="rerank-options" hidden>候选文档（每行一条，最多 20 条）<textarea id="rerank-documents" rows="4"></textarea></label>
                   <label>添加图片、录音或视频<input id="media-upload" type="file" multiple
                     accept="image/png,image/jpeg,image/webp,audio/wav,audio/mpeg,video/mp4,video/webm" /></label>

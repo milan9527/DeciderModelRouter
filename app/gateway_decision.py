@@ -93,7 +93,7 @@ class GatewayDecisionService:
             "message": "GPU 决策服务可连接" if connected else "GPU 决策服务未就绪或不可连接",
         }
 
-    async def infer(self, body, request, payload):
+    async def infer(self, body, request, payload, *, selection=False):
         config = self.service(body.provider)
         started = perf_counter()
         try:
@@ -116,7 +116,14 @@ class GatewayDecisionService:
             result = response.json()
             if result.get("model") != config["model"]:
                 raise ValueError("Unexpected classifier identity")
-            profile = parse_profile(result)
+            if selection:
+                answer = result["answers"]["action"]["choice"]
+                if answer not in payload["questions"]["action"]["criteria"]:
+                    raise ValueError("GPU returned a model outside the supplied candidates")
+                answers = {"action": {"choice": answer}}
+            else:
+                profile = parse_profile(result)
+                answers = {key: {"choice": value} for key, value in profile.model_dump().items()}
             usage = result.get("usage")
             if usage is not None and (
                 not isinstance(usage, dict)
@@ -135,7 +142,7 @@ class GatewayDecisionService:
             # CUDA kernel time, TTFT, or a second additive stage alongside the HTTP round trip.
             return {
                 "model": result["model"],
-                "answers": {key: {"choice": value} for key, value in profile.model_dump().items()},
+                "answers": answers,
                 "usage": usage,
                 "deployment": result.get("deployment"),
                 "timings": {
@@ -152,6 +159,11 @@ class GatewayDecisionService:
         except httpx.HTTPError as exc:
             raise HTTPException(503, "GPU 决策服务调用失败，未切换模型。") from exc
         except (ValueError, TypeError, KeyError, AttributeError) as exc:
-            raise HTTPException(502, "GPU 决策服务的模型身份或七项分类结果无效。") from exc
+            raise HTTPException(502, "GPU 决策服务的模型身份或候选判断结果无效。") from exc
         finally:
             self.slots[body.provider].release()
+
+    async def select(self, body, request, pool):
+        from app.gateway_model_decision import select_all
+
+        return await select_all(self, body, request, pool)

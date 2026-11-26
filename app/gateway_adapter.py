@@ -10,6 +10,7 @@ from botocore.exceptions import ClientError
 from fastapi import HTTPException
 from starlette.concurrency import run_in_threadpool
 
+from app.bedrock_limits import output_limit
 from app.routing_balance import preferences
 
 CACHE_SOURCE = "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html"
@@ -81,7 +82,7 @@ def request_args(row, task, runtime, resolved):
             plan["checkpoints"] += 1
     kwargs = {"modelId": model["invoke_id"], "messages": messages,
               "inferenceConfig": {**row["benchmark"].get("inference_config", {}),
-                                  "maxTokens": preferences(task).max_output_tokens}}
+                                  "maxTokens": output_limit(model, preferences(task).max_output_tokens)}}
     if row["benchmark"].get("request_fields"):
         kwargs["additionalModelRequestFields"] = copy.deepcopy(row["benchmark"]["request_fields"])
     return kwargs, plan

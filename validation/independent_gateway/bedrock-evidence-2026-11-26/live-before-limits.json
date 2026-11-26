@@ -1,0 +1,813 @@
+{
+  "started_at": "2026-11-26T02:34:51.049676+00:00",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net",
+  "fixture": false,
+  "checks": [
+    "root returns 200 without redirect",
+    "live catalog, evidence version and Liquid default match"
+  ],
+  "runs": [
+    {
+      "case": "general",
+      "run_id": "ec0da99f3d4825ed59284be5",
+      "session_id": "2d3accb4648b31b73c48d582",
+      "status": "error",
+      "errors": [
+        {
+          "code": 503,
+          "message": "目标模型调用失败（ValidationException）：The maximum tokens you requested exceeds the model limit of 8192. Try again with a maximum tokens value that is lower than 8192."
+        }
+      ],
+      "selected_model": {
+        "id": "meta.llama4-scout-17b-instruct-v1:0",
+        "name": "Llama 4 Scout 17B Instruct",
+        "provider": "Meta",
+        "input_modalities": [
+          "TEXT",
+          "IMAGE"
+        ],
+        "output_modalities": [
+          "TEXT"
+        ],
+        "lifecycle": "LEGACY",
+        "streaming": true,
+        "account_available": true,
+        "invoke_id": "us.meta.llama4-scout-17b-instruct-v1:0",
+        "invocation": "inference_profile",
+        "destination_regions": [
+          "us-east-1",
+          "us-east-2",
+          "us-west-2"
+        ],
+        "routing_capabilities": {
+          "converse": true,
+          "multi_turn": true,
+          "vision": true,
+          "tools": false
+        }
+      },
+      "filter_summary": {
+        "catalog_models": 128,
+        "eligible_models": 82,
+        "eligible_configurations": 104,
+        "benchmark_cohort_exclusion": false,
+        "quality_top_k_filter": false
+      },
+      "decision_calls": [
+        {
+          "round": 1,
+          "candidate_ids": [
+            "4af07ed9511e61c5944870f5",
+            "141b2ee3d79b6b725f15c352",
+            "528c1811e6eacd47db3808a1",
+            "7c6807fb77f316a266c6d1ca",
+            "55db9e6ef6a974d0fe08fbe5",
+            "3cbf82d1c4bcee380d434396"
+          ],
+          "selected_candidate_id": "7c6807fb77f316a266c6d1ca",
+          "choice": "m03",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "20be73fa50d366d847ca478a29876a3250de374d8ef68c734c791d847fe9797b",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1509,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.053,
+            "upstream_ms": 136.467,
+            "validation_ms": 0.07,
+            "service_reported_ms": 131.02223099849652,
+            "backend_total_ms": 136.591
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "92e5edd1438b7551f5eb7bc6",
+            "d0a42fe933309c65566f266f",
+            "e02d85967224dd9d7fd9b069",
+            "e2b44121b5627a12ef62ebce",
+            "78c152cfa64e31572c2ae0ff",
+            "7450850c2505611a98c99c32"
+          ],
+          "selected_candidate_id": "d0a42fe933309c65566f266f",
+          "choice": "m01",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "4edad5d196f7503c9c12e22e85b9d94dd009f9fac4adf3a0fabee9784f6f3f08",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1317,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.035,
+            "upstream_ms": 122.193,
+            "validation_ms": 0.062,
+            "service_reported_ms": 117.10367300838698,
+            "backend_total_ms": 122.29
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "a0dda0a538be50bba3d2a68a",
+            "22dfa0c1bde25814b410db09",
+            "46c3dd81c3db41663ea6e465",
+            "508e71651830883c900d0f5b",
+            "c3ad869df57c7ee29d047e0b",
+            "0c7219e6dbb0e889709e54d0"
+          ],
+          "selected_candidate_id": "46c3dd81c3db41663ea6e465",
+          "choice": "m02",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "31c9738c406749df37f6093f53b5e77f310802b9b34289753a93d3eb9e04de7d",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1522,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.024,
+            "upstream_ms": 136.096,
+            "validation_ms": 0.058,
+            "service_reported_ms": 131.19547501264606,
+            "backend_total_ms": 136.179
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "3f908b0b05c33ca3b6fed736",
+            "f7891afc167c4df584a47910",
+            "00de34b9cc4cd5421b5dc003",
+            "736f39b36210cac03c396a70",
+            "e50591c1316828e0f1e9b101",
+            "92209372d93d7bfbdea64cb2"
+          ],
+          "selected_candidate_id": "3f908b0b05c33ca3b6fed736",
+          "choice": "m00",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "fbea002628e4522685c18472d08578e72f7f46b411453906a1c737e4a6fc5180",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1455,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.025,
+            "upstream_ms": 129.394,
+            "validation_ms": 0.058,
+            "service_reported_ms": 124.67903099604882,
+            "backend_total_ms": 129.477
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "f6aa035d928680177233e786",
+            "686be5b15114f4d94b56971c",
+            "4bf30f5dbd818791d1814e35",
+            "82de00dbdbac2245a5e5867c",
+            "5d1a2f54a8e46ad25acc0ea5",
+            "1b7062dc8a0809c9d1411778"
+          ],
+          "selected_candidate_id": "82de00dbdbac2245a5e5867c",
+          "choice": "m03",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "655439a0112a9aec566bc91a1fe1f6c8e3b07f4dc9a9420d948a65a6a6ae0666",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1451,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.024,
+            "upstream_ms": 129.97,
+            "validation_ms": 0.057,
+            "service_reported_ms": 124.78477400145493,
+            "backend_total_ms": 130.052
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "54c8656e9a5bbc6de7b486c5",
+            "0bcac54a0298a9109f7fc5df",
+            "f950c68c733366ba625ea20d",
+            "bf562d3d81b62a87f03c62fa",
+            "487508bfa9863c2956130f76",
+            "ca5c4ac50cd77084873f67d9"
+          ],
+          "selected_candidate_id": "ca5c4ac50cd77084873f67d9",
+          "choice": "m05",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "ddf4beed4c447b497f7cc438dc43894f3859108f99f2824c63fdb775b372ef68",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1459,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.025,
+            "upstream_ms": 136.997,
+            "validation_ms": 0.06,
+            "service_reported_ms": 130.31664399022702,
+            "backend_total_ms": 137.083
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "f99c39be667e35613b555494",
+            "780ac14046bdb3cc4a662aea",
+            "ea2b3574fbb802bd603f9701",
+            "2623060f2e7a57c97fcb149d",
+            "92611fea00cfaf3a4026d68f",
+            "db9cda404f33728690c122c3"
+          ],
+          "selected_candidate_id": "f99c39be667e35613b555494",
+          "choice": "m00",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "3c7c17b8eb227d65c1b337c10a70f261df9a5c30af041264662b9d05dda5f956",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1527,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.025,
+            "upstream_ms": 136.528,
+            "validation_ms": 0.071,
+            "service_reported_ms": 131.5622730035102,
+            "backend_total_ms": 136.625
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "e984b87d469f151c5176f5b2",
+            "9c943bf50bcb7d06aa3d7303",
+            "755d09e02b9dbeb11440cbdb",
+            "dff6656ffa264d22b034f99e",
+            "42dbf812a28b1d52ab59d3ea",
+            "7f3b6ab061362bb03eb4a534"
+          ],
+          "selected_candidate_id": "9c943bf50bcb7d06aa3d7303",
+          "choice": "m01",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "4c13fdd1742985638d59a5e60ba081e237875eecfae8d6e7374c15eb55ac3a93",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1273,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.044,
+            "upstream_ms": 112.347,
+            "validation_ms": 0.061,
+            "service_reported_ms": 107.05111498828046,
+            "backend_total_ms": 112.453
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "7780f419d5dc75198ec4a7fa",
+            "67b1efa3870ea831f134195c",
+            "6c3bac2915156d3eca59eaa4",
+            "1166ad1b940f6bbe65371c70",
+            "85be5c2f286a047c63133bb8",
+            "825bfe38a688294c90dbc203"
+          ],
+          "selected_candidate_id": "85be5c2f286a047c63133bb8",
+          "choice": "m04",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "819b0dfc0b5b9b12039e23809df30f037156fbc673a74aa5a47595256bd3dc14",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1599,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.032,
+            "upstream_ms": 145.02,
+            "validation_ms": 0.055,
+            "service_reported_ms": 139.49727099679876,
+            "backend_total_ms": 145.108
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "3083f10e995d4306e5f40de3",
+            "0a5ab7e218a22ad27559894b",
+            "b3b662af9c16a742eb3d6220",
+            "3758b427feeab99b76d9df7a",
+            "9a19aa309d3e92aca97fe019",
+            "ded3c09dcd8c76441ebec959"
+          ],
+          "selected_candidate_id": "b3b662af9c16a742eb3d6220",
+          "choice": "m02",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "b83395fd4f2d310ebf57d7811802b087d0c697d03e369b8b4b0add045369f4cc",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1472,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.029,
+            "upstream_ms": 135.846,
+            "validation_ms": 0.058,
+            "service_reported_ms": 129.59755799965933,
+            "backend_total_ms": 135.933
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "f9b1be6e964d2e4eb536d845",
+            "fcb5f8c31de521a2102f761d",
+            "0f391f6c5c778e2d546993ea",
+            "77a992bd5167b083d331c593",
+            "a84750de4f947533fc9bf8f6",
+            "36b8d58dc25bf7449e09e90e"
+          ],
+          "selected_candidate_id": "fcb5f8c31de521a2102f761d",
+          "choice": "m01",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "fd185bfaa13708b0122c469022237e0b6433ca941da141d4bf94c38fe1dfd33e",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1458,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.026,
+            "upstream_ms": 134.023,
+            "validation_ms": 0.062,
+            "service_reported_ms": 128.99372300307732,
+            "backend_total_ms": 134.112
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "a628a94dace7b81034b75a57",
+            "6169c3e8ddbdc181ea10ef20",
+            "3925533f980b4d45a8888fc2",
+            "6b3f4e562c32cd490a8cdb6e",
+            "d253ffe0c3ec1b5101eca7db",
+            "8d99902a18b38ed81d2b2265"
+          ],
+          "selected_candidate_id": "6b3f4e562c32cd490a8cdb6e",
+          "choice": "m03",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "eced7ce2126c374052bf365bdf0c6426e027bd22f3ccf5a86f7878bca54caa31",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1319,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.028,
+            "upstream_ms": 210.578,
+            "validation_ms": 0.059,
+            "service_reported_ms": 117.17894399771467,
+            "backend_total_ms": 210.666
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "8128a4bb80db229dd2be8284",
+            "6f4a8678e68c4e207b0d3a82",
+            "54a5adb0a7aaf78e24ade44a",
+            "7e821b7090cc9d0d50f62fc9",
+            "4fc8077360fff98bebc34429",
+            "fbb163eac05940755a9ce43f"
+          ],
+          "selected_candidate_id": "8128a4bb80db229dd2be8284",
+          "choice": "m00",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "5b51023b59a89464f2eae2b0c183c5a0ba15267c7f566faf38028bdb5c255b22",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1397,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.025,
+            "upstream_ms": 265.756,
+            "validation_ms": 0.076,
+            "service_reported_ms": 120.38274999940768,
+            "backend_total_ms": 265.858
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "cf21615b726c2b77a3069b90",
+            "e17f17ebe34eb5826c3452be",
+            "87674941320625202efea528",
+            "2bc99cf446e965d8ea8ef957",
+            "9caac48ad15ecf1b69bfc441",
+            "7f63ca4fc931413c6be72832"
+          ],
+          "selected_candidate_id": "9caac48ad15ecf1b69bfc441",
+          "choice": "m04",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "f2fdad51847ed47e6e0cef84a54c7c9b344d315bf4d7bc23ff79595a74b12a24",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1618,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.035,
+            "upstream_ms": 282.328,
+            "validation_ms": 0.059,
+            "service_reported_ms": 140.0028929929249,
+            "backend_total_ms": 282.423
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "471301a23bd99194b8e28bf4",
+            "991a0c453d1b384f86b63367",
+            "822bcdeb7f0cccfe167b451f",
+            "bec5cbe335595ac88455e5f1",
+            "c7550f72bc9ce2dc02f1ce3d",
+            "4bcc9c14c4d586f4617e15aa"
+          ],
+          "selected_candidate_id": "822bcdeb7f0cccfe167b451f",
+          "choice": "m02",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "d175cea64b45ffe835ce4661354e173cae2645cd89af18245ef77cc0d100b1be",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1430,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.025,
+            "upstream_ms": 258.588,
+            "validation_ms": 0.057,
+            "service_reported_ms": 123.64548699406441,
+            "backend_total_ms": 258.671
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "a9681503baaa7ea4f3698e9f",
+            "2dacea61db0084c4e84c1817",
+            "d0f3a67606a8c9c7cfbf6748",
+            "aac0f9bf8a31a92c6fe70eee",
+            "ff3edebfe223cb3b534204fd",
+            "b8c39b029dc48d143d96eec5"
+          ],
+          "selected_candidate_id": "ff3edebfe223cb3b534204fd",
+          "choice": "m04",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "ad771eb95f954a01ee78a53f996b9cd785d89ccb78e3e47212f2a13d561b4d87",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1486,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.032,
+            "upstream_ms": 257.755,
+            "validation_ms": 0.056,
+            "service_reported_ms": 130.32606401247904,
+            "backend_total_ms": 257.843
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "ed6e31e5faa511c6217cc38a",
+            "ca77c460b40a697598c0b01f",
+            "79efa8f4e71c69f1fac653c8",
+            "f15e6b397633b5bfc43157b8",
+            "72c30ad108a501d49fe9661b",
+            "5dba7fb19ee2c54abfec61ed"
+          ],
+          "selected_candidate_id": "f15e6b397633b5bfc43157b8",
+          "choice": "m03",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "4f4f536b7b89d529b6d0536ed42e2d7b6080686f3326d36d3b8b67f94d1662cc",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1497,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.025,
+            "upstream_ms": 264.849,
+            "validation_ms": 0.057,
+            "service_reported_ms": 130.43165601266082,
+            "backend_total_ms": 264.933
+          }
+        },
+        {
+          "round": 1,
+          "candidate_ids": [
+            "8661e27b91cb3dc35e8c02d3",
+            "56a73ecc6476fd66154aad55"
+          ],
+          "selected_candidate_id": "8661e27b91cb3dc35e8c02d3",
+          "choice": "m00",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "d8c6b24b80a7b0865a2443176138ada0bcdcf3b38c881182cbc5c846d7bc84e9",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 713,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.027,
+            "upstream_ms": 209.985,
+            "validation_ms": 0.053,
+            "service_reported_ms": 66.6211219941033,
+            "backend_total_ms": 210.067
+          }
+        },
+        {
+          "round": 2,
+          "candidate_ids": [
+            "7c6807fb77f316a266c6d1ca",
+            "d0a42fe933309c65566f266f",
+            "46c3dd81c3db41663ea6e465",
+            "3f908b0b05c33ca3b6fed736",
+            "82de00dbdbac2245a5e5867c",
+            "ca5c4ac50cd77084873f67d9"
+          ],
+          "selected_candidate_id": "d0a42fe933309c65566f266f",
+          "choice": "m01",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "30a367a5367ae1f772f7ea4a89369d0318f68bad68fc8e114e9f2cf866de671e",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1463,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.026,
+            "upstream_ms": 263.616,
+            "validation_ms": 0.058,
+            "service_reported_ms": 129.1106560092885,
+            "backend_total_ms": 263.701
+          }
+        },
+        {
+          "round": 2,
+          "candidate_ids": [
+            "f99c39be667e35613b555494",
+            "9c943bf50bcb7d06aa3d7303",
+            "85be5c2f286a047c63133bb8",
+            "b3b662af9c16a742eb3d6220",
+            "fcb5f8c31de521a2102f761d",
+            "6b3f4e562c32cd490a8cdb6e"
+          ],
+          "selected_candidate_id": "6b3f4e562c32cd490a8cdb6e",
+          "choice": "m05",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "0da4300b274c919fd925ede9a58371c6886089092a414ffe77c4b8751942d51c",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1396,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.023,
+            "upstream_ms": 262.955,
+            "validation_ms": 0.057,
+            "service_reported_ms": 120.05655201210175,
+            "backend_total_ms": 263.036
+          }
+        },
+        {
+          "round": 2,
+          "candidate_ids": [
+            "8128a4bb80db229dd2be8284",
+            "9caac48ad15ecf1b69bfc441",
+            "822bcdeb7f0cccfe167b451f",
+            "ff3edebfe223cb3b534204fd",
+            "f15e6b397633b5bfc43157b8",
+            "8661e27b91cb3dc35e8c02d3"
+          ],
+          "selected_candidate_id": "9caac48ad15ecf1b69bfc441",
+          "choice": "m01",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "6125a34e75f79bbc31b77cfd9f45c00a31fd1162180cd0974a21bbb370ec4472",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 1505,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.025,
+            "upstream_ms": 272.196,
+            "validation_ms": 0.059,
+            "service_reported_ms": 130.79337499220856,
+            "backend_total_ms": 272.281
+          }
+        },
+        {
+          "round": 3,
+          "candidate_ids": [
+            "d0a42fe933309c65566f266f",
+            "6b3f4e562c32cd490a8cdb6e",
+            "9caac48ad15ecf1b69bfc441"
+          ],
+          "selected_candidate_id": "9caac48ad15ecf1b69bfc441",
+          "choice": "m02",
+          "model": "LiquidAI/d1-2B",
+          "provider": "liquid",
+          "input_hash": "c8ac021eb6a36db02c65e2d1d9dd05ed661c0b6284194cb0845324ddd5b6bf28",
+          "context_preview": {
+            "turns": 0,
+            "max_chars_per_turn": 200,
+            "current_request_complete": true
+          },
+          "usage": {
+            "input_tokens": 754,
+            "output_tokens": 0
+          },
+          "timings": {
+            "execution": "batch",
+            "queue_ms": 0.026,
+            "upstream_ms": 210.953,
+            "validation_ms": 0.056,
+            "service_reported_ms": 68.35120198957156,
+            "backend_total_ms": 211.037
+          }
+        }
+      ],
+      "all_candidates_reached_gpu": true,
+      "model_decision_ms": 4223.959,
+      "stickiness": {
+        "enabled": true,
+        "retained": false,
+        "previous_configuration_id": null,
+        "reason": "本轮由决策模型重新选择。"
+      },
+      "context": {
+        "policy_version": "gateway-session-v1",
+        "source": "session",
+        "parent_run_id": null,
+        "history_turns": 0,
+        "trimmed_turns": 0,
+        "text_bytes": 2,
+        "limit_bytes": 48000,
+        "max_history_turns": 8,
+        "note": "只带入完整成功的对话；按完整轮次裁剪。文本字节是保守估算，不是模型 tokenizer。"
+      },
+      "execution": {},
+      "wall_ms": 5527.211,
+      "history_decision_calls": 22,
+      "history_decision_ms": 4223.959
+    }
+  ],
+  "catalog": {
+    "catalog_version": "72c68c7564790cd4",
+    "ranking_version": "1d0a074a9e3a3fba",
+    "policy_version": "bedrock-classified-v4",
+    "model_routing": {
+      "version": "gpu-evidence-v1",
+      "selector": "gpu_decision_model",
+      "measurement_version": "f943adb07ac2e44ada2fdaf9",
+      "benchmark_cohort_exclusion": false
+    }
+  }
+}

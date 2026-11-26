@@ -433,8 +433,13 @@ async def model_step(body: ModelStep, request: Request):
                    "configuration_changed": bool(previous_config and previous_config != output["configuration_id"]),
                    "stickiness": selection["selection"].get("stickiness", {}),
                    "selection_reason": selection["selection"]["reason"],
+                   "model_decision_ms": selection["selection"].get("decision_ms"),
+                   "model_decision_calls": len(selection["selection"].get("decision_calls", [])),
+                   "measurement_version": selection["selection"].get("measurement_version"),
                    "gpu_ms": decision["timings"]["upstream_ms"], "target_ms": output["backend_total_ms"],
                    "usage": output["usage"], "cache": output["cache"],
+                   "output_budget": output.get("output_budget"),
+                   "provider_metadata_omitted": output.get("provider_metadata_omitted"),
                    "reference_cost_usd": output["observed_reference_cost_usd"],
                    "stop_reason": output["stop_reason"], "tool_call_count": len(output["tool_calls"])}
         response = {"message": output["message"], "stop_reason": output["stop_reason"],

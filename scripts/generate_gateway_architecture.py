@@ -34,8 +34,8 @@ def build():
     ).text = "DeciderModelRouter — 独立模型网关 AWS 部署架构"
     ET.SubElement(svg, "desc", id="diagram-description").text = (
         "浏览器通过专用 CloudFront 访问私有 S3 前端，API 经 VPC Origin、"
-        "内网 ALB 进入私有 ECS Fargate。后端独立调用 g5.xlarge GPU 获取七项任务属性，"
-        "结合镜像内证据快照选择 Bedrock 目标模型。两张 DynamoDB 表保存认证、会话、"
+        "内网 ALB 进入私有 ECS Fargate。后端独立调用 g5.xlarge GPU 获取任务属性并依据评测选择目标型号，"
+        "镜像内证据快照提供精确端点评测。两张 DynamoDB 表保存认证、会话、"
         "评测和性能，独立私有 S3 保存媒体。CloudFront 不直接读取媒体桶。"
         "GPU 不接收媒体字节，评测记录不会自动更新选型快照。"
     )
@@ -164,7 +164,7 @@ def build():
     for i, (kind, label) in enumerate(
         [
             ("request", "入口与静态资源"),
-            ("gpu", "GPU 属性判断"),
+            ("gpu", "GPU 分类与选模"),
             ("model", "目标模型执行"),
             ("data", "数据持久化"),
         ]
@@ -218,11 +218,11 @@ def build():
         500,
         165,
         "Amazon EC2 · g5.xlarge",
-        ["A10G 24GB · 独立 GPU 服务", "Decider / Liquid / H2O", "每次调用一个分类器 · 默认 Liquid"],
+        ["A10G 24GB · 独立 GPU 服务", "Decider / Liquid / H2O", "分类与证据选模 · 默认 Liquid"],
     )
-    text(390, 1002, "GPU 仅识别任务属性", 21, weight="600")
-    text(390, 1038, "输入：文字、附件类型、输出要求", 19, MUTED)
-    text(390, 1072, "不传媒体字节、型号或价格", 19, MUTED)
+    text(390, 1002, "GPU 根据评测选择模型", 21, weight="600")
+    text(390, 1038, "输入：任务、候选、实测与价格", 19, MUTED)
+    text(390, 1072, "不传媒体字节或测试标准答案", 19, MUTED)
     text(390, 1148, "当前：1 个 API 任务 + 1 台 GPU；网络出口与运维路径省略。", 19, MUTED)
 
     # Backend-only access to target models and account-isolated persistence.
@@ -264,7 +264,7 @@ def build():
     steps = [
         ("01", "任务与用户约束"),
         ("02", "GPU 返回七项属性"),
-        ("03", "ECS 依据证据选型"),
+        ("03", "GPU 读取证据选模"),
         ("04", "Bedrock 按需执行"),
         ("05", "保存结果与性能"),
     ]
@@ -278,7 +278,7 @@ def build():
     text(
         40,
         1455,
-        "文本/向量：可比评测与参考费用；多模态：能力与适配器过滤后按固定顺序选择。业务校准当前未启用。",
+        "全部合格配置参与 GPU 判断；直接实测、公开参考与费用分开说明。小样本评测不等于业务成功率。",
         20,
         MUTED,
     )

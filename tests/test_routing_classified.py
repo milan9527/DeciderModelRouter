@@ -252,7 +252,7 @@ def test_missing_category_evidence_cannot_win_on_price():
 
 def test_configuration_variants_require_their_own_evidence_and_are_bedrock_only():
     catalog, ranks = routing.load_catalog(), routing.load_rankings()
-    mid = next(iter(ranks["entries"]))
+    mid = "amazon.nova-micro-v1:0"
     original = ranks["entries"][mid]
     variant = copy.deepcopy(original)
     variant["benchmark_configuration"] = "test-low-effort"

@@ -1,0 +1,1748 @@
+{
+  "catalog_version": "72c68c7564790cd4",
+  "scope": "parameter acceptance, not quality",
+  "entries": {
+    "ai21.jamba-1-5-large-v1:0": {
+      "model_id": "ai21.jamba-1-5-large-v1:0",
+      "invoke_id": "ai21.jamba-1-5-large-v1:0",
+      "measured_at": "2026-11-26T02:36:06.910540+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 4096. Try again with a maximum tokens value that is lower than 4096.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 4096,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 14,
+            "outputTokens": 3,
+            "totalTokens": 17
+          },
+          "request_id": "9d0e55f4-6bde-4ed4-85aa-1a8be8b9b710"
+        }
+      ],
+      "output_token_ceiling": 4096,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 4096
+    },
+    "ai21.jamba-1-5-mini-v1:0": {
+      "model_id": "ai21.jamba-1-5-mini-v1:0",
+      "invoke_id": "ai21.jamba-1-5-mini-v1:0",
+      "measured_at": "2026-11-26T02:36:06.912351+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 4096. Try again with a maximum tokens value that is lower than 4096.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 4096,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 14,
+            "outputTokens": 3,
+            "totalTokens": 17
+          },
+          "request_id": "dc0bf65f-3634-4385-a598-a16b9bcecaa1"
+        }
+      ],
+      "output_token_ceiling": 4096,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 4096
+    },
+    "amazon.nova-2-lite-v1:0": {
+      "model_id": "amazon.nova-2-lite-v1:0",
+      "invoke_id": "us.amazon.nova-2-lite-v1:0",
+      "measured_at": "2026-11-26T02:36:06.913212+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 50,
+            "outputTokens": 3,
+            "totalTokens": 53
+          },
+          "request_id": "e08c817b-e4ca-4c6b-b59a-33ae27c0e356"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "amazon.nova-lite-v1:0": {
+      "model_id": "amazon.nova-lite-v1:0",
+      "invoke_id": "amazon.nova-lite-v1:0",
+      "measured_at": "2026-11-26T02:36:06.913929+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 10000. Try again with a maximum tokens value that is lower than 10000.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 10000,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 4,
+            "outputTokens": 3,
+            "totalTokens": 7
+          },
+          "request_id": "c0af0554-c1cc-43e9-97ec-a39bf3476c8a"
+        }
+      ],
+      "output_token_ceiling": 10000,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 10000
+    },
+    "amazon.nova-micro-v1:0": {
+      "model_id": "amazon.nova-micro-v1:0",
+      "invoke_id": "amazon.nova-micro-v1:0",
+      "measured_at": "2026-11-26T02:36:06.914869+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 10000. Try again with a maximum tokens value that is lower than 10000.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 10000,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 4,
+            "outputTokens": 3,
+            "totalTokens": 7
+          },
+          "request_id": "2870e5a9-2fa5-4e3c-8c02-93531779f57a"
+        }
+      ],
+      "output_token_ceiling": 10000,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 10000
+    },
+    "amazon.nova-pro-v1:0": {
+      "model_id": "amazon.nova-pro-v1:0",
+      "invoke_id": "amazon.nova-pro-v1:0",
+      "measured_at": "2026-11-26T02:36:06.915872+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 10000. Try again with a maximum tokens value that is lower than 10000.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 10000,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 4,
+            "outputTokens": 20,
+            "totalTokens": 24
+          },
+          "request_id": "5534b2ae-a498-496e-b196-a0c598743118"
+        }
+      ],
+      "output_token_ceiling": 10000,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 10000
+    },
+    "anthropic.claude-fable-5": {
+      "model_id": "anthropic.claude-fable-5",
+      "invoke_id": "us.anthropic.claude-fable-5",
+      "measured_at": "2026-11-26T02:36:07.179404+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 13,
+            "outputTokens": 16,
+            "totalTokens": 29,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "5bc43a36-e592-4fa3-9e0a-ad7146d902da"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-fable-5-1": {
+      "model_id": "anthropic.claude-fable-5-1",
+      "invoke_id": "us.anthropic.claude-fable-5-1",
+      "measured_at": "2026-11-26T02:36:07.194493+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 15,
+            "outputTokens": 4,
+            "totalTokens": 19,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "b02c4c79-266e-4512-93df-c38500e502ca"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-fable-5-2": {
+      "model_id": "anthropic.claude-fable-5-2",
+      "invoke_id": "us.anthropic.claude-fable-5-2",
+      "measured_at": "2026-11-26T02:36:07.201527+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 15,
+            "outputTokens": 25,
+            "totalTokens": 40,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "6e4c259e-07b1-4c17-958c-b2c49a423066"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-haiku-4-5-20251001-v1:0": {
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "invoke_id": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+      "measured_at": "2026-11-26T02:36:07.286006+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 11,
+            "outputTokens": 5,
+            "totalTokens": 16,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "d6493784-344f-4a39-904f-3cc2ad81ab54"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-haiku-5-5": {
+      "model_id": "anthropic.claude-haiku-5-5",
+      "invoke_id": "us.anthropic.claude-haiku-5-5",
+      "measured_at": "2026-11-26T02:36:07.289500+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 15,
+            "outputTokens": 4,
+            "totalTokens": 19,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "369ce87a-9e47-4968-baa0-983e7ba88142"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-opus-4-1-20250805-v1:0": {
+      "model_id": "anthropic.claude-opus-4-1-20250805-v1:0",
+      "invoke_id": "us.anthropic.claude-opus-4-1-20250805-v1:0",
+      "measured_at": "2026-11-26T02:36:07.328574+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 11,
+            "outputTokens": 4,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "09d0c9ba-c9c3-436d-af39-e1dcea7fb8ea"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-opus-4-5-20251101-v1:0": {
+      "model_id": "anthropic.claude-opus-4-5-20251101-v1:0",
+      "invoke_id": "us.anthropic.claude-opus-4-5-20251101-v1:0",
+      "measured_at": "2026-11-26T02:36:07.703149+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 11,
+            "outputTokens": 4,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "1570ac28-0437-49c4-b4cc-01ca7cb82cd2"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-opus-4-6-v1": {
+      "model_id": "anthropic.claude-opus-4-6-v1",
+      "invoke_id": "us.anthropic.claude-opus-4-6-v1",
+      "measured_at": "2026-11-26T02:36:07.773070+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 11,
+            "outputTokens": 4,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "9c1a152a-f399-499a-8de1-540a543a0d11"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-opus-4-7": {
+      "model_id": "anthropic.claude-opus-4-7",
+      "invoke_id": "us.anthropic.claude-opus-4-7",
+      "measured_at": "2026-11-26T02:36:08.579102+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 18,
+            "outputTokens": 6,
+            "totalTokens": 24,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "6aa655d6-08e5-405d-a5d8-0670c17efe3c"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-opus-4-8": {
+      "model_id": "anthropic.claude-opus-4-8",
+      "invoke_id": "us.anthropic.claude-opus-4-8",
+      "measured_at": "2026-11-26T02:36:08.587441+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 13,
+            "outputTokens": 4,
+            "totalTokens": 17,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "d237bbdf-5f79-420b-99b6-89dece56333b"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-opus-5": {
+      "model_id": "anthropic.claude-opus-5",
+      "invoke_id": "us.anthropic.claude-opus-5",
+      "measured_at": "2026-11-26T02:36:08.879840+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 13,
+            "outputTokens": 4,
+            "totalTokens": 17,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "ef6efc8b-7412-49cc-8d3e-70ee241b752b"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-opus-5-5": {
+      "model_id": "anthropic.claude-opus-5-5",
+      "invoke_id": "us.anthropic.claude-opus-5-5",
+      "measured_at": "2026-11-26T02:36:08.955585+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 15,
+            "outputTokens": 4,
+            "totalTokens": 19,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "6b6132ef-1173-42ce-87d9-3b35c93595b7"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-sonnet-4-5-20250929-v1:0": {
+      "model_id": "anthropic.claude-sonnet-4-5-20250929-v1:0",
+      "invoke_id": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+      "measured_at": "2026-11-26T02:36:09.138014+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 11,
+            "outputTokens": 5,
+            "totalTokens": 16,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "48783330-e35c-4998-8913-8e28195b3a1f"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-sonnet-4-6": {
+      "model_id": "anthropic.claude-sonnet-4-6",
+      "invoke_id": "us.anthropic.claude-sonnet-4-6",
+      "measured_at": "2026-11-26T02:36:09.180097+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 11,
+            "outputTokens": 5,
+            "totalTokens": 16,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "484c3e44-b391-4b93-bf25-6f9172500830"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-sonnet-5": {
+      "model_id": "anthropic.claude-sonnet-5",
+      "invoke_id": "us.anthropic.claude-sonnet-5",
+      "measured_at": "2026-11-26T02:36:09.479146+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 13,
+            "outputTokens": 4,
+            "totalTokens": 17,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "68fa95a7-19ff-4a2a-b52f-441f80a619db"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "anthropic.claude-sonnet-5-5": {
+      "model_id": "anthropic.claude-sonnet-5-5",
+      "invoke_id": "us.anthropic.claude-sonnet-5-5",
+      "measured_at": "2026-11-26T02:36:09.857938+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 15,
+            "outputTokens": 4,
+            "totalTokens": 19,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "b507121a-ed1e-48eb-931b-84a14961e3b2"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "deepseek.r1-v1:0": {
+      "model_id": "deepseek.r1-v1:0",
+      "invoke_id": "us.deepseek.r1-v1:0",
+      "measured_at": "2026-11-26T02:36:09.893751+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 9,
+            "outputTokens": 82,
+            "totalTokens": 91
+          },
+          "request_id": "df5b1772-5698-40f2-be3b-879966a79ce2"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "deepseek.v3.2": {
+      "model_id": "deepseek.v3.2",
+      "invoke_id": "deepseek.v3.2",
+      "measured_at": "2026-11-26T02:36:09.961824+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 8,
+            "outputTokens": 2,
+            "totalTokens": 10
+          },
+          "request_id": "639a0f92-427b-436e-8faf-35b00a7ca3e7"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "google.gemma-3-12b-it": {
+      "model_id": "google.gemma-3-12b-it",
+      "invoke_id": "google.gemma-3-12b-it",
+      "measured_at": "2026-11-26T02:36:09.968081+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 13,
+            "outputTokens": 3,
+            "totalTokens": 16
+          },
+          "request_id": "b8213aa3-673d-462c-9957-e4c8bb6b8179"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "google.gemma-3-27b-it": {
+      "model_id": "google.gemma-3-27b-it",
+      "invoke_id": "google.gemma-3-27b-it",
+      "measured_at": "2026-11-26T02:36:10.263275+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 13,
+            "outputTokens": 3,
+            "totalTokens": 16
+          },
+          "request_id": "35441fdd-5e56-4f38-b965-ca11c54eb327"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "google.gemma-3-4b-it": {
+      "model_id": "google.gemma-3-4b-it",
+      "invoke_id": "google.gemma-3-4b-it",
+      "measured_at": "2026-11-26T02:36:10.277356+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 13,
+            "outputTokens": 4,
+            "totalTokens": 17
+          },
+          "request_id": "bebf3e7f-1990-4c4b-bf92-57e16169de8d"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "meta.llama3-1-70b-instruct-v1:0": {
+      "model_id": "meta.llama3-1-70b-instruct-v1:0",
+      "invoke_id": "us.meta.llama3-1-70b-instruct-v1:0",
+      "measured_at": "2026-11-26T02:36:10.374629+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 8192. Try again with a maximum tokens value that is lower than 8192.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 8192,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 19,
+            "outputTokens": 3,
+            "totalTokens": 22
+          },
+          "request_id": "a1fe5906-3d1c-4295-a02f-41ac49b80beb"
+        }
+      ],
+      "output_token_ceiling": 8192,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 8192
+    },
+    "meta.llama3-1-8b-instruct-v1:0": {
+      "model_id": "meta.llama3-1-8b-instruct-v1:0",
+      "invoke_id": "us.meta.llama3-1-8b-instruct-v1:0",
+      "measured_at": "2026-11-26T02:36:10.413368+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 8192. Try again with a maximum tokens value that is lower than 8192.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 8192,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 19,
+            "outputTokens": 3,
+            "totalTokens": 22
+          },
+          "request_id": "5183db13-fdcc-4b9a-88ec-937d7d71c390"
+        }
+      ],
+      "output_token_ceiling": 8192,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 8192
+    },
+    "meta.llama3-3-70b-instruct-v1:0": {
+      "model_id": "meta.llama3-3-70b-instruct-v1:0",
+      "invoke_id": "us.meta.llama3-3-70b-instruct-v1:0",
+      "measured_at": "2026-11-26T02:36:10.458423+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 8192. Try again with a maximum tokens value that is lower than 8192.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 8192,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 39,
+            "outputTokens": 2,
+            "totalTokens": 41
+          },
+          "request_id": "d3bcf5ac-41d9-4803-8bfa-43eed5e8c05c"
+        }
+      ],
+      "output_token_ceiling": 8192,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 8192
+    },
+    "meta.llama3-70b-instruct-v1:0": {
+      "model_id": "meta.llama3-70b-instruct-v1:0",
+      "invoke_id": "meta.llama3-70b-instruct-v1:0",
+      "measured_at": "2026-11-26T02:36:10.462285+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 2048. Try again with a maximum tokens value that is lower than 2048.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 2048,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 18,
+            "outputTokens": 3,
+            "totalTokens": 21
+          },
+          "request_id": "2f483e94-1347-44d9-b1b0-de4b12d809b4"
+        }
+      ],
+      "output_token_ceiling": 2048,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 2048
+    },
+    "meta.llama3-8b-instruct-v1:0": {
+      "model_id": "meta.llama3-8b-instruct-v1:0",
+      "invoke_id": "meta.llama3-8b-instruct-v1:0",
+      "measured_at": "2026-11-26T02:36:10.627139+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 2048. Try again with a maximum tokens value that is lower than 2048.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 2048,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 18,
+            "outputTokens": 3,
+            "totalTokens": 21
+          },
+          "request_id": "04751702-a769-44fe-b468-f12d2418e0a2"
+        }
+      ],
+      "output_token_ceiling": 2048,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 2048
+    },
+    "meta.llama4-maverick-17b-instruct-v1:0": {
+      "model_id": "meta.llama4-maverick-17b-instruct-v1:0",
+      "invoke_id": "us.meta.llama4-maverick-17b-instruct-v1:0",
+      "measured_at": "2026-11-26T02:36:10.753693+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 8192. Try again with a maximum tokens value that is lower than 8192.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 8192,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 39,
+            "outputTokens": 2,
+            "totalTokens": 41
+          },
+          "request_id": "a482fc32-d25c-4b81-b21f-e12d98f748d1"
+        }
+      ],
+      "output_token_ceiling": 8192,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 8192
+    },
+    "meta.llama4-scout-17b-instruct-v1:0": {
+      "model_id": "meta.llama4-scout-17b-instruct-v1:0",
+      "invoke_id": "us.meta.llama4-scout-17b-instruct-v1:0",
+      "measured_at": "2026-11-26T02:36:10.775673+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 8192. Try again with a maximum tokens value that is lower than 8192.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 8192,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 39,
+            "outputTokens": 2,
+            "totalTokens": 41
+          },
+          "request_id": "240a880a-2c26-41fc-a810-05e59ef4d94a"
+        }
+      ],
+      "output_token_ceiling": 8192,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 8192
+    },
+    "minimax.minimax-m2": {
+      "model_id": "minimax.minimax-m2",
+      "invoke_id": "minimax.minimax-m2",
+      "measured_at": "2026-11-26T02:36:10.778792+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 26,
+            "outputTokens": 163,
+            "totalTokens": 189
+          },
+          "request_id": "f5803ae7-f0cb-472e-9abc-16dce82b8c5c"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "minimax.minimax-m2.1": {
+      "model_id": "minimax.minimax-m2.1",
+      "invoke_id": "minimax.minimax-m2.1",
+      "measured_at": "2026-11-26T02:36:10.792323+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 42,
+            "outputTokens": 34,
+            "totalTokens": 76
+          },
+          "request_id": "6d3312c1-bfcd-4e16-beb3-de6ba62df0b1"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "minimax.minimax-m2.5": {
+      "model_id": "minimax.minimax-m2.5",
+      "invoke_id": "minimax.minimax-m2.5",
+      "measured_at": "2026-11-26T02:36:10.893208+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 42,
+            "outputTokens": 76,
+            "totalTokens": 118
+          },
+          "request_id": "6a76cf0e-82db-44b7-987d-b59a0f0f7d7e"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "mistral.devstral-2-123b": {
+      "model_id": "mistral.devstral-2-123b",
+      "invoke_id": "mistral.devstral-2-123b",
+      "measured_at": "2026-11-26T02:36:11.081284+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 7,
+            "outputTokens": 3,
+            "totalTokens": 10
+          },
+          "request_id": "049fbce1-8f3c-448d-8ea4-1684c97f756c"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "mistral.magistral-small-2509": {
+      "model_id": "mistral.magistral-small-2509",
+      "invoke_id": "mistral.magistral-small-2509",
+      "measured_at": "2026-11-26T02:36:11.101861+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 7,
+            "outputTokens": 2,
+            "totalTokens": 9
+          },
+          "request_id": "5e501713-d257-42cc-bfd8-2bd5226bdd18"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "mistral.ministral-3-14b-instruct": {
+      "model_id": "mistral.ministral-3-14b-instruct",
+      "invoke_id": "mistral.ministral-3-14b-instruct",
+      "measured_at": "2026-11-26T02:36:11.104702+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 7,
+            "outputTokens": 2,
+            "totalTokens": 9
+          },
+          "request_id": "65e92a4e-7d10-450e-bbf0-4c834841d1b9"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "mistral.ministral-3-3b-instruct": {
+      "model_id": "mistral.ministral-3-3b-instruct",
+      "invoke_id": "mistral.ministral-3-3b-instruct",
+      "measured_at": "2026-11-26T02:36:11.271467+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 7,
+            "outputTokens": 3,
+            "totalTokens": 10
+          },
+          "request_id": "d1dfe99d-af22-4034-b501-2560ea3f1886"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "mistral.ministral-3-8b-instruct": {
+      "model_id": "mistral.ministral-3-8b-instruct",
+      "invoke_id": "mistral.ministral-3-8b-instruct",
+      "measured_at": "2026-11-26T02:36:11.292995+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 7,
+            "outputTokens": 3,
+            "totalTokens": 10
+          },
+          "request_id": "a9f0f0d1-c06c-4312-9782-34973797d040"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "mistral.mistral-7b-instruct-v0:2": {
+      "model_id": "mistral.mistral-7b-instruct-v0:2",
+      "invoke_id": "mistral.mistral-7b-instruct-v0:2",
+      "measured_at": "2026-11-26T02:36:11.312048+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 8192. Try again with a maximum tokens value that is lower than 8192.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 8192,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 12,
+            "outputTokens": 3,
+            "totalTokens": 15
+          },
+          "request_id": "f50d40ca-60fd-41e3-9644-d6f160cbd6b8"
+        }
+      ],
+      "output_token_ceiling": 8192,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 8192
+    },
+    "mistral.mistral-large-2402-v1:0": {
+      "model_id": "mistral.mistral-large-2402-v1:0",
+      "invoke_id": "mistral.mistral-large-2402-v1:0",
+      "measured_at": "2026-11-26T02:36:11.320069+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 8192. Try again with a maximum tokens value that is lower than 8192.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 8192,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 8,
+            "outputTokens": 3,
+            "totalTokens": 11
+          },
+          "request_id": "41b87cc8-8873-4427-be9c-d38af31f5a2f"
+        }
+      ],
+      "output_token_ceiling": 8192,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 8192
+    },
+    "mistral.mistral-large-3-675b-instruct": {
+      "model_id": "mistral.mistral-large-3-675b-instruct",
+      "invoke_id": "mistral.mistral-large-3-675b-instruct",
+      "measured_at": "2026-11-26T02:36:11.443576+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 7,
+            "outputTokens": 3,
+            "totalTokens": 10
+          },
+          "request_id": "bde2add6-771c-466a-accc-d3aed7af3e18"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "mistral.mistral-small-2402-v1:0": {
+      "model_id": "mistral.mistral-small-2402-v1:0",
+      "invoke_id": "mistral.mistral-small-2402-v1:0",
+      "measured_at": "2026-11-26T02:36:11.495640+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 8192. Try again with a maximum tokens value that is lower than 8192.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 8192,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 8,
+            "outputTokens": 3,
+            "totalTokens": 11
+          },
+          "request_id": "f556eda4-a652-409f-b453-5d44c38b150a"
+        }
+      ],
+      "output_token_ceiling": 8192,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 8192
+    },
+    "mistral.mixtral-8x7b-instruct-v0:1": {
+      "model_id": "mistral.mixtral-8x7b-instruct-v0:1",
+      "invoke_id": "mistral.mixtral-8x7b-instruct-v0:1",
+      "measured_at": "2026-11-26T02:36:11.502841+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 4096. Try again with a maximum tokens value that is lower than 4096.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 4096,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 12,
+            "outputTokens": 3,
+            "totalTokens": 15
+          },
+          "request_id": "80d8fa99-e1a7-4db2-b090-505f426d10e3"
+        }
+      ],
+      "output_token_ceiling": 4096,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 4096
+    },
+    "mistral.pixtral-large-2502-v1:0": {
+      "model_id": "mistral.pixtral-large-2502-v1:0",
+      "invoke_id": "us.mistral.pixtral-large-2502-v1:0",
+      "measured_at": "2026-11-26T02:36:11.593490+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 8,
+            "outputTokens": 3,
+            "totalTokens": 11
+          },
+          "request_id": "3ccbdd57-7875-4b44-ba68-768914aef337"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "mistral.voxtral-mini-3b-2507": {
+      "model_id": "mistral.voxtral-mini-3b-2507",
+      "invoke_id": "mistral.voxtral-mini-3b-2507",
+      "measured_at": "2026-11-26T02:36:11.636232+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 7,
+            "outputTokens": 2,
+            "totalTokens": 9
+          },
+          "request_id": "27863f14-c11a-40ab-a184-d9a1ec889037"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "mistral.voxtral-small-24b-2507": {
+      "model_id": "mistral.voxtral-small-24b-2507",
+      "invoke_id": "mistral.voxtral-small-24b-2507",
+      "measured_at": "2026-11-26T02:36:11.727139+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 7,
+            "outputTokens": 2,
+            "totalTokens": 9
+          },
+          "request_id": "e7161a09-e689-4927-89d0-9d699dd63d51"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "moonshot.kimi-k2-thinking": {
+      "model_id": "moonshot.kimi-k2-thinking",
+      "invoke_id": "moonshot.kimi-k2-thinking",
+      "measured_at": "2026-11-26T02:36:11.751549+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 11,
+            "outputTokens": 29,
+            "totalTokens": 40
+          },
+          "request_id": "d57aaaee-c6d7-4ebc-8c54-7f2e8e020725"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "moonshotai.kimi-k2.5": {
+      "model_id": "moonshotai.kimi-k2.5",
+      "invoke_id": "moonshotai.kimi-k2.5",
+      "measured_at": "2026-11-26T02:36:11.793456+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 31,
+            "outputTokens": 3,
+            "totalTokens": 34
+          },
+          "request_id": "5ef09d92-3ff0-440a-b897-6fdd1517552a"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "nvidia.nemotron-nano-12b-v2": {
+      "model_id": "nvidia.nemotron-nano-12b-v2",
+      "invoke_id": "nvidia.nemotron-nano-12b-v2",
+      "measured_at": "2026-11-26T02:36:11.811734+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 19,
+            "outputTokens": 3,
+            "totalTokens": 22
+          },
+          "request_id": "ae7c484e-33be-4071-b953-3469980917d7"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "nvidia.nemotron-nano-3-30b": {
+      "model_id": "nvidia.nemotron-nano-3-30b",
+      "invoke_id": "nvidia.nemotron-nano-3-30b",
+      "measured_at": "2026-11-26T02:36:11.941335+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 20,
+            "outputTokens": 2,
+            "totalTokens": 22
+          },
+          "request_id": "548f990b-318d-4b2d-9f53-42475e8fa74b"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "nvidia.nemotron-nano-9b-v2": {
+      "model_id": "nvidia.nemotron-nano-9b-v2",
+      "invoke_id": "nvidia.nemotron-nano-9b-v2",
+      "measured_at": "2026-11-26T02:36:11.948577+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 16,
+            "outputTokens": 80,
+            "totalTokens": 96
+          },
+          "request_id": "4e358533-333d-49dd-825a-0582b162898d"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "nvidia.nemotron-super-3-120b": {
+      "model_id": "nvidia.nemotron-super-3-120b",
+      "invoke_id": "nvidia.nemotron-super-3-120b",
+      "measured_at": "2026-11-26T02:36:12.024679+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 20,
+            "outputTokens": 2,
+            "totalTokens": 22
+          },
+          "request_id": "2eabdcde-20a7-4c0e-b82b-4de0d365444c"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-5.4": {
+      "model_id": "openai.gpt-5.4",
+      "invoke_id": "us.openai.gpt-5.4",
+      "measured_at": "2026-11-26T02:36:12.123514+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "37543864-ac7b-45a5-8699-e36cc4a0c51f"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-5.5": {
+      "model_id": "openai.gpt-5.5",
+      "invoke_id": "us.openai.gpt-5.5",
+      "measured_at": "2026-11-26T02:36:12.167187+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 20,
+            "totalTokens": 30,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "e04ca4ed-c8f7-4455-a361-4c019f610e52"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-5.6-luna": {
+      "model_id": "openai.gpt-5.6-luna",
+      "invoke_id": "us.openai.gpt-5.6-luna",
+      "measured_at": "2026-11-26T02:36:12.294622+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "29a24222-cfd8-47f5-baac-dac8140d85ee"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-5.6-sol": {
+      "model_id": "openai.gpt-5.6-sol",
+      "invoke_id": "us.openai.gpt-5.6-sol",
+      "measured_at": "2026-11-26T02:36:12.308904+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "b3c0f4dd-9311-4afa-8111-3d35923609d0"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-5.6-terra": {
+      "model_id": "openai.gpt-5.6-terra",
+      "invoke_id": "us.openai.gpt-5.6-terra",
+      "measured_at": "2026-11-26T02:36:12.361964+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "9d59e8da-2113-489e-93f8-d0448fa8d607"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-6-astra": {
+      "model_id": "openai.gpt-6-astra",
+      "invoke_id": "us.openai.gpt-6-astra",
+      "measured_at": "2026-11-26T02:36:12.530862+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "1686a9a2-9acf-4509-b7f7-e694eb89e119"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-6-luna": {
+      "model_id": "openai.gpt-6-luna",
+      "invoke_id": "us.openai.gpt-6-luna",
+      "measured_at": "2026-11-26T02:36:12.602403+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 16,
+            "totalTokens": 26,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "8f7975de-ea04-45c4-ab21-6be7740929c8"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-6-sol": {
+      "model_id": "openai.gpt-6-sol",
+      "invoke_id": "us.openai.gpt-6-sol",
+      "measured_at": "2026-11-26T02:36:12.604063+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "cbd5f591-6850-4c0a-8b00-c4372b181e09"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-6.1-sol": {
+      "model_id": "openai.gpt-6.1-sol",
+      "invoke_id": "us.openai.gpt-6.1-sol",
+      "measured_at": "2026-11-26T02:36:12.770448+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "056e8a6a-9f80-4ee3-9892-ba0f28e101fe"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-6.1-terra": {
+      "model_id": "openai.gpt-6.1-terra",
+      "invoke_id": "us.openai.gpt-6.1-terra",
+      "measured_at": "2026-11-26T02:36:12.812910+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "211e0166-b7c4-40dd-95d4-81f6a1378175"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-6.2-astra": {
+      "model_id": "openai.gpt-6.2-astra",
+      "invoke_id": "us.openai.gpt-6.2-astra",
+      "measured_at": "2026-11-26T02:36:12.884472+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "faea4eec-a49b-4113-b66c-64a45c6206b2"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-6.2-sol": {
+      "model_id": "openai.gpt-6.2-sol",
+      "invoke_id": "us.openai.gpt-6.2-sol",
+      "measured_at": "2026-11-26T02:36:13.035588+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 10,
+            "outputTokens": 5,
+            "totalTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "3ffabed5-2815-4d76-a53c-ff7d8e820207"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-oss-120b-1:0": {
+      "model_id": "openai.gpt-oss-120b-1:0",
+      "invoke_id": "openai.gpt-oss-120b-1:0",
+      "measured_at": "2026-11-26T02:36:13.070488+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 71,
+            "outputTokens": 39,
+            "totalTokens": 110
+          },
+          "request_id": "280682fd-c125-4087-b730-0202a7534ce5"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "openai.gpt-oss-20b-1:0": {
+      "model_id": "openai.gpt-oss-20b-1:0",
+      "invoke_id": "openai.gpt-oss-20b-1:0",
+      "measured_at": "2026-11-26T02:36:13.232681+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 71,
+            "outputTokens": 25,
+            "totalTokens": 96
+          },
+          "request_id": "418db556-e579-42c2-b038-8f4316a3e6fa"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "qwen.qwen3-32b-v1:0": {
+      "model_id": "qwen.qwen3-32b-v1:0",
+      "invoke_id": "qwen.qwen3-32b-v1:0",
+      "measured_at": "2026-11-26T02:36:13.354855+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 16,
+            "outputTokens": 3,
+            "totalTokens": 19
+          },
+          "request_id": "a551fac8-7a68-4fe5-852d-d65aa9b2ab5c"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "qwen.qwen3-coder-30b-a3b-v1:0": {
+      "model_id": "qwen.qwen3-coder-30b-a3b-v1:0",
+      "invoke_id": "qwen.qwen3-coder-30b-a3b-v1:0",
+      "measured_at": "2026-11-26T02:36:13.415539+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 12,
+            "outputTokens": 2,
+            "totalTokens": 14
+          },
+          "request_id": "a59cc33f-2789-4912-a7d8-968f3dd89820"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "qwen.qwen3-coder-next": {
+      "model_id": "qwen.qwen3-coder-next",
+      "invoke_id": "qwen.qwen3-coder-next",
+      "measured_at": "2026-11-26T02:36:13.467440+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 12,
+            "outputTokens": 2,
+            "totalTokens": 14
+          },
+          "request_id": "5ec05956-da00-4054-b6aa-2daf19662d1b"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "qwen.qwen3-next-80b-a3b": {
+      "model_id": "qwen.qwen3-next-80b-a3b",
+      "invoke_id": "qwen.qwen3-next-80b-a3b",
+      "measured_at": "2026-11-26T02:36:13.565767+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 12,
+            "outputTokens": 2,
+            "totalTokens": 14
+          },
+          "request_id": "45c59b25-6ee6-467c-89f5-74a1b4a71933"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "qwen.qwen3-vl-235b-a22b": {
+      "model_id": "qwen.qwen3-vl-235b-a22b",
+      "invoke_id": "qwen.qwen3-vl-235b-a22b",
+      "measured_at": "2026-11-26T02:36:13.586031+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 12,
+            "outputTokens": 2,
+            "totalTokens": 14
+          },
+          "request_id": "7d47014b-8a4f-447b-ae73-15d9f1bd2cdd"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "writer.palmyra-vision-7b": {
+      "model_id": "writer.palmyra-vision-7b",
+      "invoke_id": "writer.palmyra-vision-7b",
+      "measured_at": "2026-11-26T02:36:13.670035+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 4096. Try again with a maximum tokens value that is lower than 4096.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 4096,
+          "status": "error",
+          "error": {
+            "Message": "The model returned the following errors: ErrorEvent { error: APIError { type: \"BadRequestError\", code: Some(400), message: \"This model's maximum context length is 4096 tokens. However, you requested 4096 output tokens and your prompt contains 31 characters (more than 0 characters, which is the upper bound for 0 input tokens). Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_text, value=31)\", param: None } }",
+            "Code": "ValidationException"
+          }
+        }
+      ],
+      "output_token_ceiling": 2048,
+      "ceiling_kind": "conservative_half_context",
+      "context_tokens": 4096
+    },
+    "writer.palmyra-x4-v1:0": {
+      "model_id": "writer.palmyra-x4-v1:0",
+      "invoke_id": "us.writer.palmyra-x4-v1:0",
+      "measured_at": "2026-11-26T02:36:13.710642+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 8192. Try again with a maximum tokens value that is lower than 8192.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 8192,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 32,
+            "outputTokens": 2,
+            "totalTokens": 34
+          },
+          "request_id": "60008691-6404-41a0-99aa-3cf05db42c38"
+        }
+      ],
+      "output_token_ceiling": 8192,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 8192
+    },
+    "writer.palmyra-x5-v1:0": {
+      "model_id": "writer.palmyra-x5-v1:0",
+      "invoke_id": "us.writer.palmyra-x5-v1:0",
+      "measured_at": "2026-11-26T02:36:13.799878+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "error",
+          "error": {
+            "Message": "The maximum tokens you requested exceeds the model limit of 8192. Try again with a maximum tokens value that is lower than 8192.",
+            "Code": "ValidationException"
+          }
+        },
+        {
+          "requested_max_tokens": 8192,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 241,
+            "outputTokens": 1,
+            "totalTokens": 242
+          },
+          "request_id": "d5135827-6266-4819-9597-2f23761747df"
+        }
+      ],
+      "output_token_ceiling": 8192,
+      "ceiling_kind": "provider_reported_maximum",
+      "accepted_output_limit": 8192
+    },
+    "zai.glm-4.7": {
+      "model_id": "zai.glm-4.7",
+      "invoke_id": "zai.glm-4.7",
+      "measured_at": "2026-11-26T02:36:13.851391+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 9,
+            "outputTokens": 2,
+            "totalTokens": 11
+          },
+          "request_id": "7e80ae72-3105-413a-8d28-0a915da5d33f"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "zai.glm-4.7-flash": {
+      "model_id": "zai.glm-4.7-flash",
+      "invoke_id": "zai.glm-4.7-flash",
+      "measured_at": "2026-11-26T02:36:13.854179+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 9,
+            "outputTokens": 2,
+            "totalTokens": 11
+          },
+          "request_id": "5fa43b1b-f37d-42b0-9e20-45b3a2f4a0aa"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "zai.glm-5": {
+      "model_id": "zai.glm-5",
+      "invoke_id": "zai.glm-5",
+      "measured_at": "2026-11-26T02:36:13.857018+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 9,
+            "outputTokens": 2,
+            "totalTokens": 11
+          },
+          "request_id": "69c98852-7332-4bbb-8401-ffaea0e2d4c9"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "xai.grok-4.6": {
+      "model_id": "xai.grok-4.6",
+      "invoke_id": "us.xai.grok-4.6",
+      "measured_at": "2026-11-26T02:36:14.049044+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 35,
+            "outputTokens": 85,
+            "totalTokens": 120,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "3927dde4-a928-45eb-be49-aefb1f31dd5c"
+        }
+      ],
+      "accepted_output_limit": 16384
+    },
+    "xai.grok-4.7": {
+      "model_id": "xai.grok-4.7",
+      "invoke_id": "us.xai.grok-4.7",
+      "measured_at": "2026-11-26T02:36:14.055950+00:00",
+      "attempts": [
+        {
+          "requested_max_tokens": 16384,
+          "status": "accepted",
+          "usage": {
+            "inputTokens": 35,
+            "outputTokens": 30,
+            "totalTokens": 65,
+            "cacheReadInputTokens": 0,
+            "cacheWriteInputTokens": 0
+          },
+          "request_id": "48e2d31a-e2e1-4421-8a25-fb1cd46a311c"
+        }
+      ],
+      "accepted_output_limit": 16384
+    }
+  }
+}

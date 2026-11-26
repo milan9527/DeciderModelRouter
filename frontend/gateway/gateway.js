@@ -20,7 +20,7 @@ const usd = (value) =>
 const stageNames = {
   catalog: "目录校验",
   classification: "GPU 任务分类",
-  selection: "策略选模",
+  selection: "GPU 依据评测选模",
   execution: "Bedrock 执行",
 };
 const stateNames = {
@@ -78,6 +78,7 @@ const workspace = new Workspace({
     mediaInputs = (request.task.attachments || []).map((a) => ({ ...a }));
     $("#output-modality").value = request.task.output_modality || "auto";
     $("#image-operation").value = request.task.media_options?.image_operation || "generate";
+    $("#edit-target").value = request.task.media_options?.edit_target || "";
     $("#speech-voice").value = request.task.media_options?.voice || "tiffany";
     $("#rerank-documents").value = (request.task.media_options?.documents || []).join("\n");
     renderMediaInputs(); updateMediaOptions();
@@ -159,7 +160,7 @@ async function enter(user) {
     )
     .join("");
   $("#catalog-summary").textContent =
-    `${catalog.models.length} 个 Bedrock 型号 · ${catalog.evidence_inventory.mapped_models} 个已有精确评测映射 · ${catalog.evidence_inventory.counts.configuration_pending || 0} 个评测配置待核验。资料和价格不替代能力成绩；零配额端点不参与选模。`;
+    `${catalog.models.length} 个 Bedrock 型号 · ${catalog.evidence_inventory.bedrock_measured_models || 0} 个已有端点实测记录 · ${catalog.evidence_inventory.bedrock_blocked_models || 0} 个调用条件受限 · ${catalog.evidence_inventory.mapped_models} 个有外部评测映射。所有合格模型交给 GPU 决策；实测记录包含失败，分项结果以详情为准。`;
   $("#benchmark-release").innerHTML =
     '<option value="auto">自动 · 优先可比型号覆盖数</option>' +
     [...catalog.evidence_inventory.benchmark_releases].reverse()
@@ -230,6 +231,7 @@ function setExample(id) {
   activeTemplateId = id;
   $("#output-modality").value = example.output_modality || "auto";
   $("#image-operation").value = example.media_options?.image_operation || "generate";
+  $("#edit-target").value = example.media_options?.edit_target || "";
   updateMediaOptions();
   $("#template-rubric").textContent = "验收参考：" + (example.rubric || []).join("；");
 }
@@ -246,6 +248,7 @@ function renderTemplates() {
 function updateMediaOptions() {
   const output = $("#output-modality").value;
   $("#image-options").hidden = output !== "image";
+  $("#edit-target-options").hidden = output !== "image" || !["recolor", "replace"].includes($("#image-operation").value);
   $("#voice-options").hidden = output !== "audio";
   $("#rerank-options").hidden = output !== "rerank";
   const scenario = catalog?.media?.scenarios.find((s) =>
@@ -261,8 +264,10 @@ function renderMediaInputs() {
 }
 function renderMediaCapabilities() {
   const scenarios = catalog.media?.scenarios || [];
-  $("#media-capabilities").innerHTML = `<table><thead><tr><th>能力</th><th>执行状态</th><th>匹配型号</th><th>输入要求</th></tr></thead><tbody>${scenarios.map((s) =>
-    `<tr><td>${esc(s.label)}</td><td>${s.status === "available" ? "接口已接入 · 质量待评测" : "当前区域无可用模型"}</td><td>${s.model_ids.map(esc).join("<br>") || "—"}</td><td>${esc(s.needs || "文字或适配的媒体输入")}</td></tr>`).join("")}</tbody></table><p class="footnote">${esc(catalog.media?.note || "")}</p>`;
+  $("#media-capabilities").innerHTML = `<table><thead><tr><th>能力</th><th>执行与评测</th><th>匹配型号</th><th>输入要求</th></tr></thead><tbody>${scenarios.map((s) => {
+    const measured = s.model_ids.filter(id => catalog.evidence_inventory.models[id]?.bedrock_evaluation?.measurements?.[s.workflow]?.samples > 0).length;
+    return `<tr><td>${esc(s.label)}</td><td>${s.status === "available" ? `接口已接入<br>${measured}/${s.model_ids.length} 个型号有本类实测记录` : "当前区域无可用模型"}</td><td>${s.model_ids.length ? `<details><summary>${s.model_ids.length} 个匹配型号</summary>${s.model_ids.map(esc).join("<br>")}</details>` : "—"}</td><td>${esc(s.needs || "文字或适配的媒体输入")}</td></tr>`;
+  }).join("")}</tbody></table><p class="footnote">有测量记录不等于质量通过；逐型号的内容正确、待复核和调用错误见下方评测详情。</p>`;
 }
 async function uploadMedia() {
   if (busy || uploadBusy) return;
@@ -327,7 +332,7 @@ function renderMetrics() {
     metric(
       "路由总耗时",
       ms(route?.route_total_ms),
-      "目录、分类、策略与路由凭据",
+      "目录、GPU 分类与选模、路由凭据",
       "↗",
     ),
     metric(
@@ -403,7 +408,7 @@ function renderDecision() {
     <small>${esc(s?.selected_benchmark?.benchmark_configuration || "等待策略筛选")}</small></div></div>
     <div class="profile-chips">${chips.map(([k, v]) => `<span>${esc(k)} · ${esc(v)}</span>`).join("")}</div>
     ${flow.profile_adjustment ? `<p class="footnote">${esc(flow.profile_adjustment)} GPU 原始类别：${esc(flow.assessed_profile?.workflow)}。</p>` : ""}
-    ${s ? `<div class="reason">${esc(s.tier_reason)} ${esc(s.reason)}</div><div class="selection-meta"><span>${s.candidate_count} 个合格配置</span><span>${s.frontier.length} 个${s.evidence_mode === "capability_only" ? "能力匹配" : "非劣"}候选</span><span>${s.evidence_mode === "business_validation" ? "业务验证数据" : s.evidence_mode === "capability_only" ? "官方模态支持 · 质量和费用待测" : "榜单能力代理 · 待业务校准"}</span></div>${s.benchmark_group ? `<p class="footnote">本轮评测：${esc(s.benchmark_group.source)} ${esc(s.benchmark_group.release || "")} · ${s.benchmark_group.metrics.map(esc).join(" / ")}。其他批次分别比较。</p>` : ""}` : ""}
+    ${s ? `<div class="reason">${esc(s.tier_reason)} ${esc(s.reason)}</div><div class="selection-meta"><span>${s.candidate_count} 个合格配置</span><span>${s.selection_source === "gpu_decision_model" ? `${s.evaluated_configurations || 0} 个已参与 GPU 判断 · ${s.decision_calls?.length || 0} 次选模调用` : `${s.frontier.length} 个非劣候选`}</span><span>${s.selection_source === "gpu_decision_model" ? `选模耗时 ${ms(s.decision_ms)} · 直接实测 + 外部参考` : "流程回放"}</span></div>${s.benchmark_group ? `<p class="footnote">本轮评测：${esc(s.benchmark_group.source)} ${esc(s.benchmark_group.release || "")} · ${s.benchmark_group.metrics.map(esc).join(" / ")}。</p>` : ""}` : ""}
     </div>`;
 }
 function renderCandidates() {
@@ -418,6 +423,15 @@ function renderCandidates() {
       Number(b.candidate_id === s.selected_candidate_id) -
       Number(a.candidate_id === s.selected_candidate_id),
   );
+  if (s.selection_source === "gpu_decision_model") {
+    const names = Object.fromEntries(rows.map(r => [r.candidate_id, r.model.name]));
+    $("#candidates").innerHTML = `<p class="footnote">全部合格配置分组交给 GPU 决策，组内结果再由 GPU 比较。没有按榜单批次或程序排名预先淘汰。小样本实测仅反映这些测试题；外部成绩不跨批次直接比较。</p>
+      <div class="table-scroll"><table class="candidate-table"><thead><tr><th>模型 / 配置</th><th>预计费用</th><th>本类任务实测</th><th>GPU 结果</th></tr></thead><tbody>${rows.map(r => `<tr class="${r.candidate_id === s.selected_candidate_id ? "selected" : ""}"><td>${esc(r.model.name)}<small>${esc(JSON.stringify(r.benchmark.request_fields || {}))} · ${r.measurement_configuration ? (r.measurement_configuration.max_output_tokens != null ? `实测上限 ${r.measurement_configuration.max_output_tokens} Token` : "专用接口实测") : "此配置没有直接实测"}</small><small>本次输出上限 ${esc(r.output_token_limit ?? "由专用接口决定")}</small></td><td>${usd(r.cost_evidence?.expected_usd)}<small>${esc(r.price_scope)}</small></td><td>${measurementHTML(r.measured_evidence)}${(r.public_evidence || []).map(e => `<small>外部参考：${esc(e.source)} ${esc(e.release)} · ${esc(JSON.stringify(e.scores))}</small>`).join("")}</td><td>${r.candidate_id === s.selected_candidate_id ? "✓ GPU 已选择" : "已参与判断，未选中"}</td></tr>`).join("")}</tbody></table></div>
+      <details class="excluded"><summary>GPU 分组决策过程（${s.decision_calls?.length || 0} 次）</summary>${(s.decision_calls || []).map(c => `<p>第 ${c.round} 轮 · ${esc(c.model)} · ${ms(c.timings?.backend_total_ms)}<br>候选：${c.candidate_ids.map(id => esc(names[id] || id)).join("、")}<br>选择：${esc(names[c.selected_candidate_id] || "不执行")}<small>输入摘要 ${esc(c.input_hash)}</small></p>`).join("")}</details>
+      <details class="excluded"><summary>未进入本次决策的原因（${Object.keys(s.excluded).length}）</summary>${Object.entries(s.excluded).map(([k,v]) => `<p><code>${esc(k)}</code><br>${esc(v)}</p>`).join("")}</details>
+      <p class="footnote">证据版本 ${esc(s.measurement_version)}。费用不含 GPU，不代表账单；图片、视频、音频的完整费用未知时保持未知。</p>`;
+    return;
+  }
   $("#candidates").innerHTML =
     `<p class="footnote">本轮依据：${esc(s.evidence_mode)} · ${esc(s.cost_mode || "暂无可比费用")} · ${esc(s.benchmark_group?.release || "")}。${s.evidence_mode === "capability_only" ? "仅按输入输出能力与执行接口匹配；未使用文本榜单，也未将未知媒体费用按零计算。" : "非劣候选表示没有另一配置同时在所有比较项更好。能力分项不是业务成功率。"}</p>
     <div class="table-scroll"><table class="candidate-table"><thead><tr><th>模型 / 实测配置</th><th>预计参考费用</th><th>能力分项</th><th>策略结果</th></tr></thead><tbody>
@@ -440,6 +454,10 @@ function renderCandidates() {
       .map(([k, v]) => `<p><code>${esc(k)}</code><br>${esc(v)}</p>`)
       .join("")}</details>`;
 }
+function measurementHTML(m) {
+  if (!m?.samples) return "此类任务尚无直接质量实测";
+  return `内容正确 ${m.content_passed}/${m.content_scored}${m.content_pending ? ` · 待复核 ${m.content_pending}` : ""}<br>严格通过 ${m.strict_passed}/${m.samples}${m.strict_pending ? ` · 待评 ${m.strict_pending}` : ""} · 调用失败 ${m.call_errors}<small>P95 ${ms(m.p95_ms)} · 公开开发测试题，小样本<br>${esc(m.metric_description || "")}</small>`;
+}
 function renderTiming() {
   const ft = flow?.timings,
     st = selection?.timings,
@@ -448,7 +466,8 @@ function renderTiming() {
     ["API 分类排队", ft?.queue_ms],
     ["GPU HTTP 往返", ft?.upstream_ms],
     ["分类结果校验", ft?.validation_ms],
-    ["策略计算", st?.policy_ms],
+    ["能力与硬约束筛选", st?.policy_ms],
+    ["GPU 选模总耗时", st?.model_decision_ms],
     ["路由凭据存储", st?.receipt_ms],
     ["Bedrock 排队", et?.queue_ms],
     ["Bedrock 调用", et?.upstream_ms],
@@ -461,7 +480,7 @@ function renderTiming() {
           `<div class="timing-row"><span>${name}</span><div class="timing-track">${Number.isFinite(value) ? `<div class="timing-fill" style="width:${Math.max(1, (100 * value) / maximum)}%"></div>` : ""}</div><strong>${ms(value)}</strong></div>`,
       )
       .join("") +
-    `<p class="footnote">GPU 服务自报耗时：${ms(ft?.service_reported_ms)}，可能含服务端排队，属于 HTTP 往返的内部观测，不重复累加。<br>后端总耗时：${ms(completed?.backend_total_ms)}；浏览器等待：${currentMode === "live" ? ms(lastBrowserMs) : "回放不记入性能"}。当前接口返回完整模型响应，未测量 TTFT、纯 GPU 计算时间或生成速率。</p>
+    `<p class="footnote">GPU 分类服务自报耗时：${ms(ft?.service_reported_ms)}，可能含服务端排队，属于 HTTP 往返的内部观测，不重复累加。<br>后端总耗时：${ms(completed?.backend_total_ms)}；浏览器等待：${currentMode === "live" ? ms(lastBrowserMs) : "回放不记入性能"}。选模总耗时包含所有分组调用；不是纯 GPU 计算时间。流式首字时间见回答详情。</p>
     <p class="footnote">GPU 分类 Token：${flow?.usage ? `${flow.usage.input_tokens} 输入 / ${flow.usage.output_tokens} 输出` : "未提供"}。GPU 单请求成本未配置，不计入目标参考费用。</p>`;
 }
 function renderTrace() {
@@ -487,7 +506,7 @@ function renderOutput() {
   if (!execution) return;
   const usage = execution.usage;
   $("#response").innerHTML =
-    `<div class="output-meta"><span>${execution.complete ? "已返回完整输出" : "输出未完成"}</span><span>停止原因：${esc(execution.stop_reason || "—")}</span><span>${esc(execution.cache?.total_input_tokens ?? usage?.inputTokens ?? usage?.input_tokens ?? "未知")} 总输入 / ${esc(usage?.outputTokens ?? usage?.output_tokens ?? "未知")} 输出 Token</span></div>
+    `<div class="output-meta"><span>${execution.complete ? "已返回完整输出" : "输出未完成"}</span><span>停止原因：${esc(execution.stop_reason || "—")}</span><span>${esc(execution.cache?.total_input_tokens ?? usage?.inputTokens ?? usage?.input_tokens ?? "未知")} 总输入 / ${esc(usage?.outputTokens ?? usage?.output_tokens ?? "未知")} 输出 Token</span>${execution.output_budget ? `<span>本次输出上限 ${esc(execution.output_budget.effective_max_tokens)} / 请求上限 ${esc(execution.output_budget.requested_max_tokens)}</span>` : ""}</div>
     ${execution.cache ? `<p class="footnote">缓存${execution.cache.observed ? `：读 ${execution.cache.read_tokens} / 写 ${execution.cache.write_tokens} Token` : "：尚未收到缓存用量，不能认定命中"} · 首字 ${ms(execution.timings?.ttft_ms)} · 回退 ${execution.fallback_count || 0} 次 · 实际模型 ${esc(execution.model_id)}</p>` : ""}
     <pre class="output">${esc(execution.text ?? JSON.stringify(execution, null, 2))}</pre>
     ${mediaHTML(execution.artifacts)}
@@ -529,6 +548,8 @@ function receive(event) {
       $("#conversation-state").textContent += ` 第 ${event.data.number} 次调用：${event.data.model_id}。`;
     if (event.data.will_fallback)
       $("#conversation-state").textContent += ` ${event.data.error_code}，正在尝试下一候选。`;
+  } else if (event.type === "reroute") {
+    $("#conversation-state").textContent += ` GPU 已重新选模，耗时 ${ms(event.data.model_decision_ms)}。`;
   } else if (event.type === "delta") {
     let output = $("#stream-output");
     if (!output) {
@@ -606,6 +627,7 @@ async function start(executeTarget) {
       output_modality: $("#output-modality").value,
       media_options: {
         image_operation: $("#image-operation").value, voice: $("#speech-voice").value,
+        edit_target: $("#edit-target").value,
         documents: $("#rerank-documents").value.split("\n").map((v) => v.trim()).filter(Boolean),
       },
     },
@@ -720,12 +742,14 @@ function renderModels() {
     m.inference_quotas?.checks.some((q) => q.value === 0),
   );
   $("#model-table").innerHTML =
-    `<table><thead><tr><th>模型</th><th>供应商</th><th>资料与评测依据</th><th>执行标识</th></tr></thead><tbody>${rows.map((m) => `<tr data-model-id="${esc(m.id)}"><td>${esc(m.name)}<small>${esc(m.id)}</small></td><td>${esc(m.provider)}</td><td>${modelEvidence(evidence[m.id])}</td><td><code>${esc(m.invoke_id)}</code></td></tr>`).join("")}</tbody></table><p class="footnote" style="padding:0 16px">筛选显示 ${rows.length} 个型号；该类别共有 ${category.configuration_count} 个配置通过基础筛选（含不同评测批次）。具体请求只在一个可比批次内选模，还需通过语言、费用和账户额度检查。</p>` +
+    `<table><thead><tr><th>模型</th><th>供应商</th><th>资料与评测依据</th><th>执行标识</th></tr></thead><tbody>${rows.map((m) => `<tr data-model-id="${esc(m.id)}"><td>${esc(m.name)}<small>${esc(m.id)}</small></td><td>${esc(m.provider)}</td><td>${modelEvidence(evidence[m.id])}</td><td><code>${esc(m.invoke_id)}</code></td></tr>`).join("")}</tbody></table><p class="footnote" style="padding:0 16px">筛选显示 ${rows.length} 个型号。实际请求按能力、账户、预算和会话检查候选，再由 GPU 读取评测选择；自动模式不因评测批次不同而排除型号。</p>` +
     (quotaBlocked.length
       ? `<details class="excluded"><summary>账户零配额模型（${quotaBlocked.length}）</summary>${quotaBlocked.map((m) => `<p><strong>${esc(m.name)}</strong><br><code>${esc(m.invoke_id)}</code><br>核验时间：${esc(m.inference_quotas.checked_at)}<br>${m.inference_quotas.checks.filter((q) => q.value === 0).map((q) => `${esc(q.name)}：0`).join("<br>")}<br>配额恢复并刷新目录后可重新参与选模。</p>`).join("")}</details>`
       : "");
 }
 function modelEvidence(row) {
+  const direct = row.bedrock_evaluation;
+  const directHTML = direct ? `<strong>Bedrock 端点${({measured:"已补测",blocked:"调用受限",unmeasured:"待补测"})[direct.status] || direct.status}</strong><small>${esc(direct.reason || "接口完成不等于内容正确，分项见下方")}</small><details class="model-evidence"><summary>查看直接实测</summary>${Object.entries(direct.measurements || {}).map(([k,v]) => `<p><strong>${esc(k)}</strong><br>${measurementHTML(v)}</p>`).join("")}${Object.keys(direct.errors || {}).length ? `<p>错误记录：${esc(JSON.stringify(direct.errors))}</p>` : ""}<p><a href="https://github.com/milan9527/DeciderModelRouter/blob/main/validation/independent_gateway/bedrock-evidence-2026-11-26/README.zh.md" target="_blank" rel="noopener noreferrer">评测方法与完整记录 ↗</a></p></details>` : "";
   const labels = {
     benchmarked: "已映射评测",
     configuration_pending: "已映射 · 配置待核验",
@@ -739,7 +763,7 @@ function modelEvidence(row) {
   const refHtml = reference
     ? `<p><a href="${esc(reference.url)}" target="_blank" rel="noopener noreferrer">外部型号与价格来源 ↗</a><br>每百万 Token：输入 ${usd(reference.input_price)} / 输出 ${usd(reference.output_price)}<br>此资料不证明 Bedrock 能力或业务成功率。</p>`
     : "";
-  return `<strong>${esc(labels[row.status])}</strong><small>${esc(row.reason)}</small>${
+  return `${directHTML}<strong>外部参考：${esc(labels[row.status])}</strong><small>${esc(row.reason)}</small>${
     configs.length || reference
       ? `<details class="model-evidence"><summary>查看来源与分项（${configs.length} 个评测配置）</summary>${configs.map((c) => `<p><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">${esc(c.source)} ${esc(c.release || "")} ↗</a><br>${esc(c.benchmark_configuration)}<br>${Object.entries(c.category_scores || c.subsets || {}).map(([k, v]) => `${esc(k)} ${v == null ? "未知" : (Number(v) * (c.source === "mteb" ? 100 : 1)).toFixed(2)}`).join(" · ")} ${c.source === "mteb" ? "（nDCG@10 × 100）" : "（0–100）"}<br>${esc(c.configuration_note || "同一数据集内比较")}</p>`).join("")}${refHtml}</details>`
       : ""

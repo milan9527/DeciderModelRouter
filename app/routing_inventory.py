@@ -4,6 +4,9 @@ from collections import Counter
 
 
 def inventory(catalog, rankings):
+    from app.bedrock_evidence import load_evidence, measured
+
+    measured_data = load_evidence()
     rows = {}
     references = rankings.get("model_references", {})
     for model in catalog["models"]:
@@ -32,6 +35,7 @@ def inventory(catalog, rankings):
             "status": status,
             "reason": reason,
             "reference": reference,
+            "bedrock_evaluation": measured(model, measured_data),
             "configurations": [
                 {
                     key: c.get(key)
@@ -59,5 +63,9 @@ def inventory(catalog, rankings):
         "mapped_models": sum(bool(row["configurations"]) for row in rows.values()),
         "total_models": len(rows),
         "captured_at": rankings.get("captured_at"),
+        "bedrock_measurement_version": measured_data["version"],
+        "bedrock_measurement_source": measured_data.get("source"),
+        "bedrock_measured_models": sum(row["bedrock_evaluation"].get("status") == "measured" for row in rows.values()),
+        "bedrock_blocked_models": sum(row["bedrock_evaluation"].get("status") == "blocked" for row in rows.values()),
         "benchmark_releases": rankings.get("benchmark_releases", []),
     }

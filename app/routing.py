@@ -485,7 +485,7 @@ async def auto_route(body: AutoRoute, request: Request):
     return await run_classified_route(body, request)
 
 
-async def run_classified_route(body, request, *, infer=None, emit=None):
+async def run_classified_route(body, request, *, infer=None, emit=None, model_select=None):
     """Shared policy pipeline; the gateway supplies its independent GPU transport."""
 
     async def progress(stage, status, data=None):
@@ -493,6 +493,9 @@ async def run_classified_route(body, request, *, infer=None, emit=None):
             await emit(stage, status, data or {})
 
     started = perf_counter()
+    if model_select and body.mode == "live" and "include_legacy" not in body.task.model_fields_set:
+        # Persist the same eligibility policy in the execution receipt.
+        body.task = body.task.model_copy(update={"include_legacy": True})
     data, rankings, calibration = load_catalog(), load_rankings(), load_calibration()
     check_version(data, body.catalog_version)
     check_ranking_version(rankings, body.ranking_version)
@@ -544,13 +547,21 @@ async def run_classified_route(body, request, *, infer=None, emit=None):
     await progress("classification", "completed", flow)
     await progress("selection", "started")
     selection_started = perf_counter()
-    selection = auto_selection(body.task, profile, data, rankings, calibration, runtime)
-    if runtime:
+    if model_select and body.mode == "live":
+        from app.gateway_model_pool import build_pool
+
+        selection = build_pool(body.task, profile, data, rankings, exclusion, runtime)
+        selection = await model_select(body, request, selection)
+    else:
+        selection = auto_selection(body.task, profile, data, rankings, calibration, runtime)
+    gpu_selected = selection.get("selection_source") == "gpu_decision_model"
+    if runtime and not gpu_selected:
         selection = runtime.select(selection, profile, body.task, {
             "catalog": data["version"], "ranking": rankings["version"],
             "calibration": calibration["version"], "policy": SELECTOR_VERSION,
         })
-    policy_ms = round((perf_counter() - selection_started) * 1000, 3)
+    policy_ms = round(max(0, (perf_counter() - selection_started) * 1000 -
+                          (selection.get("decision_ms") or 0)), 3)
     chosen = next(
         (
             r
@@ -579,6 +590,9 @@ async def run_classified_route(body, request, *, infer=None, emit=None):
                         "catalog_version": data["version"],
                         "ranking_version": rankings["version"],
                         "calibration_version": calibration["version"],
+                        **({"routing_source": "gpu_decision_model",
+                            "measurement_version": selection["measurement_version"]}
+                           if gpu_selected else {}),
                         **({"gateway_run_id": runtime.run_id,
                             "conversation_hash": fingerprint(runtime.messages)}
                            if runtime else {}),
@@ -607,10 +621,11 @@ async def run_classified_route(body, request, *, infer=None, emit=None):
         "stage": "model",
         "strategy": "classified",
         "evidence_version": SELECTOR_VERSION,
-        "source": "rule_replay" if body.mode == "replay" else "deterministic_policy",
+        "source": "rule_replay" if body.mode == "replay" else
+                  "gpu_decision_model" if gpu_selected else "deterministic_policy",
         "choice": chosen["candidate_id"] if chosen else None,
         "label": chosen["model"]["name"] if chosen else "无符合条件的模型",
-        "model": None,
+        "model": selection.get("decision_model"),
         "usage": None,
         "workflow": flow["workflow"],
         "selected_model": chosen["model"] if chosen else None,
@@ -622,6 +637,7 @@ async def run_classified_route(body, request, *, infer=None, emit=None):
         "timings": {
             "backend_total_ms": round((perf_counter() - selection_started) * 1000, 3),
             "policy_ms": policy_ms,
+            "model_decision_ms": selection.get("decision_ms"),
             "receipt_ms": receipt_ms,
         }
         if body.mode == "live"
@@ -671,8 +687,26 @@ async def auto_execute(body: AutoExecute, request: Request):
         or fingerprint(runtime.messages) != record["conversation_hash"]
     ):
         raise HTTPException(409, "会话执行票据仅可用于创建它的网关请求。")
-    selection = auto_selection(task, profile, data, rankings, calibration, runtime)
-    if runtime:
+    gpu_selected = record.get("routing_source") == "gpu_decision_model"
+    if gpu_selected:
+        from app.gateway_model_pool import build_pool
+
+        selection = build_pool(task, profile, data, rankings, exclusion, runtime)
+        if selection["measurement_version"] != record["measurement_version"]:
+            raise HTTPException(409, "Bedrock评测证据已更新，请重新决策。")
+        if record["configuration_id"] not in {r["candidate_id"] for r in selection["candidates"]}:
+            raise HTTPException(409, "决策模型选择的配置已不满足当前能力或硬约束。")
+        selection["selected_candidate_id"] = record["configuration_id"]
+        if runtime:
+            # Preserve the actual GPU decision audit; never re-run a deterministic ranker.
+            selection.update({k: runtime.selection[k] for k in (
+                "decision_calls", "decision_model", "decision_ms", "stickiness", "reason",
+                "evaluated_configurations",
+            ) if k in (runtime.selection or {})})
+            runtime.selection = selection
+    else:
+        selection = auto_selection(task, profile, data, rankings, calibration, runtime)
+    if runtime and not gpu_selected:
         selection = runtime.select(selection, profile, task, {
             "catalog": data["version"], "ranking": rankings["version"],
             "calibration": calibration["version"], "policy": SELECTOR_VERSION,
@@ -790,14 +824,16 @@ async def decision(body: RouteDecision, request: Request):
 
 def execute_target(client, model, task, kind, benchmark):
     """Bounded optional real task execution. No model switch or automatic retry."""
-    mid, invoke_id = model["id"], model["invoke_id"]
+    from app.bedrock_limits import output_limit
+
+    invoke_id = model["invoke_id"]
     if kind in {"customer_support", "coding", "reasoning", "general_text"}:
         kwargs = {
             "modelId": invoke_id,
             "messages": [{"role": "user", "content": [{"text": task.text}]}],
             "inferenceConfig": {
                 **benchmark.get("inference_config", {}),
-                "maxTokens": preferences(task).max_output_tokens,
+                "maxTokens": output_limit(model, preferences(task).max_output_tokens),
             },
         }
         if benchmark.get("request_fields"):
@@ -812,7 +848,7 @@ def execute_target(client, model, task, kind, benchmark):
             "text": text
             if has_final_text
             else (
-                f"已达到 {preferences(task).max_output_tokens} 输出 token 上限；模型仅返回推理内容，尚未生成最终答复。"
+                f"已达到 {output_limit(model, preferences(task).max_output_tokens)} 输出 token 上限；模型仅返回推理内容，尚未生成最终答复。"
                 "本次任务未完成，未自动重试或降低评测配置。"
             ),
             "has_final_text": has_final_text,
@@ -820,31 +856,10 @@ def execute_target(client, model, task, kind, benchmark):
             "stop_reason": stop,
             "complete": has_final_text and stop == "end_turn",
         }
-    if kind == "embedding" and (
-        mid.startswith("amazon.titan-embed-text") or mid.startswith("cohere.embed")
-    ):
-        body = (
-            {"inputText": task.text}
-            if mid.startswith("amazon.")
-            else {"texts": [task.text], "input_type": "search_query"}
-        )
-        if mid == "cohere.embed-v4:0":
-            body["embedding_types"] = ["float"]
-        response = client.invoke_model(
-            modelId=invoke_id,
-            contentType="application/json",
-            accept="application/json",
-            body=json.dumps(body),
-        )
-        stream = response["body"]
-        try:
-            output = json.loads(stream.read())
-        finally:
-            stream.close()
-        vector = output.get("embedding")
-        if vector is None:
-            vectors = output["embeddings"]
-            vector = (vectors["float"] if isinstance(vectors, dict) else vectors)[0]
+    if kind == "embedding":
+        from app.bedrock_embeddings import embed
+
+        vector, output = embed(client, model, task.text)
         return {
             "dimensions": len(vector),
             "vector_preview": vector[:12],
@@ -883,6 +898,8 @@ async def execute(body: Execute, request: Request):
 async def execute_selected(
     request, row, task, workflow, strategy, evidence_version, ranking_version
 ):
+    from app.bedrock_limits import output_budget
+
     model = row["model"]
     runtime = getattr(request.state, "gateway_runtime", None)
     is_agent = bool(runtime and getattr(runtime, "agent_tools", False))
@@ -927,6 +944,9 @@ async def execute_selected(
             "strategy": strategy,
             "evidence_version": evidence_version,
             "cost_evidence": row.get("cost_evidence"),
+            "output_budget": output_budget(model, preferences(task).max_output_tokens)
+            if workflow in {"general_text", "customer_support", "coding", "reasoning", "vision", "video_understanding"}
+            else None,
             "observed_reference_cost_usd": observed_reference_cost(
                 row["benchmark"], result.get("usage"), workflow
             ),

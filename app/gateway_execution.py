@@ -1,4 +1,4 @@
-"""Audited fallback within the already constrained candidate set; no second GPU call."""
+"""Audited fallback; GPU routing also delegates replacement decisions to the GPU."""
 
 import asyncio
 import time
@@ -40,7 +40,8 @@ async def execute(request, row, task, workflow, ranking_version, runtime):
     from app.routing import execute_selected
 
     rows = [row]
-    if runtime.options.fallback:
+    gpu = runtime.selection.get("selection_source") == "gpu_decision_model"
+    if runtime.options.fallback and not gpu:
         rows += fallback_rows(row, runtime.selection)
     started = time.perf_counter()
     try:
@@ -59,7 +60,10 @@ async def execute(request, row, task, workflow, ranking_version, runtime):
                 except HTTPException as exc:
                     cause = exc.__cause__
                     code = cause.response["Error"]["Code"] if isinstance(cause, ClientError) else None
-                    retry = (code in RETRYABLE and not runtime.partial_output and index + 1 < len(rows))
+                    retry = (code in RETRYABLE and not runtime.partial_output and (
+                        index + 1 < len(rows) or (
+                            gpu and runtime.options.fallback and index < 2 and not candidate.get("adapter")
+                        )))
                     outcome = {**attempt, "status": "failed", "error_code": code or str(exc.status_code),
                                "elapsed_ms": round((time.perf_counter() - at) * 1000, 3),
                                "will_fallback": retry, "partial_output": runtime.partial_output}
@@ -77,6 +81,30 @@ async def execute(request, row, task, workflow, ranking_version, runtime):
                                                 })
                     if not retry:
                         raise
+                    if gpu:
+                        attempted = {r["model"]["invoke_id"] for r in rows}
+                        remaining = [r for r in runtime.selection["candidates"]
+                                     if r["model"]["invoke_id"] not in attempted and not r.get("adapter")]
+                        if not remaining:
+                            raise
+                        pool = {**runtime.selection, "candidates": remaining,
+                                "candidate_count": len(remaining), "selected_candidate_id": None,
+                                "reroute_reason": {"error_code": code,
+                                                   "excluded_invoke_ids": sorted(attempted)}}
+                        selected = await request.app.state.gateway_decision.select(
+                            runtime.decision_body, request, pool)
+                        replacement = next((r for r in remaining if r["candidate_id"] ==
+                                            selected["selected_candidate_id"]), None)
+                        if runtime.send:
+                            await runtime.send("reroute", {
+                                "reason": pool["reroute_reason"],
+                                "selected_candidate_id": selected["selected_candidate_id"],
+                                "decision_calls": selected.get("decision_calls", []),
+                                "model_decision_ms": selected.get("decision_ms"),
+                            })
+                        if replacement is None:
+                            raise
+                        rows.append(replacement)
                     continue
                 outcome = {**attempt, "status": "completed" if result.get("complete") else "incomplete",
                            "elapsed_ms": round((time.perf_counter() - at) * 1000, 3)}

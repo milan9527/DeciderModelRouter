@@ -15,6 +15,7 @@ from app.auth import save_user
 from app.gateway_store import History, Records
 from app.routing_profile import RequestProfile
 from app.routing_selector import SELECTOR_VERSION
+from tests.gateway_fakes import gpu_answers
 
 HEADERS = {"X-Decider-Client": "web"}
 CREDS = {"username": "tester", "password": "test-password-with-entropy"}
@@ -52,7 +53,7 @@ def client(tmp_path, monkeypatch, auth_config):
                 200,
                 json={
                     "model": routing.LOCAL_ROUTERS["h2o"],
-                    "answers": {k: {"choice": v} for k, v in profile().model_dump().items()},
+                    "answers": gpu_answers(json.loads(request.content), profile().model_dump()),
                     "latency_ms": 3.0,
                     "deployment": "FP8 W8A16 / Marlin · test fixture",
                     "usage": {"input_tokens": 20, "output_tokens": 7},

@@ -1,0 +1,278 @@
+{
+  "verified_at": "2026-11-26T02:48:53.479686+00:00",
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "aws": {
+    "ecs_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:22",
+    "running": 1,
+    "pending": 0,
+    "task_health": [
+      "HEALTHY"
+    ],
+    "images": [
+      "sha256:dbc49b5c2aa8f779dd0a21d6dfa20b7ac073ec72c2d3208f122144f79142a320"
+    ],
+    "original_service_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/strands-decider-demo:36",
+    "gpus": [
+      {
+        "id": "i-0ae7eb0abcb815af3",
+        "type": "g6.xlarge",
+        "state": "running",
+        "launch_time": "2026-11-24T10:16:20+00:00"
+      },
+      {
+        "id": "i-01180cf02d12e6e31",
+        "type": "g5.xlarge",
+        "state": "running",
+        "launch_time": "2026-11-24T15:32:58+00:00"
+      }
+    ],
+    "agent_runtime": {
+      "agentRuntimeArn": "arn:aws:bedrock-agentcore:us-east-1:632930644527:runtime/decider_model_router_industry-Fg8vWeEOIs",
+      "agentRuntimeVersion": "3",
+      "status": "READY"
+    }
+  },
+  "cloudfront": {
+    "distribution_id": "E3OCAAF3NQ1LYX",
+    "invalidation_id": "IBHXOFRNQQ21NLUIHVOAFR6RBK",
+    "phase": "complete",
+    "objects": [
+      {
+        "key": "gateway/gateway.css",
+        "sha256": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67",
+        "size": 26651
+      },
+      {
+        "key": "gateway/workspace.js",
+        "sha256": "ed3b7528593a3b83454086675bbdcc3513abd5b598fafa0cbefa55aa6d10385a",
+        "size": 39454
+      },
+      {
+        "key": "gateway/agents.js",
+        "sha256": "1bc03b59cb68cd2658487fe5856d9ac7d5f7b03eef9f5d636cddfa6792d245da",
+        "size": 11364
+      },
+      {
+        "key": "gateway/gateway.js",
+        "sha256": "50cf182a024a3101a97dea784155ddc118101ebc5a3d590b32e2586ca66bb1ba",
+        "size": 45841
+      },
+      {
+        "key": "gateway/mark.svg",
+        "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+        "size": 276
+      },
+      {
+        "key": "gateway/index.html",
+        "sha256": "f98081574df8a9c4e9353c2b5d1295ead628c10432cb6a4dd38c8dfe03aba8a3",
+        "size": 35474
+      }
+    ]
+  },
+  "catalog": {
+    "catalog_version": "72c68c7564790cd4",
+    "ranking_version": "1d0a074a9e3a3fba",
+    "policy_version": "bedrock-classified-v4",
+    "model_routing": {
+      "version": "gpu-evidence-v1",
+      "selector": "gpu_decision_model",
+      "measurement_version": "ce73abe40e311da92266e0ac",
+      "benchmark_cohort_exclusion": false
+    }
+  },
+  "gateway_checks": [
+    "root returns 200 without redirect",
+    "live catalog, evidence version and Liquid default match",
+    "unrestricted multi-turn request retained order ID and amount",
+    "Llama 4 executes with verified 8192 cap under a 16384 requested ceiling",
+    "history and session performance contain separate GPU model-selection metrics"
+  ],
+  "gateway_runs": [
+    {
+      "case": "general",
+      "run_id": "963a424ea3e05d9c3ebae350",
+      "status": "executed",
+      "all_candidates_reached_gpu": true,
+      "model_decision_ms": 4413.716,
+      "model_id": "openai.gpt-oss-safeguard-20b",
+      "decision_calls": 22
+    },
+    {
+      "case": "memory-store",
+      "run_id": "edc35a9ec292cbb30c561214",
+      "status": "executed",
+      "all_candidates_reached_gpu": true,
+      "model_decision_ms": 5286.808,
+      "model_id": "ai21.jamba-1-5-mini-v1:0",
+      "decision_calls": 22
+    },
+    {
+      "case": "memory-recall",
+      "run_id": "d04d3ae7783995dceb1b5b2f",
+      "status": "executed",
+      "all_candidates_reached_gpu": true,
+      "model_decision_ms": 3118.341,
+      "model_id": "writer.palmyra-x4-v1:0",
+      "decision_calls": 22
+    },
+    {
+      "case": "output-cap",
+      "run_id": "4c0901c4140ad28e61f91c73",
+      "status": "executed",
+      "all_candidates_reached_gpu": true,
+      "model_decision_ms": 49.835,
+      "model_id": "meta.llama4-scout-17b-instruct-v1:0",
+      "decision_calls": 1
+    },
+    {
+      "case": "coding",
+      "run_id": "995679a50356c60e4496194f",
+      "status": "executed",
+      "all_candidates_reached_gpu": true,
+      "model_decision_ms": 5449.39,
+      "model_id": "mistral.ministral-3-8b-instruct",
+      "decision_calls": 22
+    },
+    {
+      "case": "new-model",
+      "run_id": "b4c2d8e85c81d65e820f30c1",
+      "status": "executed",
+      "all_candidates_reached_gpu": true,
+      "model_decision_ms": 49.783,
+      "model_id": "openai.gpt-6.2-sol",
+      "decision_calls": 1
+    },
+    {
+      "case": "embedding",
+      "run_id": "3033fe195d21fba24d3dc24f",
+      "status": "executed",
+      "all_candidates_reached_gpu": true,
+      "model_decision_ms": 67.134,
+      "model_id": "twelvelabs.marengo-embed-3-0-v1:0",
+      "decision_calls": 1
+    }
+  ],
+  "gateway_validation_revision": 21,
+  "final_revision": 22,
+  "revision_scope": "Revision 22 adds portable Agent response metadata normalization and step audit fields; ordinary gateway execution source unchanged from seven-call check. Final frontend refresh adds measured coverage counts.",
+  "agent": {
+    "started_at": "2026-11-26T02:45:59.376934+00:00",
+    "url": "https://d3eipg2g3l3an3.cloudfront.net",
+    "fixture": false,
+    "data_source": "synthetic_business_records",
+    "scope": "industry_agent_four_turns",
+    "quality_scoring": "manual_review_required",
+    "results": [
+      {
+        "scenario_id": "retail",
+        "turn": 1,
+        "job_id": "53ac462539182eabef1d9989",
+        "status": "completed",
+        "session_id": "4d70e778e3a619849d467d17",
+        "models": [
+          "openai.gpt-5.4",
+          "openai.gpt-5.4"
+        ],
+        "model_calls": 2,
+        "tool_calls": 3,
+        "model_switches": 0,
+        "retained_calls": 1,
+        "cache_read_tokens": 58,
+        "artifact": "retail-turn-1.json"
+      },
+      {
+        "scenario_id": "retail",
+        "turn": 2,
+        "job_id": "82951357aeab938bd852b6cf",
+        "status": "completed",
+        "session_id": "4d70e778e3a619849d467d17",
+        "models": [
+          "openai.gpt-5.6-terra"
+        ],
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 1,
+        "retained_calls": 0,
+        "cache_read_tokens": 0,
+        "artifact": "retail-turn-2.json"
+      },
+      {
+        "scenario_id": "retail",
+        "turn": 3,
+        "job_id": "59f5aaf87f5995e8f596df08",
+        "status": "completed",
+        "session_id": "4d70e778e3a619849d467d17",
+        "models": [
+          "openai.gpt-5.6-terra"
+        ],
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 0,
+        "retained_calls": 1,
+        "cache_read_tokens": 1448,
+        "artifact": "retail-turn-3.json"
+      },
+      {
+        "scenario_id": "retail",
+        "turn": 4,
+        "job_id": "3fdda24d71bb88d35bd3ee41",
+        "status": "completed",
+        "session_id": "4d70e778e3a619849d467d17",
+        "models": [
+          "openai.gpt-6.2-sol"
+        ],
+        "model_calls": 1,
+        "tool_calls": 0,
+        "model_switches": 1,
+        "retained_calls": 0,
+        "cache_read_tokens": 0,
+        "artifact": "retail-turn-4.json"
+      }
+    ],
+    "dataset_version": "dae0d4382fc67060",
+    "planned_turns": 4,
+    "scenarios": [
+      "retail"
+    ],
+    "completed_turns": 4,
+    "finished_at": "2026-11-26T02:46:59.686440+00:00"
+  },
+  "tests": {
+    "full_python_passed": 537,
+    "subsequent_agent_regressions_passed": 40,
+    "browser_fixture_calls": 35,
+    "browser_fixture_errors": 0
+  },
+  "limitations": [
+    "Visible small-sample development evaluations, not production success probabilities.",
+    "Agent completion and switching do not establish business-answer accuracy.",
+    "16 catalog variants blocked by account, capacity or zero quotas.",
+    "Pricing incomplete; unknown costs are not zero."
+  ],
+  "browser": {
+    "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+    "root_redirect": false,
+    "browser_errors": [],
+    "checks": [
+      "real authentication",
+      "112-model measurement summary",
+      "new GPT model exact endpoint evidence",
+      "persisted GPU classification and selection metrics",
+      "mobile no page overflow",
+      "multimodal rows show actual measured model counts with expandable model lists"
+    ],
+    "inference_requests": 0
+  },
+  "public_delivery": {
+    "public_assets_match": [
+      "gateway/gateway.css",
+      "gateway/workspace.js",
+      "gateway/agents.js",
+      "gateway/gateway.js",
+      "gateway/mark.svg",
+      "gateway/index.html"
+    ],
+    "root_status": 200,
+    "s3_anonymous_status": 403
+  }
+}

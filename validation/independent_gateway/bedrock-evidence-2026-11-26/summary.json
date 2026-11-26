@@ -1,0 +1,157 @@
+{
+  "catalog_version": "72c68c7564790cd4",
+  "measurement_version": "ce73abe40e311da92266e0ac",
+  "raw_records": 1456,
+  "effective_records": 1446,
+  "superseded_records": 8,
+  "historical_nonportable_tool_probes": 2,
+  "status": {
+    "measured": 112,
+    "blocked": 16
+  },
+  "portable_tool_protocol_models": 64,
+  "metrics": {
+    "general_text": {
+      "models": 83,
+      "samples": 331,
+      "content_passed": 248,
+      "content_scored": 331,
+      "content_pending": 0,
+      "strict_passed": 248,
+      "strict_pending": 0,
+      "call_errors": 2
+    },
+    "multi_turn": {
+      "models": 79,
+      "samples": 79,
+      "content_passed": 64,
+      "content_scored": 79,
+      "content_pending": 0,
+      "strict_passed": 64,
+      "strict_pending": 0,
+      "call_errors": 1
+    },
+    "reasoning": {
+      "models": 82,
+      "samples": 482,
+      "content_passed": 275,
+      "content_scored": 376,
+      "content_pending": 106,
+      "strict_passed": 256,
+      "strict_pending": 0,
+      "call_errors": 5
+    },
+    "tools": {
+      "models": 79,
+      "samples": 79,
+      "content_passed": 57,
+      "content_scored": 79,
+      "content_pending": 0,
+      "strict_passed": 57,
+      "strict_pending": 0,
+      "call_errors": 8
+    },
+    "coding": {
+      "models": 79,
+      "samples": 237,
+      "content_passed": 181,
+      "content_scored": 209,
+      "content_pending": 28,
+      "strict_passed": 108,
+      "strict_pending": 0,
+      "call_errors": 2
+    },
+    "speech": {
+      "models": 2,
+      "samples": 2,
+      "content_passed": 2,
+      "content_scored": 2,
+      "content_pending": 0,
+      "strict_passed": 2,
+      "strict_pending": 0,
+      "call_errors": 0
+    },
+    "vision": {
+      "models": 48,
+      "samples": 192,
+      "content_passed": 96,
+      "content_scored": 98,
+      "content_pending": 94,
+      "strict_passed": 96,
+      "strict_pending": 0,
+      "call_errors": 2
+    },
+    "video_understanding": {
+      "models": 5,
+      "samples": 5,
+      "content_passed": 4,
+      "content_scored": 4,
+      "content_pending": 1,
+      "strict_passed": 4,
+      "strict_pending": 1,
+      "call_errors": 0
+    },
+    "embedding": {
+      "models": 9,
+      "samples": 18,
+      "content_passed": 18,
+      "content_scored": 18,
+      "content_pending": 0,
+      "strict_passed": 18,
+      "strict_pending": 0,
+      "call_errors": 0
+    },
+    "rerank": {
+      "models": 1,
+      "samples": 2,
+      "content_passed": 2,
+      "content_scored": 2,
+      "content_pending": 0,
+      "strict_passed": 2,
+      "strict_pending": 0,
+      "call_errors": 0
+    },
+    "audio_understanding": {
+      "models": 2,
+      "samples": 2,
+      "content_passed": 2,
+      "content_scored": 2,
+      "content_pending": 0,
+      "strict_passed": 2,
+      "strict_pending": 0,
+      "call_errors": 0
+    },
+    "safety": {
+      "models": 2,
+      "samples": 4,
+      "content_passed": 4,
+      "content_scored": 4,
+      "content_pending": 0,
+      "strict_passed": 4,
+      "strict_pending": 0,
+      "call_errors": 0
+    },
+    "image": {
+      "models": 13,
+      "samples": 13,
+      "content_passed": 6,
+      "content_scored": 13,
+      "content_pending": 0,
+      "strict_passed": 6,
+      "strict_pending": 0,
+      "call_errors": 0
+    }
+  },
+  "checks": {
+    "python_tests": 537,
+    "browser_fixture_calls": 35,
+    "browser_errors": 0,
+    "subsequent_agent_regressions_passed": 40
+  },
+  "scope": "visible development measurements; not business success calibration",
+  "parameter_probes": {
+    "models": 83,
+    "bounded": 19,
+    "quality_observations": 0
+  }
+}

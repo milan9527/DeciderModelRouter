@@ -209,8 +209,8 @@ def test_execution_honors_mapped_sampling_and_user_output_cap():
 
 def test_every_catalog_model_has_an_explanation_without_aliasing_capacity_variants():
     result = inventory(routing.load_catalog(), routing.load_rankings())
-    assert result["total_models"] == 124 and result["mapped_models"] == 60
-    assert sum(result["counts"].values()) == 124
+    assert result["total_models"] == 128 and result["mapped_models"] == 60
+    assert sum(result["counts"].values()) == 128
     nova = result["models"]["amazon.nova-micro-v1:0"]
     assert nova["status"] == "benchmarked" and nova["configurations"]
     variant = result["models"]["amazon.nova-micro-v1:0:128k"]

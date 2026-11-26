@@ -223,7 +223,7 @@ def test_inputs_match_captured_live_original_modules(monkeypatch):
     captured = json.loads(Path("tests/fixtures/original_comparison_inputs.json").read_text())
     # This fixture predates quota evidence. Reconstruct its exact pinned catalog
     # to test prompt compatibility; current zero-quota eligibility has separate tests.
-    historical = routing.load_catalog()
+    historical = json.loads(Path("tests/fixtures/routing_catalog_original.json").read_text())
     for model in historical["models"]:
         model.pop("inference_quotas", None)
     digest = hashlib.sha256(

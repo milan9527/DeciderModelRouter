@@ -11,7 +11,7 @@ from app.routing_calibration import verify_snapshot
 from app.routing_evidence import finite, task_metrics
 from app.routing_workflows import WORKFLOWS
 
-SELECTOR_VERSION = "bedrock-classified-v3"
+SELECTOR_VERSION = "bedrock-classified-v4"
 CALIBRATION_PATH = Path(__file__).with_name("routing_calibration.json")
 
 

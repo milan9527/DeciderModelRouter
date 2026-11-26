@@ -11,6 +11,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+evaluation = [
+    "pillow>=10,<13",
+]
 speech = [
     "aws-sdk-bedrock-runtime[awscrt]==0.13.1; python_version >= '3.12'",
 ]

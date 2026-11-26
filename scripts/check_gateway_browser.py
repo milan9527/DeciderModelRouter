@@ -33,7 +33,7 @@ def serve(role, port):
         from app.routing_profile import replay_profile
 
         app = FastAPI()
-        counter = {"calls": 0}
+        counter = {"calls": 0, "classification": 0, "selection": 0}
 
         @app.get("/health")
         def health():
@@ -47,13 +47,18 @@ def serve(role, port):
         async def infer(payload: dict):
             counter["calls"] += 1
             await asyncio.sleep(0.65)
-            text = json.loads(payload["state"])["request"]
+            selecting = "action" in payload["questions"]
+            counter["selection" if selecting else "classification"] += 1
+            state = json.loads(payload["state"])
+            text = state.get("request_as_data", state.get("request", ""))
             if "GPU_FAIL" in text:
                 raise HTTPException(503, "synthetic fixture failure")
             profile = replay_profile(Task(text=text), replay_choice(Task(text=text)))
+            from tests.gateway_fakes import gpu_answers
+
             return {
                 "model": LOCAL_ROUTERS["h2o"],
-                "answers": {k: {"choice": v} for k, v in profile.model_dump().items()},
+                "answers": gpu_answers(payload, profile.model_dump()),
                 "usage": {"input_tokens": 128, "output_tokens": 7},
                 "latency_ms": 15,
                 "deployment": "SYNTHETIC BROWSER TEST; NOT A GPU BENCHMARK",
@@ -213,9 +218,9 @@ def smoke(output):
                 expect(page.locator("#max-output")).to_have_value("4096")
                 expect(page.locator("#task")).to_have_value("")
                 page.locator("#max-cost").fill("0.05")
-                page.locator('[data-example="support"]').click()
+                page.locator('[data-example="industry-retail"]').click()
                 expect(page.locator("#max-output")).to_have_value("4096")
-                expect(page.locator("#expected-output")).to_have_value("512")
+                expect(page.locator("#expected-output")).to_have_value("1024")
                 page.locator('[data-example="code"]').click()
                 expect(page.locator("#max-output")).to_have_value("16384")
                 expect(page.locator("#expected-output")).to_have_value("8192")
@@ -240,7 +245,8 @@ def smoke(output):
                 page.evaluate("scrollTo(0, 0)")
                 page.screenshot(path=str(output / "candidates.png"), full_page=True)
                 page.locator('[data-tab="timing"]').click()
-                expect(page.locator("#timing")).to_contain_text("GPU 服务自报耗时：15.0 ms")
+                expect(page.locator("#timing")).to_contain_text("GPU 分类服务自报耗时：15.0 ms")
+                expect(page.locator("#timing")).to_contain_text("GPU 选模总耗时")
                 page.evaluate("scrollTo(0, 0)")
                 page.screenshot(path=str(output / "timings.png"), full_page=True)
                 with page.expect_download() as download:
@@ -253,7 +259,10 @@ def smoke(output):
                     e["data"] for e in record["events"]
                     if e.get("stage") == "selection" and e.get("status") == "completed"
                 )
-                assert chosen["selection"]["benchmark_group"]["release"] == "2025-04-02"
+                assert chosen["source"] == "gpu_decision_model"
+                assert chosen["selection"]["evaluated_configurations"] == chosen["candidate_count"]
+                assert all(e["release"] == "2025-04-02" for r in chosen["selection"]["candidates"]
+                           for e in r["public_evidence"])
                 (output / "synthetic-run.json").write_text(
                     json.dumps(record, ensure_ascii=False, indent=2)
                 )
@@ -303,8 +312,8 @@ def smoke(output):
                 page.locator("#session-title").fill("重命名后的会话")
                 page.locator("#session-form button.primary").click()
                 expect(page.locator("#session-select option:checked")).to_have_text("重命名后的会话")
-                page.locator("#template-category").select_option("代码")
-                page.locator("#template-search").fill("HMAC")
+                page.locator("#template-category").select_option("软件与云服务")
+                page.locator("#template-search").fill("幂等")
                 expect(page.locator("#examples button")).to_have_count(1)
                 page.locator("#template-search").fill("")
                 page.locator("#template-category").select_option("all")
@@ -402,9 +411,9 @@ def smoke(output):
                 page.locator("#evidence-filter").select_option("all")
                 page.locator("#model-search").fill("")
                 page.locator("#category").select_option("embedding")
-                expect(page.locator("#model-table")).to_contain_text("个配置通过基础筛选")
+                expect(page.locator("#model-table")).to_contain_text("GPU 读取评测选择")
                 cohere = page.locator('[data-model-id="cohere.embed-english-v3"]')
-                cohere.locator(".model-evidence summary").click()
+                cohere.locator(".model-evidence summary").last.click()
                 expect(cohere).to_contain_text("en 57.12")
                 expect(cohere).to_contain_text("nDCG@10 × 100")
                 page.set_viewport_size({"width": 390, "height": 844})
@@ -421,7 +430,7 @@ def smoke(output):
                 assert all(url.startswith(base) for url in requests), requests
                 browser.close()
             stats = httpx.get(f"http://127.0.0.1:{gpu_port}/stats").json()
-            assert stats["calls"] == 7, stats
+            assert stats["classification"] == 7 and stats["selection"] >= 2, stats
             verification = {
                 "fixture": "synthetic; not a GPU performance benchmark",
                 "processes": [
@@ -444,7 +453,7 @@ def smoke(output):
                     "persisted classifier evaluation with two synthetic calls",
                     "independent human business review",
                     "stream before inference completes",
-                    "one GPU call per run",
+                    "separate GPU classification and evidence-based selection calls",
                     "selection evidence",
                     "execution and timing",
                     "no route",

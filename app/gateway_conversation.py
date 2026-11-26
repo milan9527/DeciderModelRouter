@@ -141,7 +141,7 @@ class Conversation:
                 reason = "该账户最近收到限流或服务不可用，端点冷却 60 秒"
             if len(self.messages) > 1 and not capabilities(row)["multi_turn"]:
                 reason = "该适配器不支持多轮会话"
-            if len(self.messages) > 1:
+            if len(self.messages) > 1 or getattr(self, "evidence_routing", False):
                 mid = row["model"]["id"]
                 # Conservative gateway ceilings, not advertised full context windows.
                 ceiling = 8192
@@ -150,8 +150,15 @@ class Conversation:
                     ceiling = 128_000
                 if mid.endswith(":24k"):
                     ceiling = 24_000
-                required = self.context["text_bytes"] + 64 * len(self.messages) + preferences(task).max_output_tokens
-                if required > ceiling:
+                required = (self.context["text_bytes"] + 64 * len(self.messages)
+                            + row.get("output_token_limit", preferences(task).max_output_tokens))
+                if getattr(self, "evidence_routing", False):
+                    verified = row["model"].get("routing_capabilities", {}).get("context_tokens")
+                    if isinstance(verified, int) and required > verified:
+                        reason = f"会话保守估算 {required} 超过已核验上下文上限 {verified}"
+                    if row["model"].get("routing_capabilities", {}).get("multi_turn") is False:
+                        reason = "该端点多轮消息接口实测未成功"
+                if required > ceiling and not getattr(self, "evidence_routing", False):
                     reason = f"会话保守估算 {required} 超过该模型网关上下文上限 {ceiling}；请减少历史"
             if reason:
                 excluded[row["candidate_id"]] = reason
