@@ -1,0 +1,31 @@
+{
+  "results": [
+    {
+      "id": "fresh-interval-v1",
+      "case_id": "python-merge",
+      "observation_id": "fresh-interval-v1",
+      "output": {
+        "complete": true,
+        "text": "def merge_intervals(intervals):\n    # 排序区间\n    intervals.sort()\n    merged = []\n    for interval in intervals:\n        if not merged:\n            # 合并列表为空的时候，直接插入\n            merged.append(interval)\n        else:\n            last = merged[-1]\n            # 对比最近一个区间\n            if interval[0] <= last[1] + 1:\n                # \"合并\"定义：相交或者接触相邻\n                new_start = last[0]\n                new_end = max(last[1], interval[1])\n                # 新区间范围已覆盖，覆盖最近的：这里原地干כנ（不修改入参；作个record NSArray）\n                merged[-1] = [new_start, new_end]\n            else:\n                # 不合并的情况下直接append\n                merged.append(interval)\n    return merged\n\nmerge = merge_intervals\n"
+      }
+    },
+    {
+      "id": "fresh-interval-v2",
+      "case_id": "python-merge",
+      "observation_id": "fresh-interval-v2",
+      "output": {
+        "complete": true,
+        "text": "def merge_intervals(intervals):\n    # 过滤掉无效区间( a > b), 保持 [a, a]\n    valid_intervals = [iv for iv in intervals if iv[0] <= iv[1]]\n    # 排序\n    valid_intervals.sort()\n    if not valid_intervals:\n        return []\n    # 合并逻辑, 位置上不放任意`break`\n    merged = [valid_intervals[0]]\n    for iiv in valid_intervals[1:]:\n        prev_start, prev_end = merged[-1]\n        curr_start, curr_end = iiv\n        if curr_start <= prev_end + 1:  # 重叠或相接\n            new_start = min(prev_start, curr_start)\n            new_end   = max(prev_end, curr_end)\n            merged[-1] = [new_start, new_end]\n        else:\n            merged.append(iiv)\n    return merged\n\nmerge = merge_intervals\n"
+      }
+    },
+    {
+      "id": "fresh-interval-v3",
+      "case_id": "python-merge",
+      "observation_id": "fresh-interval-v3",
+      "output": {
+        "complete": true,
+        "text": "def merge_intervals(intervals):\n    # Sort intervals by start time\n    intervals = sorted(intervals)\n    # Remove invalid intervals where start > end\n    valid_intervals = [iv for iv in intervals if len(iv) >= 2 and iv[0] <= iv[1]]\n    if not valid_intervals:\n        return []\n    # Merge overlapping or adjacent intervals\n    merged = [valid_intervals[0]]\n    for curr in valid_intervals[1:]:\n        last_start, last_end = merged[-1]\n        curr_start, curr_end = curr\n        if curr_start <= last_end + 1:\n            new_start = min(last_start, curr_start)\n            new_end = max(last_end, curr_end)\n            merged[-1] = [new_start, new_end]\n        else:\n            merged.append(curr)\n    return merged\n\nmerge = merge_intervals\n"
+      }
+    }
+  ]
+}

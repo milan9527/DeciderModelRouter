@@ -1,0 +1,47 @@
+[
+  {
+    "row_id": "python-dedup",
+    "observation_id": "e2b8806edc5809df7df53e8e",
+    "case_id": "python-dedup",
+    "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+    "source_sha256": "7fe070f0b54f3fe05714c7f160a2d5bad3d909edacdd61d750a7d143d86d7774",
+    "status": "fail",
+    "result": {
+      "tests": 0,
+      "passed": 0,
+      "error": "SyntaxError",
+      "detail": "Traceback (most recent call last):\n  File \"/work/check.py\", line 55, in <module>\n    result = run()\n             ^^^^^\n  File \"/work/check.py\", line 8, in run\n    exec(compile(pathlib.Path(\"/work/answer.py\").read_text(), \"answer.py\", \"exec\"), scope)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"answer.py\", line 1\n    ```python\n    ^\nSyntaxError: invalid syntax\n"
+    },
+    "isolation": "network none; read-only; non-root; no credentials; 128MB; 0.5 CPU; 15s"
+  },
+  {
+    "row_id": "python-brackets",
+    "observation_id": "077a074b0de7e8453b3f0044",
+    "case_id": "python-brackets",
+    "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+    "source_sha256": "dbf26abbafc7ebfdbfbf4ad6fd777c4306fdbae87e41f99f1212e55214240bdc",
+    "status": "fail",
+    "result": {
+      "tests": 0,
+      "passed": 0,
+      "error": "SyntaxError",
+      "detail": "Traceback (most recent call last):\n  File \"/work/check.py\", line 55, in <module>\n    result = run()\n             ^^^^^\n  File \"/work/check.py\", line 8, in run\n    exec(compile(pathlib.Path(\"/work/answer.py\").read_text(), \"answer.py\", \"exec\"), scope)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"answer.py\", line 1\n    ```python\n    ^\nSyntaxError: invalid syntax\n"
+    },
+    "isolation": "network none; read-only; non-root; no credentials; 128MB; 0.5 CPU; 15s"
+  },
+  {
+    "row_id": "python-merge",
+    "observation_id": "f5311e7f2ce1a02816e3aecc",
+    "case_id": "python-merge",
+    "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+    "source_sha256": "80265f4e10aa831029646f3f49544ac8f3c52b3ac6005c2af22fc90e7c371a82",
+    "status": "fail",
+    "result": {
+      "tests": 0,
+      "passed": 0,
+      "error": "SyntaxError",
+      "detail": "Traceback (most recent call last):\n  File \"/work/check.py\", line 55, in <module>\n    result = run()\n             ^^^^^\n  File \"/work/check.py\", line 8, in run\n    exec(compile(pathlib.Path(\"/work/answer.py\").read_text(), \"answer.py\", \"exec\"), scope)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"answer.py\", line 1\n    ```python\n    ^\nSyntaxError: invalid syntax\n"
+    },
+    "isolation": "network none; read-only; non-root; no credentials; 128MB; 0.5 CPU; 15s"
+  }
+]

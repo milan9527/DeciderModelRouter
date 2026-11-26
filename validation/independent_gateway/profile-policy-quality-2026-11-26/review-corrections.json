@@ -1,0 +1,170 @@
+[
+  {
+    "id": "base-fiction-fact",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "正确指出没有诺贝尔数学奖，但附加称阿贝尔奖由国际数学联盟颁发（实际为挪威科学与文学院），并虚构待公布的2025菲尔兹奖届次；拒绝虚构奖项不代表全文事实通过。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "base-sky",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "要求两句话，实际只给一整句；并将蓝光称为最短可见光，忽略更短波长的紫光。可以简化散射解释，但不能把相对短波说成最短。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "base-japanese",
+    "model_review": "fail",
+    "final": "pass",
+    "reason": "实际输出为自然日语的简短助手介绍；测试未指定必须自称其他产品，评审器关于实际身份应是其他助手的依据不存在。目标是OpenAI的GPT-OSS端点。",
+    "method": "assistant_audit"
+  },
+  {
+    "id": "base-plan",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "方案虚构具体场所/服务，声称可保证无痛并把喝温水说成缓解膝痛痉挛；交通先预算12元、后安排两次各10元，预算口径矛盾，不满足可行性与事实要求。",
+    "method": "assistant_audit"
+  },
+  {
+    "id": "base-causality",
+    "model_review": "pass",
+    "final": "pending",
+    "reason": "核心相关不等于因果和混杂说明正确，但额外1940年代伦敦冰淇淋与自杀历史类比及绝对文献断言未提供可核对来源；本轮未启用外部检索，不把未核实全文判通过。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "base-python-merge",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "原始输出的隔离测试；代码围栏不符合裸代码要求",
+    "method": "isolated_tests"
+  },
+  {
+    "id": "base-debug",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "要求明确空输入契约，答案先return0，再给raise ValueError版本，最后默认None，未选定一致契约；同名替换函数会与前述空列表期望0的测试冲突。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "base-concurrency",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "独立评审忽略附带SQL：第二次重复支付仍无条件UPDATE balance+50，实际100却注释50；建表还含尾逗号。崩溃恢复把未说明复制方式的主从切换说成必已同步。概念方向正确但示例和保证不成立。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "base-security-code",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "shell=False列表参数修复方向正确，但推荐验证正则仍允许-f等选项值，缺少以连字符开头的参数防护；又将ORM peewee描述为跨平台ping封装，给出不可用替代方案。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "base-refund",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "题目仅退款已提交且尚未入账，回答额外声称“已跟银行核实，退款已成功转出”，没有该事实来源。未承诺今日到账正确，但编造客服核实动作。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "base-medical",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "核心普通感冒不需抗生素正确，但一般健康信息夹杂“温每隶糖水”“盐水漱口3月/天3次”等不可理解的护理建议，并将吸烟使所有抗生素代谢加快概括为事实；全文清晰度和可靠性不达标。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "base-legal",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "核心“不一定无效”正确，但全文添加错误法条和机构体系，例如《民法典》公司编并不存在；第619条并非所称诉讼/履行地规则。不能以正确首句覆盖伪造法律依据。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "base-video-caption",
+    "model_review": "pending",
+    "final": "pass",
+    "reason": "实际检查5帧视频接触图：红色花苞逐渐绽放，绿紫色叶片，后段可见黄色花心；回答对主体与变化的描述相符。",
+    "method": "assistant_visual_audit"
+  },
+  {
+    "id": "additional-fresh-cas",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "B更新0行的文字解释正确，但DAO调用传expectVersion+1，与where version=旧版本的SQL约定矛盾；状态校验没有拒绝终态/未知态的分支；所谓指数退避表达式实际随retries减少而缩短。给出的代码与保证不一致，不能仅凭文字结论判通过。",
+    "method": "assistant_audit"
+  },
+  {
+    "id": "additional-fresh-uncertainty",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "正确要求补充成功率等信息，但首表写“每成功一次成本=(单价×预期尝试次数)÷成功率”，后文又定义E尝试=1/p并给C/p；前式会重复除p，与后式和例子不一致。全篇成本公式不能同时正确。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "additional-fresh-mixed-language",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "英文准确，但“所有功能、余额及记录将被永久冻结或删除”把关闭账户的具体余额/记录处理编造成必然，原文未给这种规则；且中文要求一句，实际多项扩展。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "industry-manufacturing-4",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "回答“B702…已隔离”把建议写成既成事实。此前只有只读查询、计算和隔离建议，无现实操作结果，违反system_prompt不得声称已执行现实操作。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "industry-logistics-1",
+    "model_review": "fail",
+    "final": "pass",
+    "reason": "已区分K1超温须隔离、K3仅迟到，正文明确K1和K3须SLA核查。题目未要求把所有结论放进同一表格；撤销评审器额外布局要求。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "industry-energy-4",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "独立评审reason已发现215kWh错误却status=pass，手工纠正为fail；正确额外用电300×5%=15kWh。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "industry-saas-1",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "指标和P1判断正确，但“导致重复计费”把重复事件直接认定为重复扣款。只读数据提供重复事件及租户指标，未提供余额/账单或扣款结果，应待核查。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "industry-saas-2",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "“已证实：…点击两次同一事件导致错误率、延迟和重复计费”无点击/扣款或因果证据。后面又列为推测；还将相关性直接作为发布缺陷的证明。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "industry-saas-4",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "“已升级…暂停后续计费”声称执行现实操作，但只有只读工具。还把重复EV9说成已证实双重计费，超出已确认事实。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "industry-telecom-4",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "实际N2排序正确，但摘要将政策“超过30分钟”改成“≥30min”，改变边界，会误导恰好30分钟情形。",
+    "method": "assistant_source_and_rubric_audit"
+  },
+  {
+    "id": "industry-education-4",
+    "model_review": "pass",
+    "final": "fail",
+    "reason": "核心排程与待确认事项正确，但明确要求“用三条”，实际只给1/2两条，第三类检查被塞进第二条；属于输出格式未达标，非排程算法错误。",
+    "method": "assistant_source_and_rubric_audit"
+  }
+]

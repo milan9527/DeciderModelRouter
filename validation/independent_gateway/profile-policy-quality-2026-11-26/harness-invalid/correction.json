@@ -1,0 +1,13 @@
+{
+  "cases": [
+    "image-red",
+    "image-blue",
+    "image-ocr",
+    "image-chart",
+    "video-caption",
+    "multi-image"
+  ],
+  "reason": "Evaluation harness omitted runtime.user; gateway_adapter failed before media resolution and before target RPC. Corrected harness only; frozen policy/evidence unchanged.",
+  "count_as_model_failure": false,
+  "repeat_scope": "only these pre-target harness failures"
+}

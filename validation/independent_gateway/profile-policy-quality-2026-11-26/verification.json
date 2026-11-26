@@ -1,0 +1,24 @@
+{
+  "checked_at": "2026-11-26T06:52:51.276541+00:00",
+  "evaluation_base_commit": "068d9c47f441475ad63c3c018352824d48f5e3f3",
+  "software_tests": {
+    "passed": 34,
+    "scope": [
+      "tests/test_profile_policy_experiment.py",
+      "tests/test_profile_quality_experiment.py"
+    ]
+  },
+  "ruff": "passed",
+  "published_summary_recomputed_identically": true,
+  "credential_and_json_scan": "passed",
+  "local_markdown_links": "passed",
+  "live_policy_changed": false,
+  "source_sha256": {
+    "scripts/profile_quality_cases.py": "b677856e1ad5629c6980920b43550194815e065c493c14c8506110f58eae579c",
+    "scripts/run_profile_quality.py": "6b623d3db5649d98c8cb6bbfbe5e4edaf19ba4c9f0bca06cc802d07ebfe06701",
+    "scripts/review_profile_quality.py": "920cd965ec7ea8ee6a42cd69fec7bac012b7b87f0cae402c92df98f20cb8d7ca",
+    "scripts/review_profile_media.py": "f767b089c7791282fb722a4ae397a3f62ea1a0a222e808f8bbe5cf60088dc986",
+    "scripts/summarize_profile_quality.py": "22973b956c6336cfb5f0f2183ffc9d60ba4d949fc1a7a96943f79595fc2fdd98",
+    "tests/test_profile_quality_experiment.py": "e631e386f59018c1d2720666254e4138a5f745e168faa96db72f93d63d6414bc"
+  }
+}

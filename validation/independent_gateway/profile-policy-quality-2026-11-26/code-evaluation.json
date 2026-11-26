@@ -1,0 +1,160 @@
+{
+  "results": [
+    {
+      "id": "python-dedup",
+      "case_id": "python-dedup",
+      "observation_id": "e2b8806edc5809df7df53e8e",
+      "output": {
+        "text": "```python\ndef unique(xs):\n    seen = set()\n    return [x for x in xs if not (x in seen or seen.add(x))]\n```",
+        "has_final_text": true,
+        "complete": true,
+        "stop_reason": "end_turn",
+        "usage": {
+          "inputTokens": 36,
+          "outputTokens": 34,
+          "totalTokens": 70
+        },
+        "cache": {
+          "enabled": true,
+          "supported": false,
+          "checkpoints": 0,
+          "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+          "observed": false,
+          "read_tokens": 0,
+          "write_tokens": 0,
+          "total_input_tokens": 36,
+          "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+        },
+        "streamed": false,
+        "ttft_ms": null,
+        "model_id": "mistral.ministral-3-14b-instruct",
+        "invoke_id": "mistral.ministral-3-14b-instruct",
+        "backend_total_ms": 688.528,
+        "timings": {
+          "queue_ms": 0.027,
+          "upstream_ms": 688.491
+        },
+        "source": "live",
+        "ranking_version": "1d0a074a9e3a3fba",
+        "request_fields": {},
+        "strategy": "profile_cpu_experiment",
+        "evidence_version": "profile-cpu-policy-experiment-v1",
+        "cost_evidence": {
+          "expected_usd": "0.0001220",
+          "at_output_cap_usd": "0.0032964"
+        },
+        "output_budget": {
+          "requested_max_tokens": 16384,
+          "effective_max_tokens": 16384,
+          "source": "exact_endpoint_parameter_probe",
+          "note": "不超过请求上限；已核验的端点限制可能更低。"
+        },
+        "observed_reference_cost_usd": "0.0000140"
+      }
+    },
+    {
+      "id": "python-brackets",
+      "case_id": "python-brackets",
+      "observation_id": "077a074b0de7e8453b3f0044",
+      "output": {
+        "text": "```python\ndef valid(s):\n    stack = []\n    pairs = {')': '(', ']': '[', '}': '{'}\n    for char in s:\n        if char in '([{':\n            stack.append(char)\n        else:\n            if not stack or stack[-1] != pairs.get(char, ''):\n                return False\n            stack.pop()\n    return not stack\n```",
+        "has_final_text": true,
+        "complete": true,
+        "stop_reason": "end_turn",
+        "usage": {
+          "inputTokens": 48,
+          "outputTokens": 82,
+          "totalTokens": 130
+        },
+        "cache": {
+          "enabled": true,
+          "supported": false,
+          "checkpoints": 0,
+          "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+          "observed": false,
+          "read_tokens": 0,
+          "write_tokens": 0,
+          "total_input_tokens": 48,
+          "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+        },
+        "streamed": false,
+        "ttft_ms": null,
+        "model_id": "mistral.ministral-3-14b-instruct",
+        "invoke_id": "mistral.ministral-3-14b-instruct",
+        "backend_total_ms": 1025.673,
+        "timings": {
+          "queue_ms": 0.025,
+          "upstream_ms": 1025.639
+        },
+        "source": "live",
+        "ranking_version": "1d0a074a9e3a3fba",
+        "request_fields": {},
+        "strategy": "profile_cpu_experiment",
+        "evidence_version": "profile-cpu-policy-experiment-v1",
+        "cost_evidence": {
+          "expected_usd": "0.0001272",
+          "at_output_cap_usd": "0.0033016"
+        },
+        "output_budget": {
+          "requested_max_tokens": 16384,
+          "effective_max_tokens": 16384,
+          "source": "exact_endpoint_parameter_probe",
+          "note": "不超过请求上限；已核验的端点限制可能更低。"
+        },
+        "observed_reference_cost_usd": "0.0000260"
+      }
+    },
+    {
+      "id": "python-merge",
+      "case_id": "python-merge",
+      "observation_id": "f5311e7f2ce1a02816e3aecc",
+      "output": {
+        "text": "```python\ndef merge(intervals):\n    if not intervals:\n        return []\n\n    intervals = sorted(intervals, key=lambda x: x[0])\n    res = [intervals[0]]\n\n    for curr in intervals[1:]:\n        last = res[-1]\n        if curr[0] <= last[1]:\n            last = [last[0], max(last[1], curr[1])]\n            res[-1] = last\n        else:\n            res.append(curr)\n\n    return res\n```",
+        "has_final_text": true,
+        "complete": true,
+        "stop_reason": "end_turn",
+        "usage": {
+          "inputTokens": 50,
+          "outputTokens": 109,
+          "totalTokens": 159
+        },
+        "cache": {
+          "enabled": true,
+          "supported": false,
+          "checkpoints": 0,
+          "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+          "observed": false,
+          "read_tokens": 0,
+          "write_tokens": 0,
+          "total_input_tokens": 50,
+          "note": "命中以 Bedrock cacheReadInputTokens 为准；inputTokens 不包含缓存读写。缓存费用未知时不估算折扣。"
+        },
+        "streamed": false,
+        "ttft_ms": null,
+        "model_id": "mistral.ministral-3-14b-instruct",
+        "invoke_id": "mistral.ministral-3-14b-instruct",
+        "backend_total_ms": 899.49,
+        "timings": {
+          "queue_ms": 0.025,
+          "upstream_ms": 899.455
+        },
+        "source": "live",
+        "ranking_version": "1d0a074a9e3a3fba",
+        "request_fields": {},
+        "strategy": "profile_cpu_experiment",
+        "evidence_version": "profile-cpu-policy-experiment-v1",
+        "cost_evidence": {
+          "expected_usd": "0.0001322",
+          "at_output_cap_usd": "0.0033066"
+        },
+        "output_budget": {
+          "requested_max_tokens": 16384,
+          "effective_max_tokens": 16384,
+          "source": "exact_endpoint_parameter_probe",
+          "note": "不超过请求上限；已核验的端点限制可能更低。"
+        },
+        "observed_reference_cost_usd": "0.0000318"
+      }
+    }
+  ]
+}

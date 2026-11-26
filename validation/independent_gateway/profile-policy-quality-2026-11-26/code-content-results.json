@@ -1,0 +1,44 @@
+[
+  {
+    "row_id": "python-dedup",
+    "observation_id": "e2b8806edc5809df7df53e8econtent",
+    "case_id": "python-dedup",
+    "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+    "source_sha256": "4cbafb5113c25b59f5b6700dada26b007273e7bb1c206c38cb785b8350babdf9",
+    "status": "pass",
+    "result": {
+      "tests": 103,
+      "passed": 103,
+      "failures": []
+    },
+    "isolation": "network none; read-only; non-root; no credentials; 128MB; 0.5 CPU; 15s"
+  },
+  {
+    "row_id": "python-brackets",
+    "observation_id": "077a074b0de7e8453b3f0044content",
+    "case_id": "python-brackets",
+    "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+    "source_sha256": "237ec0b5461ba9bb49ea8cd8467e74f80710a5fdd6267294e6ce6e47ab1df77d",
+    "status": "pass",
+    "result": {
+      "tests": 108,
+      "passed": 108,
+      "failures": []
+    },
+    "isolation": "network none; read-only; non-root; no credentials; 128MB; 0.5 CPU; 15s"
+  },
+  {
+    "row_id": "python-merge",
+    "observation_id": "f5311e7f2ce1a02816e3aecccontent",
+    "case_id": "python-merge",
+    "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+    "source_sha256": "cdb6d52b1c38829d9a685574d3ce9de5a7f4370ded5c1f615e95f2f67b55e4f0",
+    "status": "pass",
+    "result": {
+      "tests": 105,
+      "passed": 105,
+      "failures": []
+    },
+    "isolation": "network none; read-only; non-root; no credentials; 128MB; 0.5 CPU; 15s"
+  }
+]

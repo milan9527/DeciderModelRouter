@@ -1,0 +1,8 @@
+{
+  "task_revision": 23,
+  "running_count": 1,
+  "desired_count": 1,
+  "cloudfront_root_status": 200,
+  "redirect": null,
+  "deployment_change": false
+}

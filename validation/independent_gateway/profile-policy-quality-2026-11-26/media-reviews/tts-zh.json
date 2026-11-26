@@ -1,0 +1,40 @@
+{
+  "case_id": "tts-zh",
+  "status": "fail",
+  "method": "actual_artifact_inspection",
+  "artifact_sha256": "b0e2a37f31a73fc0906a98e7acdfe986afb04b517d9b3edbde9e8e89d81122df",
+  "audio": {
+    "rate": 24000,
+    "channels": 1,
+    "seconds": 2.04,
+    "sample_width": 2
+  },
+  "transcript": "欢迎使用望城网关。\n\n版权所有：中国互联网协会与从化国际金融互助发展基金会合作制作与发行 从化科戏工作室2015版本",
+  "expected": "欢迎使用模型网关。",
+  "asr_response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "欢迎使用望城网关。\n\n版权所有：中国互联网协会与从化国际金融互助发展基金会合作制作与发行 从化科戏工作室2015版本",
+          "refusal": null,
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1795675151,
+    "id": "chatcmpl-18bed05c-db5e-4a4b-ab54-1bf9b346b663",
+    "model": "mistral.voxtral-mini-3b-2507",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "usage": {
+      "completion_tokens": 52,
+      "prompt_tokens": 391,
+      "total_tokens": 443
+    }
+  },
+  "judge_model": "mistral.voxtral-mini-3b-2507",
+  "reason": "实际WAV可解码，独立ASR检查朗读内容；不评价音色和自然度。"
+}

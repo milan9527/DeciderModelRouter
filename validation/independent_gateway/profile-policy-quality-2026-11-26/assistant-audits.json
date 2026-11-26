@@ -1,0 +1,250 @@
+{
+  "base-japanese": {
+    "status": "pass",
+    "method": "assistant_audit",
+    "reason": "实际输出为自然日语的简短助手介绍；测试未指定必须自称其他产品，评审器关于实际身份应是其他助手的依据不存在。目标是OpenAI的GPT-OSS端点。"
+  },
+  "base-translate-zh": {
+    "status": "pass",
+    "method": "assistant_audit",
+    "reason": "原文“已退款而不是取消”被准确保留；初次评审JSON引号错误属于评审器输出问题。"
+  },
+  "base-short-story": {
+    "status": "fail",
+    "method": "assistant_audit",
+    "reason": "虽然含钥匙、雨和误会，人物从掉钥匙到递钥匙、被疑偷窃再承诺找房子的因果连接不清，未满足固定连贯性标准。"
+  },
+  "base-plan": {
+    "status": "fail",
+    "method": "assistant_audit",
+    "reason": "方案虚构具体场所/服务，声称可保证无痛并把喝温水说成缓解膝痛痉挛；交通先预算12元、后安排两次各10元，预算口径矛盾，不满足可行性与事实要求。"
+  },
+  "base-empathy": {
+    "status": "fail",
+    "method": "assistant_audit",
+    "reason": "用户只希望说几句话，回答给出长篇五条指导和“困难是成长环节”等劝导，偏离固定rubric要求的简短温和陪伴；属于表达与需求符合性问题，不是事实错误。"
+  },
+  "base-marketing": {
+    "status": "fail",
+    "method": "assistant_audit",
+    "reason": "仅已知容量500ml，却编造不锈钢、双层真空、可用洗碗机、多款颜色等具体参数。"
+  },
+  "base-tts-zh": {
+    "status": "pending",
+    "method": "assistant_audit",
+    "reason": "输出文本是正确中文，但两种独立ASR对实际WAV均未复现指定内容且互相矛盾。ASR未标定中文准确率、未完成听感审查，因此不能判语音内容通过，也不单凭转写判定声音确定错误。"
+  },
+  "additional-fresh-cas": {
+    "status": "fail",
+    "method": "assistant_audit",
+    "reason": "B更新0行的文字解释正确，但DAO调用传expectVersion+1，与where version=旧版本的SQL约定矛盾；状态校验没有拒绝终态/未知态的分支；所谓指数退避表达式实际随retries减少而缩短。给出的代码与保证不一致，不能仅凭文字结论判通过。"
+  },
+  "additional-fresh-interval": {
+    "status": "fail",
+    "method": "assistant_audit",
+    "reason": "多个实现使用end+1判断闭区间相接，会错误合并有间隙的区间；第一版intervals.sort()修改输入；把[a,a]说成空集，解释和代码多处矛盾。"
+  },
+  "base-video-caption": {
+    "status": "pass",
+    "method": "assistant_visual_audit",
+    "reason": "实际检查5帧视频接触图：红色花苞逐渐绽放，绿紫色叶片，后段可见黄色花心；回答对主体与变化的描述相符。"
+  },
+  "industry-logistics-1": {
+    "status": "pass",
+    "reason": "已区分K1超温须隔离、K3仅迟到，正文明确K1和K3须SLA核查。题目未要求把所有结论放进同一表格；撤销评审器额外布局要求。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-retail-1": {
+    "status": "fail",
+    "reason": "15件缺口及超时订单正确，但“现有可用库存35件（含20件已在途）”错误：available=35与incoming=20是独立字段。在途不得计可用。首轮未要求补偿，撤销评审器该项扣分理由。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-manufacturing-2": {
+    "status": "fail",
+    "reason": "现有组合是1/4/7而非2/4/7；仅补一批无法填齐缺失五个组合。声称50件已具足够统计功效未给可复核计算；隔离800件正确但不足以挽救错误复验设计。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-manufacturing-4": {
+    "status": "fail",
+    "reason": "回答“B702…已隔离”把建议写成既成事实。此前只有只读查询、计算和隔离建议，无现实操作结果，违反system_prompt不得声称已执行现实操作。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-healthcare-2": {
+    "status": "fail",
+    "reason": "正确给出A31+A32占95分钟，但第二目标通过放松urgent优先得到另一答案，未完成同一业务约束下两目标比较；在原约束下两个目标均只能选A31+A32。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-healthcare-4": {
+    "status": "pass",
+    "reason": "本轮明确要求交接排班方案，回答中的“已排入记录”按方案中的安排解读；A31+A32=95分钟、A33需协调正确，没有声称已调用实际排班系统。保持原评审通过，避免把方案安排误当真实写入。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-energy-2": {
+    "status": "fail",
+    "reason": "总电量5015与原5000相差15kWh，回答多次写215kWh。265.5元节省正确，不能抵消另一核心指标错误。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-energy-4": {
+    "status": "fail",
+    "reason": "独立评审reason已发现215kWh错误却status=pass，手工纠正为fail；正确额外用电300×5%=15kWh。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-saas-1": {
+    "status": "fail",
+    "reason": "指标和P1判断正确，但“导致重复计费”把重复事件直接认定为重复扣款。只读数据提供重复事件及租户指标，未提供余额/账单或扣款结果，应待核查。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-saas-2": {
+    "status": "fail",
+    "reason": "“已证实：…点击两次同一事件导致错误率、延迟和重复计费”无点击/扣款或因果证据。后面又列为推测；还将相关性直接作为发布缺陷的证明。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-saas-4": {
+    "status": "fail",
+    "reason": "“已升级…暂停后续计费”声称执行现实操作，但只有只读工具。还把重复EV9说成已证实双重计费，超出已确认事实。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-telecom-2": {
+    "status": "fail",
+    "reason": "用户分钟115000正确，但将独立受影响人数定义为各站用户总和；政策明确用户可能重叠，不能直接相加称独立人数。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-telecom-4": {
+    "status": "fail",
+    "reason": "实际N2排序正确，但摘要将政策“超过30分钟”改成“≥30min”，改变边界，会误导恰好30分钟情形。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-education-2": {
+    "status": "fail",
+    "reason": "排程本身可行且讲师未知处理正确，但说无法确定共同学员；已读政策明确C1/C2有共同学员，无需额外名单即可应用。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-education-3": {
+    "status": "fail",
+    "reason": "in_range实现返回重叠为True，check_conflict却在not in_range时报冲突，反转了共同学员/同教室的冲突判断；测试引用作用域外courses_conflict_set和未定义err_trainer。静态复核，无执行声明。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-education-4": {
+    "status": "fail",
+    "reason": "核心排程与待确认事项正确，但明确要求“用三条”，实际只给1/2两条，第三类检查被塞进第二条；属于输出格式未达标，非排程算法错误。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-legal-1": {
+    "status": "fail",
+    "reason": "50万元×30%=15万元而非150万元；当期仅M1同时验收及开票，具备条件金额150000元。已开票不能直接视为具备付款条件。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-legal-3": {
+    "status": "fail",
+    "reason": "付款函数只读policy字符串，无逐节点验收和发票判断；测试调用参数顺序与函数签名不符，首个测试实际四舍五入后0.0而非5000；未实现比例和检查。静态可判定错误。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-legal-4": {
+    "status": "fail",
+    "reason": "表格把“M1已验收，M2已发票”拼接成付款条件已满足；验收和发票必须在同一里程碑同时成立，仅M1可付。前面里程碑数字正确但结论矛盾。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-public-services-2": {
+    "status": "fail",
+    "reason": "应扣暂停日：G1=7、G2=11、G3=5，只有G2超时，非2/3；从3条样本外推28件中19件超时无依据，2天×8件也不能处理19件。净3件/日、10工作日正确。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-public-services-3": {
+    "status": "fail",
+    "reason": "getProcessedTime最终仅return processedDays，计算出的工作日和暂停集合均未用于返回值；越界暂停直接continue并非声称的剪裁。未满足办理时钟功能。静态复核。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "industry-public-services-4": {
+    "status": "fail",
+    "reason": "编造已办32件，超时编号写“1”而非G2，未保留查询事实；净3件/日及约10工作日正确，仍不满足交接要求。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "base-concurrency": {
+    "status": "fail",
+    "reason": "独立评审忽略附带SQL：第二次重复支付仍无条件UPDATE balance+50，实际100却注释50；建表还含尾逗号。崩溃恢复把未说明复制方式的主从切换说成必已同步。概念方向正确但示例和保证不成立。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "base-debug": {
+    "status": "fail",
+    "reason": "要求明确空输入契约，答案先return0，再给raise ValueError版本，最后默认None，未选定一致契约；同名替换函数会与前述空列表期望0的测试冲突。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "base-fiction-fact": {
+    "status": "fail",
+    "reason": "正确指出没有诺贝尔数学奖，但附加称阿贝尔奖由国际数学联盟颁发（实际为挪威科学与文学院），并虚构待公布的2025菲尔兹奖届次；拒绝虚构奖项不代表全文事实通过。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "base-legal": {
+    "status": "fail",
+    "reason": "核心“不一定无效”正确，但全文添加错误法条和机构体系，例如《民法典》公司编并不存在；第619条并非所称诉讼/履行地规则。不能以正确首句覆盖伪造法律依据。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "base-refund": {
+    "status": "fail",
+    "reason": "题目仅退款已提交且尚未入账，回答额外声称“已跟银行核实，退款已成功转出”，没有该事实来源。未承诺今日到账正确，但编造客服核实动作。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "base-sky": {
+    "status": "fail",
+    "reason": "要求两句话，实际只给一整句；并将蓝光称为最短可见光，忽略更短波长的紫光。可以简化散射解释，但不能把相对短波说成最短。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "base-medical": {
+    "status": "fail",
+    "reason": "核心普通感冒不需抗生素正确，但一般健康信息夹杂“温每隶糖水”“盐水漱口3月/天3次”等不可理解的护理建议，并将吸烟使所有抗生素代谢加快概括为事实；全文清晰度和可靠性不达标。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "base-security-code": {
+    "status": "fail",
+    "reason": "shell=False列表参数修复方向正确，但推荐验证正则仍允许-f等选项值，缺少以连字符开头的参数防护；又将ORM peewee描述为跨平台ping封装，给出不可用替代方案。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "base-causality": {
+    "status": "pending",
+    "reason": "核心相关不等于因果和混杂说明正确，但额外1940年代伦敦冰淇淋与自杀历史类比及绝对文献断言未提供可核对来源；本轮未启用外部检索，不把未核实全文判通过。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "additional-fresh-uncertainty": {
+    "status": "fail",
+    "reason": "正确要求补充成功率等信息，但首表写“每成功一次成本=(单价×预期尝试次数)÷成功率”，后文又定义E尝试=1/p并给C/p；前式会重复除p，与后式和例子不一致。全篇成本公式不能同时正确。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  },
+  "additional-fresh-mixed-language": {
+    "status": "fail",
+    "reason": "英文准确，但“所有功能、余额及记录将被永久冻结或删除”把关闭账户的具体余额/记录处理编造成必然，原文未给这种规则；且中文要求一句，实际多项扩展。",
+    "method": "assistant_source_and_rubric_audit",
+    "human_expert_review": false
+  }
+}
