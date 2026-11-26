@@ -1,0 +1,16 @@
+{
+  "command": ".venv/bin/pytest -q",
+  "passed": 609,
+  "warnings": 1,
+  "elapsed_seconds": 48.26,
+  "warning": "Existing Starlette TestClient httpx deprecation",
+  "log_sha256": "37ca19d7da7e17b548bc6bafa6877d547fe5343d1908600b4fb62c428cf3d401",
+  "reporting_regression_after_documented_limits_update": {
+    "command": "PYTHONPATH=. .venv/bin/pytest -q tests/test_latency_quality_reporting.py",
+    "passed": 4,
+    "elapsed_seconds": 0.38
+  },
+  "ruff": "all changed Python files passed",
+  "diff_check": "passed",
+  "scope": "software checks; not model quality"
+}
