@@ -1,0 +1,19 @@
+{
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "labels": {
+    "use-history": "记住上文",
+    "use-stickiness": "优先用上次模型",
+    "use-stream": "实时显示回答"
+  },
+  "checks": [
+    "new checkbox and help labels match; controls toggle and retain checked defaults",
+    "27 templates and Liquid default; desktop and mobile have no horizontal overflow"
+  ],
+  "page_errors": [],
+  "unexpected_writes": [],
+  "new_model_calls": 0,
+  "invalidation_id": "I13E3KCHL6PN5D5S425BSNWF38",
+  "index_sha256": "f1d1c4b94612bf15fa52d9b10d8bb7e6ad27d25759e124b6ca7fd12455fd7e5e",
+  "ecs_unchanged": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:18",
+  "verified_at": "2026-11-26T01:48:55.762617+00:00"
+}

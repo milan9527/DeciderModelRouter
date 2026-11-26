@@ -112,23 +112,23 @@
                 <form id="request-form">
                   <fieldset class="session-options" data-persistent hidden>
                     <legend>会话与调用</legend>
-                    <label><input type="checkbox" id="use-history" checked /> 带入历史</label>
-                    <label><input type="checkbox" id="use-stickiness" checked /> 尽量沿用模型</label>
+                    <label><input type="checkbox" id="use-history" checked /> 记住上文</label>
+                    <label><input type="checkbox" id="use-stickiness" checked /> 优先用上次模型</label>
                     <label><input type="checkbox" id="use-cache" checked /> 复用提示词缓存</label>
-                    <label><input type="checkbox" id="use-stream" checked /> 边生成边显示</label>
+                    <label><input type="checkbox" id="use-stream" checked /> 实时显示回答</label>
                     <label><input type="checkbox" id="use-fallback" checked /> 限流时尝试其他候选</label>
                     <label>历史轮数上限 <input type="number" id="history-turns" value="8" min="1" max="16" /></label>
                   </fieldset>
                   <details id="session-options-help" class="session-help" data-persistent hidden>
                     <summary>这些选项有什么用？</summary>
                     <dl>
-                      <dt>带入历史</dt>
+                      <dt>记住上文</dt>
                       <dd>把当前会话之前成功完成的问答一起发给模型，便于继续追问。历史越长，输入Token通常越多。关闭不删除已保存记录，但本次成功回答会开始一条新的上下文链。</dd>
-                      <dt>尽量沿用模型</dt>
-                      <dd>带入历史时，优先继续使用上一轮模型。每轮仍会判断任务；需求、预算或能力条件变化时可以换模型。关闭后每轮重新按策略选模，也可能选中同一个模型。</dd>
+                      <dt>优先用上次模型</dt>
+                      <dd>开启“记住上文”时，优先继续使用上一轮模型。每轮仍会判断任务；需求、预算或能力条件变化时可以换模型。关闭后每轮重新按策略选模，也可能选中同一个模型。</dd>
                       <dt>复用提示词缓存</dt>
                       <dd>支持的模型可复用已处理的相同输入前缀，可能减少耗时和费用；本轮仍会生成新答案。首次请求、内容太短、换模型或缓存过期都可能不命中，以实际缓存读取量为准。</dd>
-                      <dt>边生成边显示</dt>
+                      <dt>实时显示回答</dt>
                       <dd>支持流式输出的模型会逐段显示答案；关闭后等生成结束再显示。不改变选模策略，也不减少生成的Token。</dd>
                       <dt>限流时尝试其他候选</dt>
                       <dd>文本调用遇到限流或暂时不可用，且尚未输出文字时，尝试符合本次能力与预算条件的备选。含首选最多尝试3个端点；没有合格备选或已经输出部分答案时停止。</dd>

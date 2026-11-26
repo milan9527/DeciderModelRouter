@@ -8,6 +8,8 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
+2026-11-26 前端文案更新：三个选项改名为“记住上文”“优先用上次模型”“实时显示回答”，同步帮助说明和会话文档。ECS保持revision 18；CloudFront刷新 `I13E3KCHL6PN5D5S425BSNWF38` 完成。正式域名文案、开关、桌面和手机布局检查通过，没有新增模型推理。[验证记录](../validation/independent_gateway/session-labels-2026-11-26.json)。
+
 最新部署为 **ECS revision 18 / Python 3.12 ARM64**，API镜像 `sha256:deeb0d7f427b4be34ce07bac1b97240166cf49f6245ef3ce8feaa18eff2b57a2`。移除两个问候模板，保留27个场景；工作台新增六项会话选项的可展开说明，原默认行为保留。51项相关软件回归及线上模板、说明、桌面/手机检查通过。ECS健康运行1/1，CloudFront刷新 `I1SEDX7QV3FXEG07R7Q3PAS638` 完成，正式根域名无跳转。Runtime仍为V2 / 应用版本3，默认Liquid；本次没有新增模型推理。[验证记录](../validation/independent_gateway/session-help-2026-11-26/README.zh.md)，本机审计目录 `.deployment/session-help-20261126/`。
 
 前一版 **ECS revision 17 / Python 3.12 ARM64**，API镜像 `sha256:35a0e61d2999225b4820591864fec8973b02d8ce7bdc60019f2ca5bed0e2404c`。恢复8个简单通用模板，工作台共29个；现有行业、检索、多模态模板及12个行业Agent场景保留。79项相关软件回归及29个模板的线上填充、分类筛选、桌面/手机检查通过。ECS健康运行1/1，CloudFront刷新 `I8SL8CHGOFEUL5AVX2530TMXMQ` 完成，正式根域名无跳转。Runtime仍为平台V2 / 应用版本3，沿用GPU，默认Liquid；本次没有新增模型推理。[验证记录](../validation/independent_gateway/general-templates-2026-11-25/README.zh.md)，本机审计目录 `.deployment/general-templates-20261125/`。
