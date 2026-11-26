@@ -1,0 +1,44 @@
+{
+  "recorded_at": "2026-11-26T07:39:30.098056+00:00",
+  "source_base_commit": "a0841f6d6c0728e84ad163e918a7bc59464e8a4c",
+  "source_freeze": {
+    "files": 11,
+    "all_unchanged": true
+  },
+  "evidence_snapshot_canonical_sha256": {
+    "joint": "258fa1ff7adccb6444bbc073f7d0ace1e67d278fc518d73f0c8a636ffbf59d70",
+    "two_stage": "258fa1ff7adccb6444bbc073f7d0ace1e67d278fc518d73f0c8a636ffbf59d70",
+    "cpu_policy": "258fa1ff7adccb6444bbc073f7d0ace1e67d278fc518d73f0c8a636ffbf59d70"
+  },
+  "software_tests": {
+    "command": ".venv/bin/python -m pytest -q tests/test_paired_quality.py tests/test_profile_quality_experiment.py tests/test_profile_policy_experiment.py",
+    "result": "42 passed",
+    "note": "Observed in this run; not model-quality scoring."
+  },
+  "lint": {
+    "tool": "ruff",
+    "result": "All checks passed",
+    "scope": "Eight changed/new scripts and one test file"
+  },
+  "planned_scoring_items": 477,
+  "all_target_attempts_finished": true,
+  "blind_review_records": 85,
+  "blind_review_errors_remaining": 0,
+  "all_48_industry_turn_keys_source_reviewed": true,
+  "code_function_scenarios_per_arm": 7,
+  "code_checkpoints_per_arm": 973,
+  "additional_interval_variants_checkpoints_total": 630,
+  "sql_probe": "sql-parameter-probe.json",
+  "audio_cleanup": "audio-cleanup-verification.json",
+  "production": "production-unchanged.json",
+  "no_deployment": true,
+  "no_frontend_history_import": true,
+  "limitations": [
+    "single diagnostic trial, not hidden independent benchmark",
+    "industry tests run via local native adapter, not deployed AgentCore",
+    "industry code primarily static; only reduced SQL probe executed",
+    "same standalone cases have matched routing timings; whole-run distributions include different industry histories",
+    "ambiguous public-services capacity statements pending source clarification"
+  ],
+  "temporary_ssm_tunnel_terminated": true
+}

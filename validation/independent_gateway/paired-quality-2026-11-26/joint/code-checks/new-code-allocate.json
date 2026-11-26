@@ -1,0 +1,409 @@
+{
+  "case_id": "new-code-allocate",
+  "method": "isolated_functional_tests",
+  "status": "fail",
+  "bare_code_format": true,
+  "functional_pass": false,
+  "source_sha256": "496b93b07f6584935580a647871f86a5c3e8678893b676f38ef7f1c2026a49d1",
+  "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+  "variants": [
+    {
+      "status": "fail",
+      "result": {
+        "tests": 165,
+        "passed": 80,
+        "failures": [
+          {
+            "index": 0,
+            "input": [
+              35,
+              [
+                [
+                  "O2",
+                  10
+                ],
+                [
+                  "O3",
+                  30
+                ],
+                [
+                  "O1",
+                  20
+                ]
+              ]
+            ],
+            "expected": {
+              "O2": 10,
+              "O3": 25,
+              "O1": 0
+            },
+            "expected_error": null,
+            "actual": "{'O2': 10, 'O3': 25}",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 5,
+            "input": [
+              15,
+              [
+                [
+                  "D",
+                  12
+                ],
+                [
+                  "A",
+                  10
+                ],
+                [
+                  "B",
+                  12
+                ],
+                [
+                  "E",
+                  14
+                ],
+                [
+                  "D",
+                  10
+                ],
+                [
+                  "A",
+                  14
+                ],
+                [
+                  "E",
+                  11
+                ],
+                [
+                  "D",
+                  9
+                ],
+                [
+                  "E",
+                  -1
+                ]
+              ]
+            ],
+            "expected": null,
+            "expected_error": "ValueError",
+            "actual": "{'D': 12, 'A': 3}",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 6,
+            "input": [
+              17,
+              [
+                [
+                  "E",
+                  10
+                ],
+                [
+                  "C",
+                  6
+                ],
+                [
+                  "D",
+                  8
+                ],
+                [
+                  "E",
+                  10
+                ],
+                [
+                  "C",
+                  2
+                ],
+                [
+                  "B",
+                  11
+                ],
+                [
+                  "A",
+                  3
+                ],
+                [
+                  "E",
+                  1
+                ],
+                [
+                  "D",
+                  5
+                ],
+                [
+                  "A",
+                  13
+                ],
+                [
+                  "A",
+                  8
+                ]
+              ]
+            ],
+            "expected": {
+              "E": 10,
+              "C": 6,
+              "D": 1,
+              "B": 0,
+              "A": 0
+            },
+            "expected_error": null,
+            "actual": "{'E': 10, 'C': 6, 'D': 1}",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 7,
+            "input": [
+              10,
+              [
+                [
+                  "E",
+                  4
+                ],
+                [
+                  "C",
+                  13
+                ],
+                [
+                  "E",
+                  -1
+                ],
+                [
+                  "C",
+                  9
+                ],
+                [
+                  "D",
+                  3
+                ],
+                [
+                  "E",
+                  11
+                ]
+              ]
+            ],
+            "expected": null,
+            "expected_error": "ValueError",
+            "actual": "{'E': 4, 'C': 6}",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 8,
+            "input": [
+              2,
+              [
+                [
+                  "C",
+                  8
+                ],
+                [
+                  "A",
+                  7
+                ],
+                [
+                  "E",
+                  7
+                ],
+                [
+                  "D",
+                  3
+                ],
+                [
+                  "C",
+                  2
+                ],
+                [
+                  "D",
+                  4
+                ],
+                [
+                  "A",
+                  3
+                ],
+                [
+                  "A",
+                  10
+                ],
+                [
+                  "A",
+                  1
+                ],
+                [
+                  "C",
+                  1
+                ],
+                [
+                  "A",
+                  8
+                ],
+                [
+                  "C",
+                  9
+                ],
+                [
+                  "D",
+                  9
+                ]
+              ]
+            ],
+            "expected": {
+              "C": 2,
+              "A": 0,
+              "E": 0,
+              "D": 0
+            },
+            "expected_error": null,
+            "actual": "{'C': 2}",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 9,
+            "input": [
+              0,
+              [
+                [
+                  "B",
+                  3
+                ],
+                [
+                  "C",
+                  14
+                ],
+                [
+                  "A",
+                  10
+                ],
+                [
+                  "C",
+                  1
+                ],
+                [
+                  "A",
+                  12
+                ],
+                [
+                  "D",
+                  8
+                ],
+                [
+                  "E",
+                  0
+                ],
+                [
+                  "A",
+                  12
+                ]
+              ]
+            ],
+            "expected": {
+              "B": 0,
+              "C": 0,
+              "A": 0,
+              "D": 0,
+              "E": 0
+            },
+            "expected_error": null,
+            "actual": "{'B': 0}",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 11,
+            "input": [
+              10,
+              [
+                [
+                  "C",
+                  3
+                ],
+                [
+                  "E",
+                  14
+                ],
+                [
+                  "E",
+                  12
+                ],
+                [
+                  "C",
+                  14
+                ],
+                [
+                  "E",
+                  5
+                ],
+                [
+                  "B",
+                  9
+                ],
+                [
+                  "E",
+                  12
+                ]
+              ]
+            ],
+            "expected": {
+              "C": 3,
+              "E": 7,
+              "B": 0
+            },
+            "expected_error": null,
+            "actual": "{'C': 3, 'E': 7}",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 13,
+            "input": [
+              22,
+              [
+                [
+                  "E",
+                  8
+                ],
+                [
+                  "D",
+                  13
+                ],
+                [
+                  "E",
+                  10
+                ],
+                [
+                  "C",
+                  11
+                ],
+                [
+                  "A",
+                  6
+                ],
+                [
+                  "B",
+                  12
+                ]
+              ]
+            ],
+            "expected": {
+              "E": 8,
+              "D": 13,
+              "C": 1,
+              "A": 0,
+              "B": 0
+            },
+            "expected_error": null,
+            "actual": "{'E': 8, 'D': 13, 'C': 1}",
+            "actual_error": null,
+            "input_unchanged": true
+          }
+        ]
+      },
+      "source_sha256": "496b93b07f6584935580a647871f86a5c3e8678893b676f38ef7f1c2026a49d1"
+    }
+  ],
+  "reason": "检查实际函数、类型、异常及输入不变；裸代码格式另计，全部版本均须通过。"
+}

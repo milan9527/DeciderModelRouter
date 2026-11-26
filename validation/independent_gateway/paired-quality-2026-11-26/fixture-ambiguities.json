@@ -1,0 +1,14 @@
+{
+  "case": "public-services",
+  "ambiguous_field": {
+    "team": "review",
+    "reviewers": 2,
+    "cases_per_day": 4,
+    "backlog": 28
+  },
+  "missing_definition": "cases_per_day is not identified as per reviewer or per team in task/context/policy",
+  "hidden_acceptance_assumes": "4 per reviewer, team 8, net 3/day with 5 new, ceil(28/3)=10",
+  "alternative_consistent_interpretation": "team 4, net -1/day, backlog grows",
+  "adjudication": "Capacity-only conclusions pending; independent errors remain failures. Original frozen inputs and blind grader results unchanged. Clock calculations are separately reviewable.",
+  "next_dataset_revision": "Use explicit cases_per_reviewer_per_day or team_cases_per_day before a new run."
+}

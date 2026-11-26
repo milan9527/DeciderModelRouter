@@ -1,0 +1,30 @@
+{
+  "checked_at": "2026-11-26T07:28:25.933317+00:00",
+  "service": "decider-model-router",
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:23",
+  "desired": 1,
+  "running": 1,
+  "pending": 0,
+  "tasks": [
+    {
+      "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:23",
+      "status": "RUNNING",
+      "health": "HEALTHY",
+      "containers": [
+        {
+          "name": "api",
+          "image_digest": "sha256:056cfbc1218f4663daf23a2815dc070adee6e00000925185f40e048120745599",
+          "status": "RUNNING"
+        }
+      ]
+    }
+  ],
+  "frontend": {
+    "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+    "status": 200,
+    "redirect_location": null
+  },
+  "changes_deployed": false,
+  "gpu_service_restarted": false,
+  "production_default": "Liquid single joint GPU decision"
+}

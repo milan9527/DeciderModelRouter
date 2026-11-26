@@ -1,0 +1,195 @@
+{
+  "correct_controls": {
+    "overlaps": {
+      "status": "pass",
+      "result": {
+        "tests": 164,
+        "passed": 164,
+        "failures": []
+      },
+      "source_sha256": "60badfae73a78aab759b10126f192fc51096a0c7a45405b280f2e06197e4d65e"
+    },
+    "net": {
+      "status": "pass",
+      "result": {
+        "tests": 162,
+        "passed": 162,
+        "failures": []
+      },
+      "source_sha256": "5f9177d7003841e63cba6f12e0afd059bdd45dc26f614f6df9e1d0b6f1e4f3dc"
+    },
+    "active_days": {
+      "status": "pass",
+      "result": {
+        "tests": 166,
+        "passed": 166,
+        "failures": []
+      },
+      "source_sha256": "c3a9185c797985904ec34142574f149b7b14e71d0736d3c9e792a51179b0ba81"
+    },
+    "allocate": {
+      "status": "pass",
+      "result": {
+        "tests": 165,
+        "passed": 165,
+        "failures": []
+      },
+      "source_sha256": "0a583cc82791afa2eb995aee01fe9f404038640eea9e0d96eb8262814864bafc"
+    }
+  },
+  "deliberately_wrong_overlap": {
+    "status": "fail",
+    "result": {
+      "tests": 164,
+      "passed": 29,
+      "failures": [
+        {
+          "index": 0,
+          "input": [
+            [
+              1,
+              3
+            ],
+            [
+              3,
+              5
+            ]
+          ],
+          "expected": false,
+          "expected_error": null,
+          "actual": "True",
+          "actual_error": null,
+          "input_unchanged": true
+        },
+        {
+          "index": 1,
+          "input": [
+            [
+              2,
+              2
+            ],
+            [
+              1,
+              4
+            ]
+          ],
+          "expected": false,
+          "expected_error": null,
+          "actual": "True",
+          "actual_error": null,
+          "input_unchanged": true
+        },
+        {
+          "index": 2,
+          "input": [
+            [
+              3,
+              1
+            ],
+            [
+              0,
+              5
+            ]
+          ],
+          "expected": null,
+          "expected_error": "ValueError",
+          "actual": "True",
+          "actual_error": null,
+          "input_unchanged": true
+        },
+        {
+          "index": 4,
+          "input": [
+            [
+              0,
+              5
+            ],
+            [
+              5,
+              -5
+            ]
+          ],
+          "expected": null,
+          "expected_error": "ValueError",
+          "actual": "True",
+          "actual_error": null,
+          "input_unchanged": true
+        },
+        {
+          "index": 5,
+          "input": [
+            [
+              3,
+              -1
+            ],
+            [
+              5,
+              7
+            ]
+          ],
+          "expected": null,
+          "expected_error": "ValueError",
+          "actual": "True",
+          "actual_error": null,
+          "input_unchanged": true
+        },
+        {
+          "index": 6,
+          "input": [
+            [
+              6,
+              3
+            ],
+            [
+              -7,
+              8
+            ]
+          ],
+          "expected": null,
+          "expected_error": "ValueError",
+          "actual": "True",
+          "actual_error": null,
+          "input_unchanged": true
+        },
+        {
+          "index": 7,
+          "input": [
+            [
+              7,
+              4
+            ],
+            [
+              7,
+              2
+            ]
+          ],
+          "expected": null,
+          "expected_error": "ValueError",
+          "actual": "True",
+          "actual_error": null,
+          "input_unchanged": true
+        },
+        {
+          "index": 8,
+          "input": [
+            [
+              8,
+              -8
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "expected": null,
+          "expected_error": "ValueError",
+          "actual": "True",
+          "actual_error": null,
+          "input_unchanged": true
+        }
+      ]
+    },
+    "source_sha256": "ca4ddb1f457ded8b50f8235805988d40e65a535beb8990f2c99ac416b298dc88"
+  },
+  "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9"
+}

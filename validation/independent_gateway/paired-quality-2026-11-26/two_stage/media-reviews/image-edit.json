@@ -1,0 +1,19 @@
+{
+  "case_id": "image-edit",
+  "status": "pending",
+  "method": "actual_artifact_inspection",
+  "artifact_sha256": "029508c23b680b9adc2d54e98f44c7ff9d3b6c7c731ddc7829cc9009dc1dc48c",
+  "original_size": [
+    512,
+    384
+  ],
+  "output_size": [
+    512,
+    384
+  ],
+  "colored_pixels": 37752,
+  "white_pixels": 156462,
+  "colored_retained": 0.014436321254503073,
+  "white_removed": 0.9992138666257622,
+  "reason": "Pixel measurements recorded; visual review of plot, labels and axes required"
+}

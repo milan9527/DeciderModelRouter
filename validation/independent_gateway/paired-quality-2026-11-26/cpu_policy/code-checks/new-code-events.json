@@ -1,0 +1,21 @@
+{
+  "case_id": "new-code-events",
+  "method": "isolated_functional_tests",
+  "status": "fail",
+  "bare_code_format": false,
+  "functional_pass": true,
+  "source_sha256": "a1f181546c5684bae3f480dccb43576b59d30586513e414caf5ab16bf428fbf3",
+  "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+  "variants": [
+    {
+      "status": "pass",
+      "result": {
+        "tests": 162,
+        "passed": 162,
+        "failures": []
+      },
+      "source_sha256": "e513f2b5cf0a14ca80e32ac978299c414eec528e15726a77a633f3ab173465fc"
+    }
+  ],
+  "reason": "检查实际函数、类型、异常及输入不变；裸代码格式另计，全部版本均须通过。"
+}

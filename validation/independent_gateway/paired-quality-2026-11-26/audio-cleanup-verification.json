@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-11-26T07:27:16.306266+00:00",
+  "checks": [
+    {
+      "folder": "chinese-audio-check",
+      "prefix": "temporary-evaluation/paired-audio-43bb61c6564342c0a8e52314840f82da/",
+      "remaining_versions_and_delete_markers": 0
+    },
+    {
+      "folder": "english-audio-cross-check",
+      "prefix": "temporary-evaluation/paired-audio-3b33441b41a94698b90e5d9ce93ca230/",
+      "remaining_versions_and_delete_markers": 0
+    }
+  ]
+}

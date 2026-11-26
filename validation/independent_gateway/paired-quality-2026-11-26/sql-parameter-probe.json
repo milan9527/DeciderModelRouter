@@ -1,0 +1,21 @@
+{
+  "scope": "Isolated reduced SQL type-inference probe only, not full industry code execution",
+  "image": "pgvector/pgvector:pg15",
+  "queries": {
+    "original_parameter_typing": {
+      "sql": "PREPARE probe AS SELECT jsonb_build_object('charge_id', $1::text, 'tenant_id', $2, 'event_id', $3, 'amount', $4::text, 'currency', $5);",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "ERROR:  could not determine data type of parameter $2\n"
+    },
+    "typed_positive_control": {
+      "sql": "PREPARE probe AS SELECT jsonb_build_object('charge_id', $1::text, 'tenant_id', $2::text, 'event_id', $3::text, 'amount', $4::text, 'currency', $5::text); EXECUTE probe('synthetic-charge','T2','EV9','199.0000','CNY');",
+      "returncode": 0,
+      "stdout": "PREPARE\n                                                jsonb_build_object                                                \n------------------------------------------------------------------------------------------------------------------\n {\"amount\": \"199.0000\", \"currency\": \"CNY\", \"event_id\": \"EV9\", \"charge_id\": \"synthetic-charge\", \"tenant_id\": \"T2\"}\n(1 row)\n\n",
+      "stderr": ""
+    }
+  },
+  "image_id": "sha256:526d856e1d2addc92f0c009f3ddd7e612bf38e4796e4a9fa3e1b217c5bab6f26",
+  "confirmed": true,
+  "temporary_container_removed": true
+}

@@ -1,0 +1,604 @@
+{
+  "method": "aws_transcribe_auto_zh_en_with_polly_controls",
+  "targets": {
+    "joint": {
+      "expected": "欢迎使用模型网关。",
+      "artifact": "joint/artifacts/tts-zh-0.wav",
+      "job_status": "COMPLETED",
+      "language": "zh-CN",
+      "language_score": 0.9999998807907104,
+      "transcript": "欢迎使用魔性王冠。",
+      "raw_transcription": {
+        "jobName": "paired-audio-43bb61c6564342c0a8e52314840f82da-joint",
+        "accountId": "632930644527",
+        "status": "COMPLETED",
+        "results": {
+          "language_code": "zh-CN",
+          "language_identification": [
+            {
+              "code": "zh-CN",
+              "score": "1"
+            },
+            {
+              "code": "en-US",
+              "score": "0.0001"
+            }
+          ],
+          "transcripts": [
+            {
+              "transcript": "欢迎使用魔性王冠。"
+            }
+          ],
+          "items": [
+            {
+              "id": 0,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.997",
+                  "content": "欢迎"
+                }
+              ],
+              "start_time": "0.119",
+              "end_time": "0.6"
+            },
+            {
+              "id": 1,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.999",
+                  "content": "使用"
+                }
+              ],
+              "start_time": "0.6",
+              "end_time": "1.0"
+            },
+            {
+              "id": 2,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.995",
+                  "content": "魔性"
+                }
+              ],
+              "start_time": "1.0",
+              "end_time": "1.519"
+            },
+            {
+              "id": 3,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.989",
+                  "content": "王冠"
+                }
+              ],
+              "start_time": "1.519",
+              "end_time": "1.95"
+            },
+            {
+              "id": 4,
+              "type": "punctuation",
+              "alternatives": [
+                {
+                  "confidence": "0.0",
+                  "content": "。"
+                }
+              ]
+            }
+          ],
+          "audio_segments": [
+            {
+              "id": 0,
+              "transcript": "欢迎使用魔性王冠。",
+              "start_time": "0.0",
+              "end_time": "2.099",
+              "items": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          ]
+        }
+      },
+      "exact_content_match": false,
+      "status": "fail"
+    },
+    "cpu_policy": {
+      "expected": "欢迎使用模型网关。",
+      "artifact": "cpu_policy/artifacts/tts-zh-0.wav",
+      "job_status": "COMPLETED",
+      "language": "zh-CN",
+      "language_score": 0.9999987483024597,
+      "transcript": "欢迎使用motion王冠。",
+      "raw_transcription": {
+        "jobName": "paired-audio-43bb61c6564342c0a8e52314840f82da-cpu-policy",
+        "accountId": "632930644527",
+        "status": "COMPLETED",
+        "results": {
+          "language_code": "zh-CN",
+          "language_identification": [
+            {
+              "code": "zh-CN",
+              "score": "1"
+            },
+            {
+              "code": "en-US",
+              "score": "0.0001"
+            }
+          ],
+          "transcripts": [
+            {
+              "transcript": "欢迎使用motion王冠。"
+            }
+          ],
+          "items": [
+            {
+              "id": 0,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.993",
+                  "content": "欢迎"
+                }
+              ],
+              "start_time": "0.079",
+              "end_time": "0.519"
+            },
+            {
+              "id": 1,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.997",
+                  "content": "使用"
+                }
+              ],
+              "start_time": "0.519",
+              "end_time": "0.92"
+            },
+            {
+              "id": 2,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.389",
+                  "content": "motion"
+                }
+              ],
+              "start_time": "0.92",
+              "end_time": "1.32"
+            },
+            {
+              "id": 3,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.861",
+                  "content": "王冠"
+                }
+              ],
+              "start_time": "1.32",
+              "end_time": "1.72"
+            },
+            {
+              "id": 4,
+              "type": "punctuation",
+              "alternatives": [
+                {
+                  "confidence": "0.0",
+                  "content": "。"
+                }
+              ]
+            }
+          ],
+          "audio_segments": [
+            {
+              "id": 0,
+              "transcript": "欢迎使用motion王冠。",
+              "start_time": "0.0",
+              "end_time": "1.899",
+              "items": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          ]
+        }
+      },
+      "exact_content_match": false,
+      "status": "fail"
+    }
+  },
+  "controls": {
+    "control-expected": {
+      "expected": "欢迎使用模型网关。",
+      "polly_voice": "Zhiyu",
+      "job_status": "COMPLETED",
+      "language": "zh-CN",
+      "language_score": 0.9999997019767761,
+      "transcript": "欢迎使用模型网关。",
+      "raw_transcription": {
+        "jobName": "paired-audio-43bb61c6564342c0a8e52314840f82da-control-expected",
+        "accountId": "632930644527",
+        "status": "COMPLETED",
+        "results": {
+          "language_code": "zh-CN",
+          "language_identification": [
+            {
+              "code": "zh-CN",
+              "score": "1"
+            },
+            {
+              "code": "en-US",
+              "score": "0.0001"
+            }
+          ],
+          "transcripts": [
+            {
+              "transcript": "欢迎使用模型网关。"
+            }
+          ],
+          "items": [
+            {
+              "id": 0,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.997",
+                  "content": "欢迎"
+                }
+              ],
+              "start_time": "0.039",
+              "end_time": "0.479"
+            },
+            {
+              "id": 1,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.999",
+                  "content": "使用"
+                }
+              ],
+              "start_time": "0.479",
+              "end_time": "0.949"
+            },
+            {
+              "id": 2,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.999",
+                  "content": "模型"
+                }
+              ],
+              "start_time": "0.949",
+              "end_time": "1.44"
+            },
+            {
+              "id": 3,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.948",
+                  "content": "网关"
+                }
+              ],
+              "start_time": "1.44",
+              "end_time": "1.919"
+            },
+            {
+              "id": 4,
+              "type": "punctuation",
+              "alternatives": [
+                {
+                  "confidence": "0.0",
+                  "content": "。"
+                }
+              ]
+            }
+          ],
+          "audio_segments": [
+            {
+              "id": 0,
+              "transcript": "欢迎使用模型网关。",
+              "start_time": "0.0",
+              "end_time": "2.059",
+              "items": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          ]
+        }
+      },
+      "exact_content_match": true
+    },
+    "control-different": {
+      "expected": "请关闭模型网关。",
+      "polly_voice": "Zhiyu",
+      "job_status": "COMPLETED",
+      "language": "zh-CN",
+      "language_score": 1.0,
+      "transcript": "请关闭模型网关。",
+      "raw_transcription": {
+        "jobName": "paired-audio-43bb61c6564342c0a8e52314840f82da-control-different",
+        "accountId": "632930644527",
+        "status": "COMPLETED",
+        "results": {
+          "language_code": "zh-CN",
+          "language_identification": [
+            {
+              "code": "zh-CN",
+              "score": "1"
+            },
+            {
+              "code": "en-US",
+              "score": "0.0001"
+            }
+          ],
+          "transcripts": [
+            {
+              "transcript": "请关闭模型网关。"
+            }
+          ],
+          "items": [
+            {
+              "id": 0,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.997",
+                  "content": "请"
+                }
+              ],
+              "start_time": "0.039",
+              "end_time": "0.319"
+            },
+            {
+              "id": 1,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.989",
+                  "content": "关闭"
+                }
+              ],
+              "start_time": "0.319",
+              "end_time": "0.8"
+            },
+            {
+              "id": 2,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.998",
+                  "content": "模型"
+                }
+              ],
+              "start_time": "0.8",
+              "end_time": "1.259"
+            },
+            {
+              "id": 3,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.889",
+                  "content": "网关"
+                }
+              ],
+              "start_time": "1.259",
+              "end_time": "1.72"
+            },
+            {
+              "id": 4,
+              "type": "punctuation",
+              "alternatives": [
+                {
+                  "confidence": "0.0",
+                  "content": "。"
+                }
+              ]
+            }
+          ],
+          "audio_segments": [
+            {
+              "id": 0,
+              "transcript": "请关闭模型网关。",
+              "start_time": "0.0",
+              "end_time": "1.87",
+              "items": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          ]
+        }
+      },
+      "exact_content_match": true
+    },
+    "control-english": {
+      "expected": "Good morning. The package has not arrived.",
+      "polly_voice": "Joanna",
+      "job_status": "COMPLETED",
+      "language": "en-US",
+      "language_score": 0.99998939037323,
+      "transcript": "Good morning. The package has not arrived.",
+      "raw_transcription": {
+        "jobName": "paired-audio-43bb61c6564342c0a8e52314840f82da-control-english",
+        "accountId": "632930644527",
+        "status": "COMPLETED",
+        "results": {
+          "language_code": "en-US",
+          "language_identification": [
+            {
+              "code": "en-US",
+              "score": "1"
+            },
+            {
+              "code": "zh-CN",
+              "score": "0.0001"
+            }
+          ],
+          "transcripts": [
+            {
+              "transcript": "Good morning. The package has not arrived."
+            }
+          ],
+          "items": [
+            {
+              "id": 0,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.999",
+                  "content": "Good"
+                }
+              ],
+              "start_time": "0.009",
+              "end_time": "0.239"
+            },
+            {
+              "id": 1,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "1.0",
+                  "content": "morning"
+                }
+              ],
+              "start_time": "0.239",
+              "end_time": "0.73"
+            },
+            {
+              "id": 2,
+              "type": "punctuation",
+              "alternatives": [
+                {
+                  "confidence": "0.0",
+                  "content": "."
+                }
+              ]
+            },
+            {
+              "id": 3,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "0.996",
+                  "content": "The"
+                }
+              ],
+              "start_time": "1.049",
+              "end_time": "1.25"
+            },
+            {
+              "id": 4,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "1.0",
+                  "content": "package"
+                }
+              ],
+              "start_time": "1.25",
+              "end_time": "1.61"
+            },
+            {
+              "id": 5,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "1.0",
+                  "content": "has"
+                }
+              ],
+              "start_time": "1.61",
+              "end_time": "1.809"
+            },
+            {
+              "id": 6,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "1.0",
+                  "content": "not"
+                }
+              ],
+              "start_time": "1.809",
+              "end_time": "2.13"
+            },
+            {
+              "id": 7,
+              "type": "pronunciation",
+              "alternatives": [
+                {
+                  "confidence": "1.0",
+                  "content": "arrived"
+                }
+              ],
+              "start_time": "2.13",
+              "end_time": "2.45"
+            },
+            {
+              "id": 8,
+              "type": "punctuation",
+              "alternatives": [
+                {
+                  "confidence": "0.0",
+                  "content": "."
+                }
+              ]
+            }
+          ],
+          "audio_segments": [
+            {
+              "id": 0,
+              "transcript": "Good morning. The package has not arrived.",
+              "start_time": "0.0",
+              "end_time": "2.539",
+              "items": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ]
+            }
+          ]
+        }
+      },
+      "exact_content_match": true
+    }
+  },
+  "scope": "spoken content only; no human listening or voice-quality assessment",
+  "status": "completed",
+  "calibration_pass": true,
+  "cleanup_errors": [],
+  "temporary_s3_prefix": "temporary-evaluation/paired-audio-43bb61c6564342c0a8e52314840f82da/",
+  "s3_cleanup": {
+    "versions_and_markers_deleted": 21,
+    "errors": [],
+    "verified_remaining_versions_and_markers": 0
+  }
+}

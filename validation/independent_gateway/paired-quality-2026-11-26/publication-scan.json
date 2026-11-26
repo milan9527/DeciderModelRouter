@@ -1,0 +1,13 @@
+{
+  "result": "passed",
+  "files_scanned": 544,
+  "gzip_contents_decompressed": true,
+  "actual_secret_values_checked": [
+    "GitHub token",
+    "GPU service key",
+    "admin password"
+  ],
+  "token_patterns_checked": true,
+  "private_database_files_published": false,
+  "secret_values_in_output": false
+}

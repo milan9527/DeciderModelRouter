@@ -23,11 +23,13 @@ def normalized(text):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
+    parser.add_argument("--cases", nargs="+", choices=["tts", "tts-zh", "image-edit"],
+                        default=["tts", "tts-zh", "image-edit"])
     args = parser.parse_args()
     client = boto3.client("bedrock-runtime", region_name="us-east-1",
                           config=Config(connect_timeout=10, read_timeout=120,
                                         retries={"total_max_attempts": 1}))
-    for cid in ("tts", "tts-zh", "image-edit"):
+    for cid in args.cases:
         source = args.input / "base" / (cid + ".json.gz")
         output = args.input / "media-reviews" / (cid + ".json")
         if not source.exists() or output.exists():

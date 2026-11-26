@@ -54,14 +54,22 @@ def read(path):
 
 
 class Evaluation:
+    policy_version = VERSION
+    policy_source = ROOT / "scripts/profile_policy.py"
+    selection_source = "profile_cpu_experiment"
+
+    def suite(self):
+        manifest = catalog()
+        manifest.update(policy_version=self.policy_version,
+            policy_sha256=hashlib.sha256(self.policy_source.read_bytes()).hexdigest(),
+            catalog_version=self.catalog["version"], ranking_version=self.rankings["version"],
+            measurement_version=self.evidence["version"])
+        return manifest
+
     def __init__(self, args, http):
         self.args, self.http = args, http
         self.catalog, self.rankings, self.evidence = load_catalog(), load_rankings(), load_evidence()
-        self.manifest = catalog()
-        self.manifest.update(policy_version=VERSION,
-            policy_sha256=hashlib.sha256((ROOT / "scripts/profile_policy.py").read_bytes()).hexdigest(),
-            catalog_version=self.catalog["version"], ranking_version=self.rankings["version"],
-            measurement_version=self.evidence["version"])
+        self.manifest = self.suite()
         manifest = args.output / "manifest.json"
         if manifest.exists() and read(manifest) != self.manifest:
             raise ValueError("Resume requires exactly the frozen suite, policy and evidence")
@@ -211,7 +219,7 @@ class Evaluation:
                         output = await self.retrieval(candidate, case["retrieval"])
                     else:
                         output = await execute_selected(request, candidate, task, workflow,
-                                                        "profile_cpu_experiment", VERSION, self.rankings["version"])
+                                                        self.selection_source, self.policy_version, self.rankings["version"])
                     self.export_artifacts(output, case["id"])
                     row.update(output=output, status="completed" if output["complete"] else "incomplete",
                                observation_id=hashlib.sha256(case["id"].encode()).hexdigest()[:24])
@@ -282,7 +290,7 @@ class Evaluation:
                         if not candidate:
                             raise ValueError("No eligible agent model")
                         output = await execute_selected(request, candidate, task, workflow,
-                                                        "profile_cpu_experiment", VERSION, self.rankings["version"])
+                                                        self.selection_source, self.policy_version, self.rankings["version"])
                         part.update(output=output, status="completed" if output["complete"] else "incomplete")
                         if not output["complete"]:
                             turn.update(status="incomplete", answer=output.get("text", ""))

@@ -1,0 +1,21 @@
+{
+  "case_id": "new-code-clock",
+  "method": "isolated_functional_tests",
+  "status": "fail",
+  "bare_code_format": false,
+  "functional_pass": true,
+  "source_sha256": "c884b36a0ceed12a98e93f3962b0749ff95e9b2c739975faf5354b26736845a2",
+  "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+  "variants": [
+    {
+      "status": "pass",
+      "result": {
+        "tests": 166,
+        "passed": 166,
+        "failures": []
+      },
+      "source_sha256": "3fb236596ecd2c695a6eeb40ed4f86e74f49df26e4b8c9a092ba2a89c22f95ca"
+    }
+  ],
+  "reason": "检查实际函数、类型、异常及输入不变；裸代码格式另计，全部版本均须通过。"
+}

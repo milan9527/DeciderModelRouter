@@ -1,0 +1,127 @@
+{
+  "case_id": "new-code-clock",
+  "method": "isolated_functional_tests",
+  "status": "fail",
+  "bare_code_format": false,
+  "functional_pass": false,
+  "source_sha256": "7f6fb360f34e31a16c13dbb84fe9c4917258822aa69d9e73464b30679828d205",
+  "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+  "variants": [
+    {
+      "status": "fail",
+      "result": {
+        "tests": 166,
+        "passed": 161,
+        "failures": [
+          {
+            "index": 2,
+            "input": [
+              4,
+              [
+                [
+                  -10,
+                  30
+                ]
+              ]
+            ],
+            "expected": 0,
+            "expected_error": null,
+            "actual": "-10",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 50,
+            "input": [
+              11,
+              [
+                [
+                  -5,
+                  -4
+                ],
+                [
+                  7,
+                  14
+                ],
+                [
+                  0,
+                  14
+                ]
+              ]
+            ],
+            "expected": 0,
+            "expected_error": null,
+            "actual": "-1",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 65,
+            "input": [
+              22,
+              [
+                [
+                  0,
+                  14
+                ],
+                [
+                  21,
+                  26
+                ],
+                [
+                  -4,
+                  22
+                ]
+              ]
+            ],
+            "expected": 0,
+            "expected_error": null,
+            "actual": "-4",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 89,
+            "input": [
+              3,
+              [
+                [
+                  -2,
+                  28
+                ]
+              ]
+            ],
+            "expected": 0,
+            "expected_error": null,
+            "actual": "-2",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 154,
+            "input": [
+              22,
+              [
+                [
+                  14,
+                  24
+                ],
+                [
+                  -3,
+                  26
+                ]
+              ]
+            ],
+            "expected": 0,
+            "expected_error": null,
+            "actual": "-3",
+            "actual_error": null,
+            "input_unchanged": true
+          }
+        ]
+      },
+      "source_sha256": "077b3eb32d3d9b740f6e09dc03d71f377e18d598eb9e76fd910222e6574fe122"
+    }
+  ],
+  "reason": "检查实际函数、类型、异常及输入不变；裸代码格式另计，全部版本均须通过。"
+}

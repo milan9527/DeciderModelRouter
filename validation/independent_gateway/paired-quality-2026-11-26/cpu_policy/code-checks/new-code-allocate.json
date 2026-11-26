@@ -1,0 +1,21 @@
+{
+  "case_id": "new-code-allocate",
+  "method": "isolated_functional_tests",
+  "status": "fail",
+  "bare_code_format": false,
+  "functional_pass": true,
+  "source_sha256": "16ca16eaaf6808a3a53ff6db276420e96d6cfb191043ec8ed255d604358310e0",
+  "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+  "variants": [
+    {
+      "status": "pass",
+      "result": {
+        "tests": 165,
+        "passed": 165,
+        "failures": []
+      },
+      "source_sha256": "4d4599a9ed8fd48eacda28266466915e58f3358fd938aa75e6ccf49cb822d4b4"
+    }
+  ],
+  "reason": "检查实际函数、类型、异常及输入不变；裸代码格式另计，全部版本均须通过。"
+}

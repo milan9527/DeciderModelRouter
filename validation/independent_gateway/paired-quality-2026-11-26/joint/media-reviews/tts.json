@@ -1,0 +1,40 @@
+{
+  "case_id": "tts",
+  "status": "fail",
+  "method": "actual_artifact_inspection",
+  "artifact_sha256": "c95474c32ab4bd50ae30968d204724c38d351f60b2427984135115e44b9c4432",
+  "audio": {
+    "rate": 24000,
+    "channels": 1,
+    "seconds": 2.8,
+    "sample_width": 2
+  },
+  "transcript": "¡Hola! Venga al portal del modelo",
+  "expected": "Hello, welcome to the model gateway.",
+  "asr_response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "¡Hola! Venga al portal del modelo",
+          "refusal": null,
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1795677144,
+    "id": "chatcmpl-946b9dd7-0fbe-4a6b-bfb4-33205ae4edfd",
+    "model": "mistral.voxtral-mini-3b-2507",
+    "object": "chat.completion",
+    "service_tier": "default",
+    "usage": {
+      "completion_tokens": 11,
+      "prompt_tokens": 391,
+      "total_tokens": 402
+    }
+  },
+  "judge_model": "mistral.voxtral-mini-3b-2507",
+  "reason": "实际WAV可解码，独立ASR检查朗读内容；不评价音色和自然度。"
+}

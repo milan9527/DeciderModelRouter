@@ -1,0 +1,21 @@
+{
+  "case_id": "python-dedup",
+  "method": "isolated_functional_tests",
+  "status": "fail",
+  "bare_code_format": false,
+  "functional_pass": true,
+  "source_sha256": "7fe070f0b54f3fe05714c7f160a2d5bad3d909edacdd61d750a7d143d86d7774",
+  "image": "sha256:4a8ae7021955547b827b5be2a1e9d7cdc15478cf21990f5edcd3791db41665f9",
+  "variants": [
+    {
+      "status": "pass",
+      "result": {
+        "tests": 103,
+        "passed": 103,
+        "failures": []
+      },
+      "source_sha256": "734b5d93987f8c19af3f7c34f4ac4e9bf3e7c7ca80f786711725816fff8dbf25"
+    }
+  ],
+  "reason": "检查实际函数、类型、异常及输入不变；裸代码格式另计，全部版本均须通过。"
+}

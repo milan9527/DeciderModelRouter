@@ -1,0 +1,1625 @@
+{
+  "scope": "Same standalone cases with a recorded route in all three arms; excludes industry/tool-loop requests. Includes model selection failures and expected boundaries when routed. Excludes experiment admission queue. Histories supplied by a case are the same scenario inputs, not preceding arm answers.",
+  "matched_cases": 99,
+  "cases": [
+    "base-ambiguous",
+    "base-arabic",
+    "base-arithmetic",
+    "base-asr",
+    "base-budget-zero",
+    "base-causality",
+    "base-code-switch",
+    "base-concurrency",
+    "base-csv",
+    "base-debug",
+    "base-decimal",
+    "base-embed-en",
+    "base-embed-zh",
+    "base-empathy",
+    "base-empty-allowlist",
+    "base-extract-email",
+    "base-extract-json",
+    "base-fiction-fact",
+    "base-finance",
+    "base-greeting-zh",
+    "base-greeting",
+    "base-history",
+    "base-image-blue",
+    "base-image-chart",
+    "base-image-edit",
+    "base-image-generate",
+    "base-image-ocr",
+    "base-image-red",
+    "base-japanese",
+    "base-ledger",
+    "base-legal",
+    "base-literal-injection",
+    "base-logic-counterexample",
+    "base-logic",
+    "base-marketing",
+    "base-media-mention",
+    "base-median",
+    "base-medical",
+    "base-missing-image",
+    "base-multi-image",
+    "base-multi-turn",
+    "base-not-enough-facts",
+    "base-percent",
+    "base-plan",
+    "base-privacy",
+    "base-probability",
+    "base-python-brackets",
+    "base-python-dedup",
+    "base-python-merge",
+    "base-quoted-injection",
+    "base-rag-answer",
+    "base-rag-conflict",
+    "base-rag-missing",
+    "base-refund",
+    "base-rerank-en",
+    "base-rerank-zh",
+    "base-retrieval-quality",
+    "base-rewrite",
+    "base-safety",
+    "base-schedule",
+    "base-security-code",
+    "base-short-story",
+    "base-sky",
+    "base-sort-json",
+    "base-sql",
+    "base-strict-schema",
+    "base-summary",
+    "base-translate-en",
+    "base-translate-zh",
+    "base-tts-zh",
+    "base-tts",
+    "base-units",
+    "base-video-caption",
+    "base-video-generate",
+    "base-weighted",
+    "additional-fresh-cas",
+    "additional-fresh-injection-data",
+    "additional-fresh-interval",
+    "additional-fresh-long-memory",
+    "additional-fresh-mixed-language",
+    "additional-fresh-money",
+    "additional-fresh-schedule",
+    "additional-fresh-uncertainty",
+    "holdout-new-claim-events",
+    "holdout-new-clock-effective",
+    "holdout-new-code-allocate",
+    "holdout-new-code-clock",
+    "holdout-new-code-events",
+    "holdout-new-code-overlap",
+    "holdout-new-energy-net",
+    "holdout-new-history-correction",
+    "holdout-new-history-unknown",
+    "holdout-new-image-order",
+    "holdout-new-invoice-pair",
+    "holdout-new-no-action-claim",
+    "holdout-new-stock-priority",
+    "holdout-new-threshold",
+    "holdout-new-urgent-schedule",
+    "holdout-new-yield-weight"
+  ],
+  "arms": {
+    "joint": {
+      "route_ms": {
+        "count": 99,
+        "p50": 1425.28713401407,
+        "p95": 1433.6788569926284,
+        "min": 121.18808104423806,
+        "max": 1450.8002679795027
+      },
+      "records": [
+        {
+          "case_id": "base-ambiguous",
+          "route_ms": 1447.5017070071772,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-arabic",
+          "route_ms": 1424.8452920001,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-arithmetic",
+          "route_ms": 1422.7372119785286,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-asr",
+          "route_ms": 187.31335795018822,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-budget-zero",
+          "route_ms": 160.08992301067337,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-causality",
+          "route_ms": 1427.8952240129001,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-code-switch",
+          "route_ms": 1425.1949039753526,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-concurrency",
+          "route_ms": 1425.9512980352156,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-csv",
+          "route_ms": 1424.605557054747,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-debug",
+          "route_ms": 1424.0331089822575,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-decimal",
+          "route_ms": 1426.1594650452025,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-embed-en",
+          "route_ms": 206.57465799013153,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-embed-zh",
+          "route_ms": 207.5643269927241,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-empathy",
+          "route_ms": 1425.9260150138289,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-empty-allowlist",
+          "route_ms": 158.7264520348981,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-extract-email",
+          "route_ms": 1429.148150025867,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-extract-json",
+          "route_ms": 1425.9928070241585,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-fiction-fact",
+          "route_ms": 1424.5868750149384,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-finance",
+          "route_ms": 1428.2358780037612,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-greeting-zh",
+          "route_ms": 1422.8241599630564,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-greeting",
+          "route_ms": 1433.4325499949045,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-history",
+          "route_ms": 1444.7001320077106,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-blue",
+          "route_ms": 542.4678139970638,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-chart",
+          "route_ms": 546.3307180325501,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-edit",
+          "route_ms": 210.85482701892033,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-generate",
+          "route_ms": 214.07926100073382,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-ocr",
+          "route_ms": 542.8293379954994,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-red",
+          "route_ms": 542.630901967641,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-japanese",
+          "route_ms": 1425.9007929940708,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-ledger",
+          "route_ms": 1431.5077330102213,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-legal",
+          "route_ms": 1429.131718003191,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-literal-injection",
+          "route_ms": 1425.28713401407,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-logic-counterexample",
+          "route_ms": 1428.5836049821228,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-logic",
+          "route_ms": 1422.8200939833187,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-marketing",
+          "route_ms": 1427.6940500130877,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-media-mention",
+          "route_ms": 1424.0999320172705,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-median",
+          "route_ms": 1450.8002679795027,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-medical",
+          "route_ms": 1423.8407720113173,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-missing-image",
+          "route_ms": 1426.3033340102993,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-multi-image",
+          "route_ms": 543.0769449449144,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-multi-turn",
+          "route_ms": 1292.464493017178,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-not-enough-facts",
+          "route_ms": 1425.1978890388273,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-percent",
+          "route_ms": 1429.352433013264,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-plan",
+          "route_ms": 1424.8893679468893,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-privacy",
+          "route_ms": 1424.4598089717329,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-probability",
+          "route_ms": 1426.8294110079296,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-python-brackets",
+          "route_ms": 1426.298652018886,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-python-dedup",
+          "route_ms": 1423.9827190176584,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-python-merge",
+          "route_ms": 1430.4861800046638,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-quoted-injection",
+          "route_ms": 1422.9906200198457,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rag-answer",
+          "route_ms": 1425.3506890381686,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rag-conflict",
+          "route_ms": 1424.5269550010562,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rag-missing",
+          "route_ms": 1429.3164149858057,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-refund",
+          "route_ms": 1427.8505519614555,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rerank-en",
+          "route_ms": 159.6010309876874,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rerank-zh",
+          "route_ms": 161.10638401005417,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-retrieval-quality",
+          "route_ms": 207.21448201220483,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rewrite",
+          "route_ms": 1423.2861130149104,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-safety",
+          "route_ms": 1425.2426979946904,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-schedule",
+          "route_ms": 1425.9609389700927,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-security-code",
+          "route_ms": 1448.63850902766,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-short-story",
+          "route_ms": 1429.6722309663892,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-sky",
+          "route_ms": 1428.621081984602,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-sort-json",
+          "route_ms": 1427.863413002342,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-sql",
+          "route_ms": 1430.2213829942048,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-strict-schema",
+          "route_ms": 1423.6723909853026,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-summary",
+          "route_ms": 1432.6841029687785,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-translate-en",
+          "route_ms": 1421.9050639658235,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-translate-zh",
+          "route_ms": 1427.6759040076286,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-tts-zh",
+          "route_ms": 168.80971199134365,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-tts",
+          "route_ms": 171.7417929903604,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-units",
+          "route_ms": 1422.1805299748667,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-video-caption",
+          "route_ms": 210.8041339670308,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-video-generate",
+          "route_ms": 121.18808104423806,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-weighted",
+          "route_ms": 1424.248929019086,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-cas",
+          "route_ms": 1426.9421609933488,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-injection-data",
+          "route_ms": 1429.5740979723632,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-interval",
+          "route_ms": 1428.7078969646245,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-long-memory",
+          "route_ms": 1289.8562070331536,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-mixed-language",
+          "route_ms": 1426.9184489967301,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-money",
+          "route_ms": 1426.8107200041413,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-schedule",
+          "route_ms": 1425.1164220040664,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-uncertainty",
+          "route_ms": 1428.496067004744,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-claim-events",
+          "route_ms": 1429.2512540123425,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-clock-effective",
+          "route_ms": 1427.522471989505,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-code-allocate",
+          "route_ms": 1431.840122968424,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-code-clock",
+          "route_ms": 1424.4401110336185,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-code-events",
+          "route_ms": 1429.0854609571397,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-code-overlap",
+          "route_ms": 1428.444352990482,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-energy-net",
+          "route_ms": 1427.2716689738445,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-history-correction",
+          "route_ms": 1300.3466650261544,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-history-unknown",
+          "route_ms": 1321.1855379631743,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-image-order",
+          "route_ms": 612.3230070224963,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-invoice-pair",
+          "route_ms": 1430.464318022132,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-no-action-claim",
+          "route_ms": 1430.9021959779784,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-stock-priority",
+          "route_ms": 1424.2842569947243,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-threshold",
+          "route_ms": 1427.6214450364932,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-urgent-schedule",
+          "route_ms": 1433.6788569926284,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-yield-weight",
+          "route_ms": 1427.1654509939253,
+          "gpu_calls": 1
+        }
+      ]
+    },
+    "two_stage": {
+      "route_ms": {
+        "count": 99,
+        "p50": 786.6812139982358,
+        "p95": 855.1726680016145,
+        "min": 111.46268399897963,
+        "max": 868.3334270026535
+      },
+      "records": [
+        {
+          "case_id": "base-ambiguous",
+          "route_ms": 784.9368579918519,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-arabic",
+          "route_ms": 786.5318200201727,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-arithmetic",
+          "route_ms": 846.3088879943825,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-asr",
+          "route_ms": 178.96681203274056,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-budget-zero",
+          "route_ms": 114.48725697118789,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-causality",
+          "route_ms": 846.1224400089122,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-code-switch",
+          "route_ms": 785.8126129722223,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-concurrency",
+          "route_ms": 788.0206429981627,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-csv",
+          "route_ms": 788.101471029222,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-debug",
+          "route_ms": 786.008004040923,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-decimal",
+          "route_ms": 845.2273330185562,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-embed-en",
+          "route_ms": 215.52382700610906,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-embed-zh",
+          "route_ms": 213.15324801253155,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-empathy",
+          "route_ms": 784.3935490236618,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-empty-allowlist",
+          "route_ms": 116.58033798448741,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-extract-email",
+          "route_ms": 791.4051419938914,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-extract-json",
+          "route_ms": 789.1152080264874,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-fiction-fact",
+          "route_ms": 783.4716680226848,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-finance",
+          "route_ms": 783.8887840043753,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-greeting-zh",
+          "route_ms": 785.6463760253973,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-greeting",
+          "route_ms": 785.856627044268,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-history",
+          "route_ms": 785.8306260313839,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-image-blue",
+          "route_ms": 536.2471400294453,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-image-chart",
+          "route_ms": 536.8132169824094,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-image-edit",
+          "route_ms": 223.45686197513714,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-image-generate",
+          "route_ms": 223.09410298475996,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-image-ocr",
+          "route_ms": 535.5966669740155,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-image-red",
+          "route_ms": 537.5324340420775,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-japanese",
+          "route_ms": 786.3126490265131,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-ledger",
+          "route_ms": 847.8777409764007,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-legal",
+          "route_ms": 786.4372320473194,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-literal-injection",
+          "route_ms": 789.1236889990978,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-logic-counterexample",
+          "route_ms": 844.3248979747295,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-logic",
+          "route_ms": 845.2631619875319,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-marketing",
+          "route_ms": 788.0991009878926,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-media-mention",
+          "route_ms": 781.7618830013089,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-median",
+          "route_ms": 846.1390410084277,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-medical",
+          "route_ms": 784.6693359897472,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-missing-image",
+          "route_ms": 529.1583279613405,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-multi-image",
+          "route_ms": 540.5260240077041,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-multi-turn",
+          "route_ms": 800.815733964555,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-not-enough-facts",
+          "route_ms": 782.7966589829884,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-percent",
+          "route_ms": 845.5468200263567,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-plan",
+          "route_ms": 786.2264579744078,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-privacy",
+          "route_ms": 786.6812139982358,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-probability",
+          "route_ms": 868.3334270026535,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-python-brackets",
+          "route_ms": 785.9968720003963,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-python-dedup",
+          "route_ms": 786.1037229886279,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-python-merge",
+          "route_ms": 791.7739449767396,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-quoted-injection",
+          "route_ms": 845.8151280065067,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-rag-answer",
+          "route_ms": 787.3330829897895,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-rag-conflict",
+          "route_ms": 788.7516090413556,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-rag-missing",
+          "route_ms": 786.6163559956476,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-refund",
+          "route_ms": 786.1657339963131,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-rerank-en",
+          "route_ms": 183.48055699607357,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-rerank-zh",
+          "route_ms": 175.34344899468124,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-retrieval-quality",
+          "route_ms": 215.189037960954,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-rewrite",
+          "route_ms": 785.2002370054834,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-safety",
+          "route_ms": 788.4843230131082,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-schedule",
+          "route_ms": 789.2120410106145,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-security-code",
+          "route_ms": 784.5646829809994,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-short-story",
+          "route_ms": 787.2479410143569,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-sky",
+          "route_ms": 785.4220480076037,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-sort-json",
+          "route_ms": 114.66015095356852,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-sql",
+          "route_ms": 671.001543989405,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-strict-schema",
+          "route_ms": 111.67596804443747,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-summary",
+          "route_ms": 791.5591999772005,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-translate-en",
+          "route_ms": 789.2389119951986,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-translate-zh",
+          "route_ms": 782.5581859797239,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-tts-zh",
+          "route_ms": 178.78543201368302,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-tts",
+          "route_ms": 175.7072260370478,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-units",
+          "route_ms": 842.3629080061801,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-video-caption",
+          "route_ms": 209.27704096538946,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "base-video-generate",
+          "route_ms": 111.46268399897963,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-weighted",
+          "route_ms": 845.0404780451208,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "additional-fresh-cas",
+          "route_ms": 795.6166489748284,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "additional-fresh-injection-data",
+          "route_ms": 797.2638189676218,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "additional-fresh-interval",
+          "route_ms": 801.5388139756396,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "additional-fresh-long-memory",
+          "route_ms": 845.5477199750021,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "additional-fresh-mixed-language",
+          "route_ms": 788.7609329773113,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "additional-fresh-money",
+          "route_ms": 852.1457999595441,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "additional-fresh-schedule",
+          "route_ms": 855.1726680016145,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "additional-fresh-uncertainty",
+          "route_ms": 852.4213420460001,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-claim-events",
+          "route_ms": 860.2839200175367,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-clock-effective",
+          "route_ms": 856.4025160158053,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-code-allocate",
+          "route_ms": 796.1933329934254,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-code-clock",
+          "route_ms": 792.6121620112099,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-code-events",
+          "route_ms": 795.3701820224524,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-code-overlap",
+          "route_ms": 795.2877419884317,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-energy-net",
+          "route_ms": 854.4492369983345,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-history-correction",
+          "route_ms": 800.6572090089321,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-history-unknown",
+          "route_ms": 798.0814790353179,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-image-order",
+          "route_ms": 543.3406530064531,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-invoice-pair",
+          "route_ms": 856.7746980115771,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-no-action-claim",
+          "route_ms": 796.2459059781395,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-stock-priority",
+          "route_ms": 122.60464101564139,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-threshold",
+          "route_ms": 799.8265069909394,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-urgent-schedule",
+          "route_ms": 855.1255940110423,
+          "gpu_calls": 2
+        },
+        {
+          "case_id": "holdout-new-yield-weight",
+          "route_ms": 854.7736160107888,
+          "gpu_calls": 2
+        }
+      ]
+    },
+    "cpu_policy": {
+      "route_ms": {
+        "count": 99,
+        "p50": 117.33119701966643,
+        "p95": 129.010200034827,
+        "min": 110.54830299690366,
+        "max": 204.1399810113944
+      },
+      "records": [
+        {
+          "case_id": "base-ambiguous",
+          "route_ms": 116.68918200302869,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-arabic",
+          "route_ms": 116.6583250160329,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-arithmetic",
+          "route_ms": 119.60320302750915,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-asr",
+          "route_ms": 112.61692899279296,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-budget-zero",
+          "route_ms": 114.91856403881684,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-causality",
+          "route_ms": 131.48360402556136,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-code-switch",
+          "route_ms": 116.29506200551987,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-concurrency",
+          "route_ms": 118.45613096375018,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-csv",
+          "route_ms": 116.64360598661005,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-debug",
+          "route_ms": 117.86050000227988,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-decimal",
+          "route_ms": 117.44053696747869,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-embed-en",
+          "route_ms": 112.96095099532977,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-embed-zh",
+          "route_ms": 112.69187601283193,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-empathy",
+          "route_ms": 116.31731304805726,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-empty-allowlist",
+          "route_ms": 115.06087199086323,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-extract-email",
+          "route_ms": 139.16714902734384,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-extract-json",
+          "route_ms": 117.55813896888867,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-fiction-fact",
+          "route_ms": 115.73090602178127,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-finance",
+          "route_ms": 117.41106800036505,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-greeting-zh",
+          "route_ms": 118.22770303115249,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-greeting",
+          "route_ms": 116.80345900822431,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-history",
+          "route_ms": 116.82508297963068,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-blue",
+          "route_ms": 112.32050700346008,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-chart",
+          "route_ms": 113.35534299723804,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-edit",
+          "route_ms": 112.2410609968938,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-generate",
+          "route_ms": 111.0292460070923,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-ocr",
+          "route_ms": 114.00036601116881,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-image-red",
+          "route_ms": 114.38176897354424,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-japanese",
+          "route_ms": 115.48563401447609,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-ledger",
+          "route_ms": 117.01800697483122,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-legal",
+          "route_ms": 116.67827295605093,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-literal-injection",
+          "route_ms": 119.28838503081352,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-logic-counterexample",
+          "route_ms": 116.73606897238642,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-logic",
+          "route_ms": 117.5292760017328,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-marketing",
+          "route_ms": 116.78467504680157,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-media-mention",
+          "route_ms": 114.8627910297364,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-median",
+          "route_ms": 116.24265601858497,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-medical",
+          "route_ms": 114.56776002887636,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-missing-image",
+          "route_ms": 112.72176500642672,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-multi-image",
+          "route_ms": 116.47816997719929,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-multi-turn",
+          "route_ms": 126.61833001766354,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-not-enough-facts",
+          "route_ms": 116.96743697393686,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-percent",
+          "route_ms": 118.10655699810013,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-plan",
+          "route_ms": 119.26660395693034,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-privacy",
+          "route_ms": 116.17990303784609,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-probability",
+          "route_ms": 117.88212601095438,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-python-brackets",
+          "route_ms": 118.16112900851294,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-python-dedup",
+          "route_ms": 117.33119701966643,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-python-merge",
+          "route_ms": 122.63193895341828,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-quoted-injection",
+          "route_ms": 116.6374739841558,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rag-answer",
+          "route_ms": 117.24421998951584,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rag-conflict",
+          "route_ms": 119.39736403292045,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rag-missing",
+          "route_ms": 138.1911159842275,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-refund",
+          "route_ms": 120.21335598547012,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rerank-en",
+          "route_ms": 115.26950902771205,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rerank-zh",
+          "route_ms": 111.06795101659372,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-retrieval-quality",
+          "route_ms": 110.77716702129692,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-rewrite",
+          "route_ms": 116.52939097257331,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-safety",
+          "route_ms": 115.4306519892998,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-schedule",
+          "route_ms": 118.02912602433935,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-security-code",
+          "route_ms": 117.89443000452593,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-short-story",
+          "route_ms": 116.58667400479317,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-sky",
+          "route_ms": 115.49237603321671,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-sort-json",
+          "route_ms": 113.86621498968452,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-sql",
+          "route_ms": 117.93300497811288,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-strict-schema",
+          "route_ms": 110.54830299690366,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-summary",
+          "route_ms": 124.0553610259667,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-translate-en",
+          "route_ms": 117.10579303326085,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-translate-zh",
+          "route_ms": 116.29657197045162,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-tts-zh",
+          "route_ms": 112.9195790272206,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-tts",
+          "route_ms": 112.86629998357967,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-units",
+          "route_ms": 118.07213700376451,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-video-caption",
+          "route_ms": 112.41606302792206,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-video-generate",
+          "route_ms": 112.49993200181052,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "base-weighted",
+          "route_ms": 116.24413402751088,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-cas",
+          "route_ms": 126.1726240045391,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-injection-data",
+          "route_ms": 125.13861601473764,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-interval",
+          "route_ms": 124.89968800218776,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-long-memory",
+          "route_ms": 204.1399810113944,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-mixed-language",
+          "route_ms": 118.59373899642378,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-money",
+          "route_ms": 125.96747401403263,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-schedule",
+          "route_ms": 125.67690497962758,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "additional-fresh-uncertainty",
+          "route_ms": 124.94836002588272,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-claim-events",
+          "route_ms": 125.9175690356642,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-clock-effective",
+          "route_ms": 128.0307580018416,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-code-allocate",
+          "route_ms": 125.7000970072113,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-code-clock",
+          "route_ms": 125.51729596452788,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-code-events",
+          "route_ms": 126.49678997695446,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-code-overlap",
+          "route_ms": 124.47016400983557,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-energy-net",
+          "route_ms": 125.68416900467128,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-history-correction",
+          "route_ms": 129.010200034827,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-history-unknown",
+          "route_ms": 127.45415599783882,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-image-order",
+          "route_ms": 122.79602501075715,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-invoice-pair",
+          "route_ms": 124.6450690086931,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-no-action-claim",
+          "route_ms": 126.67925795540214,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-stock-priority",
+          "route_ms": 122.88470397470519,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-threshold",
+          "route_ms": 126.8041969742626,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-urgent-schedule",
+          "route_ms": 125.53535896586254,
+          "gpu_calls": 1
+        },
+        {
+          "case_id": "holdout-new-yield-weight",
+          "route_ms": 123.44091100385413,
+          "gpu_calls": 1
+        }
+      ]
+    }
+  }
+}

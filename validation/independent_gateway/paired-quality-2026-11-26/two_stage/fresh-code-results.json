@@ -1,0 +1,20 @@
+{
+  "method": "isolated_functional_tests_all_variants",
+  "variants": [
+    {
+      "block": 0,
+      "function": "merge_intervals",
+      "original_block_sha256": "bff4438e4549b7b84b853349c5f08e08a325080b0454948423b12c5fd4578faa",
+      "adaptation": "Bind original function to checker name merge; function body unchanged",
+      "status": "pass",
+      "result": {
+        "tests": 105,
+        "passed": 105,
+        "failures": []
+      },
+      "source_sha256": "a66f0299fb5d867ac4cf611ab950b0eac9fd88c9f3287af43f6dc1317f6df3df"
+    }
+  ],
+  "status": "pass",
+  "scope": "Function behavior only; explanations receive a separate review"
+}
