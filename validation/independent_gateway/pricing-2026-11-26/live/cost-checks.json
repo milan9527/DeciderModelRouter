@@ -1,0 +1,172 @@
+{
+  "scope": "Independent Decimal recomputation from the seven successful saved target usages; excludes one timeout with unknown usage/cost. Not an invoice.",
+  "checks": [
+    {
+      "case": "insurance",
+      "run_id": "57edbcd6a8ab2e517801caf1",
+      "model_id": "openai.gpt-6.1-sol",
+      "usage": {
+        "inputTokens": 81,
+        "outputTokens": 50,
+        "totalTokens": 131
+      },
+      "tier": "standard",
+      "rates": {
+        "cache_write_price_1800": 2.75,
+        "cache_read_price": 0.11,
+        "output_price": 11.0,
+        "input_price": 2.2
+      },
+      "formula_usd": "sum(tokens * matching USD-per-million rate / 1000000)",
+      "recomputed_usd": "0.0007282",
+      "saved_usd": "0.0007282",
+      "matches": true,
+      "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json"
+    },
+    {
+      "case": "history-first",
+      "run_id": "c5bb4d36f101c8ad8bcd257d",
+      "model_id": "openai.gpt-6-astra",
+      "usage": {
+        "inputTokens": 29,
+        "outputTokens": 117,
+        "totalTokens": 146
+      },
+      "tier": "standard",
+      "rates": {
+        "input_price": 11.0,
+        "cache_write_price_1800": 13.75,
+        "output_price": 55.0,
+        "cache_read_price": 1.1
+      },
+      "formula_usd": "sum(tokens * matching USD-per-million rate / 1000000)",
+      "recomputed_usd": "0.006754",
+      "saved_usd": "0.006754",
+      "matches": true,
+      "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json"
+    },
+    {
+      "case": "history-followup",
+      "run_id": "3a5033bbecd9b1219c31db29",
+      "model_id": "openai.gpt-6.1-sol",
+      "usage": {
+        "inputTokens": 72,
+        "outputTokens": 16,
+        "totalTokens": 88
+      },
+      "tier": "standard",
+      "rates": {
+        "cache_write_price_1800": 2.75,
+        "cache_read_price": 0.11,
+        "output_price": 11.0,
+        "input_price": 2.2
+      },
+      "formula_usd": "sum(tokens * matching USD-per-million rate / 1000000)",
+      "recomputed_usd": "0.0003344",
+      "saved_usd": "0.0003344",
+      "matches": true,
+      "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json"
+    },
+    {
+      "case": "agent-first-step-1",
+      "run_id": "193bab5ad4820f24ecfd28d5",
+      "model_id": "anthropic.claude-fable-5-2",
+      "usage": {
+        "inputTokens": 1052,
+        "outputTokens": 147,
+        "totalTokens": 1199,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "tier": "standard",
+      "rates": {
+        "cache_write_price_300": 11.0,
+        "input_price": 8.8,
+        "cache_read_price": 0.22,
+        "output_price": 44.0,
+        "cache_write_price_3600": 17.6
+      },
+      "formula_usd": "sum(tokens * matching USD-per-million rate / 1000000)",
+      "recomputed_usd": "0.0157256",
+      "saved_usd": "0.0157256",
+      "matches": true,
+      "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json"
+    },
+    {
+      "case": "agent-first-step-2",
+      "run_id": "1c63344d3adffa6af9c4ad99",
+      "model_id": "anthropic.claude-fable-5-2",
+      "usage": {
+        "inputTokens": 1368,
+        "outputTokens": 122,
+        "totalTokens": 1490,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "tier": "standard",
+      "rates": {
+        "cache_write_price_300": 11.0,
+        "input_price": 8.8,
+        "cache_read_price": 0.22,
+        "output_price": 44.0,
+        "cache_write_price_3600": 17.6
+      },
+      "formula_usd": "sum(tokens * matching USD-per-million rate / 1000000)",
+      "recomputed_usd": "0.0174064",
+      "saved_usd": "0.0174064",
+      "matches": true,
+      "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json"
+    },
+    {
+      "case": "agent-first-step-3",
+      "run_id": "33e663eb74be1807d66d0e0d",
+      "model_id": "anthropic.claude-fable-5-2",
+      "usage": {
+        "inputTokens": 1512,
+        "outputTokens": 15,
+        "totalTokens": 1527,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "tier": "standard",
+      "rates": {
+        "cache_write_price_300": 11.0,
+        "input_price": 8.8,
+        "cache_read_price": 0.22,
+        "output_price": 44.0,
+        "cache_write_price_3600": 17.6
+      },
+      "formula_usd": "sum(tokens * matching USD-per-million rate / 1000000)",
+      "recomputed_usd": "0.0139656",
+      "saved_usd": "0.0139656",
+      "matches": true,
+      "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json"
+    },
+    {
+      "case": "agent-followup-step-1",
+      "run_id": "4b3f8717f8e709349047918a",
+      "model_id": "anthropic.claude-opus-5-5",
+      "usage": {
+        "inputTokens": 1587,
+        "outputTokens": 44,
+        "totalTokens": 1631,
+        "cacheReadInputTokens": 0,
+        "cacheWriteInputTokens": 0
+      },
+      "tier": "standard",
+      "rates": {
+        "input_price": 4.4,
+        "cache_read_price": 0.22,
+        "output_price": 22.0,
+        "cache_write_price_3600": 8.8,
+        "cache_write_price_300": 5.5
+      },
+      "formula_usd": "sum(tokens * matching USD-per-million rate / 1000000)",
+      "recomputed_usd": "0.0079508",
+      "saved_usd": "0.0079508",
+      "matches": true,
+      "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/us-east-1/index.json"
+    }
+  ],
+  "known_total_usd": "0.0628650"
+}

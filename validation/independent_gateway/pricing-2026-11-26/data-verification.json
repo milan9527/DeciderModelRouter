@@ -1,0 +1,9 @@
+{
+  "non_price_evidence_unchanged": true,
+  "deployed_evidence_matches_archived_after": true,
+  "archived_official_sources_recompiled": true,
+  "all_matching_model_prices_equal": 109,
+  "pricing_version": "9c633e91bc31b859f9a288d7",
+  "before_version": "bcfd447ab244a0fa545a7a08",
+  "catalog_sha256": "cd315c5fc1b5c715916e4853558f5619b7ac8af4cfad7a0bee28a917ee3de99e"
+}

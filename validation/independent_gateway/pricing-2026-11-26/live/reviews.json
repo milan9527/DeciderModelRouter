@@ -1,0 +1,66 @@
+[
+  {
+    "case": "manufacturing-execution",
+    "id": "ed67c98a4e6ec0a520ac5e71",
+    "content_pass": false,
+    "format_pass": false,
+    "failure": "目标Sol 6.1 max超时，无完整答案或最终用量；费用未知。未自动重试或切换。"
+  },
+  {
+    "case": "insurance",
+    "id": "57edbcd6a8ab2e517801caf1",
+    "answer_sha256": "daf7221869b8b393dac80dbff8f6271c39f8871c109b5a99e86599dadb247d4b",
+    "content_pass": true,
+    "format_pass": true,
+    "expected": {
+      "current": 14400,
+      "completed": 22500
+    },
+    "review_method": "人工复核计算与历史要求，并校验裸JSON实际字段值。"
+  },
+  {
+    "case": "history-first",
+    "id": "c5bb4d36f101c8ad8bcd257d",
+    "answer_sha256": "e066deba4e5894d18a5ab7bc36113e9a33ae1e95fded873429c91473c38dbfda",
+    "content_pass": true,
+    "format_pass": true,
+    "expected": {
+      "recorded": true
+    },
+    "review_method": "人工复核计算与历史要求，并校验裸JSON实际字段值。"
+  },
+  {
+    "case": "history-followup",
+    "id": "3a5033bbecd9b1219c31db29",
+    "answer_sha256": "3d6612741a02d0451e37dde597e93b003b4be9243ea263c018a34b6393d2a291",
+    "content_pass": true,
+    "format_pass": true,
+    "expected": {
+      "project": "NOVA-628",
+      "budget": 47
+    },
+    "review_method": "人工复核计算与历史要求，并校验裸JSON实际字段值。"
+  },
+  {
+    "case": "agent-first",
+    "id": "6bfbbd7b55c1669e674e0406",
+    "answer_sha256": "da59c44dd5bc99bee61e9eb723ef894374e25b46fc3bacc5cff182292fcbdd35",
+    "content_pass": true,
+    "format_pass": true,
+    "expected": {
+      "raw_net_cents": 5000
+    },
+    "review_method": "人工复核计算与历史要求，并校验裸JSON实际字段值。"
+  },
+  {
+    "case": "agent-followup",
+    "id": "f856250d184df2ebd307a8af",
+    "answer_sha256": "c6f127dc0cc4eac27217eeb12a1d6db7954ee98778da747e23dcf28527b6aeab",
+    "content_pass": true,
+    "format_pass": true,
+    "expected": {
+      "dedup_net_cents": -7500
+    },
+    "review_method": "人工复核计算与历史要求，并校验裸JSON实际字段值。"
+  }
+]

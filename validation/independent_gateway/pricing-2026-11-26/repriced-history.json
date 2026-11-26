@@ -1,0 +1,1023 @@
+[
+  {
+    "case": "ambiguous",
+    "model": "openai.gpt-5.6-sol",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 47,
+      "totalTokens": 57,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.001078"
+  },
+  {
+    "case": "asr",
+    "model": "mistral.voxtral-mini-3b-2507",
+    "workflow": "audio_understanding",
+    "usage": {
+      "input_tokens": 386,
+      "output_tokens": 9
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.00001580"
+  },
+  {
+    "case": "causality",
+    "model": "anthropic.claude-fable-5-2",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 48,
+      "outputTokens": 514,
+      "totalTokens": 562,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0230384"
+  },
+  {
+    "case": "embed-en",
+    "model": "cohere.embed-multilingual-v3",
+    "workflow": "embedding",
+    "usage": null,
+    "previous_cost": null,
+    "reference_at_new_snapshot": null
+  },
+  {
+    "case": "extract-json",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 31,
+      "outputTokens": 13,
+      "totalTokens": 44,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0002112"
+  },
+  {
+    "case": "fresh-b2b-followup",
+    "model": "openai.gpt-6-astra",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 82,
+      "outputTokens": 59,
+      "totalTokens": 141,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.004147"
+  },
+  {
+    "case": "fresh-claims-cap",
+    "model": "openai.gpt-6-astra",
+    "workflow": "customer_support",
+    "usage": {
+      "inputTokens": 62,
+      "outputTokens": 49,
+      "totalTokens": 111,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.003377"
+  },
+  {
+    "case": "fresh-clinical-no-invention",
+    "model": "openai.gpt-6-astra",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 62,
+      "outputTokens": 22,
+      "totalTokens": 84,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.001892"
+  },
+  {
+    "case": "fresh-construction-retention",
+    "model": "openai.gpt-6-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 65,
+      "outputTokens": 39,
+      "totalTokens": 104,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.002860"
+  },
+  {
+    "case": "fresh-education-weight",
+    "model": "openai.gpt-6-luna",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 51,
+      "outputTokens": 63,
+      "totalTokens": 114,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": "0.0000366",
+    "reference_at_new_snapshot": "0.00004026"
+  },
+  {
+    "case": "fresh-factory-rework",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 65,
+      "outputTokens": 53,
+      "totalTokens": 118,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.000726"
+  },
+  {
+    "case": "fresh-hotel-occupancy",
+    "model": "openai.gpt-6-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 52,
+      "outputTokens": 40,
+      "totalTokens": 92,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.002772"
+  },
+  {
+    "case": "fresh-it-incident-budget",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 66,
+      "outputTokens": 28,
+      "totalTokens": 94,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0018128"
+  },
+  {
+    "case": "fresh-payment-dedup",
+    "model": "openai.gpt-6-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 64,
+      "outputTokens": 52,
+      "totalTokens": 116,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.003564"
+  },
+  {
+    "case": "fresh-power-tariff",
+    "model": "openai.gpt-6-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 67,
+      "outputTokens": 44,
+      "totalTokens": 111,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.003157"
+  },
+  {
+    "case": "fresh-procurement-currency",
+    "model": "anthropic.claude-fable-5-2",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 78,
+      "outputTokens": 59,
+      "totalTokens": 137,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0032824"
+  },
+  {
+    "case": "fresh-retail-return",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "customer_support",
+    "usage": {
+      "inputTokens": 56,
+      "outputTokens": 17,
+      "totalTokens": 73,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0003102"
+  },
+  {
+    "case": "fresh-saas-proration",
+    "model": "openai.gpt-5.4",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 59,
+      "outputTokens": 21,
+      "totalTokens": 80,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.00050875"
+  },
+  {
+    "case": "fresh-telecom-overage",
+    "model": "openai.gpt-6-astra",
+    "workflow": "customer_support",
+    "usage": {
+      "inputTokens": 60,
+      "outputTokens": 131,
+      "totalTokens": 191,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": "0.00715",
+    "reference_at_new_snapshot": "0.007865"
+  },
+  {
+    "case": "fresh-transport-capacity",
+    "model": "openai.gpt-6.2-sol",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 38,
+      "outputTokens": 24,
+      "totalTokens": 62,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0003476"
+  },
+  {
+    "case": "fresh-warehouse-reserve",
+    "model": "xai.grok-4.6",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 2,
+      "outputTokens": 516,
+      "totalTokens": 599,
+      "cacheReadInputTokens": 81,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": null
+  },
+  {
+    "case": "heldout-education",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 60,
+      "outputTokens": 32,
+      "totalTokens": 92,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.000484"
+  },
+  {
+    "case": "heldout-energy",
+    "model": "anthropic.claude-opus-5-5",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 75,
+      "outputTokens": 91,
+      "totalTokens": 166,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.002332"
+  },
+  {
+    "case": "heldout-finance",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 75,
+      "outputTokens": 25,
+      "totalTokens": 100,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.00176"
+  },
+  {
+    "case": "heldout-healthcare",
+    "model": "openai.gpt-5.6-terra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 73,
+      "outputTokens": 111,
+      "totalTokens": 184,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0016258"
+  },
+  {
+    "case": "heldout-insurance",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 74,
+      "outputTokens": 32,
+      "totalTokens": 106,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0020592"
+  },
+  {
+    "case": "heldout-legal",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 67,
+      "outputTokens": 26,
+      "totalTokens": 93,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0004334"
+  },
+  {
+    "case": "heldout-logistics",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 79,
+      "outputTokens": 36,
+      "totalTokens": 115,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0005698"
+  },
+  {
+    "case": "heldout-manufacturing",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 45,
+      "outputTokens": 7,
+      "totalTokens": 52,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.000704"
+  },
+  {
+    "case": "heldout-public",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 50,
+      "outputTokens": 23,
+      "totalTokens": 73,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.001452"
+  },
+  {
+    "case": "heldout-retail",
+    "model": "anthropic.claude-fable-5-2",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 84,
+      "outputTokens": 146,
+      "totalTokens": 230,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0071632"
+  },
+  {
+    "case": "heldout-saas",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "customer_support",
+    "usage": {
+      "inputTokens": 62,
+      "outputTokens": 28,
+      "totalTokens": 90,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0004444"
+  },
+  {
+    "case": "heldout-telecom",
+    "model": "anthropic.claude-opus-5-5",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 65,
+      "outputTokens": 40,
+      "totalTokens": 105,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.001166"
+  },
+  {
+    "case": "image-chart",
+    "model": "openai.gpt-5.4",
+    "workflow": "vision",
+    "usage": {
+      "inputTokens": 215,
+      "outputTokens": 5,
+      "totalTokens": 220,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.00067375"
+  },
+  {
+    "case": "image-ocr",
+    "model": "openai.gpt-5.4",
+    "workflow": "vision",
+    "usage": {
+      "inputTokens": 147,
+      "outputTokens": 6,
+      "totalTokens": 153,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.00050325"
+  },
+  {
+    "case": "image-red",
+    "model": "openai.gpt-5.4",
+    "workflow": "vision",
+    "usage": {
+      "inputTokens": 86,
+      "outputTokens": 5,
+      "totalTokens": 91,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0003190"
+  },
+  {
+    "case": "manufacturing-causal-regression",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 286,
+      "outputTokens": 945,
+      "totalTokens": 1231,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0440968"
+  },
+  {
+    "case": "marketing",
+    "model": "openai.gpt-6-astra",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 33,
+      "outputTokens": 203,
+      "totalTokens": 236,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.011528"
+  },
+  {
+    "case": "medical",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 1393,
+      "totalTokens": 1415,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": "0.013974",
+    "reference_at_new_snapshot": "0.0153714"
+  },
+  {
+    "case": "new-code-allocate",
+    "model": "openai.gpt-6.1-terra",
+    "workflow": "coding",
+    "usage": {
+      "inputTokens": 86,
+      "outputTokens": 151,
+      "totalTokens": 237,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0009251"
+  },
+  {
+    "case": "new-code-clock",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "coding",
+    "usage": {
+      "inputTokens": 73,
+      "outputTokens": 138,
+      "totalTokens": 211,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0067144"
+  },
+  {
+    "case": "new-code-events",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "coding",
+    "usage": {
+      "inputTokens": 69,
+      "outputTokens": 63,
+      "totalTokens": 132,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0033792"
+  },
+  {
+    "case": "new-code-overlap",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "coding",
+    "usage": {
+      "inputTokens": 63,
+      "outputTokens": 69,
+      "totalTokens": 132,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0035904"
+  },
+  {
+    "case": "new-history-correction",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 95,
+      "outputTokens": 10,
+      "totalTokens": 105,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.000319"
+  },
+  {
+    "case": "new-history-unknown",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "customer_support",
+    "usage": {
+      "inputTokens": 60,
+      "outputTokens": 5,
+      "totalTokens": 65,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.000187"
+  },
+  {
+    "case": "new-image-order",
+    "model": "openai.gpt-5.4",
+    "workflow": "vision",
+    "usage": {
+      "inputTokens": 226,
+      "outputTokens": 9,
+      "totalTokens": 235,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0007700"
+  },
+  {
+    "case": "probability",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 36,
+      "outputTokens": 23,
+      "totalTokens": 59,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0003322"
+  },
+  {
+    "case": "python-brackets",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "coding",
+    "usage": {
+      "inputTokens": 40,
+      "outputTokens": 71,
+      "totalTokens": 111,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.003476"
+  },
+  {
+    "case": "python-dedup",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "coding",
+    "usage": {
+      "inputTokens": 30,
+      "outputTokens": 16,
+      "totalTokens": 46,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.000968"
+  },
+  {
+    "case": "python-merge",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "coding",
+    "usage": {
+      "inputTokens": 44,
+      "outputTokens": 75,
+      "totalTokens": 119,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0036872"
+  },
+  {
+    "case": "quality-holdout-aggregation",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 75,
+      "outputTokens": 172,
+      "totalTokens": 247,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.002057"
+  },
+  {
+    "case": "quality-holdout-causal",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 88,
+      "outputTokens": 268,
+      "totalTokens": 356,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0125664"
+  },
+  {
+    "case": "quality-holdout-code-trace",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "coding",
+    "usage": {
+      "inputTokens": 74,
+      "outputTokens": 15,
+      "totalTokens": 89,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0013112"
+  },
+  {
+    "case": "quality-holdout-distribution",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 58,
+      "outputTokens": 17,
+      "totalTokens": 75,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0012584"
+  },
+  {
+    "case": "quality-holdout-energy",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 69,
+      "outputTokens": 17,
+      "totalTokens": 86,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0013552"
+  },
+  {
+    "case": "quality-holdout-history",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "customer_support",
+    "usage": {
+      "inputTokens": 76,
+      "outputTokens": 9,
+      "totalTokens": 85,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0002662"
+  },
+  {
+    "case": "quality-holdout-incident",
+    "model": "openai.gpt-6-astra",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 82,
+      "outputTokens": 3609,
+      "totalTokens": 3691,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": "0.18127",
+    "reference_at_new_snapshot": "0.199397"
+  },
+  {
+    "case": "quality-holdout-insurance",
+    "model": "openai.gpt-6-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 63,
+      "outputTokens": 48,
+      "totalTokens": 111,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.003333"
+  },
+  {
+    "case": "quality-holdout-manufacturing",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 60,
+      "outputTokens": 168,
+      "totalTokens": 228,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": "0.00180",
+    "reference_at_new_snapshot": "0.001980"
+  },
+  {
+    "case": "quality-holdout-pharmacy",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 63,
+      "outputTokens": 14,
+      "totalTokens": 77,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0011704"
+  },
+  {
+    "case": "quality-holdout-subscription",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 55,
+      "outputTokens": 45,
+      "totalTokens": 100,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.000616"
+  },
+  {
+    "case": "quality-holdout-tool-data",
+    "model": "openai.gpt-6-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 57,
+      "outputTokens": 24,
+      "totalTokens": 81,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.001947"
+  },
+  {
+    "case": "quoted-injection",
+    "model": "openai.gpt-6-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 33,
+      "outputTokens": 23,
+      "totalTokens": 56,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.001628"
+  },
+  {
+    "case": "rag-missing",
+    "model": "openai.gpt-6-astra",
+    "workflow": "customer_support",
+    "usage": {
+      "inputTokens": 31,
+      "outputTokens": 127,
+      "totalTokens": 158,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": "0.00666",
+    "reference_at_new_snapshot": "0.007326"
+  },
+  {
+    "case": "refund",
+    "model": "openai.gpt-6.1-sol",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 39,
+      "outputTokens": 62,
+      "totalTokens": 101,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0007678"
+  },
+  {
+    "case": "short-story",
+    "model": "openai.gpt-6-astra",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 35,
+      "outputTokens": 507,
+      "totalTokens": 542,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.028270"
+  },
+  {
+    "case": "summary",
+    "model": "openai.gpt-6-astra",
+    "workflow": "general_text",
+    "usage": {
+      "inputTokens": 50,
+      "outputTokens": 116,
+      "totalTokens": 166,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.00693"
+  },
+  {
+    "case": "video-caption",
+    "model": "twelvelabs.pegasus-1-5-v1:0",
+    "workflow": "video_understanding",
+    "usage": null,
+    "previous_cost": null,
+    "reference_at_new_snapshot": null
+  },
+  {
+    "case": "finance.json/0/0",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 429,
+      "outputTokens": 61,
+      "totalTokens": 490,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0064592"
+  },
+  {
+    "case": "finance.json/0/1",
+    "model": "openai.gpt-6.2-astra",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 712,
+      "outputTokens": 265,
+      "totalTokens": 977,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0179256"
+  },
+  {
+    "case": "finance.json/1/0",
+    "model": "anthropic.claude-fable-5-2",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 1915,
+      "outputTokens": 1731,
+      "totalTokens": 3646,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.093016"
+  },
+  {
+    "case": "retail.json/0/0",
+    "model": "anthropic.claude-fable-5-2",
+    "workflow": "customer_support",
+    "usage": {
+      "inputTokens": 1041,
+      "outputTokens": 122,
+      "totalTokens": 1163,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0145288"
+  },
+  {
+    "case": "retail.json/0/1",
+    "model": "anthropic.claude-fable-5-2",
+    "workflow": "customer_support",
+    "usage": {
+      "inputTokens": 1566,
+      "outputTokens": 1538,
+      "totalTokens": 3104,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.0814528"
+  },
+  {
+    "case": "retail.json/1/0",
+    "model": "anthropic.claude-fable-5-2",
+    "workflow": "reasoning",
+    "usage": {
+      "inputTokens": 2799,
+      "outputTokens": 3500,
+      "totalTokens": 6299,
+      "cacheReadInputTokens": 0,
+      "cacheWriteInputTokens": 0
+    },
+    "previous_cost": null,
+    "reference_at_new_snapshot": "0.1786312"
+  }
+]

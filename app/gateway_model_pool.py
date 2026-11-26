@@ -123,7 +123,11 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
                 continue
             benchmarks.sort(key=lambda b: b.get("release", ""), reverse=True)
             reference = rankings.get("model_references", {}).get(mid, {})
-            metrics = observation.get("pricing") or (benchmarks[0].get("metrics", {}) if benchmarks else reference)
+            pricing = observation.get("pricing")
+            metrics = pricing or (benchmarks[0].get("metrics", {}) if benchmarks else reference)
+            if pricing and pricing.get("rates"):
+                from app.bedrock_pricing import rates_for
+                metrics = rates_for(pricing, policy.input_tokens or len(task.text.encode("utf-8")))
             if media:
                 # Text length omits image patches, audio duration and video frames.
                 metrics = {}

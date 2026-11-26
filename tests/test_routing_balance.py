@@ -112,6 +112,8 @@ def test_reference_limit_uses_output_cap_and_allows_exact_equality(cap):
     assert result["candidates"][0]["cost_evidence"] == {
         "expected_usd": "0.00011875",
         "at_output_cap_usd": str(cap_cost),
+        "pricing_scope": "external_reference",
+        "context_tier": "standard",
     }
     task.routing_preferences.max_reference_cost_usd = cap_cost - Decimal("0.000000000001")
     assert not balanced_pool(task, "coding", source, load_rankings())["candidates"]
@@ -237,7 +239,7 @@ def test_actual_model_choice_is_preserved_with_full_cost_evidence(client, monkey
     assert result["source"] == "live" and result["selected_model"]["id"] == chosen["model"]["id"]
     assert result["model_input"] == infer.call_args.args[2]
     assert (
-        result["selection"]["cost_context"]["price_scope"] == "external_reference_not_bedrock_quote"
+        result["selection"]["cost_context"]["price_scope"] == "aws_list_price_or_external_reference_not_invoice"
     )
 
 

@@ -1,6 +1,6 @@
 const $ = (s) => document.querySelector(s);
 import { IndustryAgents } from "./agents.js";
-import { decisionConfidenceHTML, evidencePresentationHTML, selectionAdapterHTML } from "./decision-details.js";
+import { decisionConfidenceHTML, evidencePresentationHTML, selectionAdapterHTML, pricingHTML } from "./decision-details.js";
 const $$ = (s) => [...document.querySelectorAll(s)];
 const date = (v) => new Date(v).toLocaleString("zh-CN", { hour12: false });
 const labels = { running: "处理中", executed: "已完成", selected: "已选模", no_route: "无候选", incomplete: "输出未完成", error: "失败", interrupted: "已中断", completed: "已完成" };
@@ -172,7 +172,8 @@ export class Workspace {
     $("#history-detail-content").insertAdjacentHTML("beforeend",
       evidencePresentationHTML(savedSelection?.evidence_presentation, this.esc)
       + selectionAdapterHTML(savedSelection?.selection_adapter, this.esc)
-      + decisionConfidenceHTML(savedSelection?.decision_distribution, this.esc));
+      + decisionConfidenceHTML(savedSelection?.decision_distribution, this.esc)
+      + pricingHTML(savedSelection?.selected_benchmark?.pricing_source, this.esc));
     if (result?.media_job?.id) {
       const job = await this.api("/gateway/media/jobs/" + encodeURIComponent(result.media_job.id));
       if (epoch !== this.epoch) return;

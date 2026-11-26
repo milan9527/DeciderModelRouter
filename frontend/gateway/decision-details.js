@@ -34,3 +34,27 @@ export function taskScoreSummaryHTML(presentation, candidateId, esc) {
   const score = presentation.task_score_summaries?.[candidateId]?.mean;
   return `<small>主要批次相关分项均值：${Number.isFinite(score) ? `${esc(score.toFixed(2))}/100` : "未知"}（辅助值，不是通过率）</small>`;
 }
+
+export function pricingHTML(pricing, esc, contextTier = "standard") {
+  if (!pricing?.tariffs) return "";
+  const rates = pricing.rates?.[contextTier] || {};
+  const price = (v) => Number.isFinite(v) ? `$${v}` : "未提供";
+  const scopes = { regional: "区域内", us_cross_region: "美国跨区域", global: "Global" };
+  const unique = [...new Map(pricing.tariffs.map((t) =>
+    [[t.inference_type, t.unit, t.usd_per_unit, t.context_tier, t.cache_write_ttl_seconds].join("|"), t])).values()];
+  const urls = [...new Set(pricing.tariffs.map((t) => t.source))].filter((u) =>
+    /^https:\/\/pricing\.us-east-1\.amazonaws\.com\/offers\//.test(u));
+  return `<details class="aws-pricing"><summary>查看 AWS 单价</summary>
+    <p>${esc(pricing.region)} · ${esc(scopes[pricing.inference_scope] || pricing.inference_scope)} · 标准服务档
+    ${contextTier === "long_context" ? " · 长上下文价格" : ""}<br>
+    每百万Token：输入 ${esc(price(rates.input_price))} / 输出 ${esc(price(rates.output_price))}
+    ${Number.isFinite(rates.cache_read_price) ? `<br>缓存读取 ${esc(price(rates.cache_read_price))} / 百万Token` : ""}</p>
+    ${pricing.long_context_threshold ? `<small>输入超过 ${esc(pricing.long_context_threshold)} Token 时，全请求按长上下文档计算，缓存Token也计入长度。</small>` : ""}
+    ${pricing.valid_until ? `<small>促销价格截至 ${esc(pricing.valid_until)}；到期需重新同步，不能继续套用旧价。</small>` : ""}
+    <small>快照发布：${esc(pricing.publication_date)}。多模态按实际计量单位收费，单价已知不代表请求用量已知；不含GPU、工具和网络费用。</small>
+    <ul>${unique.map((t) => `<li>${esc(t.inference_type || t.usage_type)} · ${esc(t.context_tier)}
+      ${t.cache_write_ttl_seconds ? ` · 缓存写入${esc(t.cache_write_ttl_seconds / 60)}分钟` : ""}
+      ：$${esc(Number(t.usd_per_unit))} / ${esc(t.unit)}</li>`).join("")}</ul>
+    ${urls.map((u) => `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">AWS 官方价格来源 ↗</a>`).join(" · ")}
+    </details>`;
+}

@@ -101,7 +101,8 @@ def test_cache_prefix_stays_stable_and_usage_is_not_discount_guess(client):
     result = data(trace, "execution")
     assert result["cache"]["total_input_tokens"] == 3082
     assert result["cache"]["read_tokens"] == 2048
-    assert result["observed_reference_cost_usd"] is None
+    # Nova Micro: input .035, output .14, read .00875 and write 0 USD / 1M tokens.
+    assert result["observed_reference_cost_usd"] == "0.00001995"
     assert client.get("/api/gateway/performance").json()["cache_hit_requests"] == 3
     assert cache_usage({"inputTokens": 3}, {})["observed"] is False
     assert observed_reference_cost({"metrics": {"input_price": 1, "output_price": 1}},

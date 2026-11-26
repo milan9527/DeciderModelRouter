@@ -1,0 +1,1117 @@
+{
+  "pricing_version": "9c633e91bc31b859f9a288d7",
+  "before_version": "bcfd447ab244a0fa545a7a08",
+  "candidate_set_unchanged": true,
+  "text_models": 84,
+  "text_configurations": 106,
+  "known_before": 70,
+  "known_after": 106,
+  "aws_exact": 103,
+  "external_reference_models": [
+    "qwen.qwen3-next-80b-a3b",
+    "xai.grok-4.6",
+    "xai.grok-4.7"
+  ],
+  "all_catalog_models_with_tariffs": 109,
+  "prices": [
+    {
+      "model": "ai21.jamba-1-5-large-v1:0",
+      "candidate_id": "ded3c09dcd8c76441ebec959",
+      "rates": {
+        "input_price": 2.0,
+        "output_price": 8.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "ai21.jamba-1-5-mini-v1:0",
+      "candidate_id": "b3b662af9c16a742eb3d6220",
+      "rates": {
+        "input_price": 0.2,
+        "output_price": 0.4
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "amazon.nova-2-lite-v1:0",
+      "candidate_id": "36b8d58dc25bf7449e09e90e",
+      "rates": {
+        "input_price": 0.33,
+        "output_price": 2.75
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "amazon.nova-lite-v1:0",
+      "candidate_id": "db9cda404f33728690c122c3",
+      "rates": {
+        "input_price": 0.06,
+        "output_price": 0.24
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "amazon.nova-micro-v1:0",
+      "candidate_id": "ff3edebfe223cb3b534204fd",
+      "rates": {
+        "input_price": 0.035,
+        "output_price": 0.14
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "amazon.nova-pro-v1:0",
+      "candidate_id": "d0f3a67606a8c9c7cfbf6748",
+      "rates": {
+        "input_price": 0.8,
+        "output_price": 3.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-fable-5",
+      "candidate_id": "a84750de4f947533fc9bf8f6",
+      "rates": {
+        "input_price": 11.0,
+        "output_price": 55.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-fable-5-1",
+      "candidate_id": "78c152cfa64e31572c2ae0ff",
+      "rates": {
+        "input_price": 11.0,
+        "output_price": 55.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-fable-5-1",
+      "candidate_id": "cf21615b726c2b77a3069b90",
+      "rates": {
+        "input_price": 11.0,
+        "output_price": 55.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-fable-5-2",
+      "candidate_id": "7450850c2505611a98c99c32",
+      "rates": {
+        "input_price": 8.8,
+        "output_price": 44.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "candidate_id": "22dfa0c1bde25814b410db09",
+      "rates": {
+        "input_price": 1.1,
+        "output_price": 5.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-haiku-5-5",
+      "candidate_id": "2dacea61db0084c4e84c1817",
+      "rates": {
+        "input_price": 0.11,
+        "output_price": 0.55
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-haiku-5-5",
+      "candidate_id": "e2b44121b5627a12ef62ebce",
+      "rates": {
+        "input_price": 0.11,
+        "output_price": 0.55
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-4-1-20250805-v1:0",
+      "candidate_id": "85be5c2f286a047c63133bb8",
+      "rates": {
+        "input_price": 15.0,
+        "output_price": 75.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-4-5-20251101-v1:0",
+      "candidate_id": "508e71651830883c900d0f5b",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 27.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-4-5-20251101-v1:0",
+      "candidate_id": "92611fea00cfaf3a4026d68f",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 27.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-4-6-v1",
+      "candidate_id": "54c8656e9a5bbc6de7b486c5",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 27.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-4-6-v1",
+      "candidate_id": "d253ffe0c3ec1b5101eca7db",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 27.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-4-7",
+      "candidate_id": "bec5cbe335595ac88455e5f1",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 27.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-4-7",
+      "candidate_id": "736f39b36210cac03c396a70",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 27.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-4-8",
+      "candidate_id": "77a992bd5167b083d331c593",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 27.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-4-8",
+      "candidate_id": "f7891afc167c4df584a47910",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 27.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-5",
+      "candidate_id": "fbb163eac05940755a9ce43f",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 27.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-5",
+      "candidate_id": "471301a23bd99194b8e28bf4",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 27.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-5-5",
+      "candidate_id": "5d1a2f54a8e46ad25acc0ea5",
+      "rates": {
+        "input_price": 4.4,
+        "output_price": 22.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-opus-5-5",
+      "candidate_id": "6f4a8678e68c4e207b0d3a82",
+      "rates": {
+        "input_price": 4.4,
+        "output_price": 22.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-sonnet-4-5-20250929-v1:0",
+      "candidate_id": "4af07ed9511e61c5944870f5",
+      "rates": {
+        "input_price": 3.3,
+        "output_price": 16.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-sonnet-4-6",
+      "candidate_id": "92209372d93d7bfbdea64cb2",
+      "rates": {
+        "input_price": 3.3,
+        "output_price": 16.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-sonnet-4-6",
+      "candidate_id": "c7550f72bc9ce2dc02f1ce3d",
+      "rates": {
+        "input_price": 3.3,
+        "output_price": 16.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-sonnet-5",
+      "candidate_id": "4bf30f5dbd818791d1814e35",
+      "rates": {
+        "input_price": 2.2,
+        "output_price": 11.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-sonnet-5",
+      "candidate_id": "6c3bac2915156d3eca59eaa4",
+      "rates": {
+        "input_price": 2.2,
+        "output_price": 11.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-sonnet-5-5",
+      "candidate_id": "528c1811e6eacd47db3808a1",
+      "rates": {
+        "input_price": 2.2,
+        "output_price": 11.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "anthropic.claude-sonnet-5-5",
+      "candidate_id": "7c6807fb77f316a266c6d1ca",
+      "rates": {
+        "input_price": 2.2,
+        "output_price": 11.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "deepseek.v3.2",
+      "candidate_id": "e50591c1316828e0f1e9b101",
+      "rates": {
+        "input_price": 0.62,
+        "output_price": 1.85
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "google.gemma-3-12b-it",
+      "candidate_id": "67b1efa3870ea831f134195c",
+      "rates": {
+        "input_price": 0.09,
+        "output_price": 0.29
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "google.gemma-3-27b-it",
+      "candidate_id": "e17f17ebe34eb5826c3452be",
+      "rates": {
+        "input_price": 0.23,
+        "output_price": 0.38
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "google.gemma-3-4b-it",
+      "candidate_id": "8661e27b91cb3dc35e8c02d3",
+      "rates": {
+        "input_price": 0.04,
+        "output_price": 0.08
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "meta.llama3-1-70b-instruct-v1:0",
+      "candidate_id": "82de00dbdbac2245a5e5867c",
+      "rates": {
+        "input_price": 0.72,
+        "output_price": 0.72
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "meta.llama3-1-8b-instruct-v1:0",
+      "candidate_id": "7780f419d5dc75198ec4a7fa",
+      "rates": {
+        "input_price": 0.22,
+        "output_price": 0.22
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "meta.llama3-3-70b-instruct-v1:0",
+      "candidate_id": "6169c3e8ddbdc181ea10ef20",
+      "rates": {
+        "input_price": 0.72,
+        "output_price": 0.72
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "meta.llama3-70b-instruct-v1:0",
+      "candidate_id": "b02f520d69f7ebd0c843a6c9",
+      "rates": {
+        "input_price": 2.65,
+        "output_price": 3.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "meta.llama3-8b-instruct-v1:0",
+      "candidate_id": "5ae126a3e1cfdf84e0a09d43",
+      "rates": {
+        "input_price": 0.3,
+        "output_price": 0.6
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "meta.llama4-maverick-17b-instruct-v1:0",
+      "candidate_id": "f950c68c733366ba625ea20d",
+      "rates": {
+        "input_price": 0.24,
+        "output_price": 0.97
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "meta.llama4-scout-17b-instruct-v1:0",
+      "candidate_id": "9caac48ad15ecf1b69bfc441",
+      "rates": {
+        "input_price": 0.17,
+        "output_price": 0.66
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "minimax.minimax-m2",
+      "candidate_id": "92e5edd1438b7551f5eb7bc6",
+      "rates": {
+        "input_price": 0.3,
+        "output_price": 1.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "minimax.minimax-m2",
+      "candidate_id": "dff6656ffa264d22b034f99e",
+      "rates": {
+        "input_price": 0.3,
+        "output_price": 1.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "minimax.minimax-m2.1",
+      "candidate_id": "780ac14046bdb3cc4a662aea",
+      "rates": {
+        "input_price": 0.3,
+        "output_price": 1.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "minimax.minimax-m2.5",
+      "candidate_id": "42dbf812a28b1d52ab59d3ea",
+      "rates": {
+        "input_price": 0.3,
+        "output_price": 1.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "minimax.minimax-m2.5",
+      "candidate_id": "3758b427feeab99b76d9df7a",
+      "rates": {
+        "input_price": 0.3,
+        "output_price": 1.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.devstral-2-123b",
+      "candidate_id": "0a5ab7e218a22ad27559894b",
+      "rates": {
+        "input_price": 0.4,
+        "output_price": 2.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.magistral-small-2509",
+      "candidate_id": "3f908b0b05c33ca3b6fed736",
+      "rates": {
+        "input_price": 0.5,
+        "output_price": 1.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.ministral-3-14b-instruct",
+      "candidate_id": "3cbf82d1c4bcee380d434396",
+      "rates": {
+        "input_price": 0.2,
+        "output_price": 0.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.ministral-3-3b-instruct",
+      "candidate_id": "7e821b7090cc9d0d50f62fc9",
+      "rates": {
+        "input_price": 0.1,
+        "output_price": 0.1
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.ministral-3-8b-instruct",
+      "candidate_id": "0f391f6c5c778e2d546993ea",
+      "rates": {
+        "input_price": 0.15,
+        "output_price": 0.15
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.mistral-7b-instruct-v0:2",
+      "candidate_id": "87674941320625202efea528",
+      "rates": {
+        "input_price": 0.15,
+        "output_price": 0.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.mistral-large-2402-v1:0",
+      "candidate_id": "72c30ad108a501d49fe9661b",
+      "rates": {
+        "input_price": 4.0,
+        "output_price": 12.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.mistral-large-3-675b-instruct",
+      "candidate_id": "2bc99cf446e965d8ea8ef957",
+      "rates": {
+        "input_price": 0.5,
+        "output_price": 1.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.mistral-small-2402-v1:0",
+      "candidate_id": "5dba7fb19ee2c54abfec61ed",
+      "rates": {
+        "input_price": 1.0,
+        "output_price": 3.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.mixtral-8x7b-instruct-v0:1",
+      "candidate_id": "825bfe38a688294c90dbc203",
+      "rates": {
+        "input_price": 0.45,
+        "output_price": 0.7
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.pixtral-large-2502-v1:0",
+      "candidate_id": "aac0f9bf8a31a92c6fe70eee",
+      "rates": {
+        "input_price": 2.0,
+        "output_price": 6.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.voxtral-mini-3b-2507",
+      "candidate_id": "fcb5f8c31de521a2102f761d",
+      "rates": {
+        "input_price": 0.04,
+        "output_price": 0.04
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "mistral.voxtral-small-24b-2507",
+      "candidate_id": "ca5c4ac50cd77084873f67d9",
+      "rates": {
+        "input_price": 0.1,
+        "output_price": 0.3
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "moonshot.kimi-k2-thinking",
+      "candidate_id": "ea2b3574fbb802bd603f9701",
+      "rates": {
+        "input_price": 0.6,
+        "output_price": 2.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "moonshotai.kimi-k2.5",
+      "candidate_id": "487508bfa9863c2956130f76",
+      "rates": {
+        "input_price": 0.6,
+        "output_price": 3.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "nvidia.nemotron-nano-12b-v2",
+      "candidate_id": "00de34b9cc4cd5421b5dc003",
+      "rates": {
+        "input_price": 0.2,
+        "output_price": 0.6
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "nvidia.nemotron-nano-3-30b",
+      "candidate_id": "54a5adb0a7aaf78e24ade44a",
+      "rates": {
+        "input_price": 0.06,
+        "output_price": 0.24
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "nvidia.nemotron-nano-9b-v2",
+      "candidate_id": "1b7062dc8a0809c9d1411778",
+      "rates": {
+        "input_price": 0.06,
+        "output_price": 0.23
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "nvidia.nemotron-super-3-120b",
+      "candidate_id": "8d99902a18b38ed81d2b2265",
+      "rates": {
+        "input_price": 0.15,
+        "output_price": 0.65
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-5.4",
+      "candidate_id": "79efa8f4e71c69f1fac653c8",
+      "rates": {
+        "input_price": 2.75,
+        "output_price": 16.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-5.4",
+      "candidate_id": "f15e6b397633b5bfc43157b8",
+      "rates": {
+        "input_price": 2.75,
+        "output_price": 16.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-5.5",
+      "candidate_id": "a9681503baaa7ea4f3698e9f",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 33.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-5.5",
+      "candidate_id": "9c943bf50bcb7d06aa3d7303",
+      "rates": {
+        "input_price": 5.5,
+        "output_price": 33.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-5.6-luna",
+      "candidate_id": "0bcac54a0298a9109f7fc5df",
+      "rates": {
+        "input_price": 0.22,
+        "output_price": 1.32
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-5.6-luna",
+      "candidate_id": "1166ad1b940f6bbe65371c70",
+      "rates": {
+        "input_price": 0.22,
+        "output_price": 1.32
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-5.6-sol",
+      "candidate_id": "755d09e02b9dbeb11440cbdb",
+      "rates": {
+        "input_price": 4.4,
+        "output_price": 22.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-5.6-sol",
+      "candidate_id": "56a73ecc6476fd66154aad55",
+      "rates": {
+        "input_price": 4.4,
+        "output_price": 22.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-5.6-terra",
+      "candidate_id": "4fc8077360fff98bebc34429",
+      "rates": {
+        "input_price": 2.2,
+        "output_price": 13.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-5.6-terra",
+      "candidate_id": "f6aa035d928680177233e786",
+      "rates": {
+        "input_price": 2.2,
+        "output_price": 13.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-6-astra",
+      "candidate_id": "3925533f980b4d45a8888fc2",
+      "rates": {
+        "input_price": 11.0,
+        "output_price": 55.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-6-astra",
+      "candidate_id": "686be5b15114f4d94b56971c",
+      "rates": {
+        "input_price": 11.0,
+        "output_price": 55.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-6-luna",
+      "candidate_id": "a628a94dace7b81034b75a57",
+      "rates": {
+        "input_price": 0.11,
+        "output_price": 0.55
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-6-luna",
+      "candidate_id": "a0dda0a538be50bba3d2a68a",
+      "rates": {
+        "input_price": 0.11,
+        "output_price": 0.55
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-6-sol",
+      "candidate_id": "7f3b6ab061362bb03eb4a534",
+      "rates": {
+        "input_price": 2.2,
+        "output_price": 11.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-6-sol",
+      "candidate_id": "9a19aa309d3e92aca97fe019",
+      "rates": {
+        "input_price": 2.2,
+        "output_price": 11.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-6.1-sol",
+      "candidate_id": "e984b87d469f151c5176f5b2",
+      "rates": {
+        "input_price": 2.2,
+        "output_price": 11.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-6.1-sol",
+      "candidate_id": "e02d85967224dd9d7fd9b069",
+      "rates": {
+        "input_price": 2.2,
+        "output_price": 11.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-6.1-terra",
+      "candidate_id": "f9b1be6e964d2e4eb536d845",
+      "rates": {
+        "input_price": 1.1,
+        "output_price": 5.5
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-6.2-astra",
+      "candidate_id": "b8c39b029dc48d143d96eec5",
+      "rates": {
+        "input_price": 8.8,
+        "output_price": 44.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-6.2-sol",
+      "candidate_id": "46c3dd81c3db41663ea6e465",
+      "rates": {
+        "input_price": 2.2,
+        "output_price": 11.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-oss-120b-1:0",
+      "candidate_id": "141b2ee3d79b6b725f15c352",
+      "rates": {
+        "input_price": 0.15,
+        "output_price": 0.6
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-oss-20b-1:0",
+      "candidate_id": "991a0c453d1b384f86b63367",
+      "rates": {
+        "input_price": 0.07,
+        "output_price": 0.3
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-oss-safeguard-120b",
+      "candidate_id": "6b3f4e562c32cd490a8cdb6e",
+      "rates": {
+        "input_price": 0.15,
+        "output_price": 0.6
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "openai.gpt-oss-safeguard-20b",
+      "candidate_id": "822bcdeb7f0cccfe167b451f",
+      "rates": {
+        "input_price": 0.07,
+        "output_price": 0.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "qwen.qwen3-32b-v1:0",
+      "candidate_id": "0c7219e6dbb0e889709e54d0",
+      "rates": {
+        "input_price": 0.15,
+        "output_price": 0.6
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "qwen.qwen3-coder-30b-a3b-v1:0",
+      "candidate_id": "ed6e31e5faa511c6217cc38a",
+      "rates": {
+        "input_price": 0.15,
+        "output_price": 0.6
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "qwen.qwen3-coder-next",
+      "candidate_id": "ca77c460b40a697598c0b01f",
+      "rates": {
+        "input_price": 0.5,
+        "output_price": 1.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "qwen.qwen3-next-80b-a3b",
+      "candidate_id": "7f63ca4fc931413c6be72832",
+      "rates": {
+        "input_price": 0.1,
+        "output_price": 1.1
+      },
+      "known": true,
+      "source": "external reference or unknown"
+    },
+    {
+      "model": "qwen.qwen3-vl-235b-a22b",
+      "candidate_id": "55db9e6ef6a974d0fe08fbe5",
+      "rates": {
+        "input_price": 0.53,
+        "output_price": 2.66
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "writer.palmyra-vision-7b",
+      "candidate_id": "33fd3f33c83124e7a973091a",
+      "rates": {
+        "input_price": 0.15,
+        "output_price": 0.6
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "writer.palmyra-x4-v1:0",
+      "candidate_id": "d0a42fe933309c65566f266f",
+      "rates": {
+        "input_price": 2.5,
+        "output_price": 10.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "writer.palmyra-x5-v1:0",
+      "candidate_id": "f99c39be667e35613b555494",
+      "rates": {
+        "input_price": 0.6,
+        "output_price": 6.0
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "xai.grok-4.6",
+      "candidate_id": "4bcc9c14c4d586f4617e15aa",
+      "rates": {
+        "input_price": 2.0,
+        "output_price": 6.0
+      },
+      "known": true,
+      "source": "external reference or unknown"
+    },
+    {
+      "model": "xai.grok-4.7",
+      "candidate_id": "c3ad869df57c7ee29d047e0b",
+      "rates": {
+        "input_price": 2.0,
+        "output_price": 6.0
+      },
+      "known": true,
+      "source": "external reference or unknown"
+    },
+    {
+      "model": "zai.glm-4.7",
+      "candidate_id": "bf562d3d81b62a87f03c62fa",
+      "rates": {
+        "input_price": 0.6,
+        "output_price": 2.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "zai.glm-4.7-flash",
+      "candidate_id": "2623060f2e7a57c97fcb149d",
+      "rates": {
+        "input_price": 0.07,
+        "output_price": 0.4
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    },
+    {
+      "model": "zai.glm-5",
+      "candidate_id": "8128a4bb80db229dd2be8284",
+      "rates": {
+        "input_price": 1.0,
+        "output_price": 3.2
+      },
+      "known": true,
+      "source": "AWS on-demand list price"
+    }
+  ],
+  "historical_usage_repriced": {
+    "records": 74,
+    "known_before": 6,
+    "known_after": 71,
+    "known_sum_usd": "0.84223311",
+    "note": "New snapshot applied to saved usage, not a historical invoice or rerun; original records unchanged.",
+    "unknown": [
+      {
+        "case": "embed-en",
+        "model": "cohere.embed-multilingual-v3",
+        "workflow": "embedding",
+        "usage": null,
+        "previous_cost": null,
+        "reference_at_new_snapshot": null
+      },
+      {
+        "case": "fresh-warehouse-reserve",
+        "model": "xai.grok-4.6",
+        "workflow": "reasoning",
+        "usage": {
+          "inputTokens": 2,
+          "outputTokens": 516,
+          "totalTokens": 599,
+          "cacheReadInputTokens": 81,
+          "cacheWriteInputTokens": 0
+        },
+        "previous_cost": null,
+        "reference_at_new_snapshot": null
+      },
+      {
+        "case": "video-caption",
+        "model": "twelvelabs.pegasus-1-5-v1:0",
+        "workflow": "video_understanding",
+        "usage": null,
+        "previous_cost": null,
+        "reference_at_new_snapshot": null
+      }
+    ]
+  }
+}

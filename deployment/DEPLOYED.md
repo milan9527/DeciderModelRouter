@@ -8,7 +8,13 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-2026-11-26 **当前匿名评测与Liquid选模微调：ECS revision31 / Python3.12 ARM64**，API固定镜像 `sha256:c505f57dcd998dd532ac4925e4cc6c76671f5a51af2c462e30be38553bd50a50`。策略 `gpu-evidence-anonymous-table-v6`，全部合格配置匿名输入第二次GPU；第一阶段七项需求判断不变，文本LiveBench-only，三种偏好继续交给GPU，无Top-K或质量重选。选择概率、第二名差距及适配器版本进入前端、历史和Agent记录。
+2026-11-26 **当前价格补全版本：ECS revision33 / Python3.12 ARM64**，API固定镜像 `sha256:bd5fff2f076fc2ef44ec0847579d0d307104fe36d5afc67d818cfc99838cb202`。价格证据快照 `9c633e91bc31b859f9a288d7` 同时读取AWS的AmazonBedrock与AmazonBedrockFoundationModels目录；文本配置可估价70/106→106/106，其中103项精确AWS价格、3项外部参考价。支持端点地域、长上下文和缓存费率；原始媒体计量保留单位，没有用量则费用未知。前端目录、候选和会话历史可展开AWS单价、阈值与来源。
+
+681项软件回归通过，7次成功目标调用的实际用量与保存费用逐项复算一致，两轮真实Agent完成；另有产线任务选Sol6.1 max后超时，未算作成功，不能沿用价格更新前的71/72成绩。API/Agent诊断在revision32完成，33只修订费用范围说明，计价逻辑相同。GPU权重、两次调用及LiveBench质量证据保持原版本，没有新建或重启GPU。[价格覆盖与方法](../validation/independent_gateway/pricing-2026-11-26/README.zh.md) · [线上结果及超时记录](../validation/independent_gateway/pricing-2026-11-26/live/README.zh.md)。
+
+ECS稳定1/1，根域名200无跳转，S3匿名403，OAC与公网前端哈希一致。[部署核验](../validation/independent_gateway/pricing-2026-11-26/deployment-verification.json) · [完整发布记录](../validation/independent_gateway/pricing-2026-11-26/release.json)。本机审计目录 `.deployment/pricing-20261126/`。
+
+2026-11-26 **价格更新前匿名评测与Liquid选模微调：ECS revision31 / Python3.12 ARM64**，API固定镜像 `sha256:c505f57dcd998dd532ac4925e4cc6c76671f5a51af2c462e30be38553bd50a50`。策略 `gpu-evidence-anonymous-table-v6`，全部合格配置匿名输入第二次GPU；第一阶段七项需求判断不变，文本LiveBench-only，三种偏好继续交给GPU，无Top-K或质量重选。选择概率、第二名差距及适配器版本进入前端、历史和Agent记录。
 
 原 **i-01180cf02d12e6e31 / g5.xlarge / A10G** 已加载固定LoRA摘要 `d9eeae6c4cda5d29b91f3f355d658377714cf5e6080ff6b83fae4d8dabfa048e`，仅第二阶段文本选模启用，基座文件未修改。预热副本切换后正式Liquid/H2O/Decider/网关四服务均active，临时训练及候选容器已停止，无临时定时器。AgentCore保持V2、应用版本3；无新EC2、CloudFormation或Cognito。
 

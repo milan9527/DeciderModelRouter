@@ -1,0 +1,54 @@
+{
+  "openai.gpt-5.4": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-54.html"
+  },
+  "openai.gpt-5.5": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-55.html"
+  },
+  "openai.gpt-5.6-luna": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-luna.html"
+  },
+  "openai.gpt-5.6-sol": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-sol.html"
+  },
+  "openai.gpt-5.6-terra": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-terra.html"
+  },
+  "openai.gpt-6-astra": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html"
+  },
+  "openai.gpt-6-luna": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-luna.html"
+  },
+  "openai.gpt-6-sol": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-sol.html"
+  },
+  "openai.gpt-6.1-sol": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html"
+  },
+  "openai.gpt-6.1-terra": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-terra.html"
+  },
+  "openai.gpt-6.2-astra": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-2-astra.html"
+  },
+  "openai.gpt-6.2-sol": {
+    "threshold": 272000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-2-sol.html"
+  },
+  "anthropic.claude-haiku-5-5": {
+    "threshold": 100000,
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-haiku-5-5.html"
+  }
+}

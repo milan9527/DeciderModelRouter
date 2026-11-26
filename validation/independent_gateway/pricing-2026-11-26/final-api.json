@@ -1,0 +1,19 @@
+{
+  "scope": "Final stable revision33 authenticated catalog, no inference",
+  "catalog_http_status": 200,
+  "model_routing": {
+    "version": "gpu-evidence-anonymous-table-v6",
+    "selector": "gpu_decision_model",
+    "measurement_version": "9c633e91bc31b859f9a288d7",
+    "public_benchmark_version": "90ec5a0626a24cf809474d44",
+    "quality_feedback_version": "95a4894fce73a08c9f495241",
+    "quality_policy_version": "livebench-preference-v3",
+    "text_quality_basis": "livebench_only",
+    "development_text_quality_used": false,
+    "quality_preference_handling": "gpu_only",
+    "quality_reselection_max": 0,
+    "evidence_presentation": "anonymous-evidence-table-v1",
+    "decision_probabilities": "reported_when_valid_not_success_rates",
+    "benchmark_cohort_exclusion": false
+  }
+}

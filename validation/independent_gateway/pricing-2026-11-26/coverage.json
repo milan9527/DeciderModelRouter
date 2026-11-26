@@ -1,0 +1,680 @@
+{
+  "updated": {
+    "ai21.jamba-1-5-large-v1:0": {
+      "input_price": 2.0,
+      "output_price": 8.0,
+      "matched_name": "Jamba 1.5 Large",
+      "inference_scope": "regional"
+    },
+    "ai21.jamba-1-5-mini-v1:0": {
+      "input_price": 0.2,
+      "output_price": 0.4,
+      "matched_name": "Jamba 1.5 Mini",
+      "inference_scope": "regional"
+    },
+    "amazon.nova-2-5-sonic": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Nova 2.5 Sonic",
+      "inference_scope": "regional"
+    },
+    "amazon.nova-2-lite-v1:0": {
+      "input_price": 0.33,
+      "output_price": 2.75,
+      "matched_name": "Nova 2.0 Lite",
+      "inference_scope": "us_cross_region"
+    },
+    "amazon.nova-2-multimodal-embeddings-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Nova MME",
+      "inference_scope": "regional"
+    },
+    "amazon.nova-2-sonic-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Nova Sonic 2.0",
+      "inference_scope": "regional"
+    },
+    "amazon.nova-lite-v1:0": {
+      "input_price": 0.06,
+      "output_price": 0.24,
+      "matched_name": "Nova Lite",
+      "inference_scope": "regional"
+    },
+    "amazon.nova-micro-v1:0": {
+      "input_price": 0.035,
+      "output_price": 0.14,
+      "matched_name": "Nova Micro",
+      "inference_scope": "regional"
+    },
+    "amazon.nova-pro-v1:0": {
+      "input_price": 0.8,
+      "output_price": 3.2,
+      "matched_name": "Nova Pro",
+      "inference_scope": "regional"
+    },
+    "amazon.titan-embed-image-v1": {
+      "input_price": 0.8,
+      "output_price": null,
+      "matched_name": "Titan Embeddings G1 Image",
+      "inference_scope": "regional"
+    },
+    "amazon.titan-embed-text-v1": {
+      "input_price": 0.1,
+      "output_price": null,
+      "matched_name": "Titan Embeddings G1 Text",
+      "inference_scope": "regional"
+    },
+    "amazon.titan-embed-text-v2:0": {
+      "input_price": 0.02,
+      "output_price": null,
+      "matched_name": "TitanEmbeddingsV2-Text-input",
+      "inference_scope": "regional"
+    },
+    "anthropic.claude-fable-5": {
+      "input_price": 11.0,
+      "output_price": 55.0,
+      "matched_name": "Claude Fable 5",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-fable-5-1": {
+      "input_price": 11.0,
+      "output_price": 55.0,
+      "matched_name": "Claude Fable 5.1",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-fable-5-2": {
+      "input_price": 8.8,
+      "output_price": 44.0,
+      "matched_name": "Claude Fable 5.2",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-haiku-4-5-20251001-v1:0": {
+      "input_price": 1.1,
+      "output_price": 5.5,
+      "matched_name": "Claude Haiku 4.5",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-haiku-5-5": {
+      "input_price": 0.11,
+      "output_price": 0.55,
+      "matched_name": "Claude Haiku 5.5",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-opus-4-1-20250805-v1:0": {
+      "input_price": 15.0,
+      "output_price": 75.0,
+      "matched_name": "Claude Opus 4.1",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-opus-4-5-20251101-v1:0": {
+      "input_price": 5.5,
+      "output_price": 27.5,
+      "matched_name": "Claude Opus 4.5",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-opus-4-6-v1": {
+      "input_price": 5.5,
+      "output_price": 27.5,
+      "matched_name": "Claude Opus 4.6",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-opus-4-7": {
+      "input_price": 5.5,
+      "output_price": 27.5,
+      "matched_name": "Claude Opus 4.7",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-opus-4-8": {
+      "input_price": 5.5,
+      "output_price": 27.5,
+      "matched_name": "Claude Opus 4.8",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-opus-5": {
+      "input_price": 5.5,
+      "output_price": 27.5,
+      "matched_name": "Claude Opus 5",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-opus-5-5": {
+      "input_price": 4.4,
+      "output_price": 22.0,
+      "matched_name": "Claude Opus 5.5",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-sonnet-4-5-20250929-v1:0": {
+      "input_price": 3.3,
+      "output_price": 16.5,
+      "matched_name": "Claude Sonnet 4.5",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-sonnet-4-6": {
+      "input_price": 3.3,
+      "output_price": 16.5,
+      "matched_name": "Claude Sonnet 4.6",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-sonnet-5": {
+      "input_price": 2.2,
+      "output_price": 11.0,
+      "matched_name": "Claude Sonnet 5",
+      "inference_scope": "us_cross_region"
+    },
+    "anthropic.claude-sonnet-5-5": {
+      "input_price": 2.2,
+      "output_price": 11.0,
+      "matched_name": "Claude Sonnet 5.5",
+      "inference_scope": "us_cross_region"
+    },
+    "cohere.embed-english-v3": {
+      "input_price": 0.1,
+      "output_price": null,
+      "matched_name": "Embed English",
+      "inference_scope": "regional"
+    },
+    "cohere.embed-multilingual-v3": {
+      "input_price": 0.1,
+      "output_price": null,
+      "matched_name": "Embed Multilingual",
+      "inference_scope": "regional"
+    },
+    "cohere.embed-v4:0": {
+      "input_price": 0.12,
+      "output_price": null,
+      "matched_name": "Embed v4",
+      "inference_scope": "regional"
+    },
+    "cohere.rerank-v3-5:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Rerank 3.5",
+      "inference_scope": "regional"
+    },
+    "deepseek.r1-v1:0": {
+      "input_price": 1.35,
+      "output_price": 5.4,
+      "matched_name": "R1",
+      "inference_scope": "us_cross_region"
+    },
+    "deepseek.v3.2": {
+      "input_price": 0.62,
+      "output_price": 1.85,
+      "matched_name": "DeepSeek V3.2",
+      "inference_scope": "regional"
+    },
+    "google.gemma-3-12b-it": {
+      "input_price": 0.09,
+      "output_price": 0.29,
+      "matched_name": "Gemma 3 12B",
+      "inference_scope": "regional"
+    },
+    "google.gemma-3-27b-it": {
+      "input_price": 0.23,
+      "output_price": 0.38,
+      "matched_name": "Gemma 3 27B",
+      "inference_scope": "regional"
+    },
+    "google.gemma-3-4b-it": {
+      "input_price": 0.04,
+      "output_price": 0.08,
+      "matched_name": "Gemma 3 4B",
+      "inference_scope": "regional"
+    },
+    "meta.llama3-1-70b-instruct-v1:0": {
+      "input_price": 0.72,
+      "output_price": 0.72,
+      "matched_name": "Llama 3.1 70B",
+      "inference_scope": "us_cross_region"
+    },
+    "meta.llama3-1-8b-instruct-v1:0": {
+      "input_price": 0.22,
+      "output_price": 0.22,
+      "matched_name": "Llama 3.1 8B",
+      "inference_scope": "us_cross_region"
+    },
+    "meta.llama3-3-70b-instruct-v1:0": {
+      "input_price": 0.72,
+      "output_price": 0.72,
+      "matched_name": "Llama 3.3 70B",
+      "inference_scope": "us_cross_region"
+    },
+    "meta.llama3-70b-instruct-v1:0": {
+      "input_price": 2.65,
+      "output_price": 3.5,
+      "matched_name": "Llama 3 70B",
+      "inference_scope": "regional"
+    },
+    "meta.llama3-8b-instruct-v1:0": {
+      "input_price": 0.3,
+      "output_price": 0.6,
+      "matched_name": "Llama 3 8B",
+      "inference_scope": "regional"
+    },
+    "meta.llama4-maverick-17b-instruct-v1:0": {
+      "input_price": 0.24,
+      "output_price": 0.97,
+      "matched_name": "Llama 4 Maverick 17B",
+      "inference_scope": "us_cross_region"
+    },
+    "meta.llama4-scout-17b-instruct-v1:0": {
+      "input_price": 0.17,
+      "output_price": 0.66,
+      "matched_name": "Llama 4 Scout 17B",
+      "inference_scope": "us_cross_region"
+    },
+    "minimax.minimax-m2": {
+      "input_price": 0.3,
+      "output_price": 1.2,
+      "matched_name": "MiniMax M2",
+      "inference_scope": "regional"
+    },
+    "minimax.minimax-m2.1": {
+      "input_price": 0.3,
+      "output_price": 1.2,
+      "matched_name": "MiniMax M2.1",
+      "inference_scope": "regional"
+    },
+    "minimax.minimax-m2.5": {
+      "input_price": 0.3,
+      "output_price": 1.2,
+      "matched_name": "MiniMax M2.5",
+      "inference_scope": "regional"
+    },
+    "mistral.devstral-2-123b": {
+      "input_price": 0.4,
+      "output_price": 2.0,
+      "matched_name": "Devstral",
+      "inference_scope": "regional"
+    },
+    "mistral.magistral-small-2509": {
+      "input_price": 0.5,
+      "output_price": 1.5,
+      "matched_name": "Magistral Small 1.2",
+      "inference_scope": "regional"
+    },
+    "mistral.ministral-3-14b-instruct": {
+      "input_price": 0.2,
+      "output_price": 0.2,
+      "matched_name": "Ministral 14B 3.0",
+      "inference_scope": "regional"
+    },
+    "mistral.ministral-3-3b-instruct": {
+      "input_price": 0.1,
+      "output_price": 0.1,
+      "matched_name": "Ministral 3B 3.0",
+      "inference_scope": "regional"
+    },
+    "mistral.ministral-3-8b-instruct": {
+      "input_price": 0.15,
+      "output_price": 0.15,
+      "matched_name": "Ministral 8B 3.0",
+      "inference_scope": "regional"
+    },
+    "mistral.mistral-7b-instruct-v0:2": {
+      "input_price": 0.15,
+      "output_price": 0.2,
+      "matched_name": "mistral 7b",
+      "inference_scope": "regional"
+    },
+    "mistral.mistral-large-2402-v1:0": {
+      "input_price": 4.0,
+      "output_price": 12.0,
+      "matched_name": "Mistral Large",
+      "inference_scope": "regional"
+    },
+    "mistral.mistral-large-3-675b-instruct": {
+      "input_price": 0.5,
+      "output_price": 1.5,
+      "matched_name": "Mistral Large 3",
+      "inference_scope": "regional"
+    },
+    "mistral.mistral-small-2402-v1:0": {
+      "input_price": 1.0,
+      "output_price": 3.0,
+      "matched_name": "Mistral Small",
+      "inference_scope": "regional"
+    },
+    "mistral.mixtral-8x7b-instruct-v0:1": {
+      "input_price": 0.45,
+      "output_price": 0.7,
+      "matched_name": "mixtral 8x7b",
+      "inference_scope": "regional"
+    },
+    "mistral.pixtral-large-2502-v1:0": {
+      "input_price": 2.0,
+      "output_price": 6.0,
+      "matched_name": "Pixtral Large (25.02)",
+      "inference_scope": "us_cross_region"
+    },
+    "mistral.voxtral-mini-3b-2507": {
+      "input_price": 0.04,
+      "output_price": 0.04,
+      "matched_name": "Voxtral Mini 1.0",
+      "inference_scope": "regional"
+    },
+    "mistral.voxtral-small-24b-2507": {
+      "input_price": 0.1,
+      "output_price": 0.3,
+      "matched_name": "Voxtral Small 1.0",
+      "inference_scope": "regional"
+    },
+    "moonshot.kimi-k2-thinking": {
+      "input_price": 0.6,
+      "output_price": 2.5,
+      "matched_name": "Kimi K2 Thinking",
+      "inference_scope": "regional"
+    },
+    "moonshotai.kimi-k2.5": {
+      "input_price": 0.6,
+      "output_price": 3.0,
+      "matched_name": "Kimi K2.5",
+      "inference_scope": "regional"
+    },
+    "nvidia.nemotron-nano-12b-v2": {
+      "input_price": 0.2,
+      "output_price": 0.6,
+      "matched_name": "NVIDIA Nemotron Nano 2 VL",
+      "inference_scope": "regional"
+    },
+    "nvidia.nemotron-nano-3-30b": {
+      "input_price": 0.06,
+      "output_price": 0.24,
+      "matched_name": "Nemotron Nano 3 30B",
+      "inference_scope": "regional"
+    },
+    "nvidia.nemotron-nano-9b-v2": {
+      "input_price": 0.06,
+      "output_price": 0.23,
+      "matched_name": "NVIDIA Nemotron Nano 2",
+      "inference_scope": "regional"
+    },
+    "nvidia.nemotron-super-3-120b": {
+      "input_price": 0.15,
+      "output_price": 0.65,
+      "matched_name": "NVIDIA Nemotron 3 Super 120B A12B",
+      "inference_scope": "regional"
+    },
+    "openai.gpt-5.4": {
+      "input_price": 2.75,
+      "output_price": 16.5,
+      "matched_name": "OpenAI GPT 5.4",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-5.5": {
+      "input_price": 5.5,
+      "output_price": 33.0,
+      "matched_name": "OpenAI GPT 5.5",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-5.6-luna": {
+      "input_price": 0.22,
+      "output_price": 1.32,
+      "matched_name": "OpenAI GPT-5.6 Luna",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-5.6-sol": {
+      "input_price": 4.4,
+      "output_price": 22.0,
+      "matched_name": "OpenAI GPT-5.6 Sol",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-5.6-terra": {
+      "input_price": 2.2,
+      "output_price": 13.2,
+      "matched_name": "OpenAI GPT-5.6 Terra",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-6-astra": {
+      "input_price": 11.0,
+      "output_price": 55.0,
+      "matched_name": "OpenAI GPT-6 Astra",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-6-luna": {
+      "input_price": 0.11,
+      "output_price": 0.55,
+      "matched_name": "OpenAI GPT-6 Luna",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-6-sol": {
+      "input_price": 2.2,
+      "output_price": 11.0,
+      "matched_name": "OpenAI GPT-6 Sol",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-6.1-sol": {
+      "input_price": 2.2,
+      "output_price": 11.0,
+      "matched_name": "OpenAI GPT-6.1 Sol",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-6.1-terra": {
+      "input_price": 1.1,
+      "output_price": 5.5,
+      "matched_name": "OpenAI GPT-6.1 Terra",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-6.2-astra": {
+      "input_price": 8.8,
+      "output_price": 44.0,
+      "matched_name": "OpenAI GPT-6.2 Astra",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-6.2-sol": {
+      "input_price": 2.2,
+      "output_price": 11.0,
+      "matched_name": "OpenAI GPT-6.2 Sol",
+      "inference_scope": "us_cross_region"
+    },
+    "openai.gpt-oss-120b-1:0": {
+      "input_price": 0.15,
+      "output_price": 0.6,
+      "matched_name": "gpt-oss-120b",
+      "inference_scope": "regional"
+    },
+    "openai.gpt-oss-20b-1:0": {
+      "input_price": 0.07,
+      "output_price": 0.3,
+      "matched_name": "gpt-oss-20b",
+      "inference_scope": "regional"
+    },
+    "openai.gpt-oss-safeguard-120b": {
+      "input_price": 0.15,
+      "output_price": 0.6,
+      "matched_name": "GPT OSS Safeguard 120B",
+      "inference_scope": "regional"
+    },
+    "openai.gpt-oss-safeguard-20b": {
+      "input_price": 0.07,
+      "output_price": 0.2,
+      "matched_name": "GPT OSS Safeguard 20B",
+      "inference_scope": "regional"
+    },
+    "qwen.qwen3-32b-v1:0": {
+      "input_price": 0.15,
+      "output_price": 0.6,
+      "matched_name": "Qwen3 32B",
+      "inference_scope": "regional"
+    },
+    "qwen.qwen3-coder-30b-a3b-v1:0": {
+      "input_price": 0.15,
+      "output_price": 0.6,
+      "matched_name": "Qwen3 Coder 30B A3B",
+      "inference_scope": "regional"
+    },
+    "qwen.qwen3-coder-next": {
+      "input_price": 0.5,
+      "output_price": 1.2,
+      "matched_name": "Qwen3 Coder Next",
+      "inference_scope": "regional"
+    },
+    "qwen.qwen3-vl-235b-a22b": {
+      "input_price": 0.53,
+      "output_price": 2.66,
+      "matched_name": "Qwen3 VL 235B A22B",
+      "inference_scope": "regional"
+    },
+    "stability.stable-conservative-upscale-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-creative-upscale-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-fast-upscale-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-image-control-sketch-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-image-control-structure-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-image-erase-object-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-image-inpaint-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-image-remove-background-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-image-search-recolor-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-image-search-replace-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-image-style-guide-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-outpaint-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "stability.stable-style-transfer-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Stability AI Image Services",
+      "inference_scope": "us_cross_region"
+    },
+    "twelvelabs.marengo-embed-2-7-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Marengo Embed 2.7",
+      "inference_scope": "us_cross_region"
+    },
+    "twelvelabs.marengo-embed-3-0-v1:0": {
+      "input_price": null,
+      "output_price": null,
+      "matched_name": "Marengo Embed 3.0",
+      "inference_scope": "regional"
+    },
+    "twelvelabs.pegasus-1-2-v1:0": {
+      "input_price": null,
+      "output_price": 7.5,
+      "matched_name": "Pegasus 1.2",
+      "inference_scope": "regional"
+    },
+    "twelvelabs.pegasus-1-5-v1:0": {
+      "input_price": null,
+      "output_price": 7.5,
+      "matched_name": "TwelveLabs Pegasus 1.5",
+      "inference_scope": "us_cross_region"
+    },
+    "writer.palmyra-vision-7b": {
+      "input_price": 0.15,
+      "output_price": 0.6,
+      "matched_name": "Writer Palmyra Vision 7B",
+      "inference_scope": "regional"
+    },
+    "writer.palmyra-x4-v1:0": {
+      "input_price": 2.5,
+      "output_price": 10.0,
+      "matched_name": "Palmyra X4",
+      "inference_scope": "us_cross_region"
+    },
+    "writer.palmyra-x5-v1:0": {
+      "input_price": 0.6,
+      "output_price": 6.0,
+      "matched_name": "Palmyra X5",
+      "inference_scope": "us_cross_region"
+    },
+    "zai.glm-4.7": {
+      "input_price": 0.6,
+      "output_price": 2.2,
+      "matched_name": "GLM 4.7",
+      "inference_scope": "regional"
+    },
+    "zai.glm-4.7-flash": {
+      "input_price": 0.07,
+      "output_price": 0.4,
+      "matched_name": "GLM 4.7 Flash",
+      "inference_scope": "regional"
+    },
+    "zai.glm-5": {
+      "input_price": 1.0,
+      "output_price": 3.2,
+      "matched_name": "GLM 5",
+      "inference_scope": "regional"
+    }
+  },
+  "missing": [
+    "amazon.nova-2-lite-v1:0:256k",
+    "amazon.nova-lite-v1:0:24k",
+    "amazon.nova-lite-v1:0:300k",
+    "amazon.nova-micro-v1:0:128k",
+    "amazon.nova-micro-v1:0:24k",
+    "amazon.nova-pro-v1:0:24k",
+    "amazon.nova-pro-v1:0:300k",
+    "amazon.titan-embed-g1-text-02",
+    "amazon.titan-embed-image-v1:0",
+    "amazon.titan-embed-text-v1:2:8k",
+    "amazon.titan-embed-text-v2:0:8k",
+    "cohere.embed-english-v3:0:512",
+    "cohere.embed-multilingual-v3:0:512",
+    "moonshotai.kimi-k3",
+    "moonshotai.kimi-k3.1",
+    "qwen.qwen3-next-80b-a3b",
+    "zai.glm-5.3",
+    "xai.grok-4.6",
+    "xai.grok-4.7"
+  ],
+  "version": "9c633e91bc31b859f9a288d7"
+}

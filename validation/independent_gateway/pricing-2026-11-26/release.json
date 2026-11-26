@@ -1,0 +1,66 @@
+{
+  "release_id": "ed68a4fc70594f8d89c5175b75261a0b",
+  "resources": {
+    "cluster": "decider-model-router",
+    "service": "decider-model-router",
+    "bucket": "decider-model-router-632930644527-us-east-1",
+    "distribution_id": "E3OCAAF3NQ1LYX",
+    "region": "us-east-1"
+  },
+  "previous_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:32",
+  "new_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:33",
+  "phase": "complete",
+  "objects": [
+    {
+      "key": "gateway/gateway.css",
+      "sha256": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67",
+      "size": 26651,
+      "previous_version": "ATzaPfFmvWRNUy.aKC3iXGQ5UrkaoB1c",
+      "version": "a4pgnyPt9k7DSR1q33L8w4nBiiDwr1Zx"
+    },
+    {
+      "key": "gateway/decision-details.js",
+      "sha256": "a93eb4f6e7b685de891c5d52529e39801dabd43f3632876c8e56addd4c5cf69c",
+      "size": 4728,
+      "previous_version": "kpNiVAGn.IrfMZd2Y7Nkx5eI5iuc.4mQ",
+      "version": "dzeDTZenKBTFqI7qS9CcJKN0PXGaE6mJ"
+    },
+    {
+      "key": "gateway/workspace.js",
+      "sha256": "533e2760e831f25f187cf596fc5855d20b54ca89f619da07c8f0a57de1a5b047",
+      "size": 41430,
+      "previous_version": "R2VfMdAjIcWttzwPkLb_qo3PAn4Gi92g",
+      "version": "glliSrFus93Lx.CHqsFBp45YejCvqBTv"
+    },
+    {
+      "key": "gateway/agents.js",
+      "sha256": "c6a59c5e6713dd17add31647c8350ca1252a4c7169c2281f012e31bbbbd906e6",
+      "size": 12345,
+      "previous_version": "mtDB94myQz.0GxO7NmUxygua8cWu87Y2",
+      "version": "2uH6oB58wuR6hwjIDlXxcG8wxRl1tDWM"
+    },
+    {
+      "key": "gateway/gateway.js",
+      "sha256": "e3966b3ee0af857cd63e67ea1d3fb59f79a4b055c2ce5cfb5b86b83a777e34ff",
+      "size": 53066,
+      "previous_version": "QydFfMdq20bCgCFTuTpV6lsKs2lVQ4Ct",
+      "version": "GssUVTJFnzHKN2C4ktXujvvx_Y4TL6d2"
+    },
+    {
+      "key": "gateway/mark.svg",
+      "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+      "size": 276,
+      "previous_version": "Ehqnncm0CUysVgibqkft6gNFJ2gqBUXN",
+      "version": "XeTpPw_FPAQiMnNdT8NtJKHy0asVxEla"
+    },
+    {
+      "key": "gateway/index.html",
+      "sha256": "7321a5b98ae6d35720e6aa1bb792697db48c403ce6405577f1849d5df72d1966",
+      "size": 40538,
+      "previous_version": "CS7V0N8SHUd3ZNW6ukp0zGcfSY0DcZpT",
+      "version": "WoxNfr66RSQzNrLshQbQjcLhsRFBvm5k"
+    }
+  ],
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "invalidation_id": "I83ODN9DW96J8ZZBVPSWSQZ0O5"
+}

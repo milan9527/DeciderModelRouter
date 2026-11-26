@@ -75,6 +75,9 @@ def money(value):
 
 def observed_reference_cost(benchmark, usage, workflow):
     """Price reported usage at the snapshot rates, without claiming a billed cost."""
+    if (benchmark.get("pricing_source") or {}).get("rates"):
+        from app.bedrock_pricing import observed_cost
+        return money(observed_cost(benchmark, usage, workflow))
     usage = usage or {}
     if usage.get("cacheReadInputTokens", 0) or usage.get("cacheWriteInputTokens", 0):
         # Flat reference prices do not describe native cache read/write rates.
@@ -97,6 +100,10 @@ def balanced_pool(task, workflow, pool, rankings):
     rows, excluded = [], dict(pool["excluded"])
     for row in pool["candidates"]:
         mid, metrics = row["model"]["id"], row["benchmark"]["metrics"]
+        pricing = row["benchmark"].get("pricing_source") or {}
+        if pricing.get("rates") and workflow in TEXT_WORKFLOWS | {"embedding"}:
+            from app.bedrock_pricing import rates_for
+            metrics = rates_for(pricing, input_tokens)
         reason = None
         if policy.allowed_models is not None and mid not in policy.allowed_models:
             reason = "不在本次模型允许列表"
@@ -119,6 +126,9 @@ def balanced_pool(task, workflow, pool, rankings):
                 "cost_evidence": {
                     "expected_usd": money(expected),
                     "at_output_cap_usd": money(at_cap),
+                    "pricing_scope": pricing.get("inference_scope", "external_reference"),
+                    "context_tier": "long_context" if pricing.get("long_context_threshold") is not None
+                    and input_tokens > pricing["long_context_threshold"] else "standard",
                 },
             }
         )
@@ -138,10 +148,11 @@ def balanced_pool(task, workflow, pool, rankings):
             "max_reference_cost_usd": money(policy.max_reference_cost_usd),
             "ranking_version": rankings["version"],
             "captured_at": rankings.get("captured_at"),
-            "price_scope": "external_reference_not_bedrock_quote",
+            "price_scope": "aws_list_price_or_external_reference_not_invoice",
             "limitations": (
-                "Flat reference rates and estimated tokens, not an actual bill or spending cap. "
-                "No cache discounts, price tiers, media/tool fees, or router cost included. "
+                "Snapshot reference rates and estimated tokens, not an actual bill or spending cap. "
+                "Documented context tiers are applied; estimates assume no cache hits. "
+                "Media/tool fees and router cost are not included. "
                 "Hidden reasoning tokens must fit within the configured output cap where supported. "
                 "The UTF-8 proxy is not model tokenization and excludes provider prompt framing."
             ),
@@ -205,6 +216,6 @@ def balance_catalog():
         "version": BALANCE_VERSION,
         "default_preferences": RoutingPreferences().model_dump(mode="json"),
         "cost_tiers": list(TIER_GUIDANCE),
-        "price_scope": "外部参考价格，不是 Bedrock 报价或实际账单上限。",
+        "price_scope": "优先采用匹配的AWS目录价格，其他单独标为外部参考；不是实际账单上限。",
         "supported_workflows": sorted(TEXT_WORKFLOWS | {"embedding"}),
     }

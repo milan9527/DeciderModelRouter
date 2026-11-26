@@ -477,6 +477,12 @@
               <p>候选型号用匿名编号表示，文本能力按LiveBench同批次相关分项比较。Liquid增加仅用于文本选模的微调权重，第一步需求判断保持原模型。旧答题测试和开发回归分数不参与文本选模。</p>
               <p class="footnote">仍是两次GPU调用，保留能力优先 / 均衡 / 成本优先，默认均衡；没有额外质量分数门槛或质量重选。运行约束与多模态专项依据保留。过程、会话历史和Agent步骤显示选择倾向，它不是回答正确率。</p>
             </section>
+            <section id="pricing-validation" class="panel padded-panel">
+              <h2>AWS价格补全 · 2026-11-26</h2>
+              <p>文本候选106/106可估价，其中103个配置使用精确AWS价格，3个保留外部参考价。合并Bedrock与FoundationModels官方价格表；模型目录和候选详情展示单价、区域、缓存费率及来源。</p>
+              <p class="footnote">按实际端点区分美国跨区域与Global；GPT输入超过272,000 Token、Haiku 5.5超过100,000 Token时使用长上下文价格。图片、音视频保留原计量单位，用量未知不补零。以下72项质量结果采自价格更新前，不代表新价格下重新评测的正确率。</p>
+              <p><a href="https://github.com/milan9527/DeciderModelRouter/blob/main/validation/independent_gateway/pricing-2026-11-26/README.zh.md" target="_blank" rel="noopener noreferrer">查看价格来源、覆盖范围和验证 ↗</a></p>
+            </section>
             <section id="latest-routing-validation" class="panel padded-panel" aria-labelledby="latest-routing-validation-title">
               <h2 id="latest-routing-validation-title">匿名证据与Liquid微调验收 · 2026-11-26</h2>
               <p><strong>最终完整验收：71/72（98.6%）；内容核验：72/72。</strong>文本、代码与检索61/62，多模态6/6，本地Agent四轮4/4；代码功能7/7。唯一未完全通过的保险题多输出了“元”。674项软件测试通过。</p>
