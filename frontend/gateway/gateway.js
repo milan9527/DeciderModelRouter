@@ -160,7 +160,7 @@ async function enter(user) {
     )
     .join("");
   $("#catalog-summary").textContent =
-    `${catalog.models.length} 个 Bedrock 型号 · ${catalog.evidence_inventory.bedrock_measured_models || 0} 个已有端点实测记录 · ${catalog.evidence_inventory.public_benchmarks?.model_count ?? catalog.evidence_inventory.mapped_models} 个有公开能力评测。GPU 结合 OpenRouter、LiveBench 和 Bedrock 实测选择；配置差异及缺失项见详情。`;
+    `${catalog.models.length} 个 Bedrock 型号 · ${catalog.evidence_inventory.bedrock_measured_models || 0} 个已有端点实测记录 · ${catalog.evidence_inventory.public_benchmarks?.model_count ?? catalog.evidence_inventory.mapped_models} 个有公开能力评测。文本能力按 LiveBench 判断；旧答题测试仅作历史展示，不参与文本选模。端点实测仍用于延迟和接口兼容，多模态保留专项依据。`;
   $("#benchmark-release").innerHTML =
     '<option value="auto">自动 · 全部可用候选</option>' +
     [...catalog.evidence_inventory.benchmark_releases].reverse()
@@ -429,11 +429,12 @@ function renderCandidates() {
   );
   if (s.selection_source === "gpu_decision_model") {
     const names = Object.fromEntries(rows.map(r => [r.candidate_id, r.model.name]));
-    $("#candidates").innerHTML = `<p class="footnote">${s.decision_mode === "joint" ? "所有可能适用的配置一次交给 GPU，同时判断任务属性和模型选择；下表显示符合本轮任务属性的配置。" : s.decision_mode === "two_stage" ? "第一次GPU判断需求，筛选后第二次GPU比较全部合格配置。" : s.decision_mode === "single_choice" ? "全部合格配置在一次GPU请求中比较。" : "此历史记录使用分组比较。"}${s.quality_policy ? "首次选模收到全部合格配置；能力优先还需通过质量校验，最多一次GPU重选。" : "此历史记录保留当时策略，未应用新增能力优先校验。"}小样本实测仅反映这些测试题；外部成绩不跨批次直接比较。</p>
-      ${qualityPolicyHTML(s)}<div class="table-scroll"><table class="candidate-table"><thead><tr><th>模型 / 配置</th><th>预计费用</th><th>实测与公开能力评测</th><th>GPU 结果</th></tr></thead><tbody>${rows.map(r => `<tr class="${r.candidate_id === s.selected_candidate_id ? "selected" : ""}"><td>${esc(r.model.name)}<small>${esc(JSON.stringify(r.benchmark.request_fields || {}))} · ${r.measurement_configuration ? (r.measurement_configuration.max_output_tokens != null ? `实测上限 ${r.measurement_configuration.max_output_tokens} Token` : "专用接口实测") : "此配置没有直接实测"}</small><small>本次输出上限 ${esc(r.output_token_limit ?? "由专用接口决定")}</small></td><td>${usd(r.cost_evidence?.expected_usd)}<small>${esc(r.price_scope)}</small></td><td>${measurementHTML(r.measured_evidence)}${feedbackHTML(r.quality_feedback)}${publicEvidenceHTML(r.public_benchmarks, "已提供给 GPU 的公开依据")}${!r.public_benchmarks?.length ? (r.public_evidence || []).map(e => `<small>外部参考：${esc(e.source)} ${esc(e.release)} · ${esc(JSON.stringify(e.scores))}</small>`).join("") : ""}</td><td>${r.candidate_id === s.selected_candidate_id ? "✓ GPU 已选择" : "已参与判断，未选中"}${r.quality_assessment ? `<small>${esc(r.quality_assessment.reason)}</small>` : ""}</td></tr>`).join("")}</tbody></table></div>
+    $("#candidates").innerHTML = `<p class="footnote">${s.decision_mode === "joint" ? "所有可能适用的配置一次交给 GPU，同时判断任务属性和模型选择；下表显示符合本轮任务属性的配置。" : s.decision_mode === "two_stage" ? "第一次GPU判断需求，筛选后第二次GPU比较全部合格配置。" : s.decision_mode === "single_choice" ? "全部合格配置在一次GPU请求中比较。" : "此历史记录使用分组比较。"}${s.quality_policy?.preference_handling === "gpu_only" ? "三种偏好统一交给GPU判断，不按质量分数淘汰候选，不增加质量重选。" : s.quality_policy ? "此历史策略曾额外执行能力优先校验，最多一次GPU重选。" : "此历史记录保留当时策略。"}外部成绩不跨批次直接比较。</p>
+      ${s.quality_basis === "livebench_only" ? "<p class=\"footnote\">本次文本质量仅依据 LiveBench；旧答题测试和开发回归分数不参与选择。延迟、价格、接口兼容仍单独检查。</p>" : ""}
+      ${qualityPolicyHTML(s)}<div class="table-scroll"><table class="candidate-table"><thead><tr><th>模型 / 配置</th><th>预计费用</th><th>运行实测与质量依据</th><th>GPU 结果</th></tr></thead><tbody>${rows.map(r => `<tr class="${r.candidate_id === s.selected_candidate_id ? "selected" : ""}"><td>${esc(r.model.name)}<small>${esc(JSON.stringify(r.benchmark.request_fields || {}))} · ${r.measurement_configuration ? (r.measurement_configuration.max_output_tokens != null ? `实测上限 ${r.measurement_configuration.max_output_tokens} Token` : "专用接口实测") : "此配置没有直接实测"}</small><small>本次输出上限 ${esc(r.output_token_limit ?? "由专用接口决定")}</small></td><td>${usd(r.cost_evidence?.expected_usd)}<small>${esc(r.price_scope)}</small></td><td>${r.quality_basis === "livebench_only" ? operationalHTML(r.measured_evidence) : measurementHTML(r.measured_evidence)}${feedbackHTML(r.quality_feedback)}${publicEvidenceHTML(r.public_benchmarks, "已提供给 GPU 的公开依据")}${!r.public_benchmarks?.length ? (r.quality_basis === "livebench_only" ? "<small>缺少本次相关的 LiveBench 依据</small>" : (r.public_evidence || []).map(e => `<small>外部参考：${esc(e.source)} ${esc(e.release)} · ${esc(JSON.stringify(e.scores))}</small>`).join("")) : ""}</td><td>${r.candidate_id === s.selected_candidate_id ? "✓ GPU 已选择" : "已参与判断，未选中"}${r.quality_assessment ? `<small>${esc(r.quality_assessment.reason)}</small>` : ""}</td></tr>`).join("")}</tbody></table></div>
       <details class="excluded"><summary>GPU 决策过程（${s.decision_calls?.length || 0} 次）</summary>${(s.decision_calls || []).map(c => `<p>${c.mode === "profile" ? "需求判断" : c.mode === "selection" ? "模型选择" : c.mode === "quality_reselection" ? "质量校验后的GPU重选" : `第 ${c.round} 轮`} · ${esc(c.model)} · ${ms(c.timings?.backend_total_ms)}<br>候选：${c.mode === "profile" ? "一次评估全部7项需求" : c.candidate_ids.map(id => esc(names[id] || id)).join("、")}<br>选择：${c.mode === "profile" ? "见上方任务属性" : esc(names[c.selected_candidate_id] || "不执行")}${c.quality_check ? `<small>${s.quality_policy?.active ? "质量校验" : "候选校验"}：${c.quality_check.accepted ? "通过" : "未通过"} ${esc(c.quality_check.reason || "")}</small>` : ""}<small>输入摘要 ${esc(c.input_hash)}</small></p>`).join("")}</details>
       <details class="excluded"><summary>未进入本次决策的原因（${Object.keys(s.excluded).length}）</summary>${Object.entries(s.excluded).map(([k,v]) => `<p><code>${esc(k)}</code><br>${esc(v)}</p>`).join("")}</details>
-      <p class="footnote">实测版本 ${esc(s.measurement_version)} · 公开评测版本 ${esc(s.public_benchmark_version || "此历史记录未接入")} · 任务回归版本 ${esc(s.quality_feedback_version || "此历史记录未接入")}。费用不含 GPU，不代表账单；公开分数保留原始口径，不代表本次成功概率。</p>`;
+      <p class="footnote">实测版本 ${esc(s.measurement_version)} · 公开评测版本 ${esc(s.public_benchmark_version || "此历史记录未接入")} · 任务回归 ${s.quality_basis === "livebench_only" ? "不用于本次文本选模" : esc(s.quality_feedback_version || "此历史记录未接入")}。费用不含 GPU，不代表账单；公开分数保留原始口径，不代表本次成功概率。</p>`;
     return;
   }
   $("#candidates").innerHTML =
@@ -471,6 +472,9 @@ function feedbackHTML(f) {
   return `<details class="model-evidence"><summary>新增任务回归：内容 ${f.content_passed}/${f.samples} · 完整验收 ${f.strict_passed}/${f.samples}</summary>
     <p>${esc(f.failure_categories.join("、") || "这些样本没有已判定失败")}</p>
     <p class="footnote">已复核的开发任务，输入和预算不同，单独提供给GPU；不与原6题或公开榜单混算，不代表生产成功率。</p></details>`;
+}
+function operationalHTML(m) {
+  return `<small>端点运行记录：P95 ${ms(m?.p95_ms)} · 调用错误 ${m?.call_errors ?? "未知"}<br>短请求实测，仅供延迟参考，不是本次耗时预测或质量分数。</small>`;
 }
 function measurementHTML(m) {
   if (!m?.samples) return "此类任务尚无直接质量实测";
@@ -785,7 +789,7 @@ function renderModels() {
 }
 function modelEvidence(row) {
   const direct = row.bedrock_evaluation;
-  const directHTML = direct ? `<strong>Bedrock 端点${({measured:"已补测",blocked:"调用受限",unmeasured:"待补测"})[direct.status] || direct.status}</strong><small>${esc(direct.reason || "接口完成不等于内容正确，分项见下方")}</small><details class="model-evidence"><summary>查看直接实测</summary>${Object.entries(direct.measurements || {}).map(([k,v]) => `<p><strong>${esc(k)}</strong><br>${measurementHTML(v)}</p>`).join("")}${Object.keys(direct.errors || {}).length ? `<p>错误记录：${esc(JSON.stringify(direct.errors))}</p>` : ""}<p><a href="https://github.com/milan9527/DeciderModelRouter/blob/main/validation/independent_gateway/bedrock-evidence-2026-11-26/README.zh.md" target="_blank" rel="noopener noreferrer">评测方法与完整记录 ↗</a></p></details>` : "";
+  const directHTML = direct ? `<strong>Bedrock 端点${({measured:"已补测",blocked:"调用受限",unmeasured:"待补测"})[direct.status] || direct.status}</strong><small>${esc(direct.reason || "接口完成不等于内容正确，分项见下方")}</small><details class="model-evidence"><summary>查看直接实测与历史评分</summary><p class="footnote">旧文本答题分数不参与当前选模；保留运行延迟、接口兼容和多模态专项依据。</p>${Object.entries(direct.measurements || {}).map(([k,v]) => `<p><strong>${esc(k)}</strong><br>${measurementHTML(v)}</p>`).join("")}${Object.keys(direct.errors || {}).length ? `<p>错误记录：${esc(JSON.stringify(direct.errors))}</p>` : ""}<p><a href="https://github.com/milan9527/DeciderModelRouter/blob/main/validation/independent_gateway/bedrock-evidence-2026-11-26/README.zh.md" target="_blank" rel="noopener noreferrer">评测方法与完整记录 ↗</a></p></details>` : "";
   const labels = {
     benchmarked: "已映射评测",
     public_reference: "已接入公开能力评测",

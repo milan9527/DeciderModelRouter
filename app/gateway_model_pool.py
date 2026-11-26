@@ -6,13 +6,17 @@ import json
 
 from app.bedrock_evidence import load_evidence, measured, measured_scores, public_summary
 from app.bedrock_limits import model_limits, output_limit
-from app.public_benchmarks import evidence_for, load_public_benchmarks
+from app.public_benchmarks import (
+    TEXT_QUALITY_WORKFLOWS,
+    load_public_benchmarks,
+    routing_evidence_for,
+)
 from app.quality_feedback import evidence_for as regression_for
 from app.quality_feedback import load_feedback
 from app.routing_balance import balanced_pool, preferences
 from app.routing_selector import configuration_id
 
-MODEL_ROUTING_VERSION = "gpu-evidence-quality-priority-v4"
+MODEL_ROUTING_VERSION = "gpu-evidence-livebench-preference-v5"
 
 
 def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evidence=None):
@@ -22,6 +26,7 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
     public_snapshot = load_public_benchmarks()
     feedback = load_feedback()
     policy = preferences(task)
+    livebench_only = profile.workflow in TEXT_QUALITY_WORKFLOWS
     rows, excluded = [], {}
     media = profile.workflow in MEDIA_WORKFLOWS or bool(task.attachments)
     for original in sorted(catalog["models"], key=lambda m: m["id"]):
@@ -93,6 +98,13 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
                 continue
             exact = observation if not fields and not inference else {}
             scores = measured_scores(exact, profile.workflow)
+            if livebench_only:
+                # Old answer/format grades are neither GPU evidence nor eligibility criteria.
+                # Exact-endpoint timing and transport failures remain operational measurements.
+                scores = {k: v for k, v in scores.items() if k in {"p50_ms", "p95_ms", "call_errors"}}
+            if livebench_only and policy.min_success_rate is not None:
+                excluded[mid + "/" + config] = "LiveBench分数不是任务成功概率，无法核验最小成功率约束"
+                continue
             if policy.min_success_rate is not None and (
                 not scores or scores.get("success_lower_bound", -1) < policy.min_success_rate
             ):
@@ -110,7 +122,8 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
                 # Text length omits image patches, audio duration and video frames.
                 metrics = {}
             bench = {
-                "source": "bedrock_development" if exact else "public_evidence" if benchmarks else "unmeasured",
+                "source": ("bedrock_operational" if livebench_only else "bedrock_development")
+                          if exact else "public_evidence" if benchmarks else "unmeasured",
                 "benchmark_configuration": "Bedrock " + mid + " / " + config,
                 "configuration_status": "verified" if caps.get("converse") or benchmarks or media else "unmeasured",
                 "request_fields": fields, "inference_config": inference,
@@ -128,20 +141,21 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
                     "account_available", "invocation"}}, "benchmark": bench,
                 **({"adapter": aid} if aid else {}),
                 "measured_evidence": scores, "measurement_configuration": exact.get("configuration"),
-                "specialized_evidence": exact.get("measurements", {}).get("safety"),
+                "quality_basis": "livebench_only" if livebench_only else "modality_evidence",
+                "specialized_evidence": None if livebench_only else exact.get("measurements", {}).get("safety"),
                 "protocol_evidence": {w: {k: v for k, v in exact.get("measurements", {}).get(w, {}).items()
                                          if k in {"samples", "content_passed", "content_scored", "p95_ms"}}
-                                      for w in ("tools", "multi_turn")},
+                                      for w in ("tools", "multi_turn")} if not livebench_only else {},
                 "measurement_version": evidence["version"],
                 "output_token_limit": effective_cap,
                 "output_limit_source": limits.get("ceiling_kind"),
-                "public_evidence": [public_summary(b, profile.workflow) for b in benchmarks[:1]],
-                "public_benchmarks": evidence_for(mid, profile.workflow,
+                "public_evidence": [] if livebench_only else [public_summary(b, profile.workflow) for b in benchmarks[:1]],
+                "public_benchmarks": routing_evidence_for(mid, profile.workflow,
                     agent=bool(getattr(runtime, "agent_tools", False)), snapshot=public_snapshot),
                 "price_scope": "AWS on-demand list price" if observation.get("pricing") else "external reference or unknown",
                 "task_scores": {}, "business_evidence": None, "p95_ms": scores.get("p95_ms"),
                 "selection_cost_usd": None,
-                "capability_evidence": {"adapter": aid, "quality_evaluated": bool(scores)},
+                "capability_evidence": {"adapter": aid, "quality_evaluated": False if livebench_only else bool(scores)},
             })
     pool = balanced_pool(task, profile.workflow, {
         "candidates": rows, "candidate_count": len(rows), "excluded": excluded,
@@ -151,7 +165,7 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
     }, rankings)
     for row in pool["candidates"]:
         row["selection_cost_usd"] = row["cost_evidence"]["expected_usd"]
-        row["quality_feedback"] = regression_for(row, profile.workflow, feedback)
+        row["quality_feedback"] = None if livebench_only else regression_for(row, profile.workflow, feedback)
     if runtime:
         # The ordinary context/health checks remain; the Agent's old model allowlist does not.
         from app.gateway_conversation import Conversation
@@ -161,10 +175,12 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
     return {
         **pool, "routing_version": MODEL_ROUTING_VERSION, "measurement_version": evidence["version"],
         "public_benchmark_version": public_snapshot["version"],
-        "quality_feedback_version": feedback["version"],
+        "quality_feedback_version": None if livebench_only else feedback["version"],
+        "quality_basis": "livebench_only" if livebench_only else "modality_evidence",
         "profile": profile.model_dump(), "requested_tier": policy.cost_tier,
         "effective_tier": policy.cost_tier, "tier_reason": "成本偏好随评测证据交给决策模型判断。",
-        "evidence_mode": "bedrock_measurements_and_public_evidence",
+        "evidence_mode": "livebench_quality_with_operational_constraints" if livebench_only
+                         else "bedrock_measurements_and_public_evidence",
         "selection_source": "gpu_decision_model", "selected_candidate_id": None,
         "frontier": [], "benchmark_group": None, "benchmark_groups": [],
         "cost_mode": "reference_cost", "latency_used": any(r["p95_ms"] is not None for r in pool["candidates"]),

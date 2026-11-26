@@ -4,8 +4,8 @@ import json
 from types import SimpleNamespace
 
 from app.bedrock_evidence import load_evidence, measured
-from app.gateway_model_decision import select_all
 from app.gateway_joint_decision import all_candidates, joint_payload
+from app.gateway_model_decision import select_all
 from app.gateway_model_pool import build_pool
 from app.routing import Task, exclusion, load_catalog, load_rankings
 from app.routing_profile import replay_profile
@@ -21,14 +21,15 @@ def test_every_compatible_default_configuration_reaches_pool_including_new_unmap
     pool = pool_for()
     by_id = {r["model"]["id"]: r for r in pool["candidates"]}
     assert "openai.gpt-6.2-sol" in by_id
-    assert by_id["openai.gpt-6.2-sol"]["measured_evidence"]["samples"] >= 1
+    assert by_id["openai.gpt-6.2-sol"]["measured_evidence"]["p95_ms"] > 0
+    assert "content_passed" not in by_id["openai.gpt-6.2-sol"]["measured_evidence"]
     assert not by_id["openai.gpt-6.2-sol"]["public_evidence"]
     assert len(by_id) > 60
     assert pool["filter_summary"]["benchmark_cohort_exclusion"] is False
     assert pool["filter_summary"]["quality_top_k_filter"] is False
     assert pool["selected_candidate_id"] is None
-    assert len({r["public_evidence"][0]["release"] for r in pool["candidates"]
-                if r["public_evidence"]}) > 1
+    assert all(not r["public_evidence"] for r in pool["candidates"])
+    assert all(e["source"] == "livebench" for r in pool["candidates"] for e in r["public_benchmarks"])
 
 
 def test_measured_scores_are_bound_to_exact_endpoint_and_configuration():
@@ -59,7 +60,7 @@ def test_joint_request_keeps_all_configurations_evidence_and_complete_current_re
     for key, row in aliases.items():
         original = row["workflow_evidence"].get("coding", {}).get("measured")
         if original:
-            assert f"Coding correctness {original['content_passed']}/{original['content_scored']}" in data["questions"]["action"]["criteria"][key]
+            assert "Coding correctness" not in data["questions"]["action"]["criteria"][key]
 
 
 def test_output_limits_use_exact_endpoint_and_never_raise_caller_budget():
@@ -82,7 +83,10 @@ def test_single_gpu_call_sees_every_candidate_and_changes_winner_with_evidence()
     sample = base["candidates"][0]
     rows = [{**copy.deepcopy(sample), "candidate_id": f"candidate-{i:02}",
              "model": {**sample["model"], "name": f"Model {i}"},
-             "measured_evidence": {"samples": 50, "content_passed": i + 1, "content_scored": 50}}
+             "public_benchmarks": [{"id": f"score-{i}", "source": "livebench",
+                 "benchmark": "LiveBench 2", "release": "2026-11-06", "metric": "mean_task_score_0_100",
+                 "status": "completed", "configuration": "default",
+                 "scores": {"Coding": i + 1}, "sample_counts": {"Coding": 50}}]}
             for i in range(37)]
     body = SimpleNamespace(task=Task(text="Implement correct Python"), provider="liquid")
     runtime = SimpleNamespace(options=SimpleNamespace(stickiness=True),
@@ -98,7 +102,7 @@ def test_single_gpu_call_sees_every_candidate_and_changes_winner_with_evidence()
             import re
             cards = {key: value for key, value in criteria.items() if key != "none"}
             assert len(cards) == 37
-            key = max(cards, key=lambda k: int(re.search(r"Coding correctness (\d+)/", cards[k])[1]))
+            key = max(cards, key=lambda k: int(re.search(r"Coding=(\d+)", cards[k])[1]))
             return {"answers": {"action": {"choice": key}}, "model": "test-gpu",
                     "timings": {"backend_total_ms": 1}, "usage": None}
 
@@ -110,7 +114,7 @@ def test_single_gpu_call_sees_every_candidate_and_changes_winner_with_evidence()
         assert seen == {r["candidate_id"] for r in rows}
         assert first["evaluated_configurations"] == 37
         assert len(first["decision_calls"]) == 1
-        rows[0]["measured_evidence"]["content_passed"] = 50
+        rows[0]["public_benchmarks"][0]["scores"]["Coding"] = 50
         second = await select_all(Service(), body, request, {**base, "candidates": rows})
         assert second["selected_candidate_id"] == "candidate-00"
     asyncio.run(check())

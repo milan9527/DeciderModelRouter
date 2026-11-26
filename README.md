@@ -1,6 +1,6 @@
 # DeciderModelRouter
 
-独立的 Amazon Bedrock 模型网关：GPU先一次评估全部任务需求，再一次依据Bedrock实测、公开评测、价格和延迟选择目标模型；后端校验能力、预算与配额，前端展示完整决策过程。
+独立的 Amazon Bedrock 模型网关：GPU先一次评估全部任务需求，再一次依据LiveBench文本质量分项或多模态专项评测、价格和运行延迟选择目标模型；后端校验能力、预算与配额，前端展示完整决策过程。
 
 生产服务使用专用 **CloudFront + OAC + 私有 S3、ECS Fargate、DynamoDB、g5.xlarge GPU 和 VPC**。自建用户认证，不使用 Cognito；基础设施通过 AWS SDK 创建，不使用 CloudFormation。[打开在线工作台](https://d3eipg2g3l3an3.cloudfront.net/)，当前状态和资源见 [部署记录](deployment/DEPLOYED.md)。
 
@@ -10,9 +10,13 @@
 
 [下载 SVG 矢量图](docs/diagrams/decider-model-router-aws.zh.svg) · [下载高清 PNG](docs/diagrams/decider-model-router-aws.zh.png)
 
-GPU默认使用 **Liquid d1-2B** 完成任务判断和型号选择，也可切换 Decider 或 H2O。实时路由采用 `gpu-evidence-quality-priority-v4`：第一次GPU返回七项需求，后端筛选后，第二次GPU依据评测选择配置；全部合格配置参与判断，不再按榜单批次、程序Top-K或Agent固定名单提前淘汰。能力优先的最终选择还需通过同批次相关分项校验，未通过时最多增加一次GPU重选，不静默降级；程序不指定赢家。直接评测绑定精确Bedrock端点；内容正确、格式、接口支持、延迟和样本量分别提供给决策模型。[新机制与补测方法](docs/BEDROCK_CLASSIFIED_ROUTING.zh.md) · [逐型号补测报告](validation/independent_gateway/bedrock-evidence-2026-11-26/README.zh.md)。历史87场景通过率保留，不能当作新策略准确率。
+GPU默认使用 **Liquid d1-2B**，也可切换Decider或H2O。当前策略为 `gpu-evidence-livebench-preference-v5`：一次GPU评估七项需求，再一次GPU比较全部符合运行约束的配置并选择。**文本能力仅按LiveBench判断，旧6题测试与开发回归分数不参与文本选模。能力优先、均衡、成本优先保留为任务选项，统一交给GPU，不设置5分淘汰门槛、不做额外质量拦截或质量重选。默认仍为均衡。** 接口能力、权限、预算和显式延迟约束继续检查；多模态保留专项评测。[当前规则与限制](docs/PUBLIC_BENCHMARK_EVIDENCE.zh.md) · [决策流程](docs/BEDROCK_CLASSIFIED_ROUTING.zh.md)。
 
-**最新能力优先修复与功能验证**：增加型号能力、具体推理档的实测依据校验及最多一次GPU重选；执行票据复核证据版本，回退不降低原质量标准。复杂产线改选 **GPT‑6.2 Sol默认配置**，约 **11.5秒** 完整回答并通过复核，解决此前缺少可比依据却选MiniMax、以及未经直接评测的max档超时问题。**624项软件测试通过**。
+本次639项软件测试通过，ECS revision30和前端已更新；包含旧评分不影响候选及GPU输入、三种偏好共用路径、原有权限/预算/延迟约束及会话/Agent回归。线上11次网关请求及两轮Agent完成，但Liquid对同一产线题三种偏好均选Devstral，产线和Agent回答仍有内容错误；功能完成不作为质量提升证明。[本次变更、实际选择与失败记录](validation/independent_gateway/livebench-preference-2026-11-26/README.zh.md)。
+
+以下56项及更早的结果属于历史策略，不代表当前版本准确率。缺少LiveBench成绩的型号仍可以被GPU选择，未知不补分；这一机制不保证每次选中榜单第一或业务最优模型。
+
+**上一版能力优先修复与功能验证（历史）**：增加型号能力、具体推理档的实测依据校验及最多一次GPU重选；执行票据复核证据版本，回退不降低原质量标准。复杂产线改选 **GPT‑6.2 Sol默认配置**，约 **11.5秒** 完整回答并通过复核，解决此前缺少可比依据却选MiniMax、以及未经直接评测的max档超时问题。**624项软件测试通过**。
 
 最终56项已见题目复测：完整验收 **40/56（71.4%）**，内容正确 **48/56（85.7%）**，执行完成 **56/56**。原44项验收30项、内容37项；专项12题验收10项、内容11项。首轮56题的44项验收/50项内容正确和两次产线超时均保留，不能宣称本轮已证明整体质量提高。
 
@@ -29,7 +33,7 @@ GPU默认使用 **Liquid d1-2B** 完成任务判断和型号选择，也可切�
 
 58次路由均为两次GPU调用，13次能力优先选择均通过策略校验；这不等于13个答案都正确。决策合计P50 **998ms**、P95 **1180ms**（本地后端+私有HTTP，不含目标生成）。行业与代码模板默认16384输出Token，用户显式上限保留。[两轮完整报告、16个未通过项、模块检查与线上验证](validation/independent_gateway/quality-priority-2026-11-26/README.zh.md) · [质量规则及限制](docs/PUBLIC_BENCHMARK_EVIDENCE.zh.md#能力优先校验) · [前端摘要](https://d3eipg2g3l3an3.cloudfront.net/#evaluations)。
 
-**已部署ECS revision 29并核验前端**。单列的线上功能检查中，Liquid/H2O/Decider均完成选模，Decider一次不合格选择经第三次GPU纠正；历史追问正确，缓存实际读取3843Token。AgentCore V2三轮完成工具查询、历史去重和代码任务，第三轮从Fable 5.2切换到5.1，代码84项功能检查通过。产线流式回答约10.6秒完成。这些是功能诊断，不替代上述整体质量分数。[线上记录、部署故障与浏览器截图](validation/independent_gateway/quality-priority-2026-11-26/live/README.zh.md)。
+**上一版部署ECS revision 29并核验前端（历史）**。单列的线上功能检查中，Liquid/H2O/Decider均完成选模，Decider一次不合格选择经第三次GPU纠正；历史追问正确，缓存实际读取3843Token。AgentCore V2三轮完成工具查询、历史去重和代码任务，第三轮从Fable 5.2切换到5.1，代码84项功能检查通过。产线流式回答约10.6秒完成。这些是功能诊断，不替代上述整体质量分数。[线上记录、部署故障与浏览器截图](validation/independent_gateway/quality-priority-2026-11-26/live/README.zh.md)。
 
 **上一轮延迟优化与44项定向复测（历史）**：现有A10G上的Liquid第二阶段启用编译加速，第一阶段保持原推理路径；候选、评测依据和两次GPU调用不变。同输入第二阶段P50 **1061→784ms（减少26.1%）**、P95 **1159→867ms**；这是GPU服务耗时，不含ECS与目标生成。严格验收 **31/44（70.5%）→30/44（68.2%）**，内容正确 **39/44（88.6%）→37/44（84.1%）**，未证明质量提高。正式固定输入46次选模一致；计入已知额外产线输入为46/47，不能宣称任意输入完全一致。609项软件测试通过。[完整方法、差异与原始记录](validation/independent_gateway/latency-quality-2026-11-26/README.zh.md) · [前端复测摘要](https://d3eipg2g3l3an3.cloudfront.net/#evaluations)。
 

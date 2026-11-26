@@ -113,7 +113,7 @@ def test_live_snapshot_reaches_default_candidates_without_authorizing_source_eff
     assert "Reasoning=90.6(n=202)" in text and "Data Analysis=81.1(n=150)" in text
     assert "tested=highest_supported_effort" in text
     assert "LiveBench 2" in data["questions"]["action"]["instructions"]
-    assert "does not establish equal capability" in data["questions"]["action"]["instructions"]
+    assert "TEXT QUALITY uses ONLY" in data["questions"]["action"]["instructions"]
     # Changing the actual evidence must change what the GPU receives, not just UI metadata.
     changed = copy.deepcopy(rows)
     r = next(r for r in changed if r["candidate_id"] == sol["candidate_id"])

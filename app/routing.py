@@ -724,7 +724,7 @@ async def auto_execute(body: AutoExecute, request: Request):
             raise HTTPException(409, "决策模型选择的配置已不满足当前能力或硬约束。")
         quality = attach_quality(selection, task, agent=bool(getattr(runtime, "agent_tools", False)))
         if not accepted(quality, record["configuration_id"]):
-            raise HTTPException(409, "所选配置未通过当前能力优先校验，请重新决策。")
+            raise HTTPException(409, "所选配置不在当前能力及预算候选中，请重新决策。")
         selection["selected_candidate_id"] = record["configuration_id"]
         if runtime:
             # Preserve the actual GPU decision audit; never re-run a deterministic ranker.

@@ -7,6 +7,7 @@ from pathlib import Path
 
 PATH = Path(__file__).with_name("public_benchmarks.json")
 VERSION = "public-capabilities-v1"
+TEXT_QUALITY_WORKFLOWS = frozenset({"reasoning", "coding", "general_text", "customer_support"})
 RELEVANT = {
     "reasoning": {"Reasoning", "Mathematics", "Data Analysis", "GPQA Diamond"},
     "coding": {"Coding", "Agentic Coding", "Deep SWE", "SWE Atlas QA", "Terminal Bench 4.0"},
@@ -40,6 +41,14 @@ def evidence_for(model_id, workflow, *, agent=False, snapshot=None):
         if scores:
             rows.append({**record, "scores": scores,
                          "sample_counts": {k: record.get("sample_counts", {}).get(k) for k in scores}})
+    return rows
+
+
+def routing_evidence_for(model_id, workflow, *, agent=False, snapshot=None):
+    """Text quality uses LiveBench only; keep the complete archive for inspection."""
+    rows = evidence_for(model_id, workflow, agent=agent, snapshot=snapshot)
+    if workflow in TEXT_QUALITY_WORKFLOWS:
+        rows = [r for r in rows if r["source"] == "livebench"]
     return rows
 
 

@@ -31,24 +31,22 @@ async def select_all(service, body, request, selection):
     candidates = [{**r, "workflow": selection["profile"]["workflow"]} for r in candidates]
     state = json.loads(profile_input["state"]) if profile_input else {"request": body.task.text}
     state["task_profile"] = selection["profile"]
-    state["quality_policy"] = {k: policy[k] for k in ("version", "active", "comparison", "note")}
+    state["quality_policy"] = {k: policy[k] for k in (
+        "version", "active", "comparison", "note", "cost_tier", "preference_handling")}
     if selection.get("reroute_reason"):
         state["execution_failure"] = selection["reroute_reason"]
     profile_input = {"state": json.dumps(state, ensure_ascii=False), "questions": {}}
     if runtime:
         profile_input = runtime.classify(profile_input)
-    selected = None
-    for attempt in range(2):
-        if not candidates:
-            break
-        data, aliases = joint_payload(body, request, profile_input, candidates, assessed=True)
-        result = await service.infer(body, request, data, selection=True)
-        choice = result["answers"]["action"]["choice"]
-        winner = aliases.get(choice)
-        proposed = winner["candidate_id"] if winner else None
-        valid = accepted(policy, proposed)
-        calls.append({
-            "round": len(calls) + 1, "mode": "selection" if attempt == 0 else "quality_reselection",
+    data, aliases = joint_payload(body, request, profile_input, candidates, assessed=True)
+    result = await service.infer(body, request, data, selection=True)
+    choice = result["answers"]["action"]["choice"]
+    winner = aliases.get(choice)
+    proposed = winner["candidate_id"] if winner else None
+    valid = accepted(policy, proposed)
+    selected = proposed if valid else None
+    calls.append({
+            "round": len(calls) + 1, "mode": "selection",
             "candidate_ids": [r["candidate_id"] for r in candidates],
             "selected_candidate_id": proposed, "choice": choice, "model": result["model"],
             "provider": body.provider,
@@ -63,28 +61,8 @@ async def select_all(service, body, request, selection):
             "public_evidence_records": {
                 r["candidate_id"]: [e["id"] for e in r.get("public_benchmarks", [])] for r in candidates
             },
-        })
-        if valid:
-            selected = proposed
-            break
-        # The first call saw every eligible configuration. One explicit repair
-        # call may choose among policy-compliant configurations, never a CPU winner.
-        if not policy["active"] or proposed is None:
-            break
-        candidates = [r for r in candidates if accepted(policy, r["candidate_id"])]
-        state = json.loads(profile_input["state"])
-        state["quality_reselection"] = {
-            "rejected_candidate": proposed,
-            "instruction": "The previous choice violated QUALITY FIRST. Choose from the remaining compliant models.",
-        }
-        profile_input = {**profile_input, "state": json.dumps(state, ensure_ascii=False)}
-    selection["quality_reselection_count"] = sum(c.get("mode") == "quality_reselection" for c in calls)
-    if selected is None and policy["active"]:
-        selection.update(
-            decision_rejection="quality_requirement_not_met", execution_ready=False,
-            reason="GPU未选出符合本次质量要求的配置，已停止执行；没有静默降级。",
-            execution_notice="能力优先校验未通过，请查看质量依据与重选记录。",
-        )
+    })
+    selection["quality_reselection_count"] = 0
     selection_ms = (perf_counter() - started) * 1000
     selection.update(assessment_ms=assessment_ms, selection_ms=round(selection_ms, 3))
     return finish_selection(body, request, selection, selected, calls,

@@ -1,0 +1,23 @@
+{
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "root_http_status": 200,
+  "root_redirect": false,
+  "s3_anonymous_status": 403,
+  "oac_verified": true,
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:30",
+  "image_digest": "sha256:bd5dff155dba01962317370a2b3895398563b33beeddd54ae015ea1f608b974a",
+  "running": 1,
+  "pending": 0,
+  "rollout": "COMPLETED",
+  "assets": {
+    "index.html": "b2a576408b1bd3ac031df95058ace520af6fdc64679a75147a29f96a9b5a89bf",
+    "gateway.js": "5b4f675d49990068a7c896e3b5bcf197b32b61aaeae0ba02db7c6ec6236fa3d7",
+    "workspace.js": "be50a5d19d0931d404697047a1da83f0ff7b1d26d25cb8bd51ea9328d18399e5",
+    "agents.js": "8be2c8702a984a49d3f749143341b7ad77336704bade10825aad6a70f5b03668",
+    "gateway.css": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67"
+  },
+  "gpu_instance": "i-01180cf02d12e6e31",
+  "gpu_recreated": false,
+  "invalidation_id": "I3FJMZV0910YW8WVRO8PVX2BVF",
+  "invalidation_status": "Completed"
+}

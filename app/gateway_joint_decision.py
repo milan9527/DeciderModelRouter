@@ -6,7 +6,7 @@ from time import perf_counter
 
 from app.bedrock_evidence import load_evidence
 from app.gateway_model_pool import build_pool
-from app.public_benchmarks import evidence_cards
+from app.public_benchmarks import TEXT_QUALITY_WORKFLOWS, evidence_cards
 from app.routing_balance import preferences
 from app.routing_media import resolve_workflow
 from app.routing_profile import QUESTIONS, RequestProfile, parse_profile
@@ -71,22 +71,25 @@ def counts(sample):
 
 def card(row, previous, references):
     """Keep quality descriptions readable and counts exact; round latency to 0.01s."""
-    dev, public, latency, incomplete, strict = {}, {}, {}, {}, {}
+    dev, public, latency, incomplete, strict, errors = {}, {}, {}, {}, {}, {}
     for workflow, values in row.get("workflow_evidence", {
         row.get("workflow", "general_text"): {
             "measured": row.get("measured_evidence"), "public": row.get("public_evidence")}
     }).items():
-        if sample := counts(values.get("measured")):
-            code = WORKFLOW_CODES[workflow]
+        raw = values.get("measured") or {}
+        code = WORKFLOW_CODES[workflow]
+        if raw.get("p95_ms") is not None:
+            latency[code] = round(raw["p95_ms"] / 1000, 2)
+        if raw.get("call_errors"):
+            errors[code] = raw["call_errors"]
+        if workflow not in TEXT_QUALITY_WORKFLOWS and (sample := counts(raw)):
             dev[code] = f"{sample[0]}/{sample[1]}"
             if sample[2] != sample[1] or sample[3] or sample[4]:
                 incomplete[code] = f"{sample[2]}/{sample[3]}/{sample[4]}"
-            if sample[5] is not None:
-                latency[code] = round(sample[5] / 1000, 2)
-            raw = values["measured"]
             if raw.get("strict_passed") is not None:
                 strict[code] = f"{raw['strict_passed']}/{sample[2]}"
-        for ref in (values.get("public") or []) if not row.get("public_benchmarks") else []:
+        for ref in ((values.get("public") or [])
+                    if workflow not in TEXT_QUALITY_WORKFLOWS and not row.get("public_benchmarks") else []):
             key = json.dumps([ref.get("source"), ref.get("release")])
             ref_id = references.setdefault(key, f"r{len(references)}")
             public.setdefault(ref_id, {}).update(ref.get("scores") or {})
@@ -108,12 +111,18 @@ def card(row, previous, references):
         parts.append("incomplete=" + ",".join(k + v for k, v in incomplete.items()))
     if latency:
         parts.append("p95s=" + ",".join(k + str(v) for k, v in latency.items()))
+    else:
+        parts.append("p95s=unknown")
+    if errors:
+        parts.append("call-errors=" + ",".join(k + str(v) for k, v in errors.items()))
     for ref_id, metrics in public.items():
         if metrics and set(metrics) <= set(PUBLIC_COLUMNS):
             parts.append(ref_id + "=" + "/".join(str(metrics.get(k, "?")) for k in PUBLIC_COLUMNS))
         elif metrics:
             parts.append(ref_id + "=" + json.dumps(metrics, separators=(",", ":")))
-    external = {r["id"]: r for r in row.get("public_benchmarks", [])}
+    text_quality = row.get("workflow", "general_text") in TEXT_QUALITY_WORKFLOWS
+    external = {r["id"]: r for r in row.get("public_benchmarks", [])
+                if not text_quality or r["source"] == "livebench"}
     for values in row.get("workflow_evidence", {}).values():
         for record in values.get("public_benchmarks", []):
             if record["id"] in external:
@@ -130,20 +139,18 @@ def card(row, previous, references):
         return "Y" if value is True else "N" if value is False else "?"
     parts.append("cap=" + capability(caps.get("tools")) + capability(caps.get("structured_output")))
     parts.append("out=" + str(row.get("output_token_limit", "?")))
-    for key, value in (row.get("protocol_evidence") or {}).items():
+    for key, value in ((row.get("protocol_evidence") or {}) if not text_quality else {}).items():
         if value:
             parts.append(key + "=" + f"{value.get('content_passed')}/{value.get('content_scored')}")
-    if safety := counts(row.get("specialized_evidence")):
+    if not text_quality and (safety := counts(row.get("specialized_evidence"))):
         parts.append("safety=" + f"{safety[0]}/{safety[1]}")
-    if feedback := row.get("quality_feedback"):
+    if not text_quality and (feedback := row.get("quality_feedback")):
         parts.append(
             f"new-regression content={feedback['content_passed']}/{feedback['samples']}"
             f",complete={feedback['strict_passed']}/{feedback['samples']}"
             ",failures=" + ",".join(feedback["failure_categories"])
             + " (different tasks/budgets; nonrandom development)"
         )
-    if quality := row.get("quality_assessment"):
-        parts.append("quality-policy=" + ("PASS" if quality["accepted"] else "REJECT"))
     if row["candidate_id"] == previous:
         parts.append("previous")
     return ";".join(parts)
@@ -171,28 +178,21 @@ def joint_payload(body, request, profile_input, rows, *, assessed=False):
     assessment_instruction = (
         "The task_profile in state is the completed first-stage GPU assessment. "
         "All listed configurations satisfy its hard constraints. Choose using that assessment "
-        "and the matching workflow tests, cost and latency. "
+        "and the matching LiveBench dimensions for text quality, cost and latency. "
         "For complex tasks or high stronger_model_benefit, prioritize correctness and complete-output "
         "acceptance before price. A summary or handoff can still require accurate calculation, "
         "history recall and strict format; do not downgrade merely because the answer is short. "
         "Keep user corrections and verified facts from earlier turns. Tool success does not prove "
-        "business correctness. Unknown or zero-pass protocol evidence is a risk, not a guarantee. "
+        "business correctness. Protocol compatibility is an operational constraint, not a quality score. "
         if assessed else
         "Infer its needs directly; the other questions are answered simultaneously, not prior results. "
         "All listed configurations remain eligible for at least one workflow. "
         "Use the matching workflow's tests, cost and latency. "
     )
-    priority = (
-        "QUALITY FIRST is a hard selection requirement. Select only a quality-policy=PASS candidate "
-        "when policy labels are supplied. Missing comparable evidence is uncertainty, not equivalent "
-        "capability. Prefer relevant quality evidence and reviewed regressions before cost or previous "
-        "model. Lower price must NEVER compensate for materially weaker quality. "
-        if policy.cost_tier == "high" else
-        "Balance task adequacy and cost according to the stated preference. "
-    )
     instructions = (
         "Select the best execution model for the current request in context. " + assessment_instruction +
-        priority +
+        "Use the stated quality/cost preference to weigh the evidence yourself. "
+        "All candidates are options; there is no programmatic quality cutoff or quality reselection. " +
         "Respect tools/schema and workflow capabilities. "
         "cap=two symbols for tools/schema: Y=verified yes,N=no,?=unknown; out=execution output-token ceiling. "
         "w workflow codes: g=general/support,c=coding,r=reasoning,e=embedding,i=image understanding,"
@@ -201,10 +201,13 @@ def joint_payload(body, request, profile_input, rows, *, assessed=False):
         "strict=complete-output acceptance passed/total, including format and completion checks. "
         "p95s=measured P95 seconds rounded to 0.01s. "
         "Small development samples are not production success probabilities; missing means unknown, not zero. "
-        "A small 6/6 development result does not establish equal capability between models. "
-        "new-regression is separately reviewed task evidence: consider its failures, not just old 6/6 scores. "
-        "Do not treat combined regression counts as population success probabilities. "
-        "Use task-relevant OpenRouter and LiveBench public evidence to distinguish capabilities, "
+        "For ALL cost preferences, TEXT QUALITY uses ONLY task-relevant LiveBench evidence. "
+        "Old development correctness/format tests and reviewed regressions are not text selection criteria. "
+        "Do not infer text quality from endpoint latency, transport success, protocol support or test availability. "
+        "Missing LiveBench evidence remains unknown; never substitute old development scores. "
+        "For media workflows, use their separate modality evidence; do not infer media quality from text scores. "
+        "new-regression and tools/multi_turn/safety scores, when supplied for media, describe only those tests. "
+        "Use task-relevant public evidence to distinguish capabilities, "
         "especially for complex tasks, high stronger_model_benefit or quality preference. "
         "Public tested= names the tested configuration/effort, not this candidate's execution settings. "
         "These are SAME MODEL references from other endpoints/configurations; higher-effort results do not "
@@ -213,6 +216,8 @@ def joint_payload(body, request, profile_input, rows, *, assessed=False):
         "n=? is unknown sample size; INCOMPLETE is an unfinished evaluation, not a complete pass rate. "
         "Category mean scores are not pass percentages. LiveBench 1 and 2 are different suites. "
         "Public benchmarks do not establish industry-specific business acceptance. "
+        "Exact-configuration p95s is operational timing on old short requests, not a forecast for this task. "
+        "Unmeasured effort settings have unknown latency; never inherit default-configuration timing. "
         "tools/multi_turn tests are passed/scored; safety only measures safety classification. "
         "public raw scores compare only within the same source/release/metric. "
         "Public slash-vector columns are Coding/Agentic Coding/Language/IF/Reasoning/Mathematics/Data Analysis; "
@@ -233,7 +238,7 @@ def joint_payload(body, request, profile_input, rows, *, assessed=False):
 
 async def assess_and_select(service, body, request, profile_input, catalog, rankings, exclusion):
     from app.gateway_model_decision import finish_selection
-    from app.routing_quality import accepted, attach_quality
+    from app.routing_quality import attach_quality
 
     started = perf_counter()
     rows, evidence = all_candidates(body, request, catalog, rankings, exclusion)
@@ -258,13 +263,6 @@ async def assess_and_select(service, body, request, profile_input, catalog, rank
         selected = None
         selection["reason"] = "同次GPU返回的模型与任务能力或硬约束不一致，本次不执行。"
         selection["decision_rejection"] = "incompatible_joint_answers"
-    elif selected and not accepted(quality, selected):
-        selected = None
-        selection.update(
-            reason="联合决策未通过能力优先校验，本次不执行。",
-            decision_rejection="quality_requirement_not_met", execution_ready=False,
-            execution_notice="能力优先校验未通过。",
-        )
     calls = [{
         "round": 1, "mode": "joint", "candidate_ids": [r["candidate_id"] for r in rows],
         "selected_candidate_id": chosen["candidate_id"] if chosen else None,

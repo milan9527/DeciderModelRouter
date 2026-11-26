@@ -472,9 +472,14 @@
           </section>
           <section data-view="evaluations" hidden>
             <div class="page-heading"><div><p class="eyebrow">REPRODUCIBLE EVALUATIONS</p><h1>从选模到实际任务效果</h1><p class="muted">比较输出质量、能力覆盖、耗时与成本。分类标签诊断保留在下方。</p></div></div>
+            <section id="current-routing-policy" class="panel padded-panel">
+              <h2>当前选模依据：LiveBench</h2>
+              <p>文本能力按 LiveBench 相关分项判断，旧答题测试和开发回归分数不参与选模。“能力优先 / 均衡 / 成本优先”保留为任务偏好，由GPU统一判断，没有额外质量分数门槛或质量重选。</p>
+              <p class="footnote">默认仍为均衡。正常两次GPU调用：一次判断需求，一次选模型。接口能力、权限、预算等运行约束保留；多模态仍使用专项依据。下方旧版分数不代表当前策略准确率。</p>
+            </section>
             <section id="latest-routing-validation" class="panel padded-panel" aria-labelledby="latest-routing-validation-title">
-              <h2 id="latest-routing-validation-title">能力优先修复与模块验证 · 2026-11-26</h2>
-              <p><strong>能力优先：</strong>同时核验型号能力与具体推理档的实测依据，费用与沿用模型不能越过质量要求。正常两次 GPU 调用，未通过时最多增加一次重选。</p>
+              <h2 id="latest-routing-validation-title">上一版修复与模块验证（历史）· 2026-11-26</h2>
+              <p>此批次使用旧版能力优先质量门槛及配置实测校验。当前已取消这些额外质量处理，原始测试结果保留。</p>
               <p><strong>完整遵循要求：40/56（71.4%）。内容正确：48/56（85.7%）。</strong>56项全部执行完成，624项软件测试通过；原44项回归验收30项，能力优先专项12题验收10项。均为已见题目复测，不是全场景准确率。</p>
               <p>复杂产线改选GPT‑6.2 Sol已实测默认配置，约11.5秒完成回答并通过复核；代码功能7/7、完整要求4/7，多模态6/6，本地Agent多轮2/4。</p>
               <p class="footnote">58次路由均为两次GPU调用，决策合计P50 998ms、P95 1180ms（本地后端与私有HTTP，不含目标生成）。首轮验收44/56、内容50/56，max档曾超时，原记录保留。本轮仍有16项未完全遵循要求，未证明整体质量提高。</p>

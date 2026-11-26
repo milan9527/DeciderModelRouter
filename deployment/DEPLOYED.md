@@ -8,7 +8,9 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-2026-11-26 **当前能力优先修复版本：ECS revision 29 / Python 3.12 ARM64**，API镜像 `sha256:dcec050d21fa47e6e540931d4d71d92eabf2793b9577fc3d161debed7b9fef25`。策略 `gpu-evidence-quality-priority-v4`、质量约束 `quality-priority-v2`；同批次能力证据与精确配置实测进入校验，正常两次GPU，不合格时最多一次GPU重选，目标失败回退保持原质量标准。沿用 **i-01180cf02d12e6e31 / g5.xlarge / A10G** 与原编译推理实现，AgentCore保持 **V2 / 应用版本3**；无新建EC2、CloudFormation或Cognito。
+2026-11-26 **当前LiveBench统一偏好版本：ECS revision 30 / Python 3.12 ARM64**，API镜像 `sha256:bd5dff155dba01962317370a2b3895398563b33beeddd54ae015ea1f608b974a`。策略 `gpu-evidence-livebench-preference-v5`；文本质量仅用LiveBench，旧答题和回归评分不再参与文本选模。保留能力优先/均衡/成本优先选项，由GPU统一判断；取消5分淘汰、配置答题资格门槛和额外质量重选。639项软件测试通过，镜像实际目录加载通过；历史56项准确率不归属于此版本。[本次验证](../validation/independent_gateway/livebench-preference-2026-11-26/README.zh.md)。沿用现有GPU、AgentCore V2、认证与数据库，未创建新基础设施。本机审计目录 `.deployment/livebench-only-20261126/`。
+
+2026-11-26 **上一版能力优先修复：ECS revision 29 / Python 3.12 ARM64**，API镜像 `sha256:dcec050d21fa47e6e540931d4d71d92eabf2793b9577fc3d161debed7b9fef25`。策略 `gpu-evidence-quality-priority-v4`、质量约束 `quality-priority-v2`；同批次能力证据与精确配置实测进入校验，正常两次GPU，不合格时最多一次GPU重选，目标失败回退保持原质量标准。沿用 **i-01180cf02d12e6e31 / g5.xlarge / A10G** 与原编译推理实现，AgentCore保持 **V2 / 应用版本3**；无新建EC2、CloudFormation或Cognito。
 
 **624项软件测试通过**。最终56项已见任务回归全部执行完成，完整验收 **40/56**、内容正确 **48/56**，仍有16项未通过；不宣称整体质量提高。产线选择 **GPT‑6.2 Sol默认配置**，离线目标生成11.5秒，线上流式10.6秒且通过内容复核。正式域名验证Liquid/H2O/Decider全部候选选模；Decider真实拦截一次Haiku选择并经第三次GPU改选Astra。连续会话、3843缓存读Token、AgentCore三轮工具/历史/代码切换、生成代码84项隔离功能检查及浏览器验证通过。上述线上诊断单列，不加入56项分母。[报告与未通过项](../validation/independent_gateway/quality-priority-2026-11-26/README.zh.md) · [线上验证](../validation/independent_gateway/quality-priority-2026-11-26/live/README.zh.md)。
 

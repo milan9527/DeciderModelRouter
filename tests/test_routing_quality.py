@@ -9,7 +9,7 @@ from fastapi import HTTPException
 from app.gateway_model_decision import select_all
 from app.quality_feedback import evidence_for, load_feedback
 from app.routing import Task
-from app.routing_quality import accepted, attach_quality, quality_policy
+from app.routing_quality import accepted, quality_policy
 
 
 def candidate(cid, scores=None, *, price="0.01", benchmark="LiveBench 2", release="2026-11-06"):
@@ -40,130 +40,77 @@ def fixture():
     return task, profile, rows
 
 
-def test_quality_is_not_cheapest_six_of_six_or_a_cpu_winner():
+@pytest.mark.parametrize("tier", ["high", "medium", "low"])
+def test_preferences_never_apply_programmatic_quality_cutoffs(tier):
     task, profile, rows = fixture()
+    task.routing_preferences.cost_tier = tier
     policy = quality_policy(task, profile, rows)
-    assert set(policy["allowed_candidate_ids"]) == {"strong-a", "strong-b"}
-    assert not accepted(policy, "cheap")
-    assert not accepted(policy, "weak")
-    assert policy["assessments"]["cheap"]["evidence"] is None
-    assert policy["comparison"]["scope"] == "external_same_model_not_current_Bedrock_configuration"
-    reversed_rows = copy.deepcopy(rows[::-1])
-    for row in reversed_rows:
-        row["cost_evidence"]["expected_usd"] = "9999"
-    assert set(quality_policy(task, profile, reversed_rows)["allowed_candidate_ids"]) == {"strong-a", "strong-b"}
+    assert not policy["active"] and policy["preference_handling"] == "gpu_only"
+    assert policy["cost_tier"] == tier
+    assert policy["allowed_candidate_ids"] == [r["candidate_id"] for r in rows]
+    assert policy["assessments"] == {} and policy["comparison"] is None
     assert "selected_candidate_id" not in policy
+    # Both missing public evidence and low scores remain choices for the GPU.
+    assert accepted(policy, "cheap") and accepted(policy, "weak")
 
 
-def test_quality_follows_changed_evidence_not_model_names():
+def test_changed_scores_or_old_configuration_tests_do_not_change_eligibility():
     task, profile, rows = fixture()
-    rows[0]["public_benchmarks"] = copy.deepcopy(rows[1]["public_benchmarks"])
-    rows[0]["public_benchmarks"][0]["scores"] = {"Reasoning": 99, "Data Analysis": 99}
-    assert quality_policy(task, profile, rows)["allowed_candidate_ids"] == ["cheap"]
-
-
-def test_public_model_score_does_not_validate_an_unmeasured_reasoning_configuration():
-    task, profile, rows = fixture()
-    rows[1]["measured_evidence"]["p95_ms"] = 600
     high_effort = copy.deepcopy(rows[1])
     high_effort.update(candidate_id="strong-a-max", measured_evidence={})
     high_effort["benchmark"]["request_fields"] = {"reasoning": {"effort": "max"}}
     rows.append(high_effort)
     policy = quality_policy(task, profile, rows)
-    assert accepted(policy, "strong-a")
-    assert not accepted(policy, "strong-a-max")
-    assert policy["assessments"]["strong-a-max"]["unmeasured_configuration"]
-    # Direct measurement of this exact configuration changes its eligibility.
+    rows[1]["public_benchmarks"][0]["scores"] = {"Reasoning": 0, "Data Analysis": 0}
     high_effort["measured_evidence"] = copy.deepcopy(rows[1]["measured_evidence"])
-    assert accepted(quality_policy(task, profile, rows), "strong-a-max")
+    assert quality_policy(task, profile, rows) == policy
+    assert accepted(policy, "strong-a-max")
 
 
-def test_no_cross_release_averaging_or_unknown_as_zero():
+def test_missing_or_different_release_scores_never_trigger_a_cpu_fallback():
     task, profile, _ = fixture()
     rows = [candidate("a", {"Reasoning": 99, "Data Analysis": 99}, release="2026-01-01"),
-            candidate("b", {"Reasoning": 1, "Data Analysis": 1}, release="2026-02-01")]
-    for row in rows:
-        row["measured_evidence"] = {}
+            candidate("b", {"Reasoning": 1, "Data Analysis": 1}, release="2026-02-01"),
+            candidate("unmapped")]
     policy = quality_policy(task, profile, rows)
-    assert policy["comparison"] is None and policy["evidence_gap"]
-    assert set(policy["allowed_candidate_ids"]) == {"a", "b"}
+    assert policy["comparison"] is None
+    assert set(policy["allowed_candidate_ids"]) == {"a", "b", "unmapped"}
+    assert policy["quality_basis"] == "livebench_only"
 
 
-def test_agent_comparison_requires_agent_evidence_too():
+def test_agent_uses_same_preference_handling_without_quality_cutoff():
     task, profile, rows = fixture()
     for row in rows[1:]:
-        row["public_benchmarks"][0]["scores"]["Long Agentic"] = 90 if row["candidate_id"] == "strong-b" else 40
-    policy = quality_policy(task, profile, rows, agent=True)
-    assert policy["comparison"]["dimensions"] == ["Reasoning", "Data Analysis", "Long Agentic"]
-    assert accepted(policy, "strong-b")
-    assert not accepted(policy, "cheap")
+        row["public_benchmarks"][0]["scores"]["Long Agentic"] = 40
+    assert quality_policy(task, profile, rows, agent=True) == quality_policy(task, profile, rows)
 
 
-def test_non_quality_preferences_keep_every_original_candidate():
-    task, profile, rows = fixture()
-    for tier in ("medium", "low"):
-        task.routing_preferences.cost_tier = tier
-        policy = quality_policy(task, profile, rows)
-        assert not policy["active"]
-        assert len(policy["allowed_candidate_ids"]) == len(rows)
-
-
-def test_repair_is_a_bounded_real_gpu_choice_with_full_first_call_audit():
+@pytest.mark.parametrize("choice", ["cheap", "weak", "unknown"])
+def test_one_gpu_selection_for_high_preference_even_with_missing_or_low_scores(choice):
     async def check():
         task, profile, rows = fixture()
         pool = {"candidates": rows, "profile": profile, "reason": "original",
                 "selection_source": "gpu_decision_model"}
-        body = SimpleNamespace(task=task, provider="liquid")
-        request = SimpleNamespace(state=SimpleNamespace())
 
         class Service:
-            payloads = []
+            def __init__(self):
+                self.payloads = []
 
             async def infer(self, body, request, payload, **kwargs):
                 self.payloads.append(payload)
-                desired = "cheap" if len(self.payloads) == 1 else "strong-b"
-                key = next(k for k, text in payload["questions"]["action"]["criteria"].items()
-                           if text.startswith(desired + ";"))
-                return {"model": "actual-gpu", "answers": {"action": {"choice": key}},
+                key = next((k for k, text in payload["questions"]["action"]["criteria"].items()
+                            if text.startswith(choice + ";")), "invalid")
+                return {"model": "test-gpu", "answers": {"action": {"choice": key}},
                         "timings": {"backend_total_ms": 1}, "usage": None}
-        service = Service()
-        result = await select_all(service, body, request, pool)
-        assert result["selected_candidate_id"] == "strong-b"
-        assert result["quality_reselection_count"] == 1
-        assert len(service.payloads) == 2
-        assert len(service.payloads[0]["questions"]["action"]["criteria"]) == 4
-        assert len(service.payloads[1]["questions"]["action"]["criteria"]) == 2
-        assert result["decision_calls"][0]["quality_check"]["accepted"] is False
-        assert result["decision_calls"][1]["quality_check"]["accepted"] is True
-        assert result["decision_calls"][1]["mode"] == "quality_reselection"
-        assert "QUALITY FIRST" in service.payloads[0]["questions"]["action"]["instructions"]
-        assert json.loads(service.payloads[1]["state"])["quality_reselection"]["rejected_candidate"] == "cheap"
-    asyncio.run(check())
-
-
-def test_rejected_selection_never_silently_downgrades_on_execution_fallback():
-    async def check():
-        task, profile, rows = fixture()
-        original = {"candidates": rows, "profile": profile}
-        policy = attach_quality(original, task)
-        # All policy-compliant endpoints have already failed.
-        pool = {**original, "candidates": rows[:1], "quality_policy": policy, "reason": "fallback"}
-
-        class Service:
-            calls = 0
-
-            async def infer(self, body, request, payload, **kwargs):
-                self.calls += 1
-                key = next(k for k, text in payload["questions"]["action"]["criteria"].items()
-                           if text.startswith("cheap;"))
-                return {"model": "gpu", "answers": {"action": {"choice": key}},
-                        "timings": {}, "usage": None}
         service = Service()
         result = await select_all(service, SimpleNamespace(task=task, provider="liquid"),
                                   SimpleNamespace(state=SimpleNamespace()), pool)
-        assert service.calls == 1
-        assert result["selected_candidate_id"] is None and not result["execution_ready"]
-        assert result["decision_rejection"] == "quality_requirement_not_met"
+        assert result["selected_candidate_id"] == (None if choice == "unknown" else choice)
+        assert result["quality_reselection_count"] == 0 and len(service.payloads) == 1
+        payload = service.payloads[0]
+        assert len(payload["questions"]["action"]["criteria"]) == 4
+        assert "quality-policy=PASS" not in json.dumps(payload)
+        assert "Cost preference=high" in payload["questions"]["action"]["instructions"]
     asyncio.run(check())
 
 
@@ -181,21 +128,20 @@ def test_reviewed_feedback_is_configuration_endpoint_and_workflow_specific():
     assert evidence_for(row, record["workflow"]) is None
 
 
-def test_direct_media_evidence_is_separate_and_preserves_small_sample_scope():
+def test_media_quality_also_remains_a_gpu_choice():
     task, profile, rows = fixture()
     profile["workflow"] = "audio_understanding"
     rows[0]["measured_evidence"]["content_passed"] = 0
     rows[0]["measured_evidence"]["strict_passed"] = 0
     policy = quality_policy(task, profile, rows)
-    assert policy["comparison"]["source"] == "bedrock_development"
-    assert policy["comparison"]["scope"] == "small_visible_development_sample"
-    assert not accepted(policy, "cheap")
+    assert policy["quality_basis"] == "modality_evidence"
+    assert not policy["active"] and accepted(policy, "cheap")
 
 
 @pytest.mark.parametrize("stale", [
     "measurement_version", "routing_version", "quality_feedback_version", "public_benchmark_version", None,
 ])
-def test_execution_rechecks_evidence_versions_and_quality_before_target(monkeypatch, stale):
+def test_execution_rechecks_evidence_versions_and_eligibility_before_target(monkeypatch, stale):
     from app import gateway_model_pool, routing
     from app.routing_profile import replay_profile
     from app.routing_selector import SELECTOR_VERSION, load_calibration
@@ -206,7 +152,7 @@ def test_execution_rechecks_evidence_versions_and_quality_before_target(monkeypa
     pool = {"candidates": rows, "profile": replay_profile(task, profile["workflow"]).model_dump(), **versions}
     record = {
         "task": task.model_dump(), "profile": pool["profile"],
-        "configuration_id": "cheap", "routing_source": "gpu_decision_model",
+        "configuration_id": "cheap" if stale else "not-eligible", "routing_source": "gpu_decision_model",
         "catalog_version": routing.load_catalog()["version"],
         "ranking_version": routing.load_rankings()["version"],
         "calibration_version": load_calibration()["version"],
@@ -228,4 +174,4 @@ def test_execution_rechecks_evidence_versions_and_quality_before_target(monkeypa
     with pytest.raises(HTTPException) as caught:
         asyncio.run(routing.auto_execute(routing.AutoExecute(route_token="a" * 32), request))
     assert caught.value.status_code == 409
-    assert ("已更新" if stale else "能力优先校验") in caught.value.detail
+    assert ("已更新" if stale else "硬约束") in caught.value.detail

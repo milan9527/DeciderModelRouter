@@ -1,6 +1,6 @@
 # 行业场景与 AgentCore Runtime V2
 
-行业 Agent 使用 **Strands Agent + 自定义 `RouterModel`**。它的模型配置是 `model-router`；没有另外指定固定的 Bedrock 推理模型。Strands 每次发起模型调用，都会请求 ECS 网关，由默认 Liquid d1-2B 判断任务属性，再读取端点实测、公开评测、费用和会话信息，选择实际模型。
+行业 Agent 使用 **Strands Agent + 自定义 `RouterModel`**。它的模型配置是 `model-router`；没有另外指定固定的 Bedrock 推理模型。Strands 每次发起模型调用，都会请求 ECS 网关，由默认 Liquid d1-2B 判断任务属性，再读取LiveBench相关分项、运行延迟、费用和会话信息，选择实际模型。
 
 Agent 部署时显式指定 AWS `platformVersion: V2`，并读取 `GetAgentRuntime` 核验。这个值是运行平台版本，与每次发布产生的 `agentRuntimeVersion` 不同。Runtime 实现官方 HTTP 服务约定：ARM64、8080端口、`POST /invocations`、`GET /ping` 和 SSE。
 
@@ -57,11 +57,7 @@ sequenceDiagram
         GW->>GW: 按实测工具协议、能力、预算筛选
         GW->>GPU: 全部合格配置、评测证据与上次模型
         GPU-->>GW: 选出的目标配置
-        GW->>GW: 校验能力优先的质量依据
-        opt 首次选择未通过质量约束
-            GW->>GPU: 通过约束的配置，最多重选一次
-            GPU-->>GW: 新选择；仍不合格则停止
-        end
+        GW->>GW: 核验所选配置符合接口与预算约束
         GW->>DB: 先保存选型，供页面在生成期间展示
         GW->>BR: system + messages + toolConfig
         BR-->>GW: 文本或原生toolUse
@@ -93,7 +89,7 @@ AgentCore启动和Strands初始化本身不调用固定目标模型。第一次 
 
 其他Bedrock型号仍可在普通网关使用，但未核验原生工具协议前不加入Agent候选。跨供应商签名推理块、Agent图片/音视频工具消息尚未接入，普通网关已有多模态能力继续保留。
 
-原生工具能力说明协议可用，不代表行业业务或工具选择正确率。当前LiveBench分项仍为初始能力依据，尚未用本次行业Agent结果自动训练或校准选模策略。
+原生工具能力说明协议可用，不代表行业业务或工具选择正确率。当前文本选模仅使用LiveBench质量分项，三种成本/能力偏好均由GPU权衡，没有额外质量门槛；LiveBench仍为初始能力依据，尚未用本次行业Agent结果自动训练或校准选模策略。
 
 ## 工具、认证与历史
 
