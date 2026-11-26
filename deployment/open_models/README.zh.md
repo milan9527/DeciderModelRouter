@@ -1,4 +1,21 @@
-# 单张 L4 常驻三个决策模型
+# 独立网关的常驻GPU服务
+
+当前DeciderModelRouter使用独立`g5.xlarge`、A10G、实例`i-01180cf02d12e6e31`。服务名为`dmr-decider.service`、`dmr-h2o.service`、`dmr-liquid.service`和`dmr-gateway.service`。Liquid与H2O经私网18124网关访问，内部端口仍为18801/18803；Decider使用8100。此服务通过AWS SDK和SSM维护，不使用CloudFormation。
+
+Liquid使用原生Transformers BF16，第二阶段可编译加速，第一阶段保持eager。`liquid_server.py`新增可选的`--selection-adapter <目录> --adapter-sha256 <完整摘要>`，须与`liquid_adapter.py`同目录部署。目录包含`adapter.json`和`adapter.safetensors`；启动核验摘要、基座版本、模块与张量形状。适配权重只在第二阶段的LiveBench文本选模请求启用；第一阶段、多模态及未启用适配的历史输入使用原始权重。健康接口和逐次响应均报告权重版本，前端显示本轮是否使用微调。
+
+当前适配权重、训练数据与验证范围见[公开验证材料](../../validation/independent_gateway/anonymous-evidence-2026-11-26/README.zh.md)。证据表位于共享`state`中，网关允许最多64,000字符；每题最多256个候选。正常请求仍为两次GPU调用，不增加逐候选推理或质量重选。
+
+部署采用先预热18804临时副本、验证后暂时切换私网转发、更新18801正式服务、再切回的顺序。保留原systemd单元和网关源码供回滚。训练与副本验证复用现有GPU，临时释放H2O显存，结束后恢复；不新建EC2。当前资源和发布结果以[部署记录](../DEPLOYED.md)为准。
+
+```bash
+systemctl status dmr-decider dmr-h2o dmr-liquid dmr-gateway
+nvidia-smi
+```
+
+## 历史：原共用L4部署
+
+以下记录描述旧项目的L4主机。`install_resident.sh`是该旧主机的专用安装器，不用于当前独立g5服务。
 
 [English](README.md) · [业务流程与实测](../../docs/FIVE_MODELS.md)
 

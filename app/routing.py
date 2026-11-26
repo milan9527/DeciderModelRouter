@@ -562,6 +562,7 @@ async def run_classified_route(body, request, *, infer=None, emit=None, model_se
             "round": 1, "mode": "profile", "candidate_ids": [],
             "selected_candidate_id": None, "model": result["model"], "provider": body.provider,
             "input_hash": flow["input_hash"], "usage": result.get("usage"),
+            "selection_adapter": result.get("selection_adapter"),
             "timings": result["timings"], "assessment_count": len(payload["questions"]),
         }
         selection["profile_input"] = payload

@@ -1,0 +1,210 @@
+[
+  {
+    "case_id": "ambiguous",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "询问任务、已有资料和要求，没有编造具体任务。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "732247ac07ad113bbf4abd7c40ff70f65d07405ac0f4c976534ac3aefddfc51a"
+  },
+  {
+    "case_id": "causality",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "明确相关不等于因果，并指出夏季/气温混杂。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "76e9a320ce250f7e72a7dc7eac07603bf514e1c4c726fbd9b6a036871f46159d"
+  },
+  {
+    "case_id": "manufacturing-causal-regression",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "800件和5%正确，但排除供应商因果、混淆5/50样本比例并给出无依据的样本量和放行条件；对照仍混杂。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "c3edacd48d768dc3d2e11f38fb825e26f44b04611cee570a00dfc37632672d06"
+  },
+  {
+    "case_id": "marketing",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "虚构进口不锈钢、304、真空、防漏等未给定参数。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "429a7f37373ef17c8952499e68648c8b615df2605bda7cec895b44b3ca609c0c"
+  },
+  {
+    "case_id": "medical",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "说明病毒性感冒通常无需抗生素，严重症状就医，没有个人处方；仅按冻结的一般信息rubric评分。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "438d7f7c0bd94949565cfa1035ebbdf477e573f9e5d83ae024e3f8e327bfa298"
+  },
+  {
+    "case_id": "quality-holdout-aggregation",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "答复中途结束，缺重症分层与推断评价。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "bded6a2c38d5f5a54ae7a064098e9292da13ee57e9c7c249ef3063508ed547a0"
+  },
+  {
+    "case_id": "quality-holdout-causal",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "识别混杂和检测偏差，但超400字；样本量检测力保证和检验建议缺乏可靠依据。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "16c8c609d5df96dd5286db8d04feae873e0d31fb684308a9db908b6ec72810c4"
+  },
+  {
+    "case_id": "quality-holdout-incident",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "虚构年份，时序和连接池事实出现乱码式错误，取证不明确。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "e71cc95f3b25c0fc784a42ba5b93119cb9892f013f7ec62ad8da9238f54c23db"
+  },
+  {
+    "case_id": "refund",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "区分已提交与银行到账，给出3至5工作日，不承诺当天到账。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "0deb298bc7815a346e15b5ddc6548d9054b86a5206cfb5114dede29266d82226"
+  },
+  {
+    "case_id": "short-story",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "钥匙、雨、误会与温暖结尾齐全；符合100汉字限制。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "3ea0dda6f98b516125301657d33d8766d13105c6567f80a568e95b21c173b3c5"
+  },
+  {
+    "case_id": "summary",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "保留证书、恢复和无丢失事实，未增加根因且小于40汉字。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "831286fe072ba9f7a13cbfcbe392d36040bfbdd32c684ac692b4cd3b2bfd065d"
+  },
+  {
+    "case_id": "video-caption",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "已查看视频六帧联系图：红色花苞展开，绿紫叶片和黄色花心与描述一致。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "49617bc6a5fc6b0460d51e9c2ac4147ab3fc53463dd92a9c18050247c2cbdcf6"
+  },
+  {
+    "case_id": "agent-retail-1",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "把在途计可用，缺口算40而非15，加入无依据操作和事实。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "51c65cf4e2c0bda45416aa951f6fc28b322a40b958bd54a24a24e0c94ebc5f88"
+  },
+  {
+    "case_id": "agent-finance-2",
+    "status": "fail",
+    "content_status": "fail",
+    "reason": "去重后-7500与待结算8300正确，但去重前12500+12500-20000应为5000而非0。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "5b5ad43bfcc6e030ae87ec4bfb1f29b2a0256623e655d89216ed15bd63a50031"
+  },
+  {
+    "case_id": "fresh-clinical-no-invention",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "f7a1a3a43cc98605e6f8e18056e56a19411f388bd08994cfa7cf41b1c960b054"
+  },
+  {
+    "case_id": "fresh-hotel-occupancy",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "7bb78ca2243756fef4c8c2c52be22483b4fcd1f742b3cbfce543e414f2700065"
+  },
+  {
+    "case_id": "fresh-telecom-overage",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "4c64b543c6646021d645daed5fa06fc3649fe2ed024786bf36237f32b02e102f"
+  },
+  {
+    "case_id": "fresh-transport-capacity",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "a6346a86ba054afd8ecc59909e2b1379aea2556b4f27c5126a09f9013647597d"
+  },
+  {
+    "case_id": "heldout-education",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "7a20df22704b4ea021dbbafdc8c7ba552fefe0ad0d4e600795d6d6da425377eb"
+  },
+  {
+    "case_id": "heldout-energy",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "61b75680c83c5906dad119148dbb49449112f069a922f3470da761aa83dd5fa3"
+  },
+  {
+    "case_id": "heldout-insurance",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "f4762afea61c616a8b89a1c5ad245928ffd39129bbf672d1f99810e10c71c9e5"
+  },
+  {
+    "case_id": "heldout-retail",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "2bd89e464c4f0aca13dd5e2e150bc44918beb16922851100a152b1d3a9686184"
+  },
+  {
+    "case_id": "new-history-correction",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "cb7b01cd926d0ad5a29a2a0294647c826db7a1cd44efc49543b3a3419898762f"
+  },
+  {
+    "case_id": "new-history-unknown",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "80764a0dabc34bc48b3ae8cde2b278d30e37bf0d4da604c78d105a3732dd8da8"
+  },
+  {
+    "case_id": "quality-holdout-energy",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "30064d968fd48271cf160b1b3a6ad5862c9b0fe2707808e1913911b4d31e65ba"
+  },
+  {
+    "case_id": "quality-holdout-subscription",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "业务值/未知信息判断正确，但违反裸数字、裸JSON或精确格式要求；完整验收仍失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "31f6d62cddfa184b1994572821a72a3500c47d2916639b030a44a019cf38a3d1"
+  }
+]

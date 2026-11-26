@@ -32,6 +32,15 @@ def measured_scores(entry, workflow):
     return entry.get("measurements", {}).get(key, {})
 
 
+def runtime_observations(entry, fields, inference, workflow):
+    """Censored response deadlines, bound to the actual configuration and task kind."""
+    return [
+        row for row in entry.get("runtime_observations", [])
+        if row["request_fields"] == fields and row["inference_config"] == inference
+        and row["workflow"] == workflow
+    ]
+
+
 def public_summary(benchmark, workflow):
     from app.routing_evidence import task_metrics
 

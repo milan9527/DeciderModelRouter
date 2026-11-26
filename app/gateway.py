@@ -96,6 +96,8 @@ def catalog(request: Request):
                           "development_text_quality_used": False,
                           "quality_preference_handling": "gpu_only",
                           "quality_reselection_max": 0,
+                          "evidence_presentation": "anonymous-evidence-table-v1",
+                          "decision_probabilities": "reported_when_valid_not_success_rates",
                           "benchmark_cohort_exclusion": False},
         "region": data["region"],
         "captured_at": data.get("captured_at"),

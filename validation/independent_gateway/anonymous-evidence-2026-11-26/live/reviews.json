@@ -1,0 +1,54 @@
+[
+  {
+    "case": "manufacturing-execution",
+    "run_id": "39183589a8db19402f49e563",
+    "answer_sha256": "4854f2c4617fd1a163c691237f01e6cf7a86cf3e40f9efd3ac68119409cc7875",
+    "content_pass": true,
+    "format_pass": true,
+    "note": "人工检查批次/抽检口径、800件追溯、因果混杂、匹配对照及工程师批准。"
+  },
+  {
+    "case": "insurance",
+    "run_id": "cfd0ddaf3a6790b48d97d90e",
+    "answer_sha256": "daf7221869b8b393dac80dbff8f6271c39f8871c109b5a99e86599dadb247d4b",
+    "content_pass": true,
+    "format_pass": true,
+    "note": "按题目固定数值和裸JSON要求核对。"
+  },
+  {
+    "case": "history-first",
+    "run_id": "6af62f0da24d46c77aba1ff5",
+    "answer_sha256": "e066deba4e5894d18a5ab7bc36113e9a33ae1e95fded873429c91473c38dbfda",
+    "content_pass": true,
+    "format_pass": true,
+    "note": "按题目固定数值和裸JSON要求核对。"
+  },
+  {
+    "case": "history-followup",
+    "run_id": "71f8b82712faf949dfc2f74d",
+    "answer_sha256": "3d6612741a02d0451e37dde597e93b003b4be9243ea263c018a34b6393d2a291",
+    "content_pass": true,
+    "format_pass": true,
+    "note": "按题目固定数值和裸JSON要求核对。"
+  },
+  {
+    "case": "agent-first",
+    "job_id": "aa0ef99ae64e78a66d4115e1",
+    "answer_sha256": "da59c44dd5bc99bee61e9eb723ef894374e25b46fc3bacc5cff182292fcbdd35",
+    "content_pass": true,
+    "format_pass": true,
+    "expected": {
+      "raw_net_cents": 5000
+    }
+  },
+  {
+    "case": "agent-followup",
+    "job_id": "b3da5061730a5633a67c356e",
+    "answer_sha256": "c6f127dc0cc4eac27217eeb12a1d6db7954ee98778da747e23dcf28527b6aeab",
+    "content_pass": true,
+    "format_pass": true,
+    "expected": {
+      "dedup_net_cents": -7500
+    }
+  }
+]

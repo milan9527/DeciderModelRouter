@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1530" viewBox="0 0 1920 1530" role="img" aria-labelledby="diagram-title diagram-description">
   <title id="diagram-title">DeciderModelRouter — 独立模型网关 AWS 部署架构</title>
-  <desc id="diagram-description">浏览器通过专用 CloudFront 访问私有 S3 前端，API 经 VPC Origin、内网 ALB 进入私有 ECS Fargate。后端独立调用 g5.xlarge GPU 获取任务属性并依据评测选择目标型号，镜像内证据快照提供精确端点评测。两张 DynamoDB 表保存认证、会话、评测和性能，独立私有 S3 保存媒体。CloudFront 不直接读取媒体桶。GPU 不接收媒体字节，评测记录不会自动更新选型快照。</desc>
+  <desc id="diagram-description">浏览器通过专用 CloudFront 访问私有 S3 前端，API 经 VPC Origin、内网 ALB 进入私有 ECS Fargate。后端独立调用 g5.xlarge GPU 获取任务属性并依据评测选择目标型号，镜像内证据快照提供LiveBench文本分项与多模态专项依据，匿名候选参与第二次GPU选择。两张 DynamoDB 表保存认证、会话、评测和性能，独立私有 S3 保存媒体。CloudFront 不直接读取媒体桶。GPU 不接收媒体字节，评测记录不会自动更新选型快照。</desc>
   <defs>
     <marker id="arrow-request" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
       <path d="M0,0 L9,4.5 L0,9 Z" fill="#526171" />
@@ -175,7 +175,7 @@
     <text x="833" y="1065" font-size="20" fill="#526171" font-weight="400" text-anchor="start">Decider / Liquid / H2O</text>
     <text x="833" y="1094" font-size="20" fill="#526171" font-weight="400" text-anchor="start">两次 GPU 调用 · 默认 Liquid</text>
     <text x="390" y="1002" font-size="21" fill="#232f3e" font-weight="600" text-anchor="start">GPU 根据评测选择模型</text>
-    <text x="390" y="1038" font-size="19" fill="#526171" font-weight="400" text-anchor="start">输入：任务、候选、实测与价格</text>
+    <text x="390" y="1038" font-size="19" fill="#526171" font-weight="400" text-anchor="start">输入：匿名候选、分项成绩与费用</text>
     <text x="390" y="1072" font-size="19" fill="#526171" font-weight="400" text-anchor="start">不传媒体字节或测试标准答案</text>
     <text x="390" y="1148" font-size="19" fill="#526171" font-weight="400" text-anchor="start">当前：1 个 API 任务 + 1 台 GPU；网络出口与运维路径省略。</text>
     <polyline points="1230,678 1370,678" fill="none" stroke="#693bc5" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-model)" marker-start="url(#arrow-model)" />
@@ -246,8 +246,8 @@
     <polyline points="1517,1385 1537,1385" fill="none" stroke="#526171" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow-request)" />
     <rect x="1544" y="1353" width="344" height="64" stroke="#d8dee6" fill="#f7f8fa" stroke-width="1.6" />
     <text x="1560" y="1393" font-size="23" fill="#b85a00" font-weight="600" text-anchor="start">05</text>
-    <text x="1604" y="1393" font-size="22" fill="#232f3e" font-weight="500" text-anchor="start">保存结果与性能</text>
-    <text x="40" y="1455" font-size="20" fill="#526171" font-weight="400" text-anchor="start">全部合格配置参与 GPU 判断；直接实测、公开参考与费用分开说明。小样本评测不等于业务成功率。</text>
+    <text x="1604" y="1393" font-size="22" fill="#232f3e" font-weight="500" text-anchor="start">保存结果与选择概率</text>
+    <text x="40" y="1455" font-size="20" fill="#526171" font-weight="400" text-anchor="start">全部合格配置参与 GPU 判断；文本分项按 LiveBench 批次比较。选择概率与公开成绩都不等于业务成功率。</text>
     <text x="40" y="1493" font-size="19" fill="#526171" font-weight="400" text-anchor="start">阶段事件沿 API 原链路回传；历史评测不会自动更新选型快照。AWS 官方图标：2026-07-31 发布包。</text>
   </g>
 </svg>

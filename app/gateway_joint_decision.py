@@ -162,6 +162,9 @@ def joint_payload(body, request, profile_input, rows, *, assessed=False):
     if runtime and runtime.options.stickiness and runtime.context["history_turns"]:
         previous = (runtime.previous or {}).get("configuration_id")
     aliases = {f"m{i:03d}": row for i, row in enumerate(rows)}
+    if assessed:
+        from app.gateway_evidence_input import selection_payload
+        return selection_payload(body.task, json.loads(profile_input["state"]), aliases, previous), aliases
     references = {}
     criteria = {key: card(row, previous, references) for key, row in aliases.items()}
     if len(rows) == 1:
@@ -256,6 +259,9 @@ async def assess_and_select(service, body, request, profile_input, catalog, rank
     answer = result["answers"].get("action", {}).get("choice")
     chosen = aliases.get(answer)
     selected = chosen["candidate_id"] if chosen else None
+    from app.decision_uncertainty import distribution
+    uncertainty = distribution(result["answers"]["action"], aliases) if rows else {"status": "unreported"}
+    selection["decision_distribution"] = uncertainty
     # Re-check all hard constraints against the simultaneous assessment. Never substitute a
     # CPU-ranked winner or make a second hidden GPU call if the answers disagree.
     valid = {r["candidate_id"] for r in selection["candidates"]}
@@ -271,6 +277,7 @@ async def assess_and_select(service, body, request, profile_input, catalog, rank
         "usage": result.get("usage"), "timings": result["timings"],
         "assessment_count": len(payload["questions"]),
         "quality_check": {"accepted": selected is not None, "policy_version": quality["version"]},
+        "decision_distribution": uncertainty,
         "candidate_model_ids": {r["candidate_id"]: r["model"]["id"] for r in rows},
     }]
     elapsed = (perf_counter() - started) * 1000

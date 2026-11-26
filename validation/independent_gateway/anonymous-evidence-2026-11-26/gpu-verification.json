@@ -1,0 +1,62 @@
+{
+  "services": {
+    "dmr-liquid": "active",
+    "dmr-h2o": "active",
+    "dmr-decider": "active",
+    "dmr-gateway": "active"
+  },
+  "containers": [
+    "dmr-h2o",
+    "dmr-gateway",
+    "dmr-liquid",
+    "dmr-decider"
+  ],
+  "temporary_timers": [],
+  "liquid_health": {
+    "status": "ok",
+    "model": "LiquidAI/d1-2B",
+    "device": "cuda",
+    "dtype": "BF16",
+    "decision_mode": "native_multi_question",
+    "max_candidates": 256,
+    "inference_engine": "compiled_selection_eager_assessment_bf16",
+    "warmup_count": 20,
+    "selection_adapter": {
+      "version": "public-evidence-lora-v1",
+      "sha256": "d9eeae6c4cda5d29b91f3f355d658377714cf5e6080ff6b83fae4d8dabfa048e",
+      "base_revision": "cfe5760ff5d5998f91d9ac56bd4b2dbd96996d41",
+      "scope": "text_selection_only"
+    },
+    "warmup_ms": 106341.89,
+    "new_shapes": "eager_cuda",
+    "worker_precision_preserved": true
+  },
+  "agent_runtime": {
+    "agentRuntimeId": "decider_model_router_industry-Fg8vWeEOIs",
+    "agentRuntimeVersion": "3",
+    "status": "READY",
+    "lastUpdatedAt": "2026-11-25 15:06:58.199840+00:00",
+    "agentRuntimeName": "decider_model_router_industry",
+    "platformVersion": "V2"
+  },
+  "runtime_keys": [
+    "ResponseMetadata",
+    "agentRuntimeArn",
+    "agentRuntimeName",
+    "agentRuntimeId",
+    "agentRuntimeVersion",
+    "createdAt",
+    "lastUpdatedAt",
+    "roleArn",
+    "networkConfiguration",
+    "status",
+    "lifecycleConfiguration",
+    "description",
+    "workloadIdentityDetails",
+    "agentRuntimeArtifact",
+    "protocolConfiguration",
+    "environmentVariables",
+    "metadataConfiguration",
+    "platformVersion"
+  ]
+}

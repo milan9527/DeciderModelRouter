@@ -1,0 +1,1446 @@
+{
+  "arm": "optimized",
+  "suite_version": "b08679ef23f4ebf6b6f16767",
+  "overall": {
+    "planned": 72,
+    "passed": 68,
+    "pass_percent": 94.44,
+    "content_passed": 71,
+    "content_percent": 98.61,
+    "status_counts": {
+      "pass": 68,
+      "fail": 4
+    },
+    "completed": 71,
+    "wilson_95_percent": [
+      86.57,
+      97.82
+    ]
+  },
+  "categories": {
+    "通用文本与历史": {
+      "planned": 13,
+      "passed": 13,
+      "pass_percent": 100.0,
+      "content_passed": 13,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 13
+      },
+      "completed": 13,
+      "wilson_95_percent": [
+        77.19,
+        100.0
+      ]
+    },
+    "代码": {
+      "planned": 7,
+      "passed": 7,
+      "pass_percent": 100.0,
+      "content_passed": 7,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 7
+      },
+      "completed": 7,
+      "wilson_95_percent": [
+        64.57,
+        100.0
+      ]
+    },
+    "检索": {
+      "planned": 1,
+      "passed": 1,
+      "pass_percent": 100.0,
+      "content_passed": 1,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 1
+      },
+      "completed": 1,
+      "wilson_95_percent": [
+        20.65,
+        100.0
+      ]
+    },
+    "多模态": {
+      "planned": 6,
+      "passed": 5,
+      "pass_percent": 83.33,
+      "content_passed": 6,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 5,
+        "fail": 1
+      },
+      "completed": 6,
+      "wilson_95_percent": [
+        43.65,
+        96.99
+      ]
+    },
+    "12行业业务题": {
+      "planned": 12,
+      "passed": 10,
+      "pass_percent": 83.33,
+      "content_passed": 12,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 10,
+        "fail": 2
+      },
+      "completed": 12,
+      "wilson_95_percent": [
+        55.2,
+        95.3
+      ]
+    },
+    "复杂产线分析": {
+      "planned": 1,
+      "passed": 0,
+      "pass_percent": 0.0,
+      "content_passed": 0,
+      "content_percent": 0.0,
+      "status_counts": {
+        "fail": 1
+      },
+      "completed": 0,
+      "wilson_95_percent": [
+        0.0,
+        79.35
+      ]
+    },
+    "新增能力优先场景": {
+      "planned": 12,
+      "passed": 12,
+      "pass_percent": 100.0,
+      "content_passed": 12,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 12
+      },
+      "completed": 12,
+      "wilson_95_percent": [
+        75.75,
+        100.0
+      ]
+    },
+    "新增16行业业务题": {
+      "planned": 16,
+      "passed": 16,
+      "pass_percent": 100.0,
+      "content_passed": 16,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 16
+      },
+      "completed": 16,
+      "wilson_95_percent": [
+        80.64,
+        100.0
+      ]
+    },
+    "Agent多轮": {
+      "planned": 4,
+      "passed": 4,
+      "pass_percent": 100.0,
+      "content_passed": 4,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 4
+      },
+      "completed": 4,
+      "wilson_95_percent": [
+        51.01,
+        100.0
+      ]
+    }
+  },
+  "new_industry_holdout": {
+    "planned": 0,
+    "passed": 0,
+    "pass_percent": 0,
+    "content_passed": 0,
+    "content_percent": 0,
+    "status_counts": {},
+    "completed": 0,
+    "wilson_95_percent": [
+      0,
+      0
+    ]
+  },
+  "frozen_industry_holdout": {
+    "planned": 16,
+    "passed": 16,
+    "pass_percent": 100.0,
+    "content_passed": 16,
+    "content_percent": 100.0,
+    "status_counts": {
+      "pass": 16
+    },
+    "completed": 16,
+    "wilson_95_percent": [
+      80.64,
+      100.0
+    ]
+  },
+  "workflow_fit": {
+    "passed": 68,
+    "scored": 68,
+    "scope": "resolved workflow in frozen allowed set; not seven-label classifier accuracy"
+  },
+  "rows": [
+    {
+      "case_id": "ambiguous",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.6-sol",
+      "review": {
+        "case_id": "ambiguous",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "简短澄清具体任务与目标，没有编造。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "50784a0f5ed96c23f854e81226b7dc39a0691508b4cf713dec9dc715749f997c"
+      }
+    },
+    {
+      "case_id": "quoted-injection",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "summary",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "case_id": "summary",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "证书过期、恢复和无数据丢失准确，小于40汉字。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "fe50849d24574fb444cf19137d9dc78de3041ba50052e3666e5afedf459afe75"
+      }
+    },
+    {
+      "case_id": "extract-json",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "short-story",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "case_id": "short-story",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "雨、钥匙、误会和温暖结尾完整，小于100字。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "583e40f513cf1ed3f137182039b431ad4d2d7d6f19ce21c117b3b18cc39eed48"
+      }
+    },
+    {
+      "case_id": "marketing",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "case_id": "marketing",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "仅使用500ml已知信息，无虚构材质/时长。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "d27198f84b14a6ca1400b5b28c40196b7950b2815be603222f29fbfab5010419"
+      }
+    },
+    {
+      "case_id": "probability",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "fraction 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "causality",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-fable-5-2",
+      "review": {
+        "case_id": "causality",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "按冻结标准，否定从相关直接推出因果并指出气温混杂。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "2457aa0665a55f543afa3a1a0633cdba2cd00a37d34fa50039870910648172d7"
+      }
+    },
+    {
+      "case_id": "python-dedup",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "case_id": "python-dedup",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 103,
+              "passed": 103,
+              "failures": []
+            },
+            "source_sha256": "30fe2d1d40e697eaf35406f71ef26410642e204864a630183e53351ab6dda8a7"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "30fe2d1d40e697eaf35406f71ef26410642e204864a630183e53351ab6dda8a7"
+      }
+    },
+    {
+      "case_id": "python-brackets",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "case_id": "python-brackets",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 108,
+              "passed": 108,
+              "failures": []
+            },
+            "source_sha256": "cb3da5ee33be951820df6da970a134d646599d41b41eb068f9e6054f10a16085"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "cb3da5ee33be951820df6da970a134d646599d41b41eb068f9e6054f10a16085"
+      }
+    },
+    {
+      "case_id": "python-merge",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "case_id": "python-merge",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 105,
+              "passed": 105,
+              "failures": []
+            },
+            "source_sha256": "aa10aa188abd8f9d3babd3e3de30e181b95ef6a78091a6bfb3e3fd50d7eadef1"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "aa10aa188abd8f9d3babd3e3de30e181b95ef6a78091a6bfb3e3fd50d7eadef1"
+      }
+    },
+    {
+      "case_id": "refund",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "refund",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "退款提交不等于到账，3至5工作日且不承诺今天。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "82fadb0a43752d0033c5821552a0135bf6ceb9bdf3f88443433bb6c274d5c67a"
+      }
+    },
+    {
+      "case_id": "medical",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "medical",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "普通感冒无需抗生素，严重症状就医，无个人处方。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "5290a26ceb03568e742012d4795a511473ce02293157b0af2d9ffaefff801d1a"
+      }
+    },
+    {
+      "case_id": "rag-missing",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "embed-en",
+      "category": "检索",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "cohere.embed-multilingual-v3",
+      "review": {
+        "status": "pass",
+        "source": "labeled_retrieval",
+        "reason": "all four queries must rank the relevant document first"
+      }
+    },
+    {
+      "case_id": "image-red",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.4",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "image-ocr",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.4",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "image-chart",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.4",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "asr",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "fail",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "mistral.voxtral-mini-3b-2507",
+      "review": {
+        "case_id": "asr",
+        "status": "fail",
+        "content_status": "pass",
+        "reason": "内容正确，但附加时间戳或单位违反明确输出格式；严格结果仍为失败。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "16a4c9847f6cc54d7bc06a968fe1a92ccd0a5fe90066cd178940ef78b8e54fab"
+      }
+    },
+    {
+      "case_id": "video-caption",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "twelvelabs.pegasus-1-5-v1:0",
+      "review": {
+        "case_id": "video-caption",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "已查看视频六帧联系图，红花苞展开及绿紫叶片、黄花心符合画面。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "49d65d398eea66d962fc83d77068148c98aadc36433644a5a09b7fc3a678ffe6"
+      }
+    },
+    {
+      "case_id": "new-history-correction",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "new-history-unknown",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "new-image-order",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.4",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "new-code-overlap",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "case_id": "new-code-overlap",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 164,
+              "passed": 164,
+              "failures": []
+            },
+            "source_sha256": "b3dbc30aac00ce0384bafd4f13769091347b2a4ed640d77475d250e910c7b208"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "b3dbc30aac00ce0384bafd4f13769091347b2a4ed640d77475d250e910c7b208"
+      }
+    },
+    {
+      "case_id": "new-code-events",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "case_id": "new-code-events",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 162,
+              "passed": 162,
+              "failures": []
+            },
+            "source_sha256": "9efe540a0f496a7e43e0cc6c857e66e9f97028511156fe173c04a57f601bfd80"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "9efe540a0f496a7e43e0cc6c857e66e9f97028511156fe173c04a57f601bfd80"
+      }
+    },
+    {
+      "case_id": "new-code-clock",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "case_id": "new-code-clock",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 166,
+              "passed": 166,
+              "failures": []
+            },
+            "source_sha256": "863b1abf8c43e5982223d0c63759611e88e7f6081ca28da83f67a52d6a4e11ee"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "863b1abf8c43e5982223d0c63759611e88e7f6081ca28da83f67a52d6a4e11ee"
+      }
+    },
+    {
+      "case_id": "new-code-allocate",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-terra",
+      "review": {
+        "case_id": "new-code-allocate",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 165,
+              "passed": 165,
+              "failures": []
+            },
+            "source_sha256": "30de56f902e3cfaa48396c9aede09ffddc0f057adf65a2699e1fa60ea7d7df60"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "30de56f902e3cfaa48396c9aede09ffddc0f057adf65a2699e1fa60ea7d7df60"
+      }
+    },
+    {
+      "case_id": "heldout-retail",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "heldout-manufacturing",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "heldout-finance",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "heldout-insurance",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "fail",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "case_id": "heldout-insurance",
+        "status": "fail",
+        "content_status": "pass",
+        "reason": "内容正确，但附加时间戳或单位违反明确输出格式；严格结果仍为失败。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "f77b707d4d14f41729a6eccf822db46027cb81ae86250b26dd0ceafc56b59749"
+      }
+    },
+    {
+      "case_id": "heldout-healthcare",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.6-terra",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "heldout-logistics",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-opus-5-5",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "heldout-energy",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "fail",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-opus-5-5",
+      "review": {
+        "case_id": "heldout-energy",
+        "status": "fail",
+        "content_status": "pass",
+        "reason": "内容正确，但附加时间戳或单位违反明确输出格式；严格结果仍为失败。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "3f4fbcc444753a555fbe2b94cf46192ebaf7e35033e40602408ea4b97c5038d8"
+      }
+    },
+    {
+      "case_id": "heldout-saas",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "heldout-telecom",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-opus-5-5",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "heldout-public",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "heldout-education",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "heldout-legal",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "manufacturing-causal-regression",
+      "category": "复杂产线分析",
+      "split": "development_regression",
+      "status": "fail",
+      "content_status": "fail",
+      "execution_status": "error",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "fail",
+        "source": "execution"
+      }
+    },
+    {
+      "case_id": "quality-holdout-distribution",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "quality-holdout-pharmacy",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "quality-holdout-insurance",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "quality-holdout-energy",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "quality-holdout-subscription",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "quality-holdout-manufacturing",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "quality-holdout-code-trace",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "quality-holdout-tool-data",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "quality-holdout-history",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "quality-holdout-causal",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "quality-holdout-causal",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "识别同时改温与检测选择偏差，提出一致抽检与2×2随机分层设计，小于400字，没有声称已经证明因果。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "1370c948c016f73cb92b76ed8177262ee9744f996650221aa86a733d625b1e00"
+      }
+    },
+    {
+      "case_id": "quality-holdout-incident",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "case_id": "quality-holdout-incident",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "时序准确，事实和假设分开，给出发布差异与连接/查询/流量证据计划，小于150字。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "49dedde392733d50faa00f8845c8b7756e86ccb7ab276a3c4952c7b824b6f267"
+      }
+    },
+    {
+      "case_id": "quality-holdout-aggregation",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "quality-holdout-aggregation",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "总体83%/91%及四个分层值正确，指出原论点错误并保留因果不确定性，小于200字。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "d982d9214ad01aad6f9c4a236ac71f6091c8de8f287a9e48b0876dae6772a52a"
+      }
+    },
+    {
+      "case_id": "fresh-factory-rework",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-claims-cap",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-warehouse-reserve",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "xai.grok-4.6",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-payment-dedup",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-power-tariff",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-saas-proration",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.4",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-clinical-no-invention",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-education-weight",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-terra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-hotel-occupancy",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-procurement-currency",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-fable-5-2",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-construction-retention",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-retail-return",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-telecom-overage",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-transport-capacity",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-b2b-followup",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "fresh-it-incident-budget",
+      "category": "新增16行业业务题",
+      "split": "frozen_holdout",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      }
+    },
+    {
+      "case_id": "agent-retail-1",
+      "category": "Agent多轮",
+      "split": "regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "models": [
+        "anthropic.claude-fable-5-2",
+        "anthropic.claude-fable-5-2"
+      ],
+      "review": {
+        "case_id": "agent-retail-1",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "已逐项复核工具事实、业务计算和未执行边界；零售缺口15与补偿300/200，支付去重前5000、去重后-7500及待结算8300正确。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "abe465960a196e77f78f74fd2efac3ced306b2f99885a263eda155cee30a8a1b"
+      }
+    },
+    {
+      "case_id": "agent-retail-2",
+      "category": "Agent多轮",
+      "split": "regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "models": [
+        "anthropic.claude-fable-5-2"
+      ],
+      "review": {
+        "case_id": "agent-retail-2",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "已逐项复核工具事实、业务计算和未执行边界；零售缺口15与补偿300/200，支付去重前5000、去重后-7500及待结算8300正确。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "ff171b930fc2399a3daea90957286deb164b399ea1c0a97a8219edc02ad51c67"
+      }
+    },
+    {
+      "case_id": "agent-finance-1",
+      "category": "Agent多轮",
+      "split": "regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "models": [
+        "openai.gpt-6.2-astra",
+        "openai.gpt-6.2-astra"
+      ],
+      "review": {
+        "case_id": "agent-finance-1",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "已逐项复核工具事实、业务计算和未执行边界；零售缺口15与补偿300/200，支付去重前5000、去重后-7500及待结算8300正确。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "4c9b941f64a6cbf6251825b84b879cb6ba01d657e0c2b888833486f4be048614"
+      }
+    },
+    {
+      "case_id": "agent-finance-2",
+      "category": "Agent多轮",
+      "split": "regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "models": [
+        "anthropic.claude-fable-5-2"
+      ],
+      "review": {
+        "case_id": "agent-finance-2",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "已逐项复核工具事实、业务计算和未执行边界；零售缺口15与补偿300/200，支付去重前5000、去重后-7500及待结算8300正确。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "9ecf71a93fb8d7b57409e58807a303600373405a824211fbcc239ddabef62886"
+      }
+    }
+  ],
+  "limits": [
+    "52 previously seen tasks plus four local Agent turns are development regression.",
+    "16 fresh business tasks frozen before any adapter holdout evaluation; labels never enter routing.",
+    "Training uses synthetic prices and public-score utilities, not these business answers.",
+    "This is a purposive, small evaluation; not coverage of every industry or a universal accuracy estimate.",
+    "Manual judgments are unblinded; code requires execution where supplied; incomplete outputs remain failures.",
+    "Local native Agent adapter tests do not replace real AgentCore V2 production checks."
+  ]
+}

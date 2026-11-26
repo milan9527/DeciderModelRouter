@@ -6995,7 +6995,27 @@
         "tools": true
       },
       "pricing": null,
-      "errors": {}
+      "errors": {},
+      "runtime_observations": [
+        {
+          "status": "response_timeout",
+          "request_fields": {
+            "reasoning": {
+              "effort": "max"
+            }
+          },
+          "inference_config": {},
+          "workflow": "reasoning",
+          "deadline_ms": 120000,
+          "output_token_limit": 16384,
+          "observations": 1,
+          "completion": "unknown",
+          "usage_known": false,
+          "observed_at": "2026-11-26T14:35:40.232291+00:00",
+          "input_sha256": "9564b44fce97ea8f4c2d1316c454ff7e44ee118ce92d3a38ed106245765ebaca",
+          "reference": "validation/independent_gateway/anonymous-evidence-2026-11-26/adapter-initial/base/manufacturing-causal-regression.json.gz"
+        }
+      ]
     },
     "openai.gpt-6-luna": {
       "invoke_id": "us.openai.gpt-6-luna",
@@ -9846,5 +9866,5 @@
     "version": "bd44ebbb4c1e2b350259c26c"
   },
   "source": "validation/independent_gateway/bedrock-evidence-2026-11-26/README.zh.md",
-  "version": "c7321b98e520d9fbf69449df"
+  "version": "bcfd447ab244a0fa545a7a08"
 }

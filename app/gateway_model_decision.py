@@ -39,17 +39,33 @@ async def select_all(service, body, request, selection):
     if runtime:
         profile_input = runtime.classify(profile_input)
     data, aliases = joint_payload(body, request, profile_input, candidates, assessed=True)
+    from app.gateway_evidence_input import VERSION as EVIDENCE_INPUT_VERSION
+    from app.gateway_evidence_input import primary_evidence
+    from app.routing_balance import preferences
+    primary, summaries = primary_evidence(aliases, preferences(body.task).benchmark_release)
+    selection["evidence_presentation"] = {
+        "version": EVIDENCE_INPUT_VERSION, "anonymous": True,
+        "quality_basis": selection.get("quality_basis"),
+        "comparison": "newest_relevant_release_primary_older_supplementary",
+        "candidate_ids": {key: row["candidate_id"] for key, row in aliases.items()},
+        "primary_benchmark": primary,
+        "task_score_summaries": {aliases[key]["candidate_id"]: value for key, value in summaries.items()},
+    }
     result = await service.infer(body, request, data, selection=True)
     choice = result["answers"]["action"]["choice"]
     winner = aliases.get(choice)
     proposed = winner["candidate_id"] if winner else None
     valid = accepted(policy, proposed)
     selected = proposed if valid else None
+    from app.decision_uncertainty import distribution
+    uncertainty = distribution(result["answers"]["action"], aliases)
+    selection["decision_distribution"] = uncertainty
     calls.append({
             "round": len(calls) + 1, "mode": "selection",
             "candidate_ids": [r["candidate_id"] for r in candidates],
             "selected_candidate_id": proposed, "choice": choice, "model": result["model"],
             "provider": body.provider,
+            "selection_adapter": result.get("selection_adapter"),
             "input_hash": hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest(),
             "usage": result.get("usage"), "timings": result["timings"], "assessment_count": 1,
             "candidate_model_ids": {r["candidate_id"]: r["model"]["id"] for r in candidates},
@@ -58,6 +74,7 @@ async def select_all(service, body, request, selection):
                               "reason": policy["assessments"].get(proposed, {}).get("reason")},
             "public_benchmark_version": selection.get("public_benchmark_version"),
             "quality_feedback_version": selection.get("quality_feedback_version"),
+            "decision_distribution": uncertainty,
             "public_evidence_records": {
                 r["candidate_id"]: [e["id"] for e in r.get("public_benchmarks", [])] for r in candidates
             },
@@ -84,6 +101,7 @@ def finish_selection(body, request, selection, selected, calls, elapsed, evaluat
                explanation(selection, selected) if winner else
                "GPU决策模型判断当前候选证据不足或不适合此任务，未强制选模。",
         decision_calls=calls, decision_model=calls[-1]["model"],
+        selection_adapter=calls[-1].get("selection_adapter"),
         decision_ms=round(elapsed, 3),
         decision_mode=mode,
         evaluated_configurations=evaluated,

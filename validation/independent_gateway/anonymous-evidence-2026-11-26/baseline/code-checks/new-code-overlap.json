@@ -1,0 +1,111 @@
+{
+  "case_id": "new-code-overlap",
+  "status": "fail",
+  "source": "isolated_functional_tests",
+  "bare_code_format": false,
+  "functional_pass": false,
+  "variants": [
+    {
+      "status": "fail",
+      "result": {
+        "tests": 164,
+        "passed": 159,
+        "failures": [
+          {
+            "index": 1,
+            "input": [
+              [
+                2,
+                2
+              ],
+              [
+                1,
+                4
+              ]
+            ],
+            "expected": false,
+            "expected_error": null,
+            "actual": "True",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 61,
+            "input": [
+              [
+                -3,
+                8
+              ],
+              [
+                3,
+                3
+              ]
+            ],
+            "expected": false,
+            "expected_error": null,
+            "actual": "True",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 87,
+            "input": [
+              [
+                3,
+                3
+              ],
+              [
+                -8,
+                4
+              ]
+            ],
+            "expected": false,
+            "expected_error": null,
+            "actual": "True",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 124,
+            "input": [
+              [
+                -8,
+                7
+              ],
+              [
+                1,
+                1
+              ]
+            ],
+            "expected": false,
+            "expected_error": null,
+            "actual": "True",
+            "actual_error": null,
+            "input_unchanged": true
+          },
+          {
+            "index": 125,
+            "input": [
+              [
+                -4,
+                -4
+              ],
+              [
+                -8,
+                4
+              ]
+            ],
+            "expected": false,
+            "expected_error": null,
+            "actual": "True",
+            "actual_error": null,
+            "input_unchanged": true
+          }
+        ]
+      },
+      "source_sha256": "5c2f11454788000282fd1b1d4370eb2af8f4c47976b9bf81d68c5a4796fa9dcc"
+    }
+  ],
+  "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+  "output_sha256": "be8305fceb69f729e23ddd4a21f1ab9b95da966faf661ca83e1c46aa4135b4a0"
+}

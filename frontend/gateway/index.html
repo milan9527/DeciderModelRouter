@@ -473,12 +473,20 @@
           <section data-view="evaluations" hidden>
             <div class="page-heading"><div><p class="eyebrow">REPRODUCIBLE EVALUATIONS</p><h1>从选模到实际任务效果</h1><p class="muted">比较输出质量、能力覆盖、耗时与成本。分类标签诊断保留在下方。</p></div></div>
             <section id="current-routing-policy" class="panel padded-panel">
-              <h2>当前选模依据：LiveBench</h2>
-              <p>文本能力按 LiveBench 相关分项判断，旧答题测试和开发回归分数不参与选模。“能力优先 / 均衡 / 成本优先”保留为任务偏好，由GPU统一判断，没有额外质量分数门槛或质量重选。</p>
-              <p class="footnote">默认仍为均衡。正常两次GPU调用：一次判断需求，一次选模型。接口能力、权限、预算等运行约束保留；多模态仍使用专项依据。下方旧版分数不代表当前策略准确率。</p>
+              <h2>当前选模依据：匿名LiveBench证据</h2>
+              <p>候选型号用匿名编号表示，文本能力按LiveBench同批次相关分项比较。Liquid增加仅用于文本选模的微调权重，第一步需求判断保持原模型。旧答题测试和开发回归分数不参与文本选模。</p>
+              <p class="footnote">仍是两次GPU调用，保留能力优先 / 均衡 / 成本优先，默认均衡；没有额外质量分数门槛或质量重选。运行约束与多模态专项依据保留。过程、会话历史和Agent步骤显示选择倾向，它不是回答正确率。</p>
             </section>
             <section id="latest-routing-validation" class="panel padded-panel" aria-labelledby="latest-routing-validation-title">
-              <h2 id="latest-routing-validation-title">上一版修复与模块验证（历史）· 2026-11-26</h2>
+              <h2 id="latest-routing-validation-title">匿名证据与Liquid微调验收 · 2026-11-26</h2>
+              <p><strong>最终完整验收：71/72（98.6%）；内容核验：72/72。</strong>文本、代码与检索61/62，多模态6/6，本地Agent四轮4/4；代码功能7/7。唯一未完全通过的保险题多输出了“元”。674项软件测试通过。</p>
+              <p>同题旧版完整验收38/72、内容55/72；微调初轮为68/72、71/72。初轮产线max档超时，补入该精确配置的超时事实后，GPU改选Astra 6.2默认档，约15.2秒完成并通过复核；未由程序指定型号。</p>
+              <p class="footnote">全部是定向场景，最终72项为已见题目复测，不能当作全场景准确率。新增16个行业题在初次冻结验证中为16/16；开放题由助手按预设要求非盲复核。编译与未编译42次选择一致41次，12次需求判断一致；候选换序仍可能影响结果。选择概率不等于成功率。</p>
+              <p><a href="https://github.com/milan9527/DeciderModelRouter/blob/main/validation/independent_gateway/anonymous-evidence-2026-11-26/README.zh.md" target="_blank" rel="noopener noreferrer">查看三轮结果、训练依据、失败记录与部署验证 ↗</a></p>
+              <p class="footnote">公开复测摘要；离线批次不写入个人评测历史。真实AgentCore与线上会话验证单列，费用未知不补零。</p>
+            </section>
+            <section id="historical-quality-priority-validation" class="panel padded-panel" aria-labelledby="historical-quality-priority-title">
+              <h2 id="historical-quality-priority-title">上一版修复与模块验证（历史）· 2026-11-26</h2>
               <p>此批次使用旧版能力优先质量门槛及配置实测校验。当前已取消这些额外质量处理，原始测试结果保留。</p>
               <p><strong>完整遵循要求：40/56（71.4%）。内容正确：48/56（85.7%）。</strong>56项全部执行完成，624项软件测试通过；原44项回归验收30项，能力优先专项12题验收10项。均为已见题目复测，不是全场景准确率。</p>
               <p>复杂产线改选GPT‑6.2 Sol已实测默认配置，约11.5秒完成回答并通过复核；代码功能7/7、完整要求4/7，多模态6/6，本地Agent多轮2/4。</p>

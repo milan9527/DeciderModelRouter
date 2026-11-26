@@ -1,0 +1,38 @@
+{
+  "errors": [],
+  "scope": "real catalog UI and one route-only GPU request; no target inference",
+  "latest_validation_displayed": true,
+  "all_views_open": true,
+  "sol_public_score_displayed": true,
+  "source_links": [
+    "https://livebench.ai/#/release/20261106",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers",
+    "https://openrouter.ai/benchmarks/routers"
+  ],
+  "mobile_body_overflow": false,
+  "preference_options_preserved": true,
+  "livebench_only_without_quality_gate": true,
+  "run_id": "67606dc9dcd7820ade04cd21",
+  "model_id": "openai.gpt-6.2-astra",
+  "candidate_public_evidence_displayed": true,
+  "public_benchmark_version": "90ec5a0626a24cf809474d44",
+  "anonymous_scores_probabilities_adapter_and_timeout_visible": true,
+  "history_metadata_visible": true,
+  "agent_metadata_visible": true,
+  "hashes": {
+    "index.html": "ac5952f8947513633c8c34bb990447e41d92124d26e0419ca86415d444195547",
+    "gateway.js": "4aa0689bf3da598d7b673d60bce3f3644d82fa091c0610fadef9df344cb96afc",
+    "workspace.js": "8cd9cbf8b76f84e39748316eee4b893c7aa2f112476d9e65aafd0db9094bc10d",
+    "agents.js": "c6a59c5e6713dd17add31647c8350ca1252a4c7169c2281f012e31bbbbd906e6",
+    "decision-details.js": "e99628e625e773e8d47767a17a3ec2a26a6cafef4dbaf16dd936d04a7e8a2436",
+    "gateway.css": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67"
+  }
+}

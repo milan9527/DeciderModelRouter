@@ -1,0 +1,619 @@
+{
+  "cases": [
+    {
+      "case": "baseline-1",
+      "choice": "m014",
+      "original_model_id": "mistral.devstral-2-123b",
+      "displayed_candidate": "Devstral 2 123B;w=r;p95s=r0.55;r0[tested=devstral-2512]:Reasoning=27.7405(n=?),Mathematics=52.5157(n=?),Data Analysis=39.1413(n=?);cost=$0.0024316 ref;cap=Y?;out=16384",
+      "confidence": 0.03835291114116545,
+      "top3": [
+        [
+          "m014",
+          0.03835291114116545
+        ],
+        [
+          "m033",
+          0.03256592885618533
+        ],
+        [
+          "m011",
+          0.027013494426669178
+        ]
+      ],
+      "tokens": 9583,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 607.7868510037661
+    },
+    {
+      "case": "baseline-2",
+      "choice": "m014",
+      "original_model_id": "mistral.devstral-2-123b",
+      "displayed_candidate": "Devstral 2 123B;w=r;p95s=r0.55;r0[tested=devstral-2512]:Reasoning=27.7405(n=?),Mathematics=52.5157(n=?),Data Analysis=39.1413(n=?);cost=$0.0024316 ref;cap=Y?;out=16384",
+      "confidence": 0.03835291114116545,
+      "top3": [
+        [
+          "m014",
+          0.03835291114116545
+        ],
+        [
+          "m033",
+          0.03256592885618533
+        ],
+        [
+          "m011",
+          0.027013494426669178
+        ]
+      ],
+      "tokens": 9583,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 607.3448100069072
+    },
+    {
+      "case": "reverse-order-same-labels",
+      "choice": "m102",
+      "original_model_id": "openai.gpt-oss-120b-1:0",
+      "displayed_candidate": "gpt-oss-120b;w=r;p95s=r1.79;cost=$0.00075825 AWS;cap=Y?;out=16384",
+      "confidence": 0.07686402190425172,
+      "top3": [
+        [
+          "m102",
+          0.07686402190425172
+        ],
+        [
+          "m022",
+          0.02880805372848803
+        ],
+        [
+          "m033",
+          0.027492753789793666
+        ]
+      ],
+      "tokens": 9583,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 608.3450839796569
+    },
+    {
+      "case": "shuffle-order-0",
+      "choice": "m028",
+      "original_model_id": "anthropic.claude-sonnet-5-5",
+      "displayed_candidate": "Claude Sonnet 5.5;w=r;p95s=r0.99;r1[tested=claude-sonnet-5-5-max-effort]:Reasoning=91.6345(n=?),Mathematics=96.1317(n=?),Data Analysis=59.4877(n=?);r2[tested=highest_supported_effort]:Reasoning=91.6(n=202),Data Analysis=59.5(n=150);cost=unknown;cap=Y?;out=16384",
+      "confidence": 0.02800397540633309,
+      "top3": [
+        [
+          "m028",
+          0.02800397540633309
+        ],
+        [
+          "m033",
+          0.02800397540633309
+        ],
+        [
+          "m064",
+          0.022168755306030706
+        ]
+      ],
+      "tokens": 9583,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 607.3034490109421
+    },
+    {
+      "case": "shuffle-order-1",
+      "choice": "m102",
+      "original_model_id": "openai.gpt-oss-120b-1:0",
+      "displayed_candidate": "gpt-oss-120b;w=r;p95s=r1.79;cost=$0.00075825 AWS;cap=Y?;out=16384",
+      "confidence": 0.04652876816058516,
+      "top3": [
+        [
+          "m102",
+          0.04652876816058516
+        ],
+        [
+          "m033",
+          0.03770431150372638
+        ],
+        [
+          "m085",
+          0.023628396999777552
+        ]
+      ],
+      "tokens": 9583,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 607.3863210040145
+    },
+    {
+      "case": "shuffle-order-2",
+      "choice": "m033",
+      "original_model_id": "nvidia.nemotron-super-3-120b",
+      "displayed_candidate": "NVIDIA Nemotron 3 Super 120B A12B;w=r;p95s=r0.42;cost=$0.00080945 AWS;cap=Y?;out=16384",
+      "confidence": 0.052303803596485426,
+      "top3": [
+        [
+          "m033",
+          0.052303803596485426
+        ],
+        [
+          "m102",
+          0.04546176008650987
+        ],
+        [
+          "m014",
+          0.03434568578228698
+        ]
+      ],
+      "tokens": 9583,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 607.1409049909562
+    },
+    {
+      "case": "anonymous-model-names",
+      "choice": "m037",
+      "original_model_id": "mistral.ministral-3-3b-instruct",
+      "displayed_candidate": "Model m037;w=r;p95s=r0.74;cost=$0.0001983 ref;cap=Y?;out=16384",
+      "confidence": 0.03222100011512377,
+      "top3": [
+        [
+          "m037",
+          0.03222100011512377
+        ],
+        [
+          "m001",
+          0.031476843781826885
+        ],
+        [
+          "m007",
+          0.024917978161331573
+        ]
+      ],
+      "tokens": 8868,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 548.3362629893236
+    },
+    {
+      "case": "remove-cost",
+      "choice": "m014",
+      "original_model_id": "mistral.devstral-2-123b",
+      "displayed_candidate": "Devstral 2 123B;w=r;p95s=r0.55;r0[tested=devstral-2512]:Reasoning=27.7405(n=?),Mathematics=52.5157(n=?),Data Analysis=39.1413(n=?);cap=Y?;out=16384",
+      "confidence": 0.03566071757146127,
+      "top3": [
+        [
+          "m014",
+          0.03566071757146127
+        ],
+        [
+          "m033",
+          0.0340325430311883
+        ],
+        [
+          "m073",
+          0.020353634486792387
+        ]
+      ],
+      "tokens": 8834,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 547.2023360198364
+    },
+    {
+      "case": "remove-latency",
+      "choice": "m014",
+      "original_model_id": "mistral.devstral-2-123b",
+      "displayed_candidate": "Devstral 2 123B;w=r;r0[tested=devstral-2512]:Reasoning=27.7405(n=?),Mathematics=52.5157(n=?),Data Analysis=39.1413(n=?);cost=$0.0024316 ref;cap=Y?;out=16384",
+      "confidence": 0.04188276293971126,
+      "top3": [
+        [
+          "m014",
+          0.04188276293971126
+        ],
+        [
+          "m011",
+          0.03474182444608842
+        ],
+        [
+          "m033",
+          0.027502631103448024
+        ]
+      ],
+      "tokens": 8785,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 548.5134969931096
+    },
+    {
+      "case": "remove-cost-and-latency",
+      "choice": "m033",
+      "original_model_id": "nvidia.nemotron-super-3-120b",
+      "displayed_candidate": "NVIDIA Nemotron 3 Super 120B A12B;w=r;cap=Y?;out=16384",
+      "confidence": 0.03225441498713259,
+      "top3": [
+        [
+          "m033",
+          0.03225441498713259
+        ],
+        [
+          "m016",
+          0.027387620718089742
+        ],
+        [
+          "m082",
+          0.02494381941542068
+        ]
+      ],
+      "tokens": 8036,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 505.6048750120681
+    },
+    {
+      "case": "swap-devstral-sol62-names-only",
+      "choice": "m010",
+      "original_model_id": "openai.gpt-6.2-sol",
+      "displayed_candidate": "Devstral 2 123B;w=r;p95s=r0.53;r2[tested=highest_supported_effort]:Reasoning=90.6(n=202),Data Analysis=81.1(n=150);cost=unknown;cap=Y?;out=16384",
+      "confidence": 0.0392129158105667,
+      "top3": [
+        [
+          "m010",
+          0.0392129158105667
+        ],
+        [
+          "m033",
+          0.029624776569894387
+        ],
+        [
+          "m011",
+          0.028272187215075056
+        ]
+      ],
+      "tokens": 9583,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 607.4902729887981
+    },
+    {
+      "case": "short-quality-instructions",
+      "choice": "m065",
+      "original_model_id": "deepseek.v3.2",
+      "displayed_candidate": "DeepSeek V3.2;w=r;p95s=r8.8;cost=$0.00248898 AWS;cap=Y?;out=16384",
+      "confidence": 0.028583208881661822,
+      "top3": [
+        [
+          "m065",
+          0.028583208881661822
+        ],
+        [
+          "m082",
+          0.026648174877552402
+        ],
+        [
+          "m039",
+          0.021594190568753193
+        ]
+      ],
+      "tokens": 8906,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 548.5781089810189
+    },
+    {
+      "case": "difficulty-complex-only",
+      "choice": "m014",
+      "original_model_id": "mistral.devstral-2-123b",
+      "displayed_candidate": "Devstral 2 123B;w=r;p95s=r0.55;r0[tested=devstral-2512]:Reasoning=27.7405(n=?),Mathematics=52.5157(n=?),Data Analysis=39.1413(n=?);cost=$0.0024316 ref;cap=Y?;out=16384",
+      "confidence": 0.03846323846437704,
+      "top3": [
+        [
+          "m014",
+          0.03846323846437704
+        ],
+        [
+          "m033",
+          0.03265960914411389
+        ],
+        [
+          "m011",
+          0.027731676063474767
+        ]
+      ],
+      "tokens": 9583,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 607.5200250197668
+    },
+    {
+      "case": "two-candidates-original-cards",
+      "choice": "m014",
+      "original_model_id": "mistral.devstral-2-123b",
+      "displayed_candidate": "Devstral 2 123B;w=r;p95s=r0.55;r0[tested=devstral-2512]:Reasoning=27.7405(n=?),Mathematics=52.5157(n=?),Data Analysis=39.1413(n=?);cost=$0.0024316 ref;cap=Y?;out=16384",
+      "confidence": 0.65796873860874,
+      "top3": [
+        [
+          "m014",
+          0.65796873860874
+        ],
+        [
+          "m010",
+          0.34203126139125994
+        ]
+      ],
+      "tokens": 1780,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 120.80594099825248
+    },
+    {
+      "case": "six-candidates-original-cards",
+      "choice": "m076",
+      "original_model_id": "openai.gpt-6-sol",
+      "displayed_candidate": "GPT-6 Sol cfg:reasoning.effort=\"max\";w=r;p95s=unknown;r1[tested=gpt-6-sol-max]:Reasoning=88.6538(n=?),Mathematics=96.356(n=?),Data Analysis=81.1893(n=?);cost=$0.012158 ref;cap=Y?;out=16384",
+      "confidence": 0.26180336318151326,
+      "top3": [
+        [
+          "m076",
+          0.26180336318151326
+        ],
+        [
+          "m054",
+          0.18875805444208976
+        ],
+        [
+          "m066",
+          0.164065953054689
+        ]
+      ],
+      "tokens": 2127,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 137.47938800952397
+    },
+    {
+      "case": "synthetic-numeric-False",
+      "choice": "strong",
+      "original_model_id": null,
+      "displayed_candidate": "Model B; Same benchmark release; Reasoning=87.69; Data Analysis=78.26; price=1",
+      "confidence": 0.9877856819654826,
+      "top3": [
+        [
+          "strong",
+          0.9877856819654826
+        ],
+        [
+          "weak",
+          0.012214318034517333
+        ]
+      ],
+      "tokens": 103,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 16.94760500686243
+    },
+    {
+      "case": "synthetic-numeric-True",
+      "choice": "strong",
+      "original_model_id": null,
+      "displayed_candidate": "Model B; Same benchmark release; Reasoning=87.69; Data Analysis=78.26; price=1",
+      "confidence": 0.9745469361692412,
+      "top3": [
+        [
+          "strong",
+          0.9745469361692412
+        ],
+        [
+          "weak",
+          0.02545306383075875
+        ]
+      ],
+      "tokens": 103,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 16.44199198926799
+    },
+    {
+      "case": "eager-baseline",
+      "choice": "m014",
+      "original_model_id": "mistral.devstral-2-123b",
+      "displayed_candidate": "Devstral 2 123B;w=r;p95s=r0.55;r0[tested=devstral-2512]:Reasoning=27.7405(n=?),Mathematics=52.5157(n=?),Data Analysis=39.1413(n=?);cost=$0.0024316 ref;cap=Y?;out=16384",
+      "confidence": 0.037876652343749664,
+      "top3": [
+        [
+          "m014",
+          0.037876652343749664
+        ],
+        [
+          "m033",
+          0.029984251358479905
+        ],
+        [
+          "m011",
+          0.026678046243289042
+        ]
+      ],
+      "tokens": 9583,
+      "engine": "eager_bf16",
+      "forward_passes": 1,
+      "latency_ms": 819.1175399988424
+    },
+    {
+      "case": "eager-reverse",
+      "choice": "m102",
+      "original_model_id": "openai.gpt-oss-120b-1:0",
+      "displayed_candidate": "gpt-oss-120b;w=r;p95s=r1.79;cost=$0.00075825 AWS;cap=Y?;out=16384",
+      "confidence": 0.07756070271117851,
+      "top3": [
+        [
+          "m102",
+          0.07756070271117851
+        ],
+        [
+          "m022",
+          0.029756399869747558
+        ],
+        [
+          "m033",
+          0.027741942856673016
+        ]
+      ],
+      "tokens": 9583,
+      "engine": "eager_bf16",
+      "forward_passes": 1,
+      "latency_ms": 819.0433779964224
+    },
+    {
+      "case": "synthetic-106-best-at-0",
+      "choice": "x000",
+      "original_model_id": null,
+      "displayed_candidate": "Model 0; Same benchmark release; Reasoning=90; Data Analysis=90; price=1",
+      "confidence": 0.640469206585378,
+      "top3": [
+        [
+          "x000",
+          0.640469206585378
+        ],
+        [
+          "x001",
+          0.028630954649440047
+        ],
+        [
+          "x035",
+          0.028630954649440047
+        ]
+      ],
+      "tokens": 2489,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 153.16765598254278
+    },
+    {
+      "case": "synthetic-106-best-at-14",
+      "choice": "x014",
+      "original_model_id": null,
+      "displayed_candidate": "Model 14; Same benchmark release; Reasoning=90; Data Analysis=90; price=1",
+      "confidence": 0.6735519679915735,
+      "top3": [
+        [
+          "x014",
+          0.6735519679915735
+        ],
+        [
+          "x059",
+          0.018007617338317104
+        ],
+        [
+          "x035",
+          0.011824837282599872
+        ]
+      ],
+      "tokens": 2489,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 153.30161899328232
+    },
+    {
+      "case": "synthetic-106-best-at-53",
+      "choice": "x053",
+      "original_model_id": null,
+      "displayed_candidate": "Model 53; Same benchmark release; Reasoning=90; Data Analysis=90; price=1",
+      "confidence": 0.8248370966281657,
+      "top3": [
+        [
+          "x053",
+          0.8248370966281657
+        ],
+        [
+          "x080",
+          0.01627539125538744
+        ],
+        [
+          "x059",
+          0.010199401356818186
+        ]
+      ],
+      "tokens": 2489,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 152.37268700730056
+    },
+    {
+      "case": "synthetic-106-best-at-105",
+      "choice": "x105",
+      "original_model_id": null,
+      "displayed_candidate": "Model 105; Same benchmark release; Reasoning=90; Data Analysis=90; price=1",
+      "confidence": 0.8432964617856249,
+      "top3": [
+        [
+          "x105",
+          0.8432964617856249
+        ],
+        [
+          "x035",
+          0.013802597661083117
+        ],
+        [
+          "x053",
+          0.0065347656830089945
+        ]
+      ],
+      "tokens": 2489,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 152.4111880280543
+    },
+    {
+      "case": "devstral-scores-0-only",
+      "choice": "m033",
+      "original_model_id": "nvidia.nemotron-super-3-120b",
+      "displayed_candidate": "NVIDIA Nemotron 3 Super 120B A12B;w=r;p95s=r0.42;cost=$0.00080945 AWS;cap=Y?;out=16384",
+      "confidence": 0.02959280508833215,
+      "top3": [
+        [
+          "m033",
+          0.02959280508833215
+        ],
+        [
+          "m011",
+          0.027589423160152515
+        ],
+        [
+          "m073",
+          0.023426518746118227
+        ]
+      ],
+      "tokens": 9574,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 601.8538970092777
+    },
+    {
+      "case": "devstral-scores-100-only",
+      "choice": "m014",
+      "original_model_id": "mistral.devstral-2-123b",
+      "displayed_candidate": "Devstral 2 123B;w=r;p95s=r0.55;r0[tested=devstral-2512]:Reasoning=100(n=?),Mathematics=100(n=?),Data Analysis=100(n=?);cost=$0.0024316 ref;cap=Y?;out=16384",
+      "confidence": 0.12184830255902655,
+      "top3": [
+        [
+          "m014",
+          0.12184830255902655
+        ],
+        [
+          "m011",
+          0.030697079180000322
+        ],
+        [
+          "m033",
+          0.02998811838412513
+        ]
+      ],
+      "tokens": 9574,
+      "engine": "compiled_bf16_preserve_casts",
+      "forward_passes": 1,
+      "latency_ms": 601.8500979989767
+    }
+  ],
+  "total_gpu_calls": 25,
+  "production_changed": false
+}

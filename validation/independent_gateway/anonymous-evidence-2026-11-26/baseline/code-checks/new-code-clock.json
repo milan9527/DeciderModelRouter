@@ -1,0 +1,20 @@
+{
+  "case_id": "new-code-clock",
+  "status": "fail",
+  "source": "isolated_functional_tests",
+  "bare_code_format": false,
+  "functional_pass": true,
+  "variants": [
+    {
+      "status": "pass",
+      "result": {
+        "tests": 166,
+        "passed": 166,
+        "failures": []
+      },
+      "source_sha256": "dfe6d76a808c2a3ac30ddaa2342eab09b83ac16fe1d0eb28aed4a50973b5b6bc"
+    }
+  ],
+  "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+  "output_sha256": "857b9a4a168cf51910ffa758b168b7f5e4d0f91bf4d958271cff0ac44ffa8873"
+}

@@ -8,7 +8,15 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-2026-11-26 **当前LiveBench统一偏好版本：ECS revision 30 / Python 3.12 ARM64**，API镜像 `sha256:bd5dff155dba01962317370a2b3895398563b33beeddd54ae015ea1f608b974a`。策略 `gpu-evidence-livebench-preference-v5`；文本质量仅用LiveBench，旧答题和回归评分不再参与文本选模。保留能力优先/均衡/成本优先选项，由GPU统一判断；取消5分淘汰、配置答题资格门槛和额外质量重选。639项软件测试通过，镜像实际目录加载通过；历史56项准确率不归属于此版本。[本次验证](../validation/independent_gateway/livebench-preference-2026-11-26/README.zh.md)。沿用现有GPU、AgentCore V2、认证与数据库，未创建新基础设施。本机审计目录 `.deployment/livebench-only-20261126/`。
+2026-11-26 **当前匿名评测与Liquid选模微调：ECS revision31 / Python3.12 ARM64**，API固定镜像 `sha256:c505f57dcd998dd532ac4925e4cc6c76671f5a51af2c462e30be38553bd50a50`。策略 `gpu-evidence-anonymous-table-v6`，全部合格配置匿名输入第二次GPU；第一阶段七项需求判断不变，文本LiveBench-only，三种偏好继续交给GPU，无Top-K或质量重选。选择概率、第二名差距及适配器版本进入前端、历史和Agent记录。
+
+原 **i-01180cf02d12e6e31 / g5.xlarge / A10G** 已加载固定LoRA摘要 `d9eeae6c4cda5d29b91f3f355d658377714cf5e6080ff6b83fae4d8dabfa048e`，仅第二阶段文本选模启用，基座文件未修改。预热副本切换后正式Liquid/H2O/Decider/网关四服务均active，临时训练及候选容器已停止，无临时定时器。AgentCore保持V2、应用版本3；无新EC2、CloudFormation或Cognito。
+
+674项软件回归、发布脚本修改后22项部署检查通过。最终72项定向已见回归严格71/72、内容72/72；唯一格式失败是裸数字多单位，不能代表通用准确率。线上11次普通请求、两轮真实Agent完成，产线回答及金额/历史复核通过；Agent次轮Fable5.2→Opus5.5，去重结果-7500分，全部4次目标调用先GPU决策。[完整结果与限制](../validation/independent_gateway/anonymous-evidence-2026-11-26/README.zh.md) · [线上核验](../validation/independent_gateway/anonymous-evidence-2026-11-26/live/README.zh.md)。
+
+ECS稳定1/1，根域名200无跳转、S3匿名403、OAC及全部7个前端对象核验。初次发布清单漏传新增decision-details.js，已补入并重新发布/刷新；[完整发布记录](../validation/independent_gateway/anonymous-evidence-2026-11-26/frontend-release.json)。GPU版本目录 `/opt/decider-open-models/releases/anonymous-adapter-20261126` 保存原unit和gateway用于恢复；本机审计目录 `.deployment/compact-routing-20261126/`。
+
+2026-11-26 **上一版LiveBench统一偏好版本：ECS revision 30 / Python 3.12 ARM64**，API镜像 `sha256:bd5dff155dba01962317370a2b3895398563b33beeddd54ae015ea1f608b974a`。策略 `gpu-evidence-livebench-preference-v5`；文本质量仅用LiveBench，旧答题和回归评分不再参与文本选模。保留能力优先/均衡/成本优先选项，由GPU统一判断；取消5分淘汰、配置答题资格门槛和额外质量重选。639项软件测试通过，镜像实际目录加载通过；历史56项准确率不归属于此版本。[本次验证](../validation/independent_gateway/livebench-preference-2026-11-26/README.zh.md)。沿用现有GPU、AgentCore V2、认证与数据库，未创建新基础设施。本机审计目录 `.deployment/livebench-only-20261126/`。
 
 2026-11-26 **上一版能力优先修复：ECS revision 29 / Python 3.12 ARM64**，API镜像 `sha256:dcec050d21fa47e6e540931d4d71d92eabf2793b9577fc3d161debed7b9fef25`。策略 `gpu-evidence-quality-priority-v4`、质量约束 `quality-priority-v2`；同批次能力证据与精确配置实测进入校验，正常两次GPU，不合格时最多一次GPU重选，目标失败回退保持原质量标准。沿用 **i-01180cf02d12e6e31 / g5.xlarge / A10G** 与原编译推理实现，AgentCore保持 **V2 / 应用版本3**；无新建EC2、CloudFormation或Cognito。
 

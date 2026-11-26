@@ -1,4 +1,22 @@
-# Three resident decision models on one L4
+# Independent gateway GPU services
+
+The current DeciderModelRouter deployment uses its own A10G `g5.xlarge`,
+`i-01180cf02d12e6e31`, with `dmr-decider`, `dmr-h2o`, `dmr-liquid` and
+`dmr-gateway` systemd services. Maintenance uses AWS SDK/SSM, without CloudFormation.
+See the [current Chinese deployment notes](README.zh.md) and [release record](../DEPLOYED.md).
+
+`liquid_server.py` supports an optional `--selection-adapter` directory plus a
+required `--adapter-sha256`. Deploy `liquid_adapter.py` beside it. The pinned
+adapter only affects the second, LiveBench-based text selection call; the initial
+assessment and multimodal calls keep base weights. Responses preserve adapter
+identity and candidate probabilities. These probabilities are not business
+success rates. Training artifacts and limitations are in the
+[validation report](../../validation/independent_gateway/anonymous-evidence-2026-11-26/README.zh.md).
+
+## Archived deployment: three models on one shared L4
+
+The following notes and `install_resident.sh` describe the older shared L4 host,
+not the independent g5 service.
 
 [中文](README.zh.md) · Workflow behavior and evidence: [English](../../docs/FIVE_MODELS.en.md) / [中文](../../docs/FIVE_MODELS.md).
 

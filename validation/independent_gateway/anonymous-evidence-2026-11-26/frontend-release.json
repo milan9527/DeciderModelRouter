@@ -1,0 +1,66 @@
+{
+  "release_id": "0ca1cbe645e14c4a87c314a3b81b87e1",
+  "resources": {
+    "cluster": "decider-model-router",
+    "service": "decider-model-router",
+    "bucket": "decider-model-router-632930644527-us-east-1",
+    "distribution_id": "E3OCAAF3NQ1LYX",
+    "region": "us-east-1"
+  },
+  "previous_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:31",
+  "new_task_definition": null,
+  "phase": "complete",
+  "objects": [
+    {
+      "key": "gateway/gateway.css",
+      "sha256": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67",
+      "size": 26651,
+      "previous_version": "syFk__XFRQ3hDLVMAOupMyR0hmnEZBb.",
+      "version": "ZkrTh6XTi8m6Muy.qu6pF.QXhlzGF96T"
+    },
+    {
+      "key": "gateway/decision-details.js",
+      "sha256": "e99628e625e773e8d47767a17a3ec2a26a6cafef4dbaf16dd936d04a7e8a2436",
+      "size": 2609,
+      "previous_version": null,
+      "version": "foYUwe.RH.VqqnGif1nHFMhWXHWVo4j."
+    },
+    {
+      "key": "gateway/workspace.js",
+      "sha256": "8cd9cbf8b76f84e39748316eee4b893c7aa2f112476d9e65aafd0db9094bc10d",
+      "size": 41335,
+      "previous_version": "YZkwf4GkBaOkSnvw2jiPVZF_3D9ji6Ln",
+      "version": "D_yFIhh9O3blqB8zJvhokCLY90CoT40p"
+    },
+    {
+      "key": "gateway/agents.js",
+      "sha256": "c6a59c5e6713dd17add31647c8350ca1252a4c7169c2281f012e31bbbbd906e6",
+      "size": 12345,
+      "previous_version": "SAg27IxzCr8Ut3a4nH666F7my4p6SeT.",
+      "version": "KPfxn_KN1txn3gu4EuEIZFbpDHzWg5cV"
+    },
+    {
+      "key": "gateway/gateway.js",
+      "sha256": "4aa0689bf3da598d7b673d60bce3f3644d82fa091c0610fadef9df344cb96afc",
+      "size": 52912,
+      "previous_version": "0fAys_H6SnP0m0GmEPSv6oNqcjaoOAeQ",
+      "version": "8PlD7er459x3Fh3RRKtpnS7na8Mm1NlK"
+    },
+    {
+      "key": "gateway/mark.svg",
+      "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+      "size": 276,
+      "previous_version": "0IolRE0klVUqRN5sUnAx6lmCLA3i1Uv9",
+      "version": "wCfnbhcQJXhhm9PErpoaw8WnEDvtoM57"
+    },
+    {
+      "key": "gateway/index.html",
+      "sha256": "ac5952f8947513633c8c34bb990447e41d92124d26e0419ca86415d444195547",
+      "size": 39559,
+      "previous_version": "Hf8H1sUQK2A6pv.xxON75MmGDH.CjWNb",
+      "version": "Naq0rwqX43e_YIeesRnbtCRENPrfyabi"
+    }
+  ],
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "invalidation_id": "I4KN8H0787P3OK99YT2H44H53"
+}

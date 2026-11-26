@@ -98,7 +98,7 @@ def test_single_gpu_call_sees_every_candidate_and_changes_winner_with_evidence()
     class Service:
         async def infer(self, body, request, payload, *, selection=False):
             assert selection
-            criteria = payload["questions"]["action"]["criteria"]
+            criteria = json.loads(payload["state"])["candidates"]
             import re
             cards = {key: value for key, value in criteria.items() if key != "none"}
             assert len(cards) == 37

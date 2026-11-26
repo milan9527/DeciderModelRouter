@@ -35,7 +35,7 @@ def build():
     ET.SubElement(svg, "desc", id="diagram-description").text = (
         "浏览器通过专用 CloudFront 访问私有 S3 前端，API 经 VPC Origin、"
         "内网 ALB 进入私有 ECS Fargate。后端独立调用 g5.xlarge GPU 获取任务属性并依据评测选择目标型号，"
-        "镜像内证据快照提供精确端点评测。两张 DynamoDB 表保存认证、会话、"
+        "镜像内证据快照提供LiveBench文本分项与多模态专项依据，匿名候选参与第二次GPU选择。两张 DynamoDB 表保存认证、会话、"
         "评测和性能，独立私有 S3 保存媒体。CloudFront 不直接读取媒体桶。"
         "GPU 不接收媒体字节，评测记录不会自动更新选型快照。"
     )
@@ -221,7 +221,7 @@ def build():
         ["A10G 24GB · 独立 GPU 服务", "Decider / Liquid / H2O", "两次 GPU 调用 · 默认 Liquid"],
     )
     text(390, 1002, "GPU 根据评测选择模型", 21, weight="600")
-    text(390, 1038, "输入：任务、候选、实测与价格", 19, MUTED)
+    text(390, 1038, "输入：匿名候选、分项成绩与费用", 19, MUTED)
     text(390, 1072, "不传媒体字节或测试标准答案", 19, MUTED)
     text(390, 1148, "当前：1 个 API 任务 + 1 台 GPU；网络出口与运维路径省略。", 19, MUTED)
 
@@ -266,7 +266,7 @@ def build():
         ("02", "GPU 评估全部需求"),
         ("03", "筛选后 GPU 选模"),
         ("04", "Bedrock 按需执行"),
-        ("05", "保存结果与性能"),
+        ("05", "保存结果与选择概率"),
     ]
     for i, (number, label) in enumerate(steps):
         x = 40 + 376 * i
@@ -278,7 +278,7 @@ def build():
     text(
         40,
         1455,
-        "全部合格配置参与 GPU 判断；直接实测、公开参考与费用分开说明。小样本评测不等于业务成功率。",
+        "全部合格配置参与 GPU 判断；文本分项按 LiveBench 批次比较。选择概率与公开成绩都不等于业务成功率。",
         20,
         MUTED,
     )

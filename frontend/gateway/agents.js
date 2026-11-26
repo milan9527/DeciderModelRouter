@@ -1,3 +1,4 @@
+import { decisionConfidenceHTML, selectionAdapterHTML } from "./decision-details.js";
 const $ = (s) => document.querySelector(s);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const ADVANCED_BILLING = "针对刚才T2重复计费，设计可落地的跨区域幂等方案：PostgreSQL是账务真源，Kafka至少一次投递，消费者可能在扣款提交后、ACK前崩溃。两个区域在网络分区时都可接收请求，相同tenant+event可能携带冲突金额，退款事件可早于扣款，旧事件在30天后重放，租户迁移期间有双写。明确线性化点、事务边界、隔离级别、outbox/inbox状态机与恢复顺序。证明任何故障交错下至多扣款一次且不会遗漏合法退款；说明不能同时保证的性质、如何检测和人工解决冲突。提供核心伪代码、两条反例执行轨迹、故障注入测试矩阵和不停止服务的迁移回滚方案。不要声称单个唯一索引就能保证外部支付exactly once。";
@@ -118,9 +119,10 @@ export class IndustryAgents {
         <td>${s.model_changed ? '<strong class="agent-switch">已切换模型</strong>' : s.stickiness?.retained ? "沿用模型" : "重新评估"}
         <small>${this.esc(s.profile ? `${s.profile.workflow} · ${s.profile.difficulty}` : "")}</small>
         <small>${this.esc(s.stickiness?.reason || s.error?.message || "")}</small>
-        <details><summary>选型依据与用量</summary><p>${this.esc(s.selection_reason)}</p><pre>${this.esc(JSON.stringify({
+        <details><summary>选型依据与用量</summary><p>${this.esc(s.selection_reason)}</p>${decisionConfidenceHTML(s.decision_distribution, this.esc)}${selectionAdapterHTML(s.selection_adapter, this.esc)}<pre>${this.esc(JSON.stringify({
           profile: s.profile, configuration_id: s.configuration_id,
           configuration_changed: s.configuration_changed, usage: s.usage,
+          decision_distribution: s.decision_distribution,
           selected_at: s.selected_at, target_started_at: s.target_started_at,
         }, null, 2))}</pre></details></td>
         <td>${s.decision_mode === "two_stage" ? `需求判断 ${this.ms(s.assessment_ms)}<br>模型选择 ${this.ms(s.selection_ms)}<small>合计 ${this.ms(s.model_decision_ms)} · ${s.model_decision_calls || 0} 次GPU请求</small>` : s.decision_mode === "joint" ? `联合决策 ${this.ms(s.model_decision_ms)}（${s.model_decision_calls || 0} 次请求）<small>含 GPU 往返 ${this.ms(s.gpu_ms)}，不重复相加</small>` : `GPU 分类 ${this.ms(s.gpu_ms)}<br>GPU 选模 ${this.ms(s.model_decision_ms)}（${s.model_decision_calls || 0} 次）`}<br>目标 ${this.ms(s.target_ms)}<small>缓存读 ${s.cache?.read_tokens || 0}</small></td>

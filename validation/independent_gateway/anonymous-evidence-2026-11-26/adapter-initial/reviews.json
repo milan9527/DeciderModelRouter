@@ -1,0 +1,146 @@
+[
+  {
+    "case_id": "ambiguous",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "简短澄清具体任务与目标，没有编造。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "50784a0f5ed96c23f854e81226b7dc39a0691508b4cf713dec9dc715749f997c"
+  },
+  {
+    "case_id": "causality",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "按冻结标准，否定从相关直接推出因果并指出气温混杂。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "2457aa0665a55f543afa3a1a0633cdba2cd00a37d34fa50039870910648172d7"
+  },
+  {
+    "case_id": "marketing",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "仅使用500ml已知信息，无虚构材质/时长。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "d27198f84b14a6ca1400b5b28c40196b7950b2815be603222f29fbfab5010419"
+  },
+  {
+    "case_id": "medical",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "普通感冒无需抗生素，严重症状就医，无个人处方。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "5290a26ceb03568e742012d4795a511473ce02293157b0af2d9ffaefff801d1a"
+  },
+  {
+    "case_id": "quality-holdout-aggregation",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "总体83%/91%及四个分层值正确，指出原论点错误并保留因果不确定性，小于200字。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "d982d9214ad01aad6f9c4a236ac71f6091c8de8f287a9e48b0876dae6772a52a"
+  },
+  {
+    "case_id": "quality-holdout-causal",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "识别同时改温与检测选择偏差，提出一致抽检与2×2随机分层设计，小于400字，没有声称已经证明因果。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "1370c948c016f73cb92b76ed8177262ee9744f996650221aa86a733d625b1e00"
+  },
+  {
+    "case_id": "quality-holdout-incident",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "时序准确，事实和假设分开，给出发布差异与连接/查询/流量证据计划，小于150字。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "49dedde392733d50faa00f8845c8b7756e86ccb7ab276a3c4952c7b824b6f267"
+  },
+  {
+    "case_id": "refund",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "退款提交不等于到账，3至5工作日且不承诺今天。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "82fadb0a43752d0033c5821552a0135bf6ceb9bdf3f88443433bb6c274d5c67a"
+  },
+  {
+    "case_id": "short-story",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "雨、钥匙、误会和温暖结尾完整，小于100字。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "583e40f513cf1ed3f137182039b431ad4d2d7d6f19ce21c117b3b18cc39eed48"
+  },
+  {
+    "case_id": "summary",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "证书过期、恢复和无数据丢失准确，小于40汉字。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "fe50849d24574fb444cf19137d9dc78de3041ba50052e3666e5afedf459afe75"
+  },
+  {
+    "case_id": "video-caption",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "已查看视频六帧联系图，红花苞展开及绿紫叶片、黄花心符合画面。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "49d65d398eea66d962fc83d77068148c98aadc36433644a5a09b7fc3a678ffe6"
+  },
+  {
+    "case_id": "asr",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "内容正确，但附加时间戳或单位违反明确输出格式；严格结果仍为失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "16a4c9847f6cc54d7bc06a968fe1a92ccd0a5fe90066cd178940ef78b8e54fab"
+  },
+  {
+    "case_id": "heldout-insurance",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "内容正确，但附加时间戳或单位违反明确输出格式；严格结果仍为失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "f77b707d4d14f41729a6eccf822db46027cb81ae86250b26dd0ceafc56b59749"
+  },
+  {
+    "case_id": "heldout-energy",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "内容正确，但附加时间戳或单位违反明确输出格式；严格结果仍为失败。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "3f4fbcc444753a555fbe2b94cf46192ebaf7e35033e40602408ea4b97c5038d8"
+  },
+  {
+    "case_id": "agent-retail-1",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "已逐项复核工具事实、业务计算和未执行边界；零售缺口15与补偿300/200，支付去重前5000、去重后-7500及待结算8300正确。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "abe465960a196e77f78f74fd2efac3ced306b2f99885a263eda155cee30a8a1b"
+  },
+  {
+    "case_id": "agent-retail-2",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "已逐项复核工具事实、业务计算和未执行边界；零售缺口15与补偿300/200，支付去重前5000、去重后-7500及待结算8300正确。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "ff171b930fc2399a3daea90957286deb164b399ea1c0a97a8219edc02ad51c67"
+  },
+  {
+    "case_id": "agent-finance-1",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "已逐项复核工具事实、业务计算和未执行边界；零售缺口15与补偿300/200，支付去重前5000、去重后-7500及待结算8300正确。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "4c9b941f64a6cbf6251825b84b879cb6ba01d657e0c2b888833486f4be048614"
+  },
+  {
+    "case_id": "agent-finance-2",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "已逐项复核工具事实、业务计算和未执行边界；零售缺口15与补偿300/200，支付去重前5000、去重后-7500及待结算8300正确。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "9ecf71a93fb8d7b57409e58807a303600373405a824211fbcc239ddabef62886"
+  }
+]

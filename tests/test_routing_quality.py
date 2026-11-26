@@ -98,8 +98,9 @@ def test_one_gpu_selection_for_high_preference_even_with_missing_or_low_scores(c
 
             async def infer(self, body, request, payload, **kwargs):
                 self.payloads.append(payload)
-                key = next((k for k, text in payload["questions"]["action"]["criteria"].items()
-                            if text.startswith(choice + ";")), "invalid")
+                from tests.gateway_fakes import recorded_aliases
+                key = next((k for k, row in recorded_aliases(payload).items()
+                            if row["candidate_id"] == choice), "invalid")
                 return {"model": "test-gpu", "answers": {"action": {"choice": key}},
                         "timings": {"backend_total_ms": 1}, "usage": None}
         service = Service()
@@ -110,7 +111,7 @@ def test_one_gpu_selection_for_high_preference_even_with_missing_or_low_scores(c
         payload = service.payloads[0]
         assert len(payload["questions"]["action"]["criteria"]) == 4
         assert "quality-policy=PASS" not in json.dumps(payload)
-        assert "Cost preference=high" in payload["questions"]["action"]["instructions"]
+        assert json.loads(payload["state"])["preference"] == "Prioritize task-relevant capability."
     asyncio.run(check())
 
 

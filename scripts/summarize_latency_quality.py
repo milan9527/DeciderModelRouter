@@ -19,6 +19,8 @@ def category(case):
     if case.get("category"):
         return case["category"]
     cid = case["id"]
+    if cid.startswith("fresh-"):
+        return "新增16行业业务题"
     if cid.startswith("heldout-"):
         return "12行业业务题"
     if cid == "manufacturing-causal-regression":
@@ -111,6 +113,7 @@ def summarize(folder):
         "arm": manifest["arm"], "suite_version": manifest["version"],
         "overall": counts(rows), "categories": {k: counts(v) for k, v in groups.items()},
         "new_industry_holdout": counts([r for r in rows if r["split"] == "new_holdout"]),
+        "frozen_industry_holdout": counts([r for r in rows if r["split"] == "frozen_holdout"]),
         "workflow_fit": {
             "passed": sum(r.get("workflow_fit") is True for r in rows),
             "scored": sum(r.get("workflow_fit") is not None for r in rows),

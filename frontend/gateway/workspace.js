@@ -1,5 +1,6 @@
 const $ = (s) => document.querySelector(s);
 import { IndustryAgents } from "./agents.js";
+import { decisionConfidenceHTML, evidencePresentationHTML, selectionAdapterHTML } from "./decision-details.js";
 const $$ = (s) => [...document.querySelectorAll(s)];
 const date = (v) => new Date(v).toLocaleString("zh-CN", { hour12: false });
 const labels = { running: "处理中", executed: "已完成", selected: "已选模", no_route: "无候选", incomplete: "输出未完成", error: "失败", interrupted: "已中断", completed: "已完成" };
@@ -167,6 +168,11 @@ export class Workspace {
     $("#history-detail-content").innerHTML = `<p class="muted">${this.esc(date(record.created_at))} · ${this.esc(labels[record.status] || record.status)} · ${this.esc(record.id)}</p><h3>任务</h3><pre>${this.esc(record.request.task.text)}</pre><h3>分类与选模</h3><p>${this.esc(fields)}</p><p>${this.esc(record.model_id || "未选出目标模型")}</p><p>${record.decision_mode === "two_stage" ? `两阶段决策 ${this.ms(record.model_decision_ms)}（需求判断 ${this.ms(record.assessment_ms)} · 模型选择 ${this.ms(record.selection_ms)}，合计包含分项）` : record.decision_mode === "joint" ? `联合决策 ${this.ms(record.model_decision_ms)}（含GPU往返 ${this.ms(record.gpu_ms)}，不重复相加）` : `GPU 分类 ${this.ms(record.gpu_ms)} · GPU 选模 ${this.ms(record.model_decision_ms)}`}（${record.model_decision_calls ?? "—"} 次请求）· 路由 ${this.ms(record.route_ms)} · 目标 ${this.ms(record.target_ms)} · 参考费用 ${this.usd(record.reference_cost)}</p><h3>输出</h3><pre>${this.esc(result?.text || (result?.dimensions ? `向量维度：${result.dimensions}` : record.error?.message || "没有已保存的目标输出"))}</pre>${record.execution_outcome_unknown ? '<p class="error">连接中断时执行已提交，最终结果和用量未知；不能据此认定未产生费用。</p>' : ""}<details><summary>查看已保存的 ${record.events.length} 个事件</summary><pre>${this.esc(JSON.stringify(record.events, null, 2))}</pre></details>`;
     $("#history-detail-content").insertAdjacentHTML("beforeend",
       mediaHTML(result?.artifacts) + (record.request.task.attachments?.length ? "<h3>输入附件</h3>" + mediaHTML(record.request.task.attachments) : ""));
+    const savedSelection = record.events.findLast((e) => e.stage === "selection" && e.status === "completed")?.data?.selection;
+    $("#history-detail-content").insertAdjacentHTML("beforeend",
+      evidencePresentationHTML(savedSelection?.evidence_presentation, this.esc)
+      + selectionAdapterHTML(savedSelection?.selection_adapter, this.esc)
+      + decisionConfidenceHTML(savedSelection?.decision_distribution, this.esc));
     if (result?.media_job?.id) {
       const job = await this.api("/gateway/media/jobs/" + encodeURIComponent(result.media_job.id));
       if (epoch !== this.epoch) return;

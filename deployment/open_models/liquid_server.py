@@ -18,7 +18,11 @@ def main():
     parser.add_argument("--compile", action="store_true")
     parser.add_argument("--warmup-inputs", type=Path)
     parser.add_argument("--compile-cache", type=Path)
+    parser.add_argument("--selection-adapter", type=Path)
+    parser.add_argument("--adapter-sha256")
     args = parser.parse_args()
+    if bool(args.selection_adapter) != bool(args.adapter_sha256):
+        parser.error("--selection-adapter and --adapter-sha256 must be supplied together")
     if args.compile and not args.warmup_inputs:
         parser.error("--compile requires representative --warmup-inputs before readiness")
     if args.compile:
@@ -38,6 +42,13 @@ def main():
     model = AutoModel.from_pretrained(
         args.model, trust_remote_code=True, dtype=torch.bfloat16, local_files_only=True,
     ).to("cuda").eval()
+    # Initialize the native engine before wrapping projections. Its initial
+    # setup must not reset the wrapper state during a request.
+    _ = model.engine
+    adapter = None
+    if args.selection_adapter:
+        from liquid_adapter import SelectionAdapter
+        adapter = SelectionAdapter(model, args.selection_adapter, args.adapter_sha256)
     startup = time.perf_counter()
     engine = "eager_bf16"
     if args.compile:
@@ -63,6 +74,8 @@ def main():
             raise RuntimeError("The pinned Liquid compiler did not wrap any model forwards")
 
     def select_engine(payload):
+        if adapter:
+            adapter.select(payload)
         # The initial seven-attribute assessment retains eager BF16 numerics.
         # The measured optimization applies only to the subsequent model choice.
         compiled = args.compile and set(payload["questions"]) == {"action"}
@@ -99,6 +112,7 @@ def main():
         return {"status": "ok", "model": "LiquidAI/d1-2B", "device": "cuda", "dtype": "BF16",
                 "decision_mode": "native_multi_question", "max_candidates": 256,
                 "inference_engine": engine, "warmup_count": warmup_count,
+                "selection_adapter": {k: v for k, v in adapter.metadata.items() if k != "active"} if adapter else None,
                 "warmup_ms": startup_ms, "new_shapes": "eager_cuda" if args.compile else "eager",
                 "worker_precision_preserved": config.emulate_precision_casts if args.compile else None}
 
@@ -132,6 +146,8 @@ def main():
                           forward_passes=forward_count - before, process_peak_allocated_bytes=peak,
                           process_reserved_after_bytes=torch.cuda.memory_reserved(),
                           inference_engine="compiled_bf16_preserve_casts" if compiled else "eager_bf16")
+            if adapter:
+                result["selection_adapter"] = dict(adapter.metadata)
             return result
 
     uvicorn.run(app, host="127.0.0.1", port=args.port, access_log=False)

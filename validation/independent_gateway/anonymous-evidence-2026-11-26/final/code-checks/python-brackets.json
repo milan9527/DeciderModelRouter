@@ -1,0 +1,20 @@
+{
+  "case_id": "python-brackets",
+  "status": "pass",
+  "source": "isolated_functional_tests",
+  "bare_code_format": true,
+  "functional_pass": true,
+  "variants": [
+    {
+      "status": "pass",
+      "result": {
+        "tests": 108,
+        "passed": 108,
+        "failures": []
+      },
+      "source_sha256": "05429d1ea92a59fb94b383f475a7771bbbf2fb68da18bbe1d6c8c8816306dbc6"
+    }
+  ],
+  "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+  "output_sha256": "05429d1ea92a59fb94b383f475a7771bbbf2fb68da18bbe1d6c8c8816306dbc6"
+}

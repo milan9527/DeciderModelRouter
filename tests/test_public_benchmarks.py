@@ -109,18 +109,18 @@ def test_live_snapshot_reaches_default_candidates_without_authorizing_source_eff
     assert len(aliases) == len(rows)
     assert json.loads(data["state"])["request"] == task.text
     sol_key = next(k for k, r in aliases.items() if r["candidate_id"] == sol["candidate_id"])
-    text = data["questions"]["action"]["criteria"][sol_key]
-    assert "Reasoning=90.6(n=202)" in text and "Data Analysis=81.1(n=150)" in text
-    assert "tested=highest_supported_effort" in text
-    assert "LiveBench 2" in data["questions"]["action"]["instructions"]
-    assert "TEXT QUALITY uses ONLY" in data["questions"]["action"]["instructions"]
+    text = json.loads(data["state"])["candidates"][sol_key]
+    assert "Reasoning=90.60" in text and "Data Analysis=81.10" in text
+    assert "tested effort=highest supported effort" in text
+    assert "LiveBench 2" in data["state"]
+    assert "gpt-6.2-sol" not in data["state"]
     # Changing the actual evidence must change what the GPU receives, not just UI metadata.
     changed = copy.deepcopy(rows)
     r = next(r for r in changed if r["candidate_id"] == sol["candidate_id"])
     e = next(e for e in r["public_benchmarks"] if e["benchmark"] == "LiveBench 2")
     e["scores"]["Reasoning"] = 12.3
     new, _ = joint_payload(SimpleNamespace(task=task), request, payload, changed, assessed=True)
-    assert "Reasoning=12.3" in new["questions"]["action"]["criteria"][sol_key]
+    assert "Reasoning=12.30" in json.loads(new["state"])["candidates"][sol_key]
     assert new != data
 
 

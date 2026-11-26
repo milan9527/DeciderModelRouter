@@ -18,7 +18,7 @@ ENDPOINTS = {"liquid": "http://127.0.0.1:18801", "h2o": "http://127.0.0.1:18803"
 def validate(payload):
     if not isinstance(payload, dict) or set(payload) != {"state", "questions"}:
         raise HTTPException(422, "Expected state and questions")
-    if not isinstance(payload["state"], str) or len(payload["state"]) > 24000:
+    if not isinstance(payload["state"], str) or len(payload["state"]) > 64000:
         raise HTTPException(422, "Invalid state")
     questions = payload["questions"]
     if not isinstance(questions, dict) or not 1 <= len(questions) <= 16:

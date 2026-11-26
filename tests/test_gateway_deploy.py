@@ -1,6 +1,7 @@
 import copy
 import io
 import json
+import re
 import sys
 from types import SimpleNamespace
 from unittest.mock import MagicMock
@@ -158,6 +159,13 @@ def assets(tmp_path):
     for filename in deploy.ASSETS:
         (tmp_path / filename).write_text("content: " + filename)
     return deploy.files(tmp_path)
+
+
+def test_release_contains_every_local_javascript_import():
+    root = deploy.ROOT / "frontend/gateway"
+    for source in root.glob("*.js"):
+        for module in re.findall(r'from\s+["\']\./([^"\']+)["\']', source.read_text()):
+            assert module in deploy.ASSETS, f"{source.name} imports unpublished {module}"
 
 
 def test_task_clone_preserves_roles_secrets_gpu_and_sidecars():

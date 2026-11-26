@@ -1,0 +1,20 @@
+{
+  "case_id": "python-dedup",
+  "status": "fail",
+  "source": "isolated_functional_tests",
+  "bare_code_format": false,
+  "functional_pass": true,
+  "variants": [
+    {
+      "status": "pass",
+      "result": {
+        "tests": 103,
+        "passed": 103,
+        "failures": []
+      },
+      "source_sha256": "282b3473ff653f0c6bb89ac73f58ad635cd299eb7576e3c9adfdada42b3b63a7"
+    }
+  ],
+  "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+  "output_sha256": "7bc526bc00e4e8c241e098baf1b3a7abda77024594285a895977b982dd01b040"
+}

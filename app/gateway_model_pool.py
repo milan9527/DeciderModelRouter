@@ -4,7 +4,13 @@ import copy
 import hashlib
 import json
 
-from app.bedrock_evidence import load_evidence, measured, measured_scores, public_summary
+from app.bedrock_evidence import (
+    load_evidence,
+    measured,
+    measured_scores,
+    public_summary,
+    runtime_observations,
+)
 from app.bedrock_limits import model_limits, output_limit
 from app.public_benchmarks import (
     TEXT_QUALITY_WORKFLOWS,
@@ -16,7 +22,7 @@ from app.quality_feedback import load_feedback
 from app.routing_balance import balanced_pool, preferences
 from app.routing_selector import configuration_id
 
-MODEL_ROUTING_VERSION = "gpu-evidence-livebench-preference-v5"
+MODEL_ROUTING_VERSION = "gpu-evidence-anonymous-table-v6"
 
 
 def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evidence=None):
@@ -131,6 +137,7 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
                 "pricing_source": observation.get("pricing"),
             }
             cid = configuration_id(mid, bench)
+            observed_runtime = runtime_observations(observation, fields, inference, profile.workflow)
             aid = adapter(model, task, profile.workflow) if media else None
             if media and caps.get(profile.workflow) and profile.workflow in {"vision", "video_understanding"} and not aid:
                 aid = "converse_media"
@@ -141,6 +148,7 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
                     "account_available", "invocation"}}, "benchmark": bench,
                 **({"adapter": aid} if aid else {}),
                 "measured_evidence": scores, "measurement_configuration": exact.get("configuration"),
+                "runtime_observations": observed_runtime,
                 "quality_basis": "livebench_only" if livebench_only else "modality_evidence",
                 "specialized_evidence": None if livebench_only else exact.get("measurements", {}).get("safety"),
                 "protocol_evidence": {w: {k: v for k, v in exact.get("measurements", {}).get(w, {}).items()

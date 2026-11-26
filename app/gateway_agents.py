@@ -428,6 +428,8 @@ async def model_step(body: ModelStep, request: Request):
                         model_decision_calls=len(selection.get("decision_calls", [])),
                         assessment_ms=selection.get("assessment_ms"), selection_ms=selection.get("selection_ms"),
                         public_benchmark_version=selection.get("public_benchmark_version"),
+                        decision_distribution=selection.get("decision_distribution"),
+                        selection_adapter=selection.get("selection_adapter"),
                     )
             elif stage == "execution":
                 progress["phase"] = "executing" if status == "started" else "completed"

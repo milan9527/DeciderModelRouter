@@ -1,0 +1,536 @@
+{
+  "m000": {
+    "id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+    "configuration": {}
+  },
+  "m001": {
+    "id": "mistral.mistral-large-3-675b-instruct",
+    "configuration": {}
+  },
+  "m002": {
+    "id": "amazon.nova-2-lite-v1:0",
+    "configuration": {}
+  },
+  "m003": {
+    "id": "anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "configuration": {}
+  },
+  "m004": {
+    "id": "nvidia.nemotron-nano-9b-v2",
+    "configuration": {}
+  },
+  "m005": {
+    "id": "xai.grok-4.6",
+    "configuration": {}
+  },
+  "m006": {
+    "id": "openai.gpt-5.6-terra",
+    "configuration": {}
+  },
+  "m007": {
+    "id": "minimax.minimax-m2.1",
+    "configuration": {}
+  },
+  "m008": {
+    "id": "mistral.mistral-large-2402-v1:0",
+    "configuration": {}
+  },
+  "m009": {
+    "id": "anthropic.claude-opus-4-7",
+    "configuration": {
+      "output_config": {
+        "effort": "xhigh"
+      },
+      "thinking": {
+        "type": "adaptive"
+      }
+    }
+  },
+  "m010": {
+    "id": "openai.gpt-6.2-sol",
+    "configuration": {}
+  },
+  "m011": {
+    "id": "anthropic.claude-haiku-5-5",
+    "configuration": {
+      "output_config": {
+        "effort": "max"
+      },
+      "thinking": {
+        "type": "adaptive"
+      }
+    }
+  },
+  "m012": {
+    "id": "mistral.voxtral-small-24b-2507",
+    "configuration": {}
+  },
+  "m013": {
+    "id": "openai.gpt-5.6-sol",
+    "configuration": {
+      "reasoning": {
+        "effort": "max"
+      }
+    }
+  },
+  "m014": {
+    "id": "mistral.devstral-2-123b",
+    "configuration": {}
+  },
+  "m015": {
+    "id": "anthropic.claude-fable-5",
+    "configuration": {}
+  },
+  "m016": {
+    "id": "openai.gpt-6-astra",
+    "configuration": {
+      "reasoning": {
+        "effort": "max"
+      }
+    }
+  },
+  "m017": {
+    "id": "zai.glm-5",
+    "configuration": {}
+  },
+  "m018": {
+    "id": "openai.gpt-5.6-sol",
+    "configuration": {}
+  },
+  "m019": {
+    "id": "meta.llama4-scout-17b-instruct-v1:0",
+    "configuration": {}
+  },
+  "m020": {
+    "id": "anthropic.claude-opus-5",
+    "configuration": {
+      "output_config": {
+        "effort": "max"
+      },
+      "thinking": {
+        "type": "adaptive"
+      }
+    }
+  },
+  "m021": {
+    "id": "mistral.mixtral-8x7b-instruct-v0:1",
+    "configuration": {}
+  },
+  "m022": {
+    "id": "moonshot.kimi-k2-thinking",
+    "configuration": {}
+  },
+  "m023": {
+    "id": "openai.gpt-5.5",
+    "configuration": {
+      "reasoning": {
+        "effort": "xhigh"
+      }
+    }
+  },
+  "m024": {
+    "id": "nvidia.nemotron-nano-12b-v2",
+    "configuration": {}
+  },
+  "m025": {
+    "id": "openai.gpt-5.4",
+    "configuration": {
+      "reasoning": {
+        "effort": "xhigh"
+      }
+    }
+  },
+  "m026": {
+    "id": "mistral.magistral-small-2509",
+    "configuration": {}
+  },
+  "m027": {
+    "id": "mistral.ministral-3-14b-instruct",
+    "configuration": {}
+  },
+  "m028": {
+    "id": "anthropic.claude-sonnet-5-5",
+    "configuration": {}
+  },
+  "m029": {
+    "id": "meta.llama3-1-70b-instruct-v1:0",
+    "configuration": {}
+  },
+  "m030": {
+    "id": "anthropic.claude-opus-4-6-v1",
+    "configuration": {
+      "output_config": {
+        "effort": "high"
+      },
+      "thinking": {
+        "type": "adaptive"
+      }
+    }
+  },
+  "m031": {
+    "id": "qwen.qwen3-next-80b-a3b",
+    "configuration": {}
+  },
+  "m032": {
+    "id": "anthropic.claude-sonnet-5-5",
+    "configuration": {
+      "output_config": {
+        "effort": "max"
+      },
+      "thinking": {
+        "type": "adaptive"
+      }
+    }
+  },
+  "m033": {
+    "id": "nvidia.nemotron-super-3-120b",
+    "configuration": {}
+  },
+  "m034": {
+    "id": "anthropic.claude-opus-5",
+    "configuration": {}
+  },
+  "m035": {
+    "id": "openai.gpt-5.6-luna",
+    "configuration": {}
+  },
+  "m036": {
+    "id": "writer.palmyra-vision-7b",
+    "configuration": {}
+  },
+  "m037": {
+    "id": "mistral.ministral-3-3b-instruct",
+    "configuration": {}
+  },
+  "m038": {
+    "id": "openai.gpt-5.4",
+    "configuration": {}
+  },
+  "m039": {
+    "id": "anthropic.claude-opus-5-5",
+    "configuration": {
+      "output_config": {
+        "effort": "max"
+      },
+      "thinking": {
+        "type": "adaptive"
+      }
+    }
+  },
+  "m040": {
+    "id": "mistral.ministral-3-8b-instruct",
+    "configuration": {}
+  },
+  "m041": {
+    "id": "meta.llama3-70b-instruct-v1:0",
+    "configuration": {}
+  },
+  "m042": {
+    "id": "anthropic.claude-sonnet-5",
+    "configuration": {}
+  },
+  "m043": {
+    "id": "mistral.voxtral-mini-3b-2507",
+    "configuration": {}
+  },
+  "m044": {
+    "id": "anthropic.claude-fable-5-1",
+    "configuration": {}
+  },
+  "m045": {
+    "id": "anthropic.claude-sonnet-5",
+    "configuration": {
+      "output_config": {
+        "effort": "xhigh"
+      },
+      "thinking": {
+        "type": "adaptive"
+      }
+    }
+  },
+  "m046": {
+    "id": "openai.gpt-5.5",
+    "configuration": {}
+  },
+  "m047": {
+    "id": "amazon.nova-lite-v1:0",
+    "configuration": {}
+  },
+  "m048": {
+    "id": "anthropic.claude-opus-4-1-20250805-v1:0",
+    "configuration": {}
+  },
+  "m049": {
+    "id": "nvidia.nemotron-nano-3-30b",
+    "configuration": {}
+  },
+  "m050": {
+    "id": "minimax.minimax-m2.5",
+    "configuration": {}
+  },
+  "m051": {
+    "id": "meta.llama3-8b-instruct-v1:0",
+    "configuration": {}
+  },
+  "m052": {
+    "id": "writer.palmyra-x4-v1:0",
+    "configuration": {}
+  },
+  "m053": {
+    "id": "qwen.qwen3-32b-v1:0",
+    "configuration": {}
+  },
+  "m054": {
+    "id": "anthropic.claude-opus-4-7",
+    "configuration": {}
+  },
+  "m055": {
+    "id": "openai.gpt-oss-20b-1:0",
+    "configuration": {}
+  },
+  "m056": {
+    "id": "google.gemma-3-12b-it",
+    "configuration": {}
+  },
+  "m057": {
+    "id": "anthropic.claude-haiku-5-5",
+    "configuration": {}
+  },
+  "m058": {
+    "id": "qwen.qwen3-vl-235b-a22b",
+    "configuration": {}
+  },
+  "m059": {
+    "id": "zai.glm-4.7-flash",
+    "configuration": {}
+  },
+  "m060": {
+    "id": "minimax.minimax-m2.5",
+    "configuration": {}
+  },
+  "m061": {
+    "id": "anthropic.claude-sonnet-4-6",
+    "configuration": {}
+  },
+  "m062": {
+    "id": "meta.llama3-1-8b-instruct-v1:0",
+    "configuration": {}
+  },
+  "m063": {
+    "id": "amazon.nova-micro-v1:0",
+    "configuration": {}
+  },
+  "m064": {
+    "id": "anthropic.claude-sonnet-4-6",
+    "configuration": {
+      "output_config": {
+        "effort": "medium"
+      },
+      "thinking": {
+        "type": "adaptive"
+      }
+    }
+  },
+  "m065": {
+    "id": "deepseek.v3.2",
+    "configuration": {}
+  },
+  "m066": {
+    "id": "openai.gpt-6-sol",
+    "configuration": {}
+  },
+  "m067": {
+    "id": "amazon.nova-pro-v1:0",
+    "configuration": {}
+  },
+  "m068": {
+    "id": "mistral.pixtral-large-2502-v1:0",
+    "configuration": {}
+  },
+  "m069": {
+    "id": "anthropic.claude-opus-4-5-20251101-v1:0",
+    "configuration": {}
+  },
+  "m070": {
+    "id": "zai.glm-4.7",
+    "configuration": {}
+  },
+  "m071": {
+    "id": "openai.gpt-6.1-sol",
+    "configuration": {}
+  },
+  "m072": {
+    "id": "xai.grok-4.7",
+    "configuration": {}
+  },
+  "m073": {
+    "id": "minimax.minimax-m2",
+    "configuration": {}
+  },
+  "m074": {
+    "id": "openai.gpt-6-luna",
+    "configuration": {}
+  },
+  "m075": {
+    "id": "openai.gpt-oss-safeguard-120b",
+    "configuration": {}
+  },
+  "m076": {
+    "id": "openai.gpt-6-sol",
+    "configuration": {
+      "reasoning": {
+        "effort": "max"
+      }
+    }
+  },
+  "m077": {
+    "id": "anthropic.claude-opus-4-8",
+    "configuration": {}
+  },
+  "m078": {
+    "id": "ai21.jamba-1-5-mini-v1:0",
+    "configuration": {}
+  },
+  "m079": {
+    "id": "google.gemma-3-4b-it",
+    "configuration": {}
+  },
+  "m080": {
+    "id": "anthropic.claude-opus-4-6-v1",
+    "configuration": {}
+  },
+  "m081": {
+    "id": "mistral.mistral-7b-instruct-v0:2",
+    "configuration": {}
+  },
+  "m082": {
+    "id": "openai.gpt-6-astra",
+    "configuration": {}
+  },
+  "m083": {
+    "id": "anthropic.claude-opus-5-5",
+    "configuration": {}
+  },
+  "m084": {
+    "id": "meta.llama4-maverick-17b-instruct-v1:0",
+    "configuration": {}
+  },
+  "m085": {
+    "id": "moonshotai.kimi-k2.5",
+    "configuration": {}
+  },
+  "m086": {
+    "id": "openai.gpt-5.6-luna",
+    "configuration": {
+      "reasoning": {
+        "effort": "max"
+      }
+    }
+  },
+  "m087": {
+    "id": "mistral.mistral-small-2402-v1:0",
+    "configuration": {}
+  },
+  "m088": {
+    "id": "openai.gpt-6.2-astra",
+    "configuration": {}
+  },
+  "m089": {
+    "id": "qwen.qwen3-coder-30b-a3b-v1:0",
+    "configuration": {}
+  },
+  "m090": {
+    "id": "meta.llama3-3-70b-instruct-v1:0",
+    "configuration": {}
+  },
+  "m091": {
+    "id": "anthropic.claude-opus-4-8",
+    "configuration": {
+      "output_config": {
+        "effort": "max"
+      },
+      "thinking": {
+        "type": "adaptive"
+      }
+    }
+  },
+  "m092": {
+    "id": "qwen.qwen3-coder-next",
+    "configuration": {}
+  },
+  "m093": {
+    "id": "openai.gpt-6.1-terra",
+    "configuration": {}
+  },
+  "m094": {
+    "id": "openai.gpt-oss-safeguard-20b",
+    "configuration": {}
+  },
+  "m095": {
+    "id": "openai.gpt-5.6-terra",
+    "configuration": {
+      "reasoning": {
+        "effort": "max"
+      }
+    }
+  },
+  "m096": {
+    "id": "minimax.minimax-m2",
+    "configuration": {}
+  },
+  "m097": {
+    "id": "ai21.jamba-1-5-large-v1:0",
+    "configuration": {}
+  },
+  "m098": {
+    "id": "google.gemma-3-27b-it",
+    "configuration": {}
+  },
+  "m099": {
+    "id": "writer.palmyra-x5-v1:0",
+    "configuration": {}
+  },
+  "m100": {
+    "id": "openai.gpt-6-luna",
+    "configuration": {
+      "reasoning": {
+        "effort": "max"
+      }
+    }
+  },
+  "m101": {
+    "id": "openai.gpt-6.1-sol",
+    "configuration": {
+      "reasoning": {
+        "effort": "max"
+      }
+    }
+  },
+  "m102": {
+    "id": "openai.gpt-oss-120b-1:0",
+    "configuration": {}
+  },
+  "m103": {
+    "id": "anthropic.claude-opus-4-5-20251101-v1:0",
+    "configuration": {
+      "output_config": {
+        "effort": "low"
+      }
+    }
+  },
+  "m104": {
+    "id": "anthropic.claude-fable-5-2",
+    "configuration": {}
+  },
+  "m105": {
+    "id": "anthropic.claude-fable-5-1",
+    "configuration": {
+      "output_config": {
+        "effort": "max"
+      },
+      "thinking": {
+        "type": "adaptive"
+      }
+    }
+  }
+}

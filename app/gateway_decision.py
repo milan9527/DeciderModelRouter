@@ -124,7 +124,9 @@ class GatewayDecisionService:
                 answer = result["answers"]["action"]["choice"]
                 if answer not in payload["questions"]["action"]["criteria"]:
                     raise ValueError("GPU returned a model outside the supplied candidates")
-                answers = {"action": {"choice": answer}}
+                from app.decision_uncertainty import choice_answer
+                answers = {"action": choice_answer(
+                    result["answers"]["action"], payload["questions"]["action"]["criteria"])}
                 if joint:
                     from app.routing_profile import QUESTIONS
                     profile = parse_profile({"answers": {k: result["answers"][k] for k in QUESTIONS}})
@@ -149,6 +151,25 @@ class GatewayDecisionService:
             passes = result.get("forward_passes")
             if passes is not None and (type(passes) is not int or passes < 1):
                 raise ValueError("Invalid forward-pass count")
+            adapter = result.get("selection_adapter")
+            if adapter is not None:
+                if (
+                    not isinstance(adapter, dict)
+                    or type(adapter.get("active")) is not bool
+                    or adapter.get("scope") != "text_selection_only"
+                    or not isinstance(adapter.get("version"), str)
+                    or not 1 <= len(adapter["version"]) <= 96
+                    or any(
+                        not isinstance(adapter.get(key), str)
+                        or len(adapter[key]) != length
+                        or any(c not in "0123456789abcdef" for c in adapter[key])
+                        for key, length in (("sha256", 64), ("base_revision", 40))
+                    )
+                    or (adapter["active"] and not (selection or joint))
+                ):
+                    raise ValueError("Invalid selection adapter identity or scope")
+                adapter = {key: adapter[key] for key in (
+                    "version", "sha256", "base_revision", "active", "scope")}
             # A service-reported latency may include its own queue/tokenization. Never label it
             # CUDA kernel time, TTFT, or a second additive stage alongside the HTTP round trip.
             return {
@@ -156,6 +177,7 @@ class GatewayDecisionService:
                 "answers": answers,
                 "usage": usage,
                 "deployment": result.get("deployment"),
+                "selection_adapter": adapter,
                 "timings": {
                     "execution": "batch",
                     "queue_ms": round((invoked_at - started) * 1000, 3),
