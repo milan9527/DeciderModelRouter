@@ -427,6 +427,7 @@ async def model_step(body: ModelStep, request: Request):
                         model_decision_ms=selection.get("decision_ms"),
                         model_decision_calls=len(selection.get("decision_calls", [])),
                         assessment_ms=selection.get("assessment_ms"), selection_ms=selection.get("selection_ms"),
+                        public_benchmark_version=selection.get("public_benchmark_version"),
                     )
             elif stage == "execution":
                 progress["phase"] = "executing" if status == "started" else "completed"
@@ -465,6 +466,7 @@ async def model_step(body: ModelStep, request: Request):
                    "model_decision_calls": len(selection["selection"].get("decision_calls", [])),
                    "decision_mode": selection["selection"].get("decision_mode"),
                    "measurement_version": selection["selection"].get("measurement_version"),
+                   "public_benchmark_version": selection["selection"].get("public_benchmark_version"),
                    "gpu_ms": sum(c["timings"]["upstream_ms"]
                                  for c in selection["selection"].get("decision_calls", [])),
                    "assessment_ms": selection["selection"].get("assessment_ms"),

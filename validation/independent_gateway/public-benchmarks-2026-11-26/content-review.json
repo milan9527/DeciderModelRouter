@@ -1,0 +1,46 @@
+{
+  "method": "assistant review against explicit task constraints; not a new independent broad quality benchmark",
+  "cases": [
+    {
+      "case": "manufacturing",
+      "run_id": "9b1c3b318f536e9173445c3b",
+      "complete": false,
+      "content_pass": null,
+      "acceptance_pass": false,
+      "reason": "4096-token ceiling truncated the answer; no complete-answer quality score"
+    },
+    {
+      "case": "manufacturing-large",
+      "run_id": "637d4fa98aa16b411b8952d9",
+      "complete": true,
+      "content_pass": false,
+      "acceptance_pass": false,
+      "checks": [
+        {
+          "requirement": "B702 defect rate 5%; isolate full 800 units",
+          "passed": true
+        },
+        {
+          "requirement": "Correlation alone does not establish temperature/supplier causation",
+          "passed": false,
+          "evidence": [
+            "这一相关性在统计上高度显著",
+            "B702批次的高不良率最直接的触发因素是工艺温度的严重偏离",
+            "S1供应商提供的零件对温度敏感性较高"
+          ],
+          "reason": "Three observational batches with mixed supplier, line and temperature do not justify these causal/material-property assertions"
+        }
+      ]
+    },
+    {
+      "case": "agent-finance",
+      "job_id": "0c31607c68144aef17dc84f8",
+      "complete": true,
+      "content_pass": true,
+      "method": "exact JSON oracle",
+      "expected": {
+        "raw_net_cents": 5000
+      }
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+[
+  {
+    "url": "https://openrouter.ai/benchmarks/gpqa-diamond",
+    "file": "gpqa.source",
+    "sha256": "4373812d125d482a3ee8a4ced16f8aac2a220fdd5b10456b2e42751274b60a8f"
+  },
+  {
+    "url": "https://openrouter.ai/benchmarks/tau2-bench-airline",
+    "file": "tau2.source",
+    "sha256": "f14483238da8421b75a4185292f5b20472ed2eaed63259ff5dc559aeea0c1312"
+  },
+  {
+    "url": "https://openrouter.ai/benchmarks/vgi-bench",
+    "file": "video.source",
+    "sha256": "2fe6d33379abbb5fc0e88660d15b75403fa63ff68813078f76a4e5953f28cfbb"
+  },
+  {
+    "url": "https://openrouter.ai/benchmarks/routers",
+    "file": "routers.source",
+    "sha256": "d62369bd364c29a3e4e88243093bd544433f44ab0ba871e0be191cc874746ed3"
+  },
+  {
+    "url": "https://openrouter.ai/api/v1/models",
+    "file": "models.source",
+    "sha256": "bd84dd415f85bc88dbc33892e5bb1e755a447d34924f75271ccea1195b8d5cf0"
+  },
+  {
+    "url": "https://livebench.ai/data/20261106/table.csv",
+    "file": "table-csv.source",
+    "sha256": "cd68d30168e61337b3285e9020e6242746cc18a3892d855580b51ec72d266a0a"
+  },
+  {
+    "url": "https://livebench.ai/data/20261106/categories.json",
+    "file": "categories-json.source",
+    "sha256": "b5366a69719445fa91e970de6f248c666115bbc5d8b8d134f33bb5fcc399a7ce"
+  },
+  {
+    "url": "https://livebench.ai/data/20261106/breakdown.json",
+    "file": "breakdown-json.source",
+    "sha256": "e3816cfde6682ab1062c738d9b5758a47c308249b27ee4f1617e1d2bbe780500"
+  },
+  {
+    "url": "https://livebench.ai/data/20261106/notes.json",
+    "file": "notes-json.source",
+    "sha256": "812556975b3e6306ad413a5be8918bd7990a8b43291e6955ee737939c4cc3a10"
+  },
+  {
+    "url": "https://livebench.ai/data/20261106/cost.csv",
+    "file": "cost-csv.source",
+    "sha256": "95a68251660318b70eff30c75bd87b7508e946af0fd2fab9fef024e2e4f17ed3"
+  },
+  {
+    "url": "repository:app/routing_rankings.json",
+    "file": "routing_rankings.json",
+    "sha256": "a57dcd35734b167df46990e702896fad26a914e223bb7b7d3d9498c83898afb6"
+  }
+]

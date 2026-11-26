@@ -5,8 +5,11 @@ from collections import Counter
 
 def inventory(catalog, rankings):
     from app.bedrock_evidence import load_evidence, measured
+    from app.public_benchmarks import inventory as public_inventory
+    from app.public_benchmarks import load_public_benchmarks
 
     measured_data = load_evidence()
+    public_data = load_public_benchmarks()
     rows = {}
     references = rankings.get("model_references", {})
     for model in catalog["models"]:
@@ -31,11 +34,15 @@ def inventory(catalog, rankings):
             status, reason = "specialized", "需要对应模态或专用任务评测，不能使用通用文本分数"
         else:
             status, reason = "unmapped", "已检索接入的公开评测批次，未找到精确型号成绩"
+        public_rows = public_data["records"].get(mid, [])
+        if public_rows and status in {"unmapped", "reference_only"}:
+            status, reason = "public_reference", "已接入同型号公开成绩；配置与端点差异保留，不等于当前配置实测"
         rows[mid] = {
             "status": status,
             "reason": reason,
             "reference": reference,
             "bedrock_evaluation": measured(model, measured_data),
+            "public_benchmarks": public_rows,
             "configurations": [
                 {
                     key: c.get(key)
@@ -68,4 +75,5 @@ def inventory(catalog, rankings):
         "bedrock_measured_models": sum(row["bedrock_evaluation"].get("status") == "measured" for row in rows.values()),
         "bedrock_blocked_models": sum(row["bedrock_evaluation"].get("status") == "blocked" for row in rows.values()),
         "benchmark_releases": rankings.get("benchmark_releases", []),
+        "public_benchmarks": public_inventory(public_data),
     }

@@ -1,0 +1,10 @@
+{
+  "agent_job_id": "132349b39416aca230b72e45",
+  "agent_session_id": "888066e99ca866b585ccdef5",
+  "agent_status": "error",
+  "agent_step_status": "started",
+  "browser_run_id": "df8fcdce48baeb74cf98b752",
+  "browser_session_id": "888066e99ca866b585ccdef5",
+  "same_session": true,
+  "later_checks_use_separate_sessions": true
+}

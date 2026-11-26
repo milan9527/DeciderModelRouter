@@ -367,6 +367,7 @@ class History:
                 decision_forward_passes=sum(passes) if passes and all(type(p) is int for p in passes) else None,
                 assessment_ms=selection.get("assessment_ms"),
                 selection_ms=selection.get("selection_ms"),
+                public_benchmark_version=selection.get("public_benchmark_version"),
                 model_selection_source=data.get("source"),
             )
             if selection.get("decision_mode") == "two_stage":

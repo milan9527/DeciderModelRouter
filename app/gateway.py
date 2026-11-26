@@ -57,6 +57,7 @@ class GatewayRun(StrictModel):
 def catalog(request: Request):
     from app.bedrock_evidence import load_evidence, measured
     from app.gateway_model_pool import MODEL_ROUTING_VERSION, build_pool
+    from app.public_benchmarks import load_public_benchmarks
     from app.routing_profile import replay_profile
     data, rankings = routing.load_catalog(), routing.load_rankings()
     evidence = load_evidence()
@@ -86,6 +87,7 @@ def catalog(request: Request):
         "calibration_status": calibration["status"],
         "model_routing": {"version": MODEL_ROUTING_VERSION, "selector": "gpu_decision_model",
                           "measurement_version": load_evidence()["version"],
+                          "public_benchmark_version": load_public_benchmarks()["version"],
                           "benchmark_cohort_exclusion": False},
         "region": data["region"],
         "captured_at": data.get("captured_at"),

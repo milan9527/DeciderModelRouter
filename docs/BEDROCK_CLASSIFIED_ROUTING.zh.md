@@ -1,6 +1,8 @@
 # Bedrock 路由：GPU 根据评测选择模型
 
-2026-11-26 更新。独立网关采用 `gpu-evidence-two-stage-v1`，执行协议为 `bedrock-classified-v4`。默认 **Liquid d1-2B**：第一次GPU一次评估七项需求，ECS按能力和硬约束筛选，第二次GPU读取已完成的需求评估和全部合格候选的评测后选择型号。ECS负责权限、预算校验和接口适配。
+2026-11-26 更新。独立网关采用 `gpu-evidence-two-stage-public-v2`，执行协议为 `bedrock-classified-v4`。默认 **Liquid d1-2B**：第一次GPU一次评估七项需求，ECS按能力和硬约束筛选，第二次GPU读取已完成的需求评估和全部合格候选的评测后选择型号。ECS负责权限、预算校验和接口适配。
+
+新增[OpenRouter / LiveBench公开能力依据](PUBLIC_BENCHMARK_EVIDENCE.zh.md)：64个型号、232条参考记录，含LiveBench 2的2026-11-06批次；同型号的默认配置也能获得任务相关分项。外部测试配置与本次执行配置分别标注，不将外部成绩视为Bedrock默认档或行业任务成功保证。
 
 旧的同批次筛选、程序计算非劣集合、固定媒体型号顺序和 Agent 型号白名单，均不再用于独立网关的实时选模。旧算法仅保留在历史比较和无推理回放中。历史87场景结果不改写，也不代表新策略效果。
 

@@ -247,9 +247,9 @@
                   <details class="advanced">
                     <summary>更多约束与运行模式</summary>
                     <label>文本评测批次<select id="benchmark-release">
-                      <option value="auto">自动 · 优先可比型号覆盖数</option>
+                      <option value="auto">自动 · 全部可用候选</option>
                     </select></label>
-                    <p class="footnote">每次只比较同一批次、同一组分项。选择历史批次可使用该批次已评测的型号；旧成绩不代表当前任务正确率。</p>
+                    <p class="footnote">指定历史批次会限制候选配置。不同来源和批次的公开成绩分别比较，不混算总分；旧成绩不代表当前任务正确率。</p>
                     <label
                       >期望输出 Token（含推理）<input
                         id="expected-output"
@@ -433,7 +433,7 @@
             <div class="field-row">
               <label>筛选依据<select id="evidence-filter">
                 <option value="all">全部目录型号</option>
-                <option value="benchmarked">有评测且配置已核验</option>
+                <option value="benchmarked">有公开评测依据</option>
                 <option value="configuration_pending">有评测 · 配置待核验</option>
                 <option value="unmapped">待补充可比评测</option>
               </select></label>

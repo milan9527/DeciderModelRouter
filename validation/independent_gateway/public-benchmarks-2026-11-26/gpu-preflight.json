@@ -1,0 +1,175 @@
+{
+  "scope": "same reconstructed manufacturing selection input; 106 configurations; no target calls; not business quality",
+  "comparisons": [
+    {
+      "format": "verbose",
+      "selected_for_release": true,
+      "warmup_trial": 0,
+      "rows": [
+        {
+          "trial": 0,
+          "arm": "old",
+          "http_ms": 743.684934976045,
+          "model_id": "openai.gpt-oss-120b-1:0",
+          "input_tokens": 8368,
+          "service_ms": 713.418544997694
+        },
+        {
+          "trial": 0,
+          "arm": "new",
+          "http_ms": 1180.5167220009025,
+          "model_id": "anthropic.claude-opus-5-5",
+          "input_tokens": 13412,
+          "service_ms": 1175.7114579959307
+        },
+        {
+          "trial": 1,
+          "arm": "new",
+          "http_ms": 1179.0051159914583,
+          "model_id": "anthropic.claude-opus-5-5",
+          "input_tokens": 13412,
+          "service_ms": 1174.2581219878048
+        },
+        {
+          "trial": 1,
+          "arm": "old",
+          "http_ms": 717.6573159813415,
+          "model_id": "openai.gpt-oss-120b-1:0",
+          "input_tokens": 8368,
+          "service_ms": 713.3884739887435
+        },
+        {
+          "trial": 2,
+          "arm": "old",
+          "http_ms": 716.8117059918586,
+          "model_id": "openai.gpt-oss-120b-1:0",
+          "input_tokens": 8368,
+          "service_ms": 712.5142829900142
+        },
+        {
+          "trial": 2,
+          "arm": "new",
+          "http_ms": 1178.481662995182,
+          "model_id": "anthropic.claude-opus-5-5",
+          "input_tokens": 13412,
+          "service_ms": 1173.9960460108705
+        },
+        {
+          "trial": 3,
+          "arm": "new",
+          "http_ms": 1179.6278910187539,
+          "model_id": "anthropic.claude-opus-5-5",
+          "input_tokens": 13412,
+          "service_ms": 1174.936259019887
+        },
+        {
+          "trial": 3,
+          "arm": "old",
+          "http_ms": 717.8628510155249,
+          "model_id": "openai.gpt-oss-120b-1:0",
+          "input_tokens": 8368,
+          "service_ms": 713.5057870182209
+        }
+      ],
+      "input_hashes": {
+        "old": "1152f9a141574c06ec5def20b3a4e81df306719da84dc270ad715b2da05722fc",
+        "new": "d1a48b27c4f5a352beaf0954a3f9aeb111d9f7974a4d59562eeb7d63f9b9c3c9"
+      },
+      "measured_medians": {
+        "old": {
+          "http_ms": 717.6573159813415,
+          "service_ms": 713.3884739887435
+        },
+        "new": {
+          "http_ms": 1179.0051159914583,
+          "service_ms": 1174.2581219878048
+        }
+      }
+    },
+    {
+      "format": "compact",
+      "selected_for_release": false,
+      "warmup_trial": 0,
+      "rows": [
+        {
+          "trial": 0,
+          "arm": "old",
+          "http_ms": 742.4119230126962,
+          "model_id": "openai.gpt-oss-120b-1:0",
+          "input_tokens": 8368,
+          "service_ms": 712.6103809860069
+        },
+        {
+          "trial": 0,
+          "arm": "new",
+          "http_ms": 1063.402063009562,
+          "model_id": "minimax.minimax-m2.1",
+          "input_tokens": 12201,
+          "service_ms": 1058.8272369932383
+        },
+        {
+          "trial": 1,
+          "arm": "new",
+          "http_ms": 1064.3485650070943,
+          "model_id": "minimax.minimax-m2.1",
+          "input_tokens": 12201,
+          "service_ms": 1059.792269981699
+        },
+        {
+          "trial": 1,
+          "arm": "old",
+          "http_ms": 717.4356630130205,
+          "model_id": "openai.gpt-oss-120b-1:0",
+          "input_tokens": 8368,
+          "service_ms": 712.930117995711
+        },
+        {
+          "trial": 2,
+          "arm": "old",
+          "http_ms": 716.999311989639,
+          "model_id": "openai.gpt-oss-120b-1:0",
+          "input_tokens": 8368,
+          "service_ms": 712.613199983025
+        },
+        {
+          "trial": 2,
+          "arm": "new",
+          "http_ms": 1063.235640001949,
+          "model_id": "minimax.minimax-m2.1",
+          "input_tokens": 12201,
+          "service_ms": 1058.8088759977836
+        },
+        {
+          "trial": 3,
+          "arm": "new",
+          "http_ms": 1063.4860150166787,
+          "model_id": "minimax.minimax-m2.1",
+          "input_tokens": 12201,
+          "service_ms": 1059.0500220132526
+        },
+        {
+          "trial": 3,
+          "arm": "old",
+          "http_ms": 716.8832099996507,
+          "model_id": "openai.gpt-oss-120b-1:0",
+          "input_tokens": 8368,
+          "service_ms": 712.5035189965274
+        }
+      ],
+      "input_hashes": {
+        "old": "1152f9a141574c06ec5def20b3a4e81df306719da84dc270ad715b2da05722fc",
+        "new": "a3bbb32ac3366b6213fd62a16c24bd8312f32bb9df059193bb907c57cee442cf"
+      },
+      "measured_medians": {
+        "old": {
+          "http_ms": 716.999311989639,
+          "service_ms": 712.613199983025
+        },
+        "new": {
+          "http_ms": 1063.4860150166787,
+          "service_ms": 1059.0500220132526
+        }
+      }
+    }
+  ]
+}

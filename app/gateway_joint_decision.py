@@ -6,6 +6,7 @@ from time import perf_counter
 
 from app.bedrock_evidence import load_evidence
 from app.gateway_model_pool import build_pool
+from app.public_benchmarks import evidence_cards
 from app.routing_balance import preferences
 from app.routing_media import resolve_workflow
 from app.routing_profile import QUESTIONS, RequestProfile, parse_profile
@@ -52,6 +53,7 @@ def all_candidates(body, request, catalog, rankings, exclusion):
             current["workflow_evidence"][workflow] = {
                 "measured": row.get("measured_evidence"),
                 "public": row.get("public_evidence"),
+                "public_benchmarks": row.get("public_benchmarks", []),
             }
     # No ordering by score, price or provider, and no quality Top-K.
     seed = hashlib.sha256(task.text.encode()).hexdigest()
@@ -84,7 +86,7 @@ def card(row, previous, references):
             raw = values["measured"]
             if raw.get("strict_passed") is not None:
                 strict[code] = f"{raw['strict_passed']}/{sample[2]}"
-        for ref in values.get("public") or []:
+        for ref in (values.get("public") or []) if not row.get("public_benchmarks") else []:
             key = json.dumps([ref.get("source"), ref.get("release")])
             ref_id = references.setdefault(key, f"r{len(references)}")
             public.setdefault(ref_id, {}).update(ref.get("scores") or {})
@@ -111,6 +113,14 @@ def card(row, previous, references):
             parts.append(ref_id + "=" + "/".join(str(metrics.get(k, "?")) for k in PUBLIC_COLUMNS))
         elif metrics:
             parts.append(ref_id + "=" + json.dumps(metrics, separators=(",", ":")))
+    external = {r["id"]: r for r in row.get("public_benchmarks", [])}
+    for values in row.get("workflow_evidence", {}).values():
+        for record in values.get("public_benchmarks", []):
+            if record["id"] in external:
+                record = {**record, "scores": {**external[record["id"]]["scores"], **record["scores"]},
+                          "sample_counts": {**external[record["id"]]["sample_counts"], **record["sample_counts"]}}
+            external[record["id"]] = record
+    parts.extend(evidence_cards(external.values(), references))
     if cost := row["cost_evidence"].get("expected_usd"):
         parts.append("cost=$" + str(cost)
                      + (" AWS" if row.get("price_scope", "").startswith("AWS") else " ref"))
@@ -174,6 +184,16 @@ def joint_payload(body, request, profile_input, rows, *, assessed=False):
         "strict=complete-output acceptance passed/total, including format and completion checks. "
         "p95s=measured P95 seconds rounded to 0.01s. "
         "Small development samples are not production success probabilities; missing means unknown, not zero. "
+        "A small 6/6 development result does not establish equal capability between models. "
+        "Use task-relevant OpenRouter and LiveBench public evidence to distinguish capabilities, "
+        "especially for complex tasks, high stronger_model_benefit or quality preference. "
+        "Public tested= names the tested configuration/effort, not this candidate's execution settings. "
+        "These are SAME MODEL references from other endpoints/configurations; higher-effort results do not "
+        "guarantee the default configuration. Never transfer scores to another model version or assume "
+        "published long-run/large-output performance fits this request's output ceiling. "
+        "n=? is unknown sample size; INCOMPLETE is an unfinished evaluation, not a complete pass rate. "
+        "Category mean scores are not pass percentages. LiveBench 1 and 2 are different suites. "
+        "Public benchmarks do not establish industry-specific business acceptance. "
         "tools/multi_turn tests are passed/scored; safety only measures safety classification. "
         "public raw scores compare only within the same source/release/metric. "
         "Public slash-vector columns are Coding/Agentic Coding/Language/IF/Reasoning/Mathematics/Data Analysis; "

@@ -1,0 +1,59 @@
+{
+  "release_id": "5931d627082041ae9c28c28809f3b2b9",
+  "resources": {
+    "cluster": "decider-model-router",
+    "service": "decider-model-router",
+    "bucket": "decider-model-router-632930644527-us-east-1",
+    "distribution_id": "E3OCAAF3NQ1LYX",
+    "region": "us-east-1"
+  },
+  "previous_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:25",
+  "new_task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:26",
+  "phase": "complete",
+  "objects": [
+    {
+      "key": "gateway/gateway.css",
+      "sha256": "030cb1cedd2b44b620d0d72ba68a9f1e5cfe22da16186cb7fc4e91156f5bad67",
+      "size": 26651,
+      "previous_version": "pAffnfIgil1kEpFdsxX7RtfosfBOIVKx",
+      "version": "BhTTKk5eVsXgksyaVS.hFn3JJKzPArJm"
+    },
+    {
+      "key": "gateway/workspace.js",
+      "sha256": "be50a5d19d0931d404697047a1da83f0ff7b1d26d25cb8bd51ea9328d18399e5",
+      "size": 40794,
+      "previous_version": "zyuE2qctVq5zNvVB6YltvCgjwCG4Da7y",
+      "version": "E2DOBnXNp3RRnXN5.GChZULRpQVcZxMQ"
+    },
+    {
+      "key": "gateway/agents.js",
+      "sha256": "8be2c8702a984a49d3f749143341b7ad77336704bade10825aad6a70f5b03668",
+      "size": 12087,
+      "previous_version": "TQIhYHi7wbQvPQfjUJOKRj6M8L86NY7t",
+      "version": "ZXVB1bEdZib6aRbjSynLu.FSbvBiP6ed"
+    },
+    {
+      "key": "gateway/gateway.js",
+      "sha256": "ecd79832b7d054939fbcc18e74e2adc2c31b747da96677b5114f3584788fb01a",
+      "size": 49430,
+      "previous_version": "Jl31TokToN6MspPcHmqdqBYD1oefwsOl",
+      "version": "tvgjgqm4S5mP3PcKIdZOdVcB8a9Gt5XS"
+    },
+    {
+      "key": "gateway/mark.svg",
+      "sha256": "1ecc2ff69710c3838d08e30aac005319db0e25d3bd40584c297410e438b005bb",
+      "size": 276,
+      "previous_version": "aJ9bqJ5lRHVk2dCiVCjQDStlbvh5OG5G",
+      "version": "j46lzg5BaPZflpATfLvgcLaIDcQigOYj"
+    },
+    {
+      "key": "gateway/index.html",
+      "sha256": "5911ddf4a8d19401eef210ea1fbfd3b87a3c0f49d08ccce083c17f771f722ca8",
+      "size": 35548,
+      "previous_version": "CzGqI.58.ZANEcrY0kZcVRpxHQw6ISo.",
+      "version": "bSMxnzn4SA8CF2kb_6hApnoHx13y7i1x"
+    }
+  ],
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "invalidation_id": "I9GLML02OHVFXCT36JXVJARKFI"
+}

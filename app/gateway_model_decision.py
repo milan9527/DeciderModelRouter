@@ -47,6 +47,10 @@ async def select_all(service, body, request, selection):
         "usage": result.get("usage"), "timings": result["timings"], "assessment_count": 1,
         "candidate_model_ids": {r["candidate_id"]: r["model"]["id"] for r in rows},
         "task_profile": selection["profile"],
+        "public_benchmark_version": selection.get("public_benchmark_version"),
+        "public_evidence_records": {
+            r["candidate_id"]: [e["id"] for e in r.get("public_benchmarks", [])] for r in rows
+        },
     })
     selection_ms = (perf_counter() - started) * 1000
     selection.update(assessment_ms=assessment_ms, selection_ms=round(selection_ms, 3))
@@ -79,5 +83,6 @@ def finish_selection(body, request, selection, selected, calls, elapsed, evaluat
     if runtime:
         runtime.decision_body = body
         runtime.selection = selection
-        runtime.signature = {"policy": selection["routing_version"], "evidence": selection["measurement_version"]}
+        runtime.signature = {"policy": selection["routing_version"], "evidence": selection["measurement_version"],
+                             "public_evidence": selection.get("public_benchmark_version")}
     return selection

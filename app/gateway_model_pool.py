@@ -6,16 +6,18 @@ import json
 
 from app.bedrock_evidence import load_evidence, measured, measured_scores, public_summary
 from app.bedrock_limits import model_limits, output_limit
+from app.public_benchmarks import evidence_for, load_public_benchmarks
 from app.routing_balance import balanced_pool, preferences
 from app.routing_selector import configuration_id
 
-MODEL_ROUTING_VERSION = "gpu-evidence-two-stage-v1"
+MODEL_ROUTING_VERSION = "gpu-evidence-two-stage-public-v2"
 
 
 def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evidence=None):
     from app.routing_media import MEDIA_WORKFLOWS, adapter, eligible, readiness
 
     evidence = evidence if evidence is not None else load_evidence()
+    public_snapshot = load_public_benchmarks()
     policy = preferences(task)
     rows, excluded = [], {}
     media = profile.workflow in MEDIA_WORKFLOWS or bool(task.attachments)
@@ -131,6 +133,8 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
                 "output_token_limit": effective_cap,
                 "output_limit_source": limits.get("ceiling_kind"),
                 "public_evidence": [public_summary(b, profile.workflow) for b in benchmarks[:1]],
+                "public_benchmarks": evidence_for(mid, profile.workflow,
+                    agent=bool(getattr(runtime, "agent_tools", False)), snapshot=public_snapshot),
                 "price_scope": "AWS on-demand list price" if observation.get("pricing") else "external reference or unknown",
                 "task_scores": {}, "business_evidence": None, "p95_ms": scores.get("p95_ms"),
                 "selection_cost_usd": None,
@@ -152,6 +156,7 @@ def build_pool(task, profile, catalog, rankings, exclusion, runtime=None, *, evi
     missing = readiness(task, profile.workflow) if media else None
     return {
         **pool, "routing_version": MODEL_ROUTING_VERSION, "measurement_version": evidence["version"],
+        "public_benchmark_version": public_snapshot["version"],
         "profile": profile.model_dump(), "requested_tier": policy.cost_tier,
         "effective_tier": policy.cost_tier, "tier_reason": "成本偏好随评测证据交给决策模型判断。",
         "evidence_mode": "bedrock_measurements_and_public_evidence",

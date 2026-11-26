@@ -8,7 +8,9 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-2026-11-26 Agent首轮决策更新：当前 **ECS revision 25 / Python 3.12 ARM64**，API镜像 `sha256:17e415a4af51b8c7f84766830cf3704c9ff1773315a2e8c524c9d760909bebb7`。从第一次目标调用起，GPU接收完整用户任务、工具说明和系统约束后选模；工具结果与用户要求分开。选中的型号在目标生成前保存，前端提前展示；正常每步仍两次GPU。594项软件测试通过，ECS健康1/1，CloudFront刷新 `I33Q1NPXF5204N56CKKV9GWQBB` 完成。沿用既有GPU和AgentCore V2。[发布与真实验证](../validation/independent_gateway/agent-initial-decision-2026-11-26/README.zh.md)。
+2026-11-26 公开能力评测更新：当前 **ECS revision 26 / Python 3.12 ARM64**，API镜像 `sha256:04b91816cf420ee3ccaf6502d47b74dfcd4f3c39d6bdccab3b92dcf61e20faf4`。OpenRouter与LiveBench 1/2的64个型号、232条公开参考进入GPU选模输入，按任务保留分项、来源、测试档位和样本量，前端和历史展示快照版本。605项软件回归及最终44项相关回归通过；ECS健康1/1，根域名200无跳转，前端哈希一致，最终CloudFront刷新 `I9XP96EYX9CC2KVZ80NJ8VVYU6` 完成。Agent定向结算金额通过；产线原4096上限截断，16384补测完整但因果判断仍错误，不作为整体质量提升证明。沿用GPU及AgentCore V2。[依据机制](../docs/PUBLIC_BENCHMARK_EVIDENCE.zh.md) · [来源、对照、失败与发布核验](../validation/independent_gateway/public-benchmarks-2026-11-26/README.zh.md)。
+
+2026-11-26 此前Agent首轮决策更新：**ECS revision 25 / Python 3.12 ARM64**，API镜像 `sha256:17e415a4af51b8c7f84766830cf3704c9ff1773315a2e8c524c9d760909bebb7`。从第一次目标调用起，GPU接收完整用户任务、工具说明和系统约束后选模；工具结果与用户要求分开。选中的型号在目标生成前保存，前端提前展示；正常每步仍两次GPU。594项软件测试通过，ECS健康1/1，CloudFront刷新 `I33Q1NPXF5204N56CKKV9GWQBB` 完成。沿用既有GPU和AgentCore V2。[发布与真实验证](../validation/independent_gateway/agent-initial-decision-2026-11-26/README.zh.md)。
 
 2026-11-26 此前两阶段更新：**ECS revision 24 / Python 3.12 ARM64**，API镜像 `sha256:779278e77a364bbc98750a6faa513658475d99d4efd407a8aebf3ed9d3298902`。默认Liquid先一次评估七项需求，再一次读取全部合格候选评测后选模；前端、历史和性能区分两阶段及旧版记录。591项软件回归通过，ECS健康1/1。修复JSON格式要求误判、Agent最新工具结果缺失、空白文本工具响应兼容及无适配器候选；精确端点可用性另行核验。沿用现有g5.xlarge与AgentCore Runtime V2。[发布、线上检查和行业复测](../validation/independent_gateway/two-stage-release-2026-11-26/README.zh.md)。本机审计目录 `.deployment/two-stage-release-20261126/`。
 

@@ -160,9 +160,9 @@ async function enter(user) {
     )
     .join("");
   $("#catalog-summary").textContent =
-    `${catalog.models.length} 个 Bedrock 型号 · ${catalog.evidence_inventory.bedrock_measured_models || 0} 个已有端点实测记录 · ${catalog.evidence_inventory.bedrock_blocked_models || 0} 个调用条件受限 · ${catalog.evidence_inventory.mapped_models} 个有外部评测映射。所有合格模型交给 GPU 决策；实测记录包含失败，分项结果以详情为准。`;
+    `${catalog.models.length} 个 Bedrock 型号 · ${catalog.evidence_inventory.bedrock_measured_models || 0} 个已有端点实测记录 · ${catalog.evidence_inventory.public_benchmarks?.model_count ?? catalog.evidence_inventory.mapped_models} 个有公开能力评测。GPU 结合 OpenRouter、LiveBench 和 Bedrock 实测选择；配置差异及缺失项见详情。`;
   $("#benchmark-release").innerHTML =
-    '<option value="auto">自动 · 优先可比型号覆盖数</option>' +
+    '<option value="auto">自动 · 全部可用候选</option>' +
     [...catalog.evidence_inventory.benchmark_releases].reverse()
       .map((r) => `<option value="${esc(r.release)}">LiveBench ${esc(r.release)}</option>`)
       .join("");
@@ -430,10 +430,10 @@ function renderCandidates() {
   if (s.selection_source === "gpu_decision_model") {
     const names = Object.fromEntries(rows.map(r => [r.candidate_id, r.model.name]));
     $("#candidates").innerHTML = `<p class="footnote">${s.decision_mode === "joint" ? "所有可能适用的配置一次交给 GPU，同时判断任务属性和模型选择；下表显示符合本轮任务属性的配置。" : s.decision_mode === "two_stage" ? "第一次GPU判断需求，筛选后第二次GPU比较全部合格配置。" : s.decision_mode === "single_choice" ? "全部合格配置在一次GPU请求中比较。" : "此历史记录使用分组比较。"}没有按榜单批次或程序排名预先淘汰。小样本实测仅反映这些测试题；外部成绩不跨批次直接比较。</p>
-      <div class="table-scroll"><table class="candidate-table"><thead><tr><th>模型 / 配置</th><th>预计费用</th><th>本类任务实测</th><th>GPU 结果</th></tr></thead><tbody>${rows.map(r => `<tr class="${r.candidate_id === s.selected_candidate_id ? "selected" : ""}"><td>${esc(r.model.name)}<small>${esc(JSON.stringify(r.benchmark.request_fields || {}))} · ${r.measurement_configuration ? (r.measurement_configuration.max_output_tokens != null ? `实测上限 ${r.measurement_configuration.max_output_tokens} Token` : "专用接口实测") : "此配置没有直接实测"}</small><small>本次输出上限 ${esc(r.output_token_limit ?? "由专用接口决定")}</small></td><td>${usd(r.cost_evidence?.expected_usd)}<small>${esc(r.price_scope)}</small></td><td>${measurementHTML(r.measured_evidence)}${(r.public_evidence || []).map(e => `<small>外部参考：${esc(e.source)} ${esc(e.release)} · ${esc(JSON.stringify(e.scores))}</small>`).join("")}</td><td>${r.candidate_id === s.selected_candidate_id ? "✓ GPU 已选择" : "已参与判断，未选中"}</td></tr>`).join("")}</tbody></table></div>
+      <div class="table-scroll"><table class="candidate-table"><thead><tr><th>模型 / 配置</th><th>预计费用</th><th>实测与公开能力评测</th><th>GPU 结果</th></tr></thead><tbody>${rows.map(r => `<tr class="${r.candidate_id === s.selected_candidate_id ? "selected" : ""}"><td>${esc(r.model.name)}<small>${esc(JSON.stringify(r.benchmark.request_fields || {}))} · ${r.measurement_configuration ? (r.measurement_configuration.max_output_tokens != null ? `实测上限 ${r.measurement_configuration.max_output_tokens} Token` : "专用接口实测") : "此配置没有直接实测"}</small><small>本次输出上限 ${esc(r.output_token_limit ?? "由专用接口决定")}</small></td><td>${usd(r.cost_evidence?.expected_usd)}<small>${esc(r.price_scope)}</small></td><td>${measurementHTML(r.measured_evidence)}${publicEvidenceHTML(r.public_benchmarks, "已提供给 GPU 的公开依据")}${!r.public_benchmarks?.length ? (r.public_evidence || []).map(e => `<small>外部参考：${esc(e.source)} ${esc(e.release)} · ${esc(JSON.stringify(e.scores))}</small>`).join("") : ""}</td><td>${r.candidate_id === s.selected_candidate_id ? "✓ GPU 已选择" : "已参与判断，未选中"}</td></tr>`).join("")}</tbody></table></div>
       <details class="excluded"><summary>GPU 决策过程（${s.decision_calls?.length || 0} 次）</summary>${(s.decision_calls || []).map(c => `<p>${c.mode === "profile" ? "需求判断" : c.mode === "selection" ? "模型选择" : `第 ${c.round} 轮`} · ${esc(c.model)} · ${ms(c.timings?.backend_total_ms)}<br>候选：${c.mode === "profile" ? "一次评估全部7项需求" : c.candidate_ids.map(id => esc(names[id] || id)).join("、")}<br>选择：${c.mode === "profile" ? "见上方任务属性" : esc(names[c.selected_candidate_id] || "不执行")}<small>输入摘要 ${esc(c.input_hash)}</small></p>`).join("")}</details>
       <details class="excluded"><summary>未进入本次决策的原因（${Object.keys(s.excluded).length}）</summary>${Object.entries(s.excluded).map(([k,v]) => `<p><code>${esc(k)}</code><br>${esc(v)}</p>`).join("")}</details>
-      <p class="footnote">证据版本 ${esc(s.measurement_version)}。费用不含 GPU，不代表账单；图片、视频、音频的完整费用未知时保持未知。</p>`;
+      <p class="footnote">实测版本 ${esc(s.measurement_version)} · 公开评测版本 ${esc(s.public_benchmark_version || "此历史记录未接入")}。费用不含 GPU，不代表账单；公开分数保留原始口径，不代表本次成功概率。</p>`;
     return;
   }
   $("#candidates").innerHTML =
@@ -461,6 +461,16 @@ function renderCandidates() {
 function measurementHTML(m) {
   if (!m?.samples) return "此类任务尚无直接质量实测";
   return `内容正确 ${m.content_passed}/${m.content_scored}${m.content_pending ? ` · 待复核 ${m.content_pending}` : ""}<br>严格通过 ${m.strict_passed}/${m.samples}${m.strict_pending ? ` · 待评 ${m.strict_pending}` : ""} · 调用失败 ${m.call_errors}<small>P95 ${ms(m.p95_ms)} · 公开开发测试题，小样本<br>${esc(m.metric_description || "")}</small>`;
+}
+function publicEvidenceHTML(records, label = "查看公开能力评测") {
+  if (!records?.length) return "";
+  return `<details class="model-evidence public-benchmarks"><summary>${esc(label)}（${records.length} 条）</summary><p>同型号的外部参考；测试推理档位、端点和输出预算可能不同。分项均分不等于通过率。</p>${records.map(r => {
+    const validURL = /^https:\/\/(openrouter\.ai|livebench\.ai)(\/|$)/.test(r.url || "");
+    const title = `${r.source === "openrouter" ? "OpenRouter" : "LiveBench"} · ${r.benchmark} · ${r.release}`;
+    const source = validURL ? `<a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">${esc(title)} ↗</a>` : esc(title);
+    const scores = Object.entries(r.scores).map(([name, value]) => `${esc(name)} ${Number(value).toFixed(2)}${r.metric === "accuracy_percent" ? "%" : "/100"}（样本 ${esc(r.sample_counts?.[name] ?? "未知")}）`).join("<br>");
+    return `<p>${source}<br>测试配置：${esc(r.configuration)}${r.status === "incomplete" ? " · 评测未完成" : ""}<br>${scores}<small>${esc(r.source_model_id)}${r.recorded_at ? " · " + esc(r.recorded_at) : ""}</small></p>`;
+  }).join("")}</details>`;
 }
 function renderTiming() {
   const ft = flow?.timings,
@@ -747,7 +757,8 @@ function renderModels() {
     return category.available_model_ids.includes(m.id) &&
       `${m.name} ${m.id} ${m.provider}`.toLowerCase().includes(search) &&
       (filter === "all" || row.status === filter ||
-        (filter === "unmapped" && !row.configurations.length));
+        (filter === "benchmarked" && row.public_benchmarks?.length) ||
+        (filter === "unmapped" && !row.configurations.length && !row.public_benchmarks?.length));
   });
   const quotaBlocked = catalog.models.filter((m) =>
     m.inference_quotas?.checks.some((q) => q.value === 0),
@@ -763,6 +774,7 @@ function modelEvidence(row) {
   const directHTML = direct ? `<strong>Bedrock 端点${({measured:"已补测",blocked:"调用受限",unmeasured:"待补测"})[direct.status] || direct.status}</strong><small>${esc(direct.reason || "接口完成不等于内容正确，分项见下方")}</small><details class="model-evidence"><summary>查看直接实测</summary>${Object.entries(direct.measurements || {}).map(([k,v]) => `<p><strong>${esc(k)}</strong><br>${measurementHTML(v)}</p>`).join("")}${Object.keys(direct.errors || {}).length ? `<p>错误记录：${esc(JSON.stringify(direct.errors))}</p>` : ""}<p><a href="https://github.com/milan9527/DeciderModelRouter/blob/main/validation/independent_gateway/bedrock-evidence-2026-11-26/README.zh.md" target="_blank" rel="noopener noreferrer">评测方法与完整记录 ↗</a></p></details>` : "";
   const labels = {
     benchmarked: "已映射评测",
+    public_reference: "已接入公开能力评测",
     configuration_pending: "已映射 · 配置待核验",
     reference_only: "型号资料已核验 · 待评测",
     capacity_variant: "容量变体 · 待独立评测",
@@ -774,7 +786,7 @@ function modelEvidence(row) {
   const refHtml = reference
     ? `<p><a href="${esc(reference.url)}" target="_blank" rel="noopener noreferrer">外部型号与价格来源 ↗</a><br>每百万 Token：输入 ${usd(reference.input_price)} / 输出 ${usd(reference.output_price)}<br>此资料不证明 Bedrock 能力或业务成功率。</p>`
     : "";
-  return `${directHTML}<strong>外部参考：${esc(labels[row.status])}</strong><small>${esc(row.reason)}</small>${
+  return `${directHTML}${publicEvidenceHTML(row.public_benchmarks)}<strong>外部参考：${esc(labels[row.status])}</strong><small>${esc(row.reason)}</small>${
     configs.length || reference
       ? `<details class="model-evidence"><summary>查看来源与分项（${configs.length} 个评测配置）</summary>${configs.map((c) => `<p><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">${esc(c.source)} ${esc(c.release || "")} ↗</a><br>${esc(c.benchmark_configuration)}<br>${Object.entries(c.category_scores || c.subsets || {}).map(([k, v]) => `${esc(k)} ${v == null ? "未知" : (Number(v) * (c.source === "mteb" ? 100 : 1)).toFixed(2)}`).join(" · ")} ${c.source === "mteb" ? "（nDCG@10 × 100）" : "（0–100）"}<br>${esc(c.configuration_note || "同一数据集内比较")}</p>`).join("")}${refHtml}</details>`
       : ""

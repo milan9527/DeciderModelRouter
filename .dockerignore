@@ -9,6 +9,7 @@ app/**
 !app/gateway_reference_templates.json
 !app/bedrock_evaluations.json
 !app/bedrock_limits.json
+!app/public_benchmarks.json
 !app/comparison_cases.json
 !app/vision_assets/
 !app/vision_assets/**

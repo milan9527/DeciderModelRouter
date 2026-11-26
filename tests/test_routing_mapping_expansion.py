@@ -216,5 +216,6 @@ def test_every_catalog_model_has_an_explanation_without_aliasing_capacity_varian
     variant = result["models"]["amazon.nova-micro-v1:0:128k"]
     assert variant["status"] == "capacity_variant" and not variant["configurations"]
     qwen = result["models"]["qwen.qwen3-coder-next"]
-    assert qwen["status"] == "reference_only" and not qwen["configurations"]
+    assert qwen["status"] == "public_reference" and not qwen["configurations"]
+    assert qwen["public_benchmarks"]  # Public capability evidence does not certify an execution configuration.
     assert all(row["reason"] for row in result["models"].values())
