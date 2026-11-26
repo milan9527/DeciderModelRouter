@@ -1,0 +1,24 @@
+{
+  "command": ".venv/bin/pytest -q tests/test_gateway.py tests/test_gateway_conversation.py tests/test_gateway_deploy.py",
+  "passed": 51,
+  "failed": 0,
+  "seconds": 5.44,
+  "warnings": [
+    "Existing StarletteDeprecationWarning for httpx testclient"
+  ],
+  "template_count": 27,
+  "removed": [
+    "greeting-en",
+    "greeting-zh"
+  ],
+  "other_templates_unchanged": true,
+  "unchanged_sha256": {
+    "app/gateway_conversation.py": "7e3e60969b139218dbddd76cdaa973d7b2c4ed4403f81e049bbc42f71f1b5e2d",
+    "app/gateway_adapter.py": "78b1a53d7040fc5129d215436c0480c0d786e7613759dc32c0fd8afb23ecf74b",
+    "app/gateway_execution.py": "9b8f295a43957da63829d373f86ce8570ea0849cebf99f68a47025029fed8837",
+    "app/gateway_reference_templates.json": "c225691af95fa1a46e7610dcc964371d2167e8d0603f1bf788d1678baac242bf",
+    "app/industry_scenarios.py": "ca62761abee8324f3b4fe182bc8b5e88d16a55220f9c8df5593e8d525a121aeb",
+    "validation/independent_gateway/overall-metrics-2026-11-25/evaluation.json": "187b310813a31fe8b762d605351d27692af667e9c1a9eda269fda1cfde62d6b3"
+  },
+  "new_model_calls": 0
+}

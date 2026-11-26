@@ -1,0 +1,43 @@
+{
+  "url": "https://d3eipg2g3l3an3.cloudfront.net/",
+  "new_model_calls": 0,
+  "checked_templates": [
+    "everyday-question",
+    "creative-writing",
+    "clarify-request",
+    "everyday-advice",
+    "translate",
+    "summarize",
+    "industry-retail",
+    "industry-manufacturing",
+    "industry-finance",
+    "industry-insurance",
+    "industry-healthcare",
+    "industry-logistics",
+    "industry-energy",
+    "code",
+    "industry-telecom",
+    "industry-public-services",
+    "industry-education",
+    "industry-legal",
+    "zh-index",
+    "en-index",
+    "understand-image",
+    "understand-video",
+    "understand-audio",
+    "speak-text",
+    "edit-background",
+    "generate-image",
+    "generate-video"
+  ],
+  "checks": [
+    "two greeting buttons absent; six expandable option explanations; all five defaults checked and history limit 8",
+    "direct HTTPS root, authenticated catalog equals local 27 templates; initial input empty; default Liquid",
+    "all 27 buttons fill exact task, rubric, budget and modality; category and keyword filters work",
+    "desktop 1440px and mobile 390px have no horizontal page overflow",
+    "industry Agent page still exposes 12 scenarios and Runtime V2"
+  ],
+  "page_errors": [],
+  "unexpected_writes": [],
+  "templates_version": "cda4bc540aa2ea73"
+}

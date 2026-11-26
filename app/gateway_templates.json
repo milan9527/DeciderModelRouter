@@ -1,35 +1,5 @@
 [
   {
-    "id": "greeting-en",
-    "title": "英文问候",
-    "description": "通用自由输入示例；不需要命中模板才能路由。",
-    "task": "hi",
-    "category": "通用对话",
-    "rubric": [
-      "按用户的语言作答",
-      "直接回应；信息不足时自然澄清"
-    ],
-    "routing_preferences": {
-      "expected_output_tokens": 256,
-      "max_output_tokens": 1024
-    }
-  },
-  {
-    "id": "greeting-zh",
-    "title": "中文问候",
-    "description": "通用自由输入示例；不需要命中模板才能路由。",
-    "task": "你好",
-    "category": "通用对话",
-    "rubric": [
-      "按用户的语言作答",
-      "直接回应；信息不足时自然澄清"
-    ],
-    "routing_preferences": {
-      "expected_output_tokens": 256,
-      "max_output_tokens": 1024
-    }
-  },
-  {
     "id": "everyday-question",
     "title": "日常知识",
     "description": "通用自由输入示例；不需要命中模板才能路由。",
