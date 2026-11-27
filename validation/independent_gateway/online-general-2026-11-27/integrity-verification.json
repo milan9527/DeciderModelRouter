@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "frozen_old_cases_identical": 68,
+  "ordinary_tasks": 100,
+  "real_agent_turns": 4,
+  "hash_bound_reviews": 35,
+  "statuses": {
+    "pass": 100,
+    "unmeasured": 1,
+    "fail": 3
+  },
+  "no_pending_reviews": true,
+  "catalog_and_price_versions_stable": true,
+  "actual_agent_selection_precedes_target": true,
+  "runner_unchanged_during_execution": true
+}

@@ -1,0 +1,2631 @@
+{
+  "arm": "online",
+  "suite_version": "7548355c20977c5279827e54",
+  "overall": {
+    "planned": 104,
+    "passed": 100,
+    "pass_percent": 96.15,
+    "content_passed": 102,
+    "content_percent": 98.08,
+    "status_counts": {
+      "pass": 100,
+      "unmeasured": 1,
+      "fail": 3
+    },
+    "completed": 103,
+    "wilson_95_percent": [
+      90.53,
+      98.49
+    ]
+  },
+  "categories": {
+    "通用文本与历史": {
+      "planned": 13,
+      "passed": 13,
+      "pass_percent": 100.0,
+      "content_passed": 13,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 13
+      },
+      "completed": 13,
+      "wilson_95_percent": [
+        77.19,
+        100.0
+      ]
+    },
+    "代码": {
+      "planned": 7,
+      "passed": 7,
+      "pass_percent": 100.0,
+      "content_passed": 7,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 7
+      },
+      "completed": 7,
+      "wilson_95_percent": [
+        64.57,
+        100.0
+      ]
+    },
+    "检索": {
+      "planned": 1,
+      "passed": 0,
+      "pass_percent": 0.0,
+      "content_passed": 0,
+      "content_percent": 0.0,
+      "status_counts": {
+        "unmeasured": 1
+      },
+      "completed": 1,
+      "wilson_95_percent": [
+        0.0,
+        79.35
+      ]
+    },
+    "多模态": {
+      "planned": 6,
+      "passed": 6,
+      "pass_percent": 100.0,
+      "content_passed": 6,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 6
+      },
+      "completed": 6,
+      "wilson_95_percent": [
+        60.97,
+        100.0
+      ]
+    },
+    "12行业业务题": {
+      "planned": 12,
+      "passed": 10,
+      "pass_percent": 83.33,
+      "content_passed": 12,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 10,
+        "fail": 2
+      },
+      "completed": 12,
+      "wilson_95_percent": [
+        55.2,
+        95.3
+      ]
+    },
+    "复杂产线分析": {
+      "planned": 1,
+      "passed": 0,
+      "pass_percent": 0.0,
+      "content_passed": 0,
+      "content_percent": 0.0,
+      "status_counts": {
+        "fail": 1
+      },
+      "completed": 0,
+      "wilson_95_percent": [
+        0.0,
+        79.35
+      ]
+    },
+    "新增能力优先场景": {
+      "planned": 12,
+      "passed": 12,
+      "pass_percent": 100.0,
+      "content_passed": 12,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 12
+      },
+      "completed": 12,
+      "wilson_95_percent": [
+        75.75,
+        100.0
+      ]
+    },
+    "新增16行业业务题": {
+      "planned": 16,
+      "passed": 16,
+      "pass_percent": 100.0,
+      "content_passed": 16,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 16
+      },
+      "completed": 16,
+      "wilson_95_percent": [
+        80.64,
+        100.0
+      ]
+    },
+    "新增通用/知识解释": {
+      "planned": 4,
+      "passed": 4,
+      "pass_percent": 100.0,
+      "content_passed": 4,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 4
+      },
+      "completed": 4,
+      "wilson_95_percent": [
+        51.01,
+        100.0
+      ]
+    },
+    "新增通用/摘要与改写": {
+      "planned": 4,
+      "passed": 4,
+      "pass_percent": 100.0,
+      "content_passed": 4,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 4
+      },
+      "completed": 4,
+      "wilson_95_percent": [
+        51.01,
+        100.0
+      ]
+    },
+    "新增通用/翻译与语言": {
+      "planned": 4,
+      "passed": 4,
+      "pass_percent": 100.0,
+      "content_passed": 4,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 4
+      },
+      "completed": 4,
+      "wilson_95_percent": [
+        51.01,
+        100.0
+      ]
+    },
+    "新增通用/约束写作": {
+      "planned": 4,
+      "passed": 4,
+      "pass_percent": 100.0,
+      "content_passed": 4,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 4
+      },
+      "completed": 4,
+      "wilson_95_percent": [
+        51.01,
+        100.0
+      ]
+    },
+    "新增通用/日常规划": {
+      "planned": 4,
+      "passed": 4,
+      "pass_percent": 100.0,
+      "content_passed": 4,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 4
+      },
+      "completed": 4,
+      "wilson_95_percent": [
+        51.01,
+        100.0
+      ]
+    },
+    "新增通用/数学推理": {
+      "planned": 4,
+      "passed": 4,
+      "pass_percent": 100.0,
+      "content_passed": 4,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 4
+      },
+      "completed": 4,
+      "wilson_95_percent": [
+        51.01,
+        100.0
+      ]
+    },
+    "新增通用/结构化处理": {
+      "planned": 4,
+      "passed": 4,
+      "pass_percent": 100.0,
+      "content_passed": 4,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 4
+      },
+      "completed": 4,
+      "wilson_95_percent": [
+        51.01,
+        100.0
+      ]
+    },
+    "新增通用/线上多轮": {
+      "planned": 4,
+      "passed": 4,
+      "pass_percent": 100.0,
+      "content_passed": 4,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 4
+      },
+      "completed": 4,
+      "wilson_95_percent": [
+        51.01,
+        100.0
+      ]
+    },
+    "Agent多轮": {
+      "planned": 4,
+      "passed": 4,
+      "pass_percent": 100.0,
+      "content_passed": 4,
+      "content_percent": 100.0,
+      "status_counts": {
+        "pass": 4
+      },
+      "completed": 4,
+      "wilson_95_percent": [
+        51.01,
+        100.0
+      ]
+    }
+  },
+  "new_industry_holdout": {
+    "planned": 0,
+    "passed": 0,
+    "pass_percent": 0,
+    "content_passed": 0,
+    "content_percent": 0,
+    "status_counts": {},
+    "completed": 0,
+    "wilson_95_percent": [
+      0,
+      0
+    ]
+  },
+  "frozen_industry_holdout": {
+    "planned": 0,
+    "passed": 0,
+    "pass_percent": 0,
+    "content_passed": 0,
+    "content_percent": 0,
+    "status_counts": {},
+    "completed": 0,
+    "wilson_95_percent": [
+      0,
+      0
+    ]
+  },
+  "workflow_fit": {
+    "passed": 68,
+    "scored": 68,
+    "scope": "Frozen allowed workflow labels for the old independent tasks; not seven-label accuracy"
+  },
+  "rows": [
+    {
+      "case_id": "ambiguous",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-opus-5",
+      "review": {
+        "case_id": "ambiguous",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "询问具体任务、材料与要求，没有编造已知任务；长度未设硬上限，澄清内容相关。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "293a286c31593262404a73554cd99d927ac935b1d0a7d3a304de67aaf35f4f19"
+      },
+      "run_id": "38688b41809317d88459274b",
+      "session_id": "ae71b5ac13fc3af1a7a521f6",
+      "configuration_id": "471301a23bd99194b8e28bf4"
+    },
+    {
+      "case_id": "quoted-injection",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "222eea49be45dabf887d1846",
+      "session_id": "656657220117d8c3d6c4c576",
+      "configuration_id": "a628a94dace7b81034b75a57"
+    },
+    {
+      "case_id": "summary",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-fable-5-1",
+      "review": {
+        "case_id": "summary",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "保留证书过期、更新后恢复、无数据丢失和提醒；汉字数在40以内。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "31d7e43df4d23724d0705ec49f66d2d0bbcb0980f08632736ad66c94607609ad"
+      },
+      "run_id": "aed626756f1e018f8a5b5e9c",
+      "session_id": "a99e42f0deda016e7fa74b3a",
+      "configuration_id": "cf21615b726c2b77a3069b90"
+    },
+    {
+      "case_id": "extract-json",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "38b60b56826a65b866d2f3b1",
+      "session_id": "cafcb27215a9cda2c98310b0",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "short-story",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "short-story",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "钥匙、雨夜、误会与温暖重逢均具备，少于100汉字。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "8534049b0ecc3b41e115b14b79f3d86531e8675f4c967472410ff363d57fa9be"
+      },
+      "run_id": "d3fc15afb59f74b8e13739fa",
+      "session_id": "1f631058735c0ee76c82c90c",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "marketing",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "xai.grok-4.6",
+      "review": {
+        "case_id": "marketing",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "唯一具体规格为已知500ml，未编造保温时长、材质、认证或疗效；便携属于一般营销描述。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "6abe3e010ce02c66e92a62b879059443a7dce9e79425ff4cfc8158fdb2820b2b"
+      },
+      "run_id": "26530ec491ebd18875f1d889",
+      "session_id": "b2eb032c0e500354d8d6310c",
+      "configuration_id": "4bcc9c14c4d586f4617e15aa"
+    },
+    {
+      "case_id": "probability",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "fraction 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "3441ab6bee7cb8e45f220b71",
+      "session_id": "8b693495a1655f38fad5fdfa",
+      "configuration_id": "686be5b15114f4d94b56971c"
+    },
+    {
+      "case_id": "causality",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-sol",
+      "review": {
+        "case_id": "causality",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "明确相关不代表因果，指出炎热天气同时影响销量和游泳活动。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "cb68a47e37767240bcd7752252f4335c8bde34d48f06de5784b12e303ec9310c"
+      },
+      "run_id": "4c6251a4ce47b6206aaedeea",
+      "session_id": "07dd0a16c3f993c772fa7a5f",
+      "configuration_id": "46c3dd81c3db41663ea6e465"
+    },
+    {
+      "case_id": "python-dedup",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-haiku-5-5",
+      "review": {
+        "case_id": "python-dedup",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 103,
+              "passed": 103,
+              "failures": []
+            },
+            "source_sha256": "e72400b06c509600be7f044be917f19047cf311361a12d977445e43e183f4932"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "e72400b06c509600be7f044be917f19047cf311361a12d977445e43e183f4932"
+      },
+      "run_id": "725f4caaae19ef6212f9642b",
+      "session_id": "4e49e15b1239cafc2ed9f26a",
+      "configuration_id": "2dacea61db0084c4e84c1817"
+    },
+    {
+      "case_id": "python-brackets",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-haiku-5-5",
+      "review": {
+        "case_id": "python-brackets",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 108,
+              "passed": 108,
+              "failures": []
+            },
+            "source_sha256": "45c5b6b6a97db75c05565d78819661220d39524ea4422ae6e7308f220c67ca43"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "45c5b6b6a97db75c05565d78819661220d39524ea4422ae6e7308f220c67ca43"
+      },
+      "run_id": "9ca799cc4cee6f3a3433a820",
+      "session_id": "3b6da08c2129b8b96ed529a0",
+      "configuration_id": "e2b44121b5627a12ef62ebce"
+    },
+    {
+      "case_id": "python-merge",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-terra",
+      "review": {
+        "case_id": "python-merge",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 105,
+              "passed": 105,
+              "failures": []
+            },
+            "source_sha256": "20329f34528c452d6fafd3468010f575c5313a608d2a90d0751bed4adb08bc8f"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "20329f34528c452d6fafd3468010f575c5313a608d2a90d0751bed4adb08bc8f"
+      },
+      "run_id": "e7d1157991e73e8005ffa91c",
+      "session_id": "52d631ba03d04a3c8f2ff479",
+      "configuration_id": "f9b1be6e964d2e4eb536d845"
+    },
+    {
+      "case_id": "refund",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "refund",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "100元退款已提交与尚未入账区分清楚，3至5工作日，未承诺今天到账。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "0f80218b2416924f743e93aa4155217869fe28c9526072232d6e7c2641d234fd"
+      },
+      "run_id": "2a6861c266183e4fa17fe98f",
+      "session_id": "e38e8da7ad5a7005d59f90f0",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "medical",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "medical",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "正确说明病毒性感冒不常规使用抗生素，列出严重症状就医提示，没有个人处方。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "7db98975e6e1ebff3042cd07375ac40d57c78f50a57af7c8c49c8c9d2c603471"
+      },
+      "run_id": "7608e81fc49faa9f9c4c81c3",
+      "session_id": "88655ff8552cbe5dc25f1072",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "rag-missing",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "xai.grok-4.6",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "c74b14554303aad831bee57c",
+      "session_id": "31dfb2315a2fa894f9ef88ca",
+      "configuration_id": "4bcc9c14c4d586f4617e15aa"
+    },
+    {
+      "case_id": "embed-en",
+      "category": "检索",
+      "split": "development_regression",
+      "status": "unmeasured",
+      "content_status": "unmeasured",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "amazon.titan-embed-text-v2:0",
+      "review": {
+        "status": "unmeasured",
+        "content_status": "unmeasured",
+        "reason": "Public endpoint returns vector preview only; full retrieval ranking not measurable"
+      },
+      "run_id": "7b207848d596fea893928a2e",
+      "session_id": "4f81d66e44110ab196ee9140",
+      "configuration_id": "401a105d570dcb8765a709a6"
+    },
+    {
+      "case_id": "image-red",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.4",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "9977666828467cfc1847ddf5",
+      "session_id": "99c487844ba30f08bbcb6349",
+      "configuration_id": "f15e6b397633b5bfc43157b8"
+    },
+    {
+      "case_id": "image-ocr",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.4",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "66600cf21bb3e98d2dedb508",
+      "session_id": "83491a55300d63f0a979b64e",
+      "configuration_id": "f15e6b397633b5bfc43157b8"
+    },
+    {
+      "case_id": "image-chart",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.4",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "b683c333556c1c767b1e6085",
+      "session_id": "7961329e7538494505b914f1",
+      "configuration_id": "f15e6b397633b5bfc43157b8"
+    },
+    {
+      "case_id": "asr",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "mistral.voxtral-mini-3b-2507",
+      "review": {
+        "status": "pass",
+        "reason": "transcript 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "b5027a006cc21caa4eae4d76",
+      "session_id": "d63e78cfa5d772888738152f",
+      "configuration_id": "fcb5f8c31de521a2102f761d"
+    },
+    {
+      "case_id": "video-caption",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "twelvelabs.pegasus-1-5-v1:0",
+      "review": {
+        "case_id": "video-caption",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "已查看同一flower.mp4的0—4秒逐帧图，红色花苞渐开、绿紫叶和黄色花心与描述一致，镜头固定。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "641b73f38a743033db7bcc828a92267ddd0b5fabfee683219e018b07668a6b04"
+      },
+      "run_id": "e3da6a84979cc29dc3c9f03a",
+      "session_id": "05f004602689e8bbe8c8db02",
+      "configuration_id": "5f2f47cb75d6b3c844193d18"
+    },
+    {
+      "case_id": "new-history-correction",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "xai.grok-4.7",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "b1dc3d6710f27e2556f3460a",
+      "session_id": "1046c90d90d27c4be06a943c",
+      "configuration_id": "c3ad869df57c7ee29d047e0b"
+    },
+    {
+      "case_id": "new-history-unknown",
+      "category": "通用文本与历史",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "5d685d58c1c66e80f340df52",
+      "session_id": "cb856fff6fb9820d23476644",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "new-image-order",
+      "category": "多模态",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.4",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "36f5b40252db8d6d07431b30",
+      "session_id": "3eff2680642564624cb992d4",
+      "configuration_id": "f15e6b397633b5bfc43157b8"
+    },
+    {
+      "case_id": "new-code-overlap",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-haiku-5-5",
+      "review": {
+        "case_id": "new-code-overlap",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 164,
+              "passed": 164,
+              "failures": []
+            },
+            "source_sha256": "dff41f2d845062b03ee598f6f22637d938a40d25ce5ac4b36b87352f0b6d7982"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "dff41f2d845062b03ee598f6f22637d938a40d25ce5ac4b36b87352f0b6d7982"
+      },
+      "run_id": "bd37ad84ea98f38b0516f3f2",
+      "session_id": "c10f6a0380f071a8d0bee1b1",
+      "configuration_id": "2dacea61db0084c4e84c1817"
+    },
+    {
+      "case_id": "new-code-events",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "case_id": "new-code-events",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 162,
+              "passed": 162,
+              "failures": []
+            },
+            "source_sha256": "9efe540a0f496a7e43e0cc6c857e66e9f97028511156fe173c04a57f601bfd80"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "9efe540a0f496a7e43e0cc6c857e66e9f97028511156fe173c04a57f601bfd80"
+      },
+      "run_id": "d68976197b5c4c1ddeca781f",
+      "session_id": "1009020b62a1b030072109f6",
+      "configuration_id": "b8c39b029dc48d143d96eec5"
+    },
+    {
+      "case_id": "new-code-clock",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-haiku-5-5",
+      "review": {
+        "case_id": "new-code-clock",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 166,
+              "passed": 166,
+              "failures": []
+            },
+            "source_sha256": "c8f1466925ba68eb374249d2275c3da8bb2389a5d329c8351617bb98a7e9c23d"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "c8f1466925ba68eb374249d2275c3da8bb2389a5d329c8351617bb98a7e9c23d"
+      },
+      "run_id": "1421b80d50e01d04341fc9b1",
+      "session_id": "a1ed535c24ab77f8676b4cd7",
+      "configuration_id": "2dacea61db0084c4e84c1817"
+    },
+    {
+      "case_id": "new-code-allocate",
+      "category": "代码",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-haiku-5-5",
+      "review": {
+        "case_id": "new-code-allocate",
+        "status": "pass",
+        "source": "isolated_functional_tests",
+        "bare_code_format": true,
+        "functional_pass": true,
+        "variants": [
+          {
+            "status": "pass",
+            "result": {
+              "tests": 165,
+              "passed": 165,
+              "failures": []
+            },
+            "source_sha256": "6b2f0e7d10e5fd2d858ae6c2affccb3c9ce92965f1e94b5e80144dd6ea8aa442"
+          }
+        ],
+        "image": "sha256:4636f1baa9507c8aa57552637f1df27d8e632d316ca3e5b8364c858a637e5f12",
+        "output_sha256": "6b2f0e7d10e5fd2d858ae6c2affccb3c9ce92965f1e94b5e80144dd6ea8aa442"
+      },
+      "run_id": "ea1f43485df5045cd0585de7",
+      "session_id": "b6f0d56e9d0dcecc4c557681",
+      "configuration_id": "2dacea61db0084c4e84c1817"
+    },
+    {
+      "case_id": "heldout-retail",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "a25456a733e27e6009c29d95",
+      "session_id": "0ea9dcdb9a52fba8e5e2334d",
+      "configuration_id": "a0dda0a538be50bba3d2a68a"
+    },
+    {
+      "case_id": "heldout-manufacturing",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "2af82d1a60747d47c235766f",
+      "session_id": "9a2303d326691fbe95911b0f",
+      "configuration_id": "b8c39b029dc48d143d96eec5"
+    },
+    {
+      "case_id": "heldout-finance",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "8bf45b237308026612c99caa",
+      "session_id": "daabcb4a5d588653176e6c1b",
+      "configuration_id": "a628a94dace7b81034b75a57"
+    },
+    {
+      "case_id": "heldout-insurance",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "fail",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "case_id": "heldout-insurance",
+        "status": "fail",
+        "content_status": "pass",
+        "reason": "赔付20000数值正确，但实际输出20000元，不符合冻结number评分要求。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "f77b707d4d14f41729a6eccf822db46027cb81ae86250b26dd0ceafc56b59749"
+      },
+      "run_id": "2b4eb275b2cb75c3cc27d369",
+      "session_id": "f44356b99d9cfb0d0e9aa58b",
+      "configuration_id": "a0dda0a538be50bba3d2a68a"
+    },
+    {
+      "case_id": "heldout-healthcare",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "8073120252690d62be631f40",
+      "session_id": "7d944ad1f1f433c218bbe085",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "heldout-logistics",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-sol",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "7573b7aaf57beb8112320dd4",
+      "session_id": "bf49b01b76b16f619f521af7",
+      "configuration_id": "46c3dd81c3db41663ea6e465"
+    },
+    {
+      "case_id": "heldout-energy",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "fail",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "case_id": "heldout-energy",
+        "status": "fail",
+        "content_status": "pass",
+        "reason": "160×1.1−176×0.4=105.6数值正确，但输出105.6元违反冻结裸数字要求。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "82c83da53d7008d7502293571344d7171afc4fca6d4bea0a8bf12dcc062ebe9d"
+      },
+      "run_id": "4abc97bbc0db2e97e3336573",
+      "session_id": "674850eb4f1ecc7941338437",
+      "configuration_id": "a628a94dace7b81034b75a57"
+    },
+    {
+      "case_id": "heldout-saas",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "2746a7e966c262b1b53bab61",
+      "session_id": "1d86d60359090a3a2394e318",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "heldout-telecom",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "457ebb17992be97014c3c205",
+      "session_id": "ece9ffcf9fa9921f3d66d1b2",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "heldout-public",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "dee5cacaa6863f319c3842ce",
+      "session_id": "ff9dcbe6ca0490bf80ddacb5",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "heldout-education",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "xai.grok-4.6",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "3de2f506d05f30ed8ff51c60",
+      "session_id": "ec3077fef9424d4576d2cb7a",
+      "configuration_id": "4bcc9c14c4d586f4617e15aa"
+    },
+    {
+      "case_id": "heldout-legal",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "3cd7257d8378cf914de0ad63",
+      "session_id": "122029db21314ed2549f9661",
+      "configuration_id": "a628a94dace7b81034b75a57"
+    },
+    {
+      "case_id": "manufacturing-causal-regression",
+      "category": "复杂产线分析",
+      "split": "development_regression",
+      "status": "fail",
+      "content_status": "fail",
+      "execution_status": "error",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "fail",
+        "content_status": "fail",
+        "source": "execution",
+        "reason": "[{\"code\": 504, \"message\": \"目标模型执行超时，未自动重试或切换模型。\"}]"
+      },
+      "run_id": "51b05b7e740478cef0aac4c3",
+      "session_id": "5153e5da814b37d63cc57694",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "quality-holdout-distribution",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-terra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "537b58232454007066df33bd",
+      "session_id": "203a5b4f58de6234b7620bec",
+      "configuration_id": "f9b1be6e964d2e4eb536d845"
+    },
+    {
+      "case_id": "quality-holdout-pharmacy",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "32f7abc6da825d35ebcc6b34",
+      "session_id": "5341824665aa1a714a4e7837",
+      "configuration_id": "b8c39b029dc48d143d96eec5"
+    },
+    {
+      "case_id": "quality-holdout-insurance",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "e0d2a68c7f06b4f2cdf93e1b",
+      "session_id": "745eb02507c3d1ad4a5fbe79",
+      "configuration_id": "686be5b15114f4d94b56971c"
+    },
+    {
+      "case_id": "quality-holdout-energy",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "3ee394cce09ddf65cb96323b",
+      "session_id": "592c51604dfa03f96206c293",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "quality-holdout-subscription",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "d554e35f7492765e6a40fbe0",
+      "session_id": "d00a5705f78883ed79121b63",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "quality-holdout-manufacturing",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "bda73f7962c8117059765417",
+      "session_id": "514e23f733dc82e986602d26",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "quality-holdout-code-trace",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "c17dad07e1fe7ab250008be4",
+      "session_id": "2808e77778d2b3772c2a50ad",
+      "configuration_id": "b8c39b029dc48d143d96eec5"
+    },
+    {
+      "case_id": "quality-holdout-tool-data",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "4ee0f1802bcd2a72c105b1fb",
+      "session_id": "d77398a5a31dc79a1e7e006d",
+      "configuration_id": "686be5b15114f4d94b56971c"
+    },
+    {
+      "case_id": "quality-holdout-history",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-fable-5-1",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "c7e269377a6156097adf5937",
+      "session_id": "6fff05c11cb8dcb39dad7cb9",
+      "configuration_id": "78c152cfa64e31572c2ae0ff"
+    },
+    {
+      "case_id": "quality-holdout-causal",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "quality-holdout-causal",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "指出供应商/温度混杂及选择检测偏差，5个百分点仅为记录差异；四组合随机因素试验、统一抽样和检测标准可隔离效应，篇幅在400字内。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "3db8f217a1d49869e02631646143b4e54aafd468c5eac7bf30e694970849bfda"
+      },
+      "run_id": "315c98e1bf22f1d804f25732",
+      "session_id": "8c2c8957104bf54b71191861",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "quality-holdout-incident",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "case_id": "quality-holdout-incident",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "完整列出五个时间点、连接池耗尽与回滚恢复；将根因列为待证，提出代码配置核查及对照压测取证。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "c6bfe107a7f08dcf9f442a5fa36e58fdb414d4a630223bc25b842306dfe8efb3"
+      },
+      "run_id": "8f75b7eb02ccde65bd557c27",
+      "session_id": "dc760aa4c90ea54a4a5ab053",
+      "configuration_id": "3925533f980b4d45a8888fc2"
+    },
+    {
+      "case_id": "quality-holdout-aggregation",
+      "category": "新增能力优先场景",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "quality-holdout-aggregation",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "A总83%、轻90%、重20%，B总91%、轻95%、重90%均正确；纠正前提并指出观察数据与病例构成不能证明技术因果差异。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "ff2b19d609a676d02192eeae9da55f534e007720928b9966aa4a7300dc7a676d"
+      },
+      "run_id": "b4211f8b07c65ba4e884fd00",
+      "session_id": "3e991d43510e22481e143927",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "fresh-factory-rework",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "528b94a283da9a23befe3189",
+      "session_id": "f63d3a86d222dbbf5b0c8dc7",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "fresh-claims-cap",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-5.6-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "04251429b309f53f32785588",
+      "session_id": "9f8b2287c5b6b2425b0dd978",
+      "configuration_id": "56a73ecc6476fd66154aad55"
+    },
+    {
+      "case_id": "fresh-warehouse-reserve",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "769493840af27a5963f8b68f",
+      "session_id": "a674dd5faf7147d0e6a504ec",
+      "configuration_id": "a628a94dace7b81034b75a57"
+    },
+    {
+      "case_id": "fresh-payment-dedup",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "89b70bdd76b3a151bfe98a10",
+      "session_id": "ecfbb1b2d71bf5a0ef9cf29d",
+      "configuration_id": "686be5b15114f4d94b56971c"
+    },
+    {
+      "case_id": "fresh-power-tariff",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "anthropic.claude-fable-5-1",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "38d8e3ad418d71b6d31a6ac9",
+      "session_id": "55dea140d8799909baf26bf5",
+      "configuration_id": "cf21615b726c2b77a3069b90"
+    },
+    {
+      "case_id": "fresh-saas-proration",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "e25bc39789d9ff36d8af57d1",
+      "session_id": "27527150168054615ccde6a4",
+      "configuration_id": "3925533f980b4d45a8888fc2"
+    },
+    {
+      "case_id": "fresh-clinical-no-invention",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "33449dcc432b20b8c93b8756",
+      "session_id": "9454dae40d0acaf957a393b8",
+      "configuration_id": "3925533f980b4d45a8888fc2"
+    },
+    {
+      "case_id": "fresh-education-weight",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "4141adffdfec75cb7acd4ba0",
+      "session_id": "ae3c9ee3e4c4cee27f1c47d1",
+      "configuration_id": "a0dda0a538be50bba3d2a68a"
+    },
+    {
+      "case_id": "fresh-hotel-occupancy",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "671fb4ab1808a564aaa9184d",
+      "session_id": "2e31374898857a58d3ed5120",
+      "configuration_id": "686be5b15114f4d94b56971c"
+    },
+    {
+      "case_id": "fresh-procurement-currency",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-terra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "35d80972ec1ae982fcad7997",
+      "session_id": "44f11d89279eec0b00947f23",
+      "configuration_id": "f9b1be6e964d2e4eb536d845"
+    },
+    {
+      "case_id": "fresh-construction-retention",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "f76cd18ed0e4e0ce284be4d3",
+      "session_id": "a45db1d12c23e9f4d3864f92",
+      "configuration_id": "686be5b15114f4d94b56971c"
+    },
+    {
+      "case_id": "fresh-retail-return",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "9d788816e31dbd84f41aebe4",
+      "session_id": "a735b464400a598026fad1bd",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "fresh-telecom-overage",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "xai.grok-4.6",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "f0054dd58adf83014ccf9b1f",
+      "session_id": "06d52b8c577903d582a0e840",
+      "configuration_id": "4bcc9c14c4d586f4617e15aa"
+    },
+    {
+      "case_id": "fresh-transport-capacity",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "573b90b379fd04515dafa639",
+      "session_id": "13ff6a43e04236572cfecdd0",
+      "configuration_id": "a0dda0a538be50bba3d2a68a"
+    },
+    {
+      "case_id": "fresh-b2b-followup",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "14e9431ab453788e85bfb4a3",
+      "session_id": "1ddaeb265243059a05c40c9e",
+      "configuration_id": "686be5b15114f4d94b56971c"
+    },
+    {
+      "case_id": "fresh-it-incident-budget",
+      "category": "新增16行业业务题",
+      "split": "development_regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "35c95d89c4b191c178b8b15d",
+      "session_id": "0728ef40202a6574b872304f",
+      "configuration_id": "686be5b15114f4d94b56971c"
+    },
+    {
+      "case_id": "general-seasons",
+      "category": "新增通用/知识解释",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "general-seasons",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "正确说明地轴倾斜、公转、日照角度/时长及南北半球相反，未误用日地距离解释；≤120字。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "a6db168b71d924dfcff45665f8ca39a37a4ae375c0b500e22734c0b3a3fe4794",
+        "text_characters": 100,
+        "han_characters": 87
+      },
+      "run_id": "7602d4dd870bfac0ae949a6f",
+      "session_id": "6df6b76100e08a488d9802e0",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "general-boiling",
+      "category": "新增通用/知识解释",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "general-boiling",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "恰好三句，气压降低使沸点降低，敞口锅食物通常更慢熟，物理解释准确。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "a8d345f57a09aec346e01445c7d7eaededd765e373b4382609da86b5c4bb6be3",
+        "text_characters": 96,
+        "han_characters": 87
+      },
+      "run_id": "01ba886bc19b3ff0edf9a8b8",
+      "session_id": "7f42a1b9a1f207305990a1f6",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "general-correlation",
+      "category": "新增通用/知识解释",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.2-sol",
+      "review": {
+        "case_id": "general-correlation",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "反向因果和工作压力混杂是两个不同解释；提出随机双盲对照，未认定因果；≤150字。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "386f7b1ba1f9cfd4e10ab5a8cedf77085f88be81b07d019b687fe7bb7e223dba",
+        "text_characters": 106,
+        "han_characters": 94
+      },
+      "run_id": "8c10c153ba728d5eb6602089",
+      "session_id": "b505c7156d976ff4a46de816",
+      "configuration_id": "46c3dd81c3db41663ea6e465"
+    },
+    {
+      "case_id": "general-compression",
+      "category": "新增通用/知识解释",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "general-compression",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "ZIP无损与通常JPEG有损区分准确，合同表格和网页照片场景适合，正确提示重新压缩可能降质。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "0098db404a31868bf8d77d652147c36a89e90a0081fab5fa81ec8e546c80c216",
+        "text_characters": 90,
+        "han_characters": 72
+      },
+      "run_id": "9cf613e4d57d45063ddab384",
+      "session_id": "7b42a8e62d5292c80db79c28",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "general-meeting",
+      "category": "新增通用/摘要与改写",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-5.6-sol",
+      "review": {
+        "case_id": "general-meeting",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "两位负责人、文档/测试、周四前/周五完整；上线未定且周一仅建议，≤100字。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "0a7bba2fda563f3c0a32ff1ab86a42bfdd5502d14cd1cab8298a8f2c6d0a5837",
+        "text_characters": 51,
+        "han_characters": 45
+      },
+      "run_id": "3a5feba2d5cf2261409db543",
+      "session_id": "6880cb2da9773bbe1c456ca6",
+      "configuration_id": "56a73ecc6476fd66154aad55"
+    },
+    {
+      "case_id": "general-faithful",
+      "category": "新增通用/摘要与改写",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "case_id": "general-faithful",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "一句话准确包含40、32、20、12、8及未知原因，没有改写分母或猜测未反馈原因。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "dedef766099968e80c215899c0fa48a358ca0b7ad6db5f065911eac7051bafd6",
+        "text_characters": 46,
+        "han_characters": 30
+      },
+      "run_id": "13715c38e1f56252e667e5c5",
+      "session_id": "ac8d88bce7d4747b19dc6d38",
+      "configuration_id": "686be5b15114f4d94b56971c"
+    },
+    {
+      "case_id": "general-polite",
+      "category": "新增通用/摘要与改写",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "general-polite",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "礼貌指出表格有误，保留今天修正要求，未加新承诺，≤60字。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "83fade396dcc07af313b9eaf34ca4b256f612caa28e81a7395c024e3aa9329b2",
+        "text_characters": 22,
+        "han_characters": 19
+      },
+      "run_id": "0a7718ab5636a32e6a1b83ea",
+      "session_id": "3d61a91233e8c94250eed47d",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "general-conflict",
+      "category": "新增通用/摘要与改写",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "xai.grok-4.6",
+      "review": {
+        "case_id": "general-conflict",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "明确无法确定，识别冲突和缺时间戳，建议核查完整物流及签收凭证，没有认定当前状态。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "c37e73ee1ee89cb072ff6b107bb2aede7a5c65338b11a5814b0b39e820e09d4d",
+        "text_characters": 176,
+        "han_characters": 149
+      },
+      "run_id": "84fe237a959771ac9495cc09",
+      "session_id": "f191e92095a23959bfdad006",
+      "configuration_id": "4bcc9c14c4d586f4617e15aa"
+    },
+    {
+      "case_id": "general-translate-en",
+      "category": "新增通用/翻译与语言",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "general-translate-en",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "保留可能、最长七个工作日和周末不计入，只输出译文。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "201d82b7d6627c88c42b0c4e31c4c4191057d8bf5724af9b209bdf43c5f7aaff",
+        "text_characters": 20,
+        "han_characters": 18
+      },
+      "run_id": "fe73dced523c8283889a9f9c",
+      "session_id": "cc8a52e51b2f7f397b183b48",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "general-translate-zh",
+      "category": "新增通用/翻译与语言",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "general-translate-zh",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "条件、周三之前、未确认、暂缓发货而不取消订单均准确，仅英文译文。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "0c37c6b62ce1f18f9146e56f62c45e0dc537e4369b30e6b7a5a791f3981aafb8",
+        "text_characters": 110,
+        "han_characters": 0
+      },
+      "run_id": "a7dfb72f190d1e338bcd510c",
+      "session_id": "a1dda979a22dfc7c76185d1e",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "general-grammar",
+      "category": "新增通用/翻译与语言",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "general-grammar",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "正确使用does not缩写与不可数information，保留原意，仅输出修正句。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "4b7aebdf164f6a05fcbfa8c96fb1be9932439f2041ec6bf0045bd4b1f52e1a1b",
+        "text_characters": 58,
+        "han_characters": 0
+      },
+      "run_id": "6f199ca4d93639227d52d861",
+      "session_id": "734ffd9ee728ab814d21391b",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "general-negation",
+      "category": "新增通用/翻译与语言",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "general-negation",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "准确解释至少一份获批，且不保证存在被拒绝者；未加入额外事实。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "fe8bfc83891b6bac6be1c0d993689d42ba59e25ff93b96fb26c6512788895cc9",
+        "text_characters": 100,
+        "han_characters": 81
+      },
+      "run_id": "27a824b632913c8e16a26097",
+      "session_id": "a12634ee075be3827906a71f",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "general-story",
+      "category": "新增通用/约束写作",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "general-story",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "主人公小禾、旧车票、灯塔和父女重逢齐全，情节连贯，无梦境反转；实测汉字数在80—120范围。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "c64b4043181e17358f41e73c3c6ee9461890213859a2ec897c7db082d703069d",
+        "text_characters": 99,
+        "han_characters": 84
+      },
+      "run_id": "a48fcb62a027a7bb3457c863",
+      "session_id": "fe368c73110f050ae050fe2b",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "general-email",
+      "category": "新增通用/约束写作",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "case_id": "general-email",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "有同事称呼、明确明天下午三点前审核附件及感谢，未虚构姓名或批准，正文少于100字。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "e9d643c52ece7bb5a7e505f1c67a62c19e65e10880d564931ed6852b9b7272ab",
+        "text_characters": 65,
+        "han_characters": 56
+      },
+      "run_id": "485eb9f174cab517cbacbf16",
+      "session_id": "7408cf9456fc1d62caccc004",
+      "configuration_id": "686be5b15114f4d94b56971c"
+    },
+    {
+      "case_id": "general-slogans",
+      "category": "新增通用/约束写作",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "general-slogans",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "恰好三行无编号，分别9、8、10个汉字，主题均为图书交换，无全部免费赠送说法。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "59a0563bfc54a85a131863abf3e4b5e71ad7c75f58c87876fbfa2918a658c04a",
+        "text_characters": 32,
+        "han_characters": 27,
+        "han_characters_per_line": [
+          9,
+          8,
+          10
+        ]
+      },
+      "run_id": "2ac609f59a02aba7bf66dcd1",
+      "session_id": "cca6b5c7f3972a30a829539d",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "general-clarify",
+      "category": "新增通用/约束写作",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "case_id": "general-clarify",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "仅一句话，澄清预订对象，说明没有直接预订能力，未虚构订单或工具调用。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "805f5e97bb7ee8edb2ca7cf9333478038fbe6f6b493a0166674c5175a6a14391",
+        "text_characters": 36,
+        "han_characters": 33
+      },
+      "run_id": "19166b95da185c6bc4eaaca6",
+      "session_id": "078d715f16f210b44199ea0c",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "general-schedule",
+      "category": "新增通用/日常规划",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "xai.grok-4.6",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "90ad9b43de5bc9658dc216ca",
+      "session_id": "fa73d944ddddcae04f41ae2d",
+      "configuration_id": "4bcc9c14c4d586f4617e15aa"
+    },
+    {
+      "case_id": "general-budget",
+      "category": "新增通用/日常规划",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "23c827add8b0c4c08f802e9c",
+      "session_id": "c340e8f0cf34f5f5bf5fdfd4",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "general-rain-plan",
+      "category": "新增通用/日常规划",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6-astra",
+      "review": {
+        "case_id": "general-rain-plan",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "两个在家室内活动适龄可行，有成人负责刀具/加热等安排；预算明确为估算，30+80+20+20+30=180元，不虚构场馆信息。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "4d1669e8cbab497dab9f0639760883bcff75dc3c92725c20bc107f5c6bda90b9",
+        "text_characters": 818,
+        "han_characters": 497
+      },
+      "run_id": "0bcd34980156e9c78860cf5e",
+      "session_id": "2955573f31c2687dc57e40c1",
+      "configuration_id": "686be5b15114f4d94b56971c"
+    },
+    {
+      "case_id": "general-study-plan",
+      "category": "新增通用/日常规划",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "anthropic.claude-fable-5-1",
+      "review": {
+        "case_id": "general-study-plan",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "三天分别5+4+9+2、5+5+8+2、6+12+2分钟，均为20分钟；每天有回顾及练习，围绕过去时逐步复习，明确不保证三天精通。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "3a2a3a0fa6647e62bbfdc8257efffff6d6d9e6dc48883a67a1525ba55c622b0c"
+      },
+      "run_id": "b38735f9937b0ddd4d3115ac",
+      "session_id": "77bac1f016275aee6ed3051f",
+      "configuration_id": "78c152cfa64e31572c2ae0ff"
+    },
+    {
+      "case_id": "general-discount",
+      "category": "新增通用/数学推理",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-terra",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "8a10688ccc01a41da7cf6d64",
+      "session_id": "f3672dd60cf713b5a9ecb91c",
+      "configuration_id": "f9b1be6e964d2e4eb536d845"
+    },
+    {
+      "case_id": "general-average",
+      "category": "新增通用/数学推理",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-terra",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "663ce6b0a4c40be61d433d3c",
+      "session_id": "041717ade4d9f0f7bda69d2e",
+      "configuration_id": "f9b1be6e964d2e4eb536d845"
+    },
+    {
+      "case_id": "general-sets",
+      "category": "新增通用/数学推理",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "number 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "d716377b9a893dac03900bd8",
+      "session_id": "7c5b48bbe533feacf1bae773",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "general-ordering",
+      "category": "新增通用/数学推理",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "2829f365a0a30601b0e42588",
+      "session_id": "5c662bcb07cf3fbd34bce704",
+      "configuration_id": "a628a94dace7b81034b75a57"
+    },
+    {
+      "case_id": "general-missing",
+      "category": "新增通用/结构化处理",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "8b7d6169af0d592ffe4c6f35",
+      "session_id": "7a967d41ca0cc9c3cb6359bd",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "general-sort",
+      "category": "新增通用/结构化处理",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-5.6-terra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "cd95a5de2e6ab677d030c6c2",
+      "session_id": "199292066c3868ef620fe3ee",
+      "configuration_id": "4fc8077360fff98bebc34429"
+    },
+    {
+      "case_id": "general-data-boundary",
+      "category": "新增通用/结构化处理",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.2-astra",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "21214c5f5be716d49da46300",
+      "session_id": "81398ca116f54ec3882e21a6",
+      "configuration_id": "b8c39b029dc48d143d96eec5"
+    },
+    {
+      "case_id": "general-csv",
+      "category": "新增通用/结构化处理",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "4dfcc72a61c130164dab964e",
+      "session_id": "c4ad4c592af708888342d488",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "general-memory-store",
+      "category": "新增通用/线上多轮",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "e060a3683fb69b19d4e4f7a3",
+      "session_id": "ce3c88b5f0511ee18aaf569d",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "general-memory-correct",
+      "category": "新增通用/线上多轮",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "xai.grok-4.6",
+      "review": {
+        "status": "pass",
+        "reason": "exact 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "934205de7be2298380b0810a",
+      "session_id": "ce3c88b5f0511ee18aaf569d",
+      "configuration_id": "4bcc9c14c4d586f4617e15aa"
+    },
+    {
+      "case_id": "general-memory-recall",
+      "category": "新增通用/线上多轮",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "fe349a3cae011a5b7ee5959d",
+      "session_id": "ce3c88b5f0511ee18aaf569d",
+      "configuration_id": "e02d85967224dd9d7fd9b069"
+    },
+    {
+      "case_id": "general-memory-spend",
+      "category": "新增通用/线上多轮",
+      "split": "fresh_general",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": null,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "pass",
+        "reason": "json 对照检查；只代表此用例的明确验收条件",
+        "source": "automatic"
+      },
+      "run_id": "f939eb7fe878ce96d18e337b",
+      "session_id": "ce3c88b5f0511ee18aaf569d",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    },
+    {
+      "case_id": "agent-retail-1",
+      "category": "Agent多轮",
+      "split": "regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "models": [
+        "anthropic.claude-haiku-5-5",
+        "anthropic.claude-haiku-5-5"
+      ],
+      "review": {
+        "case_id": "agent-retail-1",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "按冻结验收条件，A缺口15、O101/O103迟发与补偿300/200均正确，在途未算入现货，未声称已执行发货。另将已给定的整单补偿口径列为待核实属冗余，未改变本轮计算。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "67d1d8f3753e7011e317b43af70fa74c90fc851b077e18062add389dd92296b3"
+      },
+      "run_id": null,
+      "session_id": null,
+      "configuration_id": null,
+      "job_id": "765b3e6790dddf2f5d001862"
+    },
+    {
+      "case_id": "agent-retail-2",
+      "category": "Agent多轮",
+      "split": "regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "models": [
+        "openai.gpt-6.1-sol"
+      ],
+      "review": {
+        "case_id": "agent-retail-2",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "逐单分货、补偿300/200、当前缺口15、毛利1575/2250及扣补偿1075/1750均正确；明确到货假设、未知拆单成本；另分析O102等待后补偿180，未虚构执行。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "321943a57f24a7d7589d46b0b438d20facce2aee25fea77c92ce92aac3ec36dd"
+      },
+      "run_id": null,
+      "session_id": null,
+      "configuration_id": null,
+      "job_id": "eac89aa8b041c64daa08f55a"
+    },
+    {
+      "case_id": "agent-finance-1",
+      "category": "Agent多轮",
+      "split": "regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "models": [
+        "openai.gpt-6-astra",
+        "openai.gpt-6.2-sol"
+      ],
+      "review": {
+        "case_id": "agent-finance-1",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "准确识别重复事件E1、未结算P12为8300分、负数退款E3为-20000分；去重净额-7500，不将未匹配当资金丢失。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "8d7b96b0269e246db4d10694caa1aee3c6621b950f5cddde5a105f90083bf769"
+      },
+      "run_id": null,
+      "session_id": null,
+      "configuration_id": null,
+      "job_id": "3a58db88031dfb59e375a3f3"
+    },
+    {
+      "case_id": "agent-finance-2",
+      "category": "Agent多轮",
+      "split": "regression",
+      "status": "pass",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "models": [
+        "anthropic.claude-fable-5-2"
+      ],
+      "review": {
+        "case_id": "agent-finance-2",
+        "status": "pass",
+        "content_status": "pass",
+        "reason": "去重前5000、去重后-7500、待结算8300分均正确；解释重复投递、结算时间与退款正负口径差异，不把40800与净额之差误判为损失；不虚构历史结算或执行划款。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "e35f3cf605d7d64a2593111bf4fa260b194c6ba9ddd3907785b94b68eedfb258"
+      },
+      "run_id": null,
+      "session_id": null,
+      "configuration_id": null,
+      "job_id": "3dfe192d137ee3efa884a4e3"
+    }
+  ],
+  "limits": [
+    "68 previous independent tasks plus four Agent turns are seen regression; 32 general tasks are newly frozen.",
+    "All model requests use the authenticated public deployment; Agent turns use actual AgentCore V2.",
+    "The public embedding endpoint returns only 12 preview dimensions; full retrieval quality is unmeasured, retained in the denominator.",
+    "No target retries or fallback; interrupted submissions are recovered by saved run/job IDs, never silently repeated.",
+    "Open answers are reviewed by the assistant against frozen rubrics, unblinded; this is not a random or independent benchmark.",
+    "Real AgentCore and public gateway differ from the earlier local harness, so cross-run changes are not a controlled causal comparison.",
+    "Strict acceptance requires completed correct content and requested format; content correctness is reported separately."
+  ],
+  "original_72": {
+    "planned": 72,
+    "passed": 68,
+    "pass_percent": 94.44,
+    "content_passed": 70,
+    "content_percent": 97.22,
+    "status_counts": {
+      "pass": 68,
+      "unmeasured": 1,
+      "fail": 3
+    },
+    "completed": 71,
+    "wilson_95_percent": [
+      86.57,
+      97.82
+    ]
+  },
+  "new_general_32": {
+    "planned": 32,
+    "passed": 32,
+    "pass_percent": 100.0,
+    "content_passed": 32,
+    "content_percent": 100.0,
+    "status_counts": {
+      "pass": 32
+    },
+    "completed": 32,
+    "wilson_95_percent": [
+      89.28,
+      100.0
+    ]
+  },
+  "failures": [
+    {
+      "case_id": "heldout-insurance",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "fail",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "case_id": "heldout-insurance",
+        "status": "fail",
+        "content_status": "pass",
+        "reason": "赔付20000数值正确，但实际输出20000元，不符合冻结number评分要求。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "f77b707d4d14f41729a6eccf822db46027cb81ae86250b26dd0ceafc56b59749"
+      },
+      "run_id": "2b4eb275b2cb75c3cc27d369",
+      "session_id": "f44356b99d9cfb0d0e9aa58b",
+      "configuration_id": "a0dda0a538be50bba3d2a68a"
+    },
+    {
+      "case_id": "heldout-energy",
+      "category": "12行业业务题",
+      "split": "development_regression",
+      "status": "fail",
+      "content_status": "pass",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "openai.gpt-6-luna",
+      "review": {
+        "case_id": "heldout-energy",
+        "status": "fail",
+        "content_status": "pass",
+        "reason": "160×1.1−176×0.4=105.6数值正确，但输出105.6元违反冻结裸数字要求。",
+        "method": "unblinded_assistant_review",
+        "output_sha256": "82c83da53d7008d7502293571344d7171afc4fca6d4bea0a8bf12dcc062ebe9d"
+      },
+      "run_id": "4abc97bbc0db2e97e3336573",
+      "session_id": "674850eb4f1ecc7941338437",
+      "configuration_id": "a628a94dace7b81034b75a57"
+    },
+    {
+      "case_id": "manufacturing-causal-regression",
+      "category": "复杂产线分析",
+      "split": "development_regression",
+      "status": "fail",
+      "content_status": "fail",
+      "execution_status": "error",
+      "workflow_fit": true,
+      "model": "openai.gpt-6.1-sol",
+      "review": {
+        "status": "fail",
+        "content_status": "fail",
+        "source": "execution",
+        "reason": "[{\"code\": 504, \"message\": \"目标模型执行超时，未自动重试或切换模型。\"}]"
+      },
+      "run_id": "51b05b7e740478cef0aac4c3",
+      "session_id": "5153e5da814b37d63cc57694",
+      "configuration_id": "e984b87d469f151c5176f5b2"
+    }
+  ],
+  "unmeasured": [
+    {
+      "case_id": "embed-en",
+      "category": "检索",
+      "split": "development_regression",
+      "status": "unmeasured",
+      "content_status": "unmeasured",
+      "execution_status": "completed",
+      "workflow_fit": true,
+      "model": "amazon.titan-embed-text-v2:0",
+      "review": {
+        "status": "unmeasured",
+        "content_status": "unmeasured",
+        "reason": "Public endpoint returns vector preview only; full retrieval ranking not measurable"
+      },
+      "run_id": "7b207848d596fea893928a2e",
+      "session_id": "4f81d66e44110ab196ee9140",
+      "configuration_id": "401a105d570dcb8765a709a6"
+    }
+  ],
+  "provenance": {
+    "url": "https://d3eipg2g3l3an3.cloudfront.net",
+    "catalog_version": "72c68c7564790cd4",
+    "routing": {
+      "version": "gpu-evidence-anonymous-table-v6",
+      "selector": "gpu_decision_model",
+      "measurement_version": "9c633e91bc31b859f9a288d7",
+      "public_benchmark_version": "90ec5a0626a24cf809474d44",
+      "quality_feedback_version": "95a4894fce73a08c9f495241",
+      "quality_policy_version": "livebench-preference-v3",
+      "text_quality_basis": "livebench_only",
+      "development_text_quality_used": false,
+      "quality_preference_handling": "gpu_only",
+      "quality_reselection_max": 0,
+      "evidence_presentation": "anonymous-evidence-table-v1",
+      "decision_probabilities": "reported_when_valid_not_success_rates",
+      "benchmark_cohort_exclusion": false
+    },
+    "catalog_stable": true,
+    "saved_histories": 106,
+    "saved_selections": 106,
+    "selection_versions": {
+      "routing_version": {
+        "gpu-evidence-anonymous-table-v6": 106
+      },
+      "measurement_version": {
+        "9c633e91bc31b859f9a288d7": 106
+      },
+      "public_benchmark_version": {
+        "90ec5a0626a24cf809474d44": 106
+      }
+    },
+    "expected_versions_match": true,
+    "gpu_call_counts": {
+      "2": 106
+    },
+    "history_statuses": {
+      "executed": 105,
+      "error": 1
+    },
+    "fallback_count": 0,
+    "agent_platform_versions": {
+      "V2": 4
+    },
+    "sources": {
+      "scripts/run_online_quality.py": "1f714a2b34395208413d29dcff6f5ce8b69d8ca896a8e3338b49fb693f7a60c7",
+      "scripts/online_general_cases.py": "95062cbd420208bbad1aab89ecb0ce168d0cd7c1ccee92a9a4e4463effa384d6",
+      "scripts/summarize_online_quality.py": "e47ec67b8a7ce69ecd03b1d695999e4866eee4506c6016db04a54c01e094c121"
+    }
+  },
+  "performance": {
+    "boundary": "Deployed ECS history route/target timings; public HTTP wall times separately for ordinary tasks",
+    "route_p50_ms": 900.124,
+    "route_p95_ms": 1622.431,
+    "target_p50_ms": 1732.653,
+    "target_p95_ms": 24333.472,
+    "ordinary_http_p50_ms": 3786.9697969872504,
+    "ordinary_http_p95_ms": 32517.614765965845,
+    "saved_execution_outputs": 105,
+    "cost_known_outputs": 104,
+    "known_reference_cost_usd": "0.91504637",
+    "cost_limit": "Known public-rate reference only; failed calls and missing usage are not free; excludes GPU/infrastructure."
+  }
+}

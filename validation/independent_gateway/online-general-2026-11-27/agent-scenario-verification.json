@@ -1,0 +1,35 @@
+{
+  "dataset_version": "dae0d4382fc67060",
+  "checks": [
+    {
+      "id": "retail",
+      "live_fields": [
+        "id",
+        "industry",
+        "title",
+        "context",
+        "datasets",
+        "policy",
+        "turns",
+        "acceptance"
+      ],
+      "frozen_turns_match": true,
+      "common_fields_match": true
+    },
+    {
+      "id": "finance",
+      "live_fields": [
+        "id",
+        "industry",
+        "title",
+        "context",
+        "datasets",
+        "policy",
+        "turns",
+        "acceptance"
+      ],
+      "frozen_turns_match": true,
+      "common_fields_match": true
+    }
+  ]
+}

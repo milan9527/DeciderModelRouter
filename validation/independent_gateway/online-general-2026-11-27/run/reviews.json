@@ -1,0 +1,321 @@
+[
+  {
+    "case_id": "ambiguous",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "询问具体任务、材料与要求，没有编造已知任务；长度未设硬上限，澄清内容相关。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "293a286c31593262404a73554cd99d927ac935b1d0a7d3a304de67aaf35f4f19"
+  },
+  {
+    "case_id": "summary",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "保留证书过期、更新后恢复、无数据丢失和提醒；汉字数在40以内。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "31d7e43df4d23724d0705ec49f66d2d0bbcb0980f08632736ad66c94607609ad"
+  },
+  {
+    "case_id": "short-story",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "钥匙、雨夜、误会与温暖重逢均具备，少于100汉字。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "8534049b0ecc3b41e115b14b79f3d86531e8675f4c967472410ff363d57fa9be"
+  },
+  {
+    "case_id": "marketing",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "唯一具体规格为已知500ml，未编造保温时长、材质、认证或疗效；便携属于一般营销描述。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "6abe3e010ce02c66e92a62b879059443a7dce9e79425ff4cfc8158fdb2820b2b"
+  },
+  {
+    "case_id": "causality",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "明确相关不代表因果，指出炎热天气同时影响销量和游泳活动。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "cb68a47e37767240bcd7752252f4335c8bde34d48f06de5784b12e303ec9310c"
+  },
+  {
+    "case_id": "refund",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "100元退款已提交与尚未入账区分清楚，3至5工作日，未承诺今天到账。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "0f80218b2416924f743e93aa4155217869fe28c9526072232d6e7c2641d234fd"
+  },
+  {
+    "case_id": "medical",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "正确说明病毒性感冒不常规使用抗生素，列出严重症状就医提示，没有个人处方。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "7db98975e6e1ebff3042cd07375ac40d57c78f50a57af7c8c49c8c9d2c603471"
+  },
+  {
+    "case_id": "video-caption",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "已查看同一flower.mp4的0—4秒逐帧图，红色花苞渐开、绿紫叶和黄色花心与描述一致，镜头固定。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "641b73f38a743033db7bcc828a92267ddd0b5fabfee683219e018b07668a6b04"
+  },
+  {
+    "case_id": "heldout-insurance",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "赔付20000数值正确，但实际输出20000元，不符合冻结number评分要求。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "f77b707d4d14f41729a6eccf822db46027cb81ae86250b26dd0ceafc56b59749"
+  },
+  {
+    "case_id": "heldout-energy",
+    "status": "fail",
+    "content_status": "pass",
+    "reason": "160×1.1−176×0.4=105.6数值正确，但输出105.6元违反冻结裸数字要求。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "82c83da53d7008d7502293571344d7171afc4fca6d4bea0a8bf12dcc062ebe9d"
+  },
+  {
+    "case_id": "quality-holdout-causal",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "指出供应商/温度混杂及选择检测偏差，5个百分点仅为记录差异；四组合随机因素试验、统一抽样和检测标准可隔离效应，篇幅在400字内。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "3db8f217a1d49869e02631646143b4e54aafd468c5eac7bf30e694970849bfda"
+  },
+  {
+    "case_id": "quality-holdout-incident",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "完整列出五个时间点、连接池耗尽与回滚恢复；将根因列为待证，提出代码配置核查及对照压测取证。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "c6bfe107a7f08dcf9f442a5fa36e58fdb414d4a630223bc25b842306dfe8efb3"
+  },
+  {
+    "case_id": "quality-holdout-aggregation",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "A总83%、轻90%、重20%，B总91%、轻95%、重90%均正确；纠正前提并指出观察数据与病例构成不能证明技术因果差异。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "ff2b19d609a676d02192eeae9da55f534e007720928b9966aa4a7300dc7a676d"
+  },
+  {
+    "case_id": "general-seasons",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "正确说明地轴倾斜、公转、日照角度/时长及南北半球相反，未误用日地距离解释；≤120字。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "a6db168b71d924dfcff45665f8ca39a37a4ae375c0b500e22734c0b3a3fe4794",
+    "text_characters": 100,
+    "han_characters": 87
+  },
+  {
+    "case_id": "general-boiling",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "恰好三句，气压降低使沸点降低，敞口锅食物通常更慢熟，物理解释准确。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "a8d345f57a09aec346e01445c7d7eaededd765e373b4382609da86b5c4bb6be3",
+    "text_characters": 96,
+    "han_characters": 87
+  },
+  {
+    "case_id": "general-correlation",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "反向因果和工作压力混杂是两个不同解释；提出随机双盲对照，未认定因果；≤150字。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "386f7b1ba1f9cfd4e10ab5a8cedf77085f88be81b07d019b687fe7bb7e223dba",
+    "text_characters": 106,
+    "han_characters": 94
+  },
+  {
+    "case_id": "general-compression",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "ZIP无损与通常JPEG有损区分准确，合同表格和网页照片场景适合，正确提示重新压缩可能降质。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "0098db404a31868bf8d77d652147c36a89e90a0081fab5fa81ec8e546c80c216",
+    "text_characters": 90,
+    "han_characters": 72
+  },
+  {
+    "case_id": "general-meeting",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "两位负责人、文档/测试、周四前/周五完整；上线未定且周一仅建议，≤100字。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "0a7bba2fda563f3c0a32ff1ab86a42bfdd5502d14cd1cab8298a8f2c6d0a5837",
+    "text_characters": 51,
+    "han_characters": 45
+  },
+  {
+    "case_id": "general-faithful",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "一句话准确包含40、32、20、12、8及未知原因，没有改写分母或猜测未反馈原因。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "dedef766099968e80c215899c0fa48a358ca0b7ad6db5f065911eac7051bafd6",
+    "text_characters": 46,
+    "han_characters": 30
+  },
+  {
+    "case_id": "general-polite",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "礼貌指出表格有误，保留今天修正要求，未加新承诺，≤60字。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "83fade396dcc07af313b9eaf34ca4b256f612caa28e81a7395c024e3aa9329b2",
+    "text_characters": 22,
+    "han_characters": 19
+  },
+  {
+    "case_id": "general-conflict",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "明确无法确定，识别冲突和缺时间戳，建议核查完整物流及签收凭证，没有认定当前状态。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "c37e73ee1ee89cb072ff6b107bb2aede7a5c65338b11a5814b0b39e820e09d4d",
+    "text_characters": 176,
+    "han_characters": 149
+  },
+  {
+    "case_id": "general-translate-en",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "保留可能、最长七个工作日和周末不计入，只输出译文。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "201d82b7d6627c88c42b0c4e31c4c4191057d8bf5724af9b209bdf43c5f7aaff",
+    "text_characters": 20,
+    "han_characters": 18
+  },
+  {
+    "case_id": "general-translate-zh",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "条件、周三之前、未确认、暂缓发货而不取消订单均准确，仅英文译文。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "0c37c6b62ce1f18f9146e56f62c45e0dc537e4369b30e6b7a5a791f3981aafb8",
+    "text_characters": 110,
+    "han_characters": 0
+  },
+  {
+    "case_id": "general-grammar",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "正确使用does not缩写与不可数information，保留原意，仅输出修正句。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "4b7aebdf164f6a05fcbfa8c96fb1be9932439f2041ec6bf0045bd4b1f52e1a1b",
+    "text_characters": 58,
+    "han_characters": 0
+  },
+  {
+    "case_id": "general-negation",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "准确解释至少一份获批，且不保证存在被拒绝者；未加入额外事实。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "fe8bfc83891b6bac6be1c0d993689d42ba59e25ff93b96fb26c6512788895cc9",
+    "text_characters": 100,
+    "han_characters": 81
+  },
+  {
+    "case_id": "general-email",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "有同事称呼、明确明天下午三点前审核附件及感谢，未虚构姓名或批准，正文少于100字。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "e9d643c52ece7bb5a7e505f1c67a62c19e65e10880d564931ed6852b9b7272ab",
+    "text_characters": 65,
+    "han_characters": 56
+  },
+  {
+    "case_id": "general-slogans",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "恰好三行无编号，分别9、8、10个汉字，主题均为图书交换，无全部免费赠送说法。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "59a0563bfc54a85a131863abf3e4b5e71ad7c75f58c87876fbfa2918a658c04a",
+    "text_characters": 32,
+    "han_characters": 27,
+    "han_characters_per_line": [
+      9,
+      8,
+      10
+    ]
+  },
+  {
+    "case_id": "general-story",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "主人公小禾、旧车票、灯塔和父女重逢齐全，情节连贯，无梦境反转；实测汉字数在80—120范围。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "c64b4043181e17358f41e73c3c6ee9461890213859a2ec897c7db082d703069d",
+    "text_characters": 99,
+    "han_characters": 84
+  },
+  {
+    "case_id": "general-clarify",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "仅一句话，澄清预订对象，说明没有直接预订能力，未虚构订单或工具调用。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "805f5e97bb7ee8edb2ca7cf9333478038fbe6f6b493a0166674c5175a6a14391",
+    "text_characters": 36,
+    "han_characters": 33
+  },
+  {
+    "case_id": "general-rain-plan",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "两个在家室内活动适龄可行，有成人负责刀具/加热等安排；预算明确为估算，30+80+20+20+30=180元，不虚构场馆信息。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "4d1669e8cbab497dab9f0639760883bcff75dc3c92725c20bc107f5c6bda90b9",
+    "text_characters": 818,
+    "han_characters": 497
+  },
+  {
+    "case_id": "general-study-plan",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "三天分别5+4+9+2、5+5+8+2、6+12+2分钟，均为20分钟；每天有回顾及练习，围绕过去时逐步复习，明确不保证三天精通。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "3a2a3a0fa6647e62bbfdc8257efffff6d6d9e6dc48883a67a1525ba55c622b0c"
+  },
+  {
+    "case_id": "agent-retail-1",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "按冻结验收条件，A缺口15、O101/O103迟发与补偿300/200均正确，在途未算入现货，未声称已执行发货。另将已给定的整单补偿口径列为待核实属冗余，未改变本轮计算。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "67d1d8f3753e7011e317b43af70fa74c90fc851b077e18062add389dd92296b3"
+  },
+  {
+    "case_id": "agent-retail-2",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "逐单分货、补偿300/200、当前缺口15、毛利1575/2250及扣补偿1075/1750均正确；明确到货假设、未知拆单成本；另分析O102等待后补偿180，未虚构执行。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "321943a57f24a7d7589d46b0b438d20facce2aee25fea77c92ce92aac3ec36dd"
+  },
+  {
+    "case_id": "agent-finance-1",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "准确识别重复事件E1、未结算P12为8300分、负数退款E3为-20000分；去重净额-7500，不将未匹配当资金丢失。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "8d7b96b0269e246db4d10694caa1aee3c6621b950f5cddde5a105f90083bf769"
+  },
+  {
+    "case_id": "agent-finance-2",
+    "status": "pass",
+    "content_status": "pass",
+    "reason": "去重前5000、去重后-7500、待结算8300分均正确；解释重复投递、结算时间与退款正负口径差异，不把40800与净额之差误判为损失；不虚构历史结算或执行划款。",
+    "method": "unblinded_assistant_review",
+    "output_sha256": "e35f3cf605d7d64a2593111bf4fa260b194c6ba9ddd3907785b94b68eedfb258"
+  }
+]

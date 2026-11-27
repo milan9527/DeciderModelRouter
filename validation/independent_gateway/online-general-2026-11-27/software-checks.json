@@ -1,0 +1,20 @@
+{
+  "scope": "Evaluation tooling/reporting checks, not a new application-wide test run",
+  "pytest": {
+    "command": ".venv/bin/python -m pytest -q tests/test_latency_quality_reporting.py tests/test_gateway_effects.py",
+    "passed": 47,
+    "warnings": 1,
+    "warning": "Existing Starlette/httpx deprecation"
+  },
+  "input_schema_validated": 100,
+  "new_general_cases": 32,
+  "generated_code": {
+    "cases": 7,
+    "strict_passed": 7,
+    "functional_passed": 7,
+    "tests": 973,
+    "passed": 973
+  },
+  "ruff": "Four added evaluation scripts passed",
+  "git_diff_check": "passed"
+}

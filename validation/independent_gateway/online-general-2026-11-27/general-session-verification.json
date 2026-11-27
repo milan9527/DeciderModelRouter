@@ -1,0 +1,84 @@
+{
+  "same_real_session": true,
+  "history_turn_counts": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "explicit_history_injected": false,
+  "turns": [
+    {
+      "case": "general-memory-store",
+      "run_id": "e060a3683fb69b19d4e4f7a3",
+      "session_id": "ce3c88b5f0511ee18aaf569d",
+      "context": {
+        "policy_version": "gateway-session-v1",
+        "source": "session",
+        "parent_run_id": null,
+        "history_turns": 0,
+        "trimmed_turns": 0,
+        "text_bytes": 106,
+        "limit_bytes": 48000,
+        "max_history_turns": 8,
+        "note": "只带入完整成功的对话；按完整轮次裁剪。文本字节是保守估算，不是模型 tokenizer。"
+      },
+      "request_has_explicit_history": false,
+      "answer": "已记录"
+    },
+    {
+      "case": "general-memory-correct",
+      "run_id": "934205de7be2298380b0810a",
+      "session_id": "ce3c88b5f0511ee18aaf569d",
+      "context": {
+        "policy_version": "gateway-session-v1",
+        "source": "session",
+        "parent_run_id": "e060a3683fb69b19d4e4f7a3",
+        "history_turns": 1,
+        "trimmed_turns": 0,
+        "text_bytes": 204,
+        "limit_bytes": 48000,
+        "max_history_turns": 8,
+        "note": "只带入完整成功的对话；按完整轮次裁剪。文本字节是保守估算，不是模型 tokenizer。"
+      },
+      "request_has_explicit_history": false,
+      "answer": "已更新"
+    },
+    {
+      "case": "general-memory-recall",
+      "run_id": "fe349a3cae011a5b7ee5959d",
+      "session_id": "ce3c88b5f0511ee18aaf569d",
+      "context": {
+        "policy_version": "gateway-session-v1",
+        "source": "session",
+        "parent_run_id": "934205de7be2298380b0810a",
+        "history_turns": 2,
+        "trimmed_turns": 0,
+        "text_bytes": 318,
+        "limit_bytes": 48000,
+        "max_history_turns": 8,
+        "note": "只带入完整成功的对话；按完整轮次裁剪。文本字节是保守估算，不是模型 tokenizer。"
+      },
+      "request_has_explicit_history": false,
+      "answer": "{\"code\":\"CEDAR-739\",\"budget_yuan\":1850,\"date\":\"12-10\"}"
+    },
+    {
+      "case": "general-memory-spend",
+      "run_id": "f939eb7fe878ce96d18e337b",
+      "session_id": "ce3c88b5f0511ee18aaf569d",
+      "context": {
+        "policy_version": "gateway-session-v1",
+        "source": "session",
+        "parent_run_id": "fe349a3cae011a5b7ee5959d",
+        "history_turns": 3,
+        "trimmed_turns": 0,
+        "text_bytes": 495,
+        "limit_bytes": 48000,
+        "max_history_turns": 8,
+        "note": "只带入完整成功的对话；按完整轮次裁剪。文本字节是保守估算，不是模型 tokenizer。"
+      },
+      "request_has_explicit_history": false,
+      "answer": "{\"code\":\"CEDAR-739\",\"remaining_yuan\":1530,\"date\":\"12-10\"}"
+    }
+  ]
+}

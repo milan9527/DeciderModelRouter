@@ -1,0 +1,70 @@
+{
+  "at": "2026-11-27T01:30:25.751985+00:00",
+  "services": [
+    {
+      "serviceName": "decider-model-router",
+      "taskDefinition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:33",
+      "runningCount": 1,
+      "pendingCount": 0,
+      "deployments": [
+        {
+          "id": "ecs-svc/7524700942396642220",
+          "status": "PRIMARY",
+          "taskDefinition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:33",
+          "desiredCount": 1,
+          "pendingCount": 0,
+          "runningCount": 1,
+          "failedTasks": 0,
+          "createdAt": "2026-11-26 16:10:23.610000+00:00",
+          "updatedAt": "2026-11-26 16:12:42.208000+00:00",
+          "launchType": "FARGATE",
+          "platformVersion": "1.4.0",
+          "platformFamily": "Linux",
+          "networkConfiguration": {
+            "awsvpcConfiguration": {
+              "subnets": [
+                "subnet-01fe19d0bee040993",
+                "subnet-034dd2a923ad82b7f"
+              ],
+              "securityGroups": [
+                "sg-03989d477229f0a09"
+              ],
+              "assignPublicIp": "DISABLED"
+            }
+          },
+          "rolloutState": "COMPLETED",
+          "rolloutStateReason": "ECS deployment ecs-svc/7524700942396642220 completed."
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "taskArn": "arn:aws:ecs:us-east-1:632930644527:task/decider-model-router/77deb905edb942d5916592146714418e",
+      "taskDefinitionArn": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:33",
+      "lastStatus": "RUNNING",
+      "healthStatus": "HEALTHY",
+      "startedAt": "2026-11-26 16:11:12.989000+00:00",
+      "containers": [
+        {
+          "containerArn": "arn:aws:ecs:us-east-1:632930644527:container/decider-model-router/77deb905edb942d5916592146714418e/d9563c90-8718-4e46-b490-88e885e3cc60",
+          "taskArn": "arn:aws:ecs:us-east-1:632930644527:task/decider-model-router/77deb905edb942d5916592146714418e",
+          "name": "api",
+          "image": "632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router@sha256:bd5fff2f076fc2ef44ec0847579d0d307104fe36d5afc67d818cfc99838cb202",
+          "imageDigest": "sha256:bd5fff2f076fc2ef44ec0847579d0d307104fe36d5afc67d818cfc99838cb202",
+          "runtimeId": "77deb905edb942d5916592146714418e-0946514567",
+          "lastStatus": "RUNNING",
+          "networkBindings": [],
+          "networkInterfaces": [
+            {
+              "attachmentId": "10a7b7e7-9ac9-471f-b250-8ec210320442",
+              "privateIpv4Address": "10.146.11.107"
+            }
+          ],
+          "healthStatus": "HEALTHY",
+          "cpu": "0"
+        }
+      ]
+    }
+  ]
+}

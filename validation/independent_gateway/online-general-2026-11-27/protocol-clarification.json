@@ -1,0 +1,8 @@
+{
+  "recorded_at": "2026-11-27T01:22:38.259167+00:00",
+  "scope": "Method wording only, before any Agent invocation; frozen tasks and rubrics unchanged",
+  "original": "No target retries or fallback",
+  "correction": "Ordinary requests explicitly disable fallback; real AgentCore retains production fallback=true, stickiness=true, prompt_cache=true. No manual resubmissions or failure reruns. Report actual attempt/fallback counts from histories.",
+  "source": "app/gateway_agents.py:405",
+  "frozen_suite_retained": true
+}
