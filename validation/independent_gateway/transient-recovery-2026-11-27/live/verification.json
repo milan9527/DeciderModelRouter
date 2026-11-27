@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "run_id": "98f1f46d065cc58a43e23808",
+  "model_id": "openai.gpt-6.1-sol",
+  "answer": "391",
+  "features": {
+    "multi_turn": true,
+    "stickiness": true,
+    "prompt_cache": "bedrock_native",
+    "streaming": "converse_stream",
+    "fallback_max_attempts": 3,
+    "recovery_max_attempts": 6,
+    "endpoint_max_attempts": 2,
+    "real_time_search": false
+  },
+  "model_decision_calls": 2,
+  "retry_count": 0,
+  "fallback_count": 0,
+  "assets": {
+    "index.html": "e10b908669a39da3846db096224ff153e13bbbd61ea1ba94f461499784792d85",
+    "gateway.js": "058948708997773648062fc2bdd31740a9c2640f3b5dfc0d52ae717060128899",
+    "workspace.js": "0e989728caeb94843cbd21c07507bf8265b8e82c63c8f91dbfb7ad499dd9af76"
+  },
+  "scope": "One real normal request plus saved history, catalog and frontend verification; transient recovery tested with controlled fault injection, not a live Bedrock outage."
+}

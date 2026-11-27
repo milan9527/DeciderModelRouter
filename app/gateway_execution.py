@@ -1,17 +1,26 @@
 """Audited fallback; GPU routing also delegates replacement decisions to the GPU."""
 
 import asyncio
+import math
 import time
 from decimal import Decimal
 
-from botocore.exceptions import ClientError
 from fastapi import HTTPException
 from starlette.concurrency import run_in_threadpool
 
 from app.gateway_adapter import capabilities
+from app.gateway_recovery import (
+    COOLDOWN_SECONDS,
+    MAX_ATTEMPTS,
+    MAX_ENDPOINT_ATTEMPTS,
+    MAX_ENDPOINTS,
+    MIN_ATTEMPT_SECONDS,
+    RETRYABLE,
+    TOTAL_TIMEOUT_SECONDS,
+    error_details,
+    retry_delay,
+)
 from app.routing_selector import SELECTOR_VERSION
-
-RETRYABLE = {"ThrottlingException", "ServiceUnavailableException", "ModelNotReadyException"}
 
 
 def fallback_rows(row, selection):
@@ -33,7 +42,7 @@ def fallback_rows(row, selection):
             continue
         seen.add(candidate["model"]["invoke_id"])
         result.append(candidate)
-    return result[:2]
+    return result[:MAX_ENDPOINTS - 1]
 
 
 async def execute(request, row, task, workflow, ranking_version, runtime):
@@ -44,12 +53,21 @@ async def execute(request, row, task, workflow, ranking_version, runtime):
     if runtime.options.fallback and not gpu:
         rows += fallback_rows(row, runtime.selection)
     started = time.perf_counter()
+    index, endpoint_attempt, retry_count = 0, 0, 0
+    last_error = None
     try:
-        async with asyncio.timeout(180):
-            for index, candidate in enumerate(rows):
-                attempt = {"number": index + 1, "model_id": candidate["model"]["id"],
+        async with asyncio.timeout(TOTAL_TIMEOUT_SECONDS):
+            for number in range(1, MAX_ATTEMPTS + 1):
+                if last_error and TOTAL_TIMEOUT_SECONDS - (time.perf_counter() - started) <= MIN_ATTEMPT_SECONDS:
+                    raise last_error
+                candidate = rows[index]
+                endpoint_attempt += 1
+                retry_count += int(endpoint_attempt > 1)
+                attempt = {"number": number, "model_id": candidate["model"]["id"],
                            "model_name": candidate["model"]["name"],
-                           "configuration_id": candidate["candidate_id"], "status": "started"}
+                           "configuration_id": candidate["candidate_id"], "status": "started",
+                           "endpoint_attempt": endpoint_attempt, "retry_count": retry_count,
+                           "fallback_count": index}
                 if runtime.send:
                     await runtime.send("attempt", attempt)
                 at = time.perf_counter()
@@ -58,35 +76,55 @@ async def execute(request, row, task, workflow, ranking_version, runtime):
                         request, candidate, task, workflow, "classified", SELECTOR_VERSION, ranking_version,
                     )
                 except HTTPException as exc:
-                    cause = exc.__cause__
-                    code = cause.response["Error"]["Code"] if isinstance(cause, ClientError) else None
-                    retry = (code in RETRYABLE and not runtime.partial_output and (
-                        index + 1 < len(rows) or (
-                            gpu and runtime.options.fallback and index < 2 and not candidate.get("adapter")
-                        )))
-                    outcome = {**attempt, "status": "failed", "error_code": code or str(exc.status_code),
+                    last_error = exc
+                    details = error_details(exc)
+                    code = details["error_code"]
+                    if details["retry_after_ms"] is not None:
+                        exc.headers = {**(exc.headers or {}), "Retry-After":
+                                       str(math.ceil(details["retry_after_ms"] / 1000))}
+                    attempted = {r["model"]["invoke_id"] for r in rows[:index + 1]}
+                    remaining = [r for r in runtime.selection["candidates"]
+                                 if r["model"]["invoke_id"] not in attempted and not r.get("adapter")]
+                    recoverable = (runtime.options.fallback and code in RETRYABLE
+                                   and not runtime.partial_output and not candidate.get("adapter")
+                                   and number < MAX_ATTEMPTS)
+                    retry = recoverable and endpoint_attempt < MAX_ENDPOINT_ATTEMPTS
+                    fallback = bool(recoverable and not retry and index + 1 < MAX_ENDPOINTS
+                                    and (remaining if gpu else index + 1 < len(rows)))
+                    delay = retry_delay(number, details) if retry or fallback else 0
+                    time_left = TOTAL_TIMEOUT_SECONDS - (time.perf_counter() - started)
+                    exhausted = (retry or fallback) and delay + MIN_ATTEMPT_SECONDS >= time_left
+                    if exhausted:
+                        retry = fallback = False
+                    outcome = {**attempt, **details, "status": "failed",
                                "elapsed_ms": round((time.perf_counter() - at) * 1000, 3),
-                               "will_fallback": retry, "partial_output": runtime.partial_output}
+                               "will_retry": retry, "will_fallback": fallback,
+                               "backoff_ms": round(delay * 1000, 3) if retry or fallback else 0,
+                               "recovery_budget_exhausted": bool(exhausted),
+                               "partial_output": runtime.partial_output}
                     runtime.attempts.append(outcome)
                     if runtime.send:
                         await runtime.send("attempt", outcome)
                     # A short per-user endpoint cooldown is operational evidence only.
                     # It never changes benchmark scores or invents a success probability.
-                    if code in RETRYABLE:
+                    # Only persistent failures cool the endpoint; a recovered retry
+                    # must not leave a false cooldown or erase another request's failure.
+                    if code in RETRYABLE and not retry:
                         await run_in_threadpool(runtime.history.records.put, runtime.pk,
                                                 "HEALTH#" + candidate["model"]["invoke_id"], {
-                                                    "error_code": code, "expires_at": int(time.time()) + 60,
+                                                    "error_code": code, "expires_at": math.ceil(time.time()
+                                                        + max(COOLDOWN_SECONDS, (details["retry_after_ms"] or 0) / 1000)),
                                                     "invoke_id": candidate["model"]["invoke_id"],
                                                     "run_id": runtime.run_id,
                                                 })
-                    if not retry:
+                    if not (retry or fallback):
                         raise
+                    await asyncio.sleep(delay)
+                    if TOTAL_TIMEOUT_SECONDS - (time.perf_counter() - started) <= MIN_ATTEMPT_SECONDS:
+                        raise
+                    if retry:
+                        continue
                     if gpu:
-                        attempted = {r["model"]["invoke_id"] for r in rows}
-                        remaining = [r for r in runtime.selection["candidates"]
-                                     if r["model"]["invoke_id"] not in attempted and not r.get("adapter")]
-                        if not remaining:
-                            raise
                         pool = {**runtime.selection, "candidates": remaining,
                                 "candidate_count": len(remaining), "selected_candidate_id": None,
                                 "reroute_reason": {"error_code": code,
@@ -105,6 +143,8 @@ async def execute(request, row, task, workflow, ranking_version, runtime):
                         if replacement is None:
                             raise
                         rows.append(replacement)
+                    index += 1
+                    endpoint_attempt = 0
                     continue
                 outcome = {**attempt, "status": "completed" if result.get("complete") else "incomplete",
                            "elapsed_ms": round((time.perf_counter() - at) * 1000, 3)}
@@ -114,7 +154,7 @@ async def execute(request, row, task, workflow, ranking_version, runtime):
                 return {**result, "model_name": candidate["model"]["name"],
                         "adapter": capabilities(candidate)["adapter"],
                         "configuration_id": candidate["candidate_id"], "attempts": runtime.attempts,
-                        "fallback_count": index,
+                        "fallback_count": index, "retry_count": retry_count,
                         "backend_total_ms": round((time.perf_counter() - started) * 1000, 3)}
     except TimeoutError as exc:
         raise HTTPException(504, "本次执行达到 180 秒总时限；上游结果可能未知，已停止回退。") from exc

@@ -56,9 +56,14 @@ def serve(role, port):
             profile = replay_profile(Task(text=text), replay_choice(Task(text=text)))
             from tests.gateway_fakes import gpu_answers
 
+            # This fixture runs in a separate process, so pytest's in-memory
+            # anonymous-ID map is unavailable. Pick a supplied anonymous option;
+            # browser smoke checks integration, not model-selection quality.
+            answers = ({"action": {"choice": next(iter(state["candidates"]))}}
+                       if selecting and "candidates" in state else gpu_answers(payload, profile.model_dump()))
             return {
                 "model": LOCAL_ROUTERS["h2o"],
-                "answers": gpu_answers(payload, profile.model_dump()),
+                "answers": answers,
                 "usage": {"input_tokens": 128, "output_tokens": 7},
                 "latency_ms": 15,
                 "deployment": "SYNTHETIC BROWSER TEST; NOT A GPU BENCHMARK",
@@ -70,10 +75,19 @@ def serve(role, port):
         class FixtureBedrock:
             def __init__(self, *, read_timeout=40):
                 self.read_timeout = read_timeout
+                self.attempts = {}
 
             def converse(self, **kwargs):
                 time.sleep(0.3)
                 task = kwargs["messages"][-1]["content"][0]["text"]
+                self.attempts[task] = self.attempts.get(task, 0) + 1
+                if "RECOVER_ONCE" in task and self.attempts[task] == 1:
+                    from botocore.exceptions import ClientError
+
+                    raise ClientError({
+                        "Error": {"Code": "ServiceUnavailableException", "Message": "synthetic transient failure"},
+                        "ResponseMetadata": {"RequestId": "browser-recovery-fixture"},
+                    }, "Converse")
                 return {
                     "output": {
                         "message": {
@@ -219,7 +233,7 @@ def smoke(output):
                 expect(page.locator("#task")).to_have_value("")
                 page.locator("#max-cost").fill("0.05")
                 page.locator('[data-example="industry-retail"]').click()
-                expect(page.locator("#max-output")).to_have_value("4096")
+                expect(page.locator("#max-output")).to_have_value("16384")
                 expect(page.locator("#expected-output")).to_have_value("1024")
                 page.locator('[data-example="code"]').click()
                 expect(page.locator("#max-output")).to_have_value("16384")
@@ -229,15 +243,29 @@ def smoke(output):
                 page.locator(".advanced summary").click()
                 page.locator("#benchmark-release").select_option("2025-04-02")
                 page.locator(".advanced summary").click()
+                page.locator("#task").fill(page.locator("#task").input_value() + "\nRECOVER_ONCE")
                 page.locator("#run").click()
                 # This must be visible while the independent GPU request is still running.
                 expect(page.locator(".stage.started")).to_be_visible()
                 expect(page.locator("#run")).to_be_enabled(timeout=20000)
+                (output / "recovery-ui.json").write_text(json.dumps({
+                    "status": page.locator("#run-badge").inner_text(),
+                    "response": page.locator("#response").inner_text(),
+                    "state": page.locator("#conversation-state").inner_text(),
+                    "browser_errors": errors,
+                }, ensure_ascii=False, indent=2))
+                saved = page.request.get(base + "/api/gateway/history").json()["items"]
+                if saved:
+                    recovered = page.request.get(base + "/api/gateway/history/" + saved[0]["id"]).json()
+                    (output / "recovery-history.json").write_text(json.dumps(recovered, ensure_ascii=False, indent=2))
                 expect(page.locator("#run-badge")).to_have_text("已完成")
                 expect(page.locator(".profile-chips span")).to_have_count(7)
                 expect(page.locator(".output")).to_contain_text("本地联调测试桩")
                 expect(page.locator("#stages .completed")).to_have_count(4)
                 expect(page.locator("#conversation-state")).to_contain_text("带入 0 轮历史")
+                expect(page.locator("#conversation-state")).to_contain_text("重试原模型")
+                expect(page.locator("#response")).to_contain_text("原模型重试 1 次")
+                expect(page.locator("#response")).to_contain_text("换模回退 0 次")
                 page.evaluate("scrollTo(0, 0)")
                 page.screenshot(path=str(output / "desktop.png"), full_page=True)
                 page.locator('[data-tab="candidates"]').click()
@@ -245,8 +273,8 @@ def smoke(output):
                 page.evaluate("scrollTo(0, 0)")
                 page.screenshot(path=str(output / "candidates.png"), full_page=True)
                 page.locator('[data-tab="timing"]').click()
-                expect(page.locator("#timing")).to_contain_text("GPU 分类服务自报耗时：15.0 ms")
-                expect(page.locator("#timing")).to_contain_text("GPU 选模总耗时")
+                expect(page.locator("#timing")).to_contain_text("GPU 服务自报耗时：15.0 ms")
+                expect(page.locator("#timing")).to_contain_text("两阶段决策合计")
                 page.evaluate("scrollTo(0, 0)")
                 page.screenshot(path=str(output / "timings.png"), full_page=True)
                 with page.expect_download() as download:
@@ -404,7 +432,8 @@ def smoke(output):
                 expect(page.locator("#model-table")).to_contain_text("2025-04-02")
                 page.screenshot(path=str(output / "mapping-nova.png"), full_page=True)
                 page.locator("#model-search").fill("qwen3-coder-next")
-                expect(page.locator("#model-table")).to_contain_text("型号资料已核验")
+                expect(page.locator("#model-table")).to_contain_text("Bedrock 端点已补测")
+                expect(page.locator("#model-table")).to_contain_text("已接入公开能力评测")
                 page.locator("#model-search").fill("fable")
                 page.locator("#evidence-filter").select_option("configuration_pending")
                 expect(page.locator("#model-table")).to_contain_text("配置待核验")
@@ -444,7 +473,7 @@ def smoke(output):
                 "checks": [
                     "explicit benchmark release preserved in routing",
                     "Nova benchmark sources and category scores",
-                    "reference-only and pending-configuration filters",
+                    "direct measurements, public evidence and pending-configuration filters",
                     "authentication",
                     "database persistence after reload and relogin",
                     "user history isolation and admin-only user management",
@@ -456,6 +485,7 @@ def smoke(output):
                     "separate GPU classification and evidence-based selection calls",
                     "selection evidence",
                     "execution and timing",
+                    "transient error backoff, same-endpoint recovery and separate retry/fallback counts",
                     "no route",
                     "GPU failure",
                     "partial output",

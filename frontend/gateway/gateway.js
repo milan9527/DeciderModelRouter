@@ -549,7 +549,7 @@ function renderOutput() {
   const usage = execution.usage;
   $("#response").innerHTML =
     `<div class="output-meta"><span>${execution.complete ? "已返回完整输出" : "输出未完成"}</span><span>停止原因：${esc(execution.stop_reason || "—")}</span><span>${esc(execution.cache?.total_input_tokens ?? usage?.inputTokens ?? usage?.input_tokens ?? "未知")} 总输入 / ${esc(usage?.outputTokens ?? usage?.output_tokens ?? "未知")} 输出 Token</span>${execution.output_budget ? `<span>本次输出上限 ${esc(execution.output_budget.effective_max_tokens)} / 请求上限 ${esc(execution.output_budget.requested_max_tokens)}</span>` : ""}</div>
-    ${execution.cache ? `<p class="footnote">缓存${execution.cache.observed ? `：读 ${execution.cache.read_tokens} / 写 ${execution.cache.write_tokens} Token` : "：尚未收到缓存用量，不能认定命中"} · 首字 ${ms(execution.timings?.ttft_ms)} · 回退 ${execution.fallback_count || 0} 次 · 实际模型 ${esc(execution.model_id)}</p>` : ""}
+    ${execution.cache ? `<p class="footnote">缓存${execution.cache.observed ? `：读 ${execution.cache.read_tokens} / 写 ${execution.cache.write_tokens} Token` : "：尚未收到缓存用量，不能认定命中"} · 首字 ${ms(execution.timings?.ttft_ms)} · 原模型重试 ${execution.retry_count || 0} 次 · 换模回退 ${execution.fallback_count || 0} 次 · 实际模型 ${esc(execution.model_id)}</p>` : ""}
     <pre class="output">${esc(execution.text ?? JSON.stringify(execution, null, 2))}</pre>
     ${mediaHTML(execution.artifacts)}
     ${execution.media_job ? `<p id="media-job-state">视频任务：${esc(execution.media_job.status)}</p><div id="media-job-output"></div>` : ""}
@@ -588,8 +588,8 @@ function receive(event) {
   } else if (event.type === "attempt") {
     if (event.data.status === "started")
       $("#conversation-state").textContent += ` 第 ${event.data.number} 次调用：${event.data.model_id}。`;
-    if (event.data.will_fallback)
-      $("#conversation-state").textContent += ` ${event.data.error_code}，正在尝试下一候选。`;
+    if (event.data.will_retry || event.data.will_fallback)
+      $("#conversation-state").textContent += ` ${event.data.error_code}，等待 ${ms(event.data.backoff_ms)} 后${event.data.will_retry ? "重试原模型" : "重新选模"}。`;
   } else if (event.type === "reroute") {
     $("#conversation-state").textContent += ` GPU 已重新选模，耗时 ${ms(event.data.model_decision_ms)}。`;
   } else if (event.type === "delta") {

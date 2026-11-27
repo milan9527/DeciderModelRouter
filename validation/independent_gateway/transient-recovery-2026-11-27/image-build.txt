@@ -1,0 +1,45 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from gateway.Dockerfile
+#1 transferring dockerfile: 865B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 688B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/python:3.12-slim-bookworm@sha256:44cf1793efa7c7a476bb0f2cff81443f4a072c90c1cb127e2924933daa3e8c64
+#4 resolve docker.io/library/python:3.12-slim-bookworm@sha256:44cf1793efa7c7a476bb0f2cff81443f4a072c90c1cb127e2924933daa3e8c64 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 127.36kB done
+#5 DONE 0.0s
+
+#6 [2/7] WORKDIR /srv
+#6 CACHED
+
+#7 [3/7] COPY deployment/api-requirements.txt /tmp/requirements.txt
+#7 CACHED
+
+#8 [4/7] RUN pip install --no-cache-dir -r /tmp/requirements.txt     && useradd --uid 10001 --create-home app
+#8 CACHED
+
+#9 [5/7] COPY --chown=10001:10001 app /srv/app
+#9 DONE 0.1s
+
+#10 [6/7] COPY deployment/check_gateway_image.py /tmp/check_gateway_image.py
+#10 DONE 0.1s
+
+#11 [7/7] RUN PYTHONPATH=/srv python /tmp/check_gateway_image.py
+#11 1.364 {"catalog_build": "passed", "models": 128, "templates": 27, "routing_version": "gpu-evidence-anonymous-table-v6", "quality_feedback_version": "95a4894fce73a08c9f495241"}
+#11 DONE 1.5s
+
+#12 exporting to image
+#12 exporting layers 0.1s done
+#12 writing image sha256:8ba87d92d5a6213a0957ce600ad572df1430d271c5e6401a126a219627082f76 done
+#12 naming to 632930644527.dkr.ecr.us-east-1.amazonaws.com/decider-model-router:transient-recovery-20261127 done
+#12 DONE 0.1s

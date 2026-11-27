@@ -42,6 +42,7 @@ P50/P95采用最近秩法，合计按每次决策的两阶段总和计算，不�
 | 当前两阶段选模、匿名证据和偏好处理 | [机制说明](../../docs/PUBLIC_BENCHMARK_EVIDENCE.zh.md) |
 | 固定Liquid LoRA的训练范围、权重校验及复现 | [训练说明](anonymous-evidence-2026-11-26/training/README.zh.md) · [训练代码](anonymous-evidence-2026-11-26/training/train.py) |
 | AWS价格覆盖、长上下文及缓存计价 | [价格报告](pricing-2026-11-26/README.zh.md) |
+| 临时错误退避、同端点重试、受约束换模及独立审计 | [704项软件测试与恢复验证](transient-recovery-2026-11-27/README.zh.md) |
 | 历史换序诊断、微调对照及各次发布验收 | [历史文档](../../docs/INDEPENDENT_GATEWAY_HISTORY.zh.md) |
 
 LoRA仅用于第二阶段具有LiveBench主要批次证据的文本选模，第一阶段与多模态保持原权重。训练的160/32条记录来自7个上下文的变体，以自定义公开分数与合成费用规则为目标，未使用业务答案；详细配置与限制见[项目README](../../README.md#当前微调与优化)。

@@ -151,7 +151,7 @@ class Conversation:
         for row in pool["candidates"]:
             reason = None
             if self.options.fallback and row["model"]["invoke_id"] in self.health:
-                reason = "该账户最近收到限流或服务不可用，端点冷却 60 秒"
+                reason = "该账户最近收到临时错误，端点仍在冷却期（至少60秒，尊重上游Retry-After）"
             if len(self.messages) > 1 and not capabilities(row)["multi_turn"]:
                 reason = "该适配器不支持多轮会话"
             if len(self.messages) > 1 or getattr(self, "evidence_routing", False):

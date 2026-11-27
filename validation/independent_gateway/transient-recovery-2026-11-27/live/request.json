@@ -1,0 +1,20 @@
+{
+  "task": {
+    "text": "只输出数字，不带单位或解释：17乘以23等于多少？",
+    "routing_preferences": {
+      "max_output_tokens": 128,
+      "expected_output_tokens": 32
+    }
+  },
+  "mode": "live",
+  "execute_target": true,
+  "catalog_version": "72c68c7564790cd4",
+  "ranking_version": "1d0a074a9e3a3fba",
+  "policy_version": "bedrock-classified-v4",
+  "client_request_id": "recovery-live-50eb5ef50ce14a26a01aa7b7638bc79c",
+  "session": {
+    "use_history": false,
+    "fallback": true,
+    "stream": true
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "status": "已完成",
+  "response": "已返回完整输出\n停止原因：end_turn\n128 总输入 / 64 输出 Token\n本次输出上限 16384 / 请求上限 16384\n\n缓存：尚未收到缓存用量，不能认定命中 · 首字 330.3 ms · 原模型重试 1 次 · 换模回退 0 次 · 实际模型 google.gemma-3-27b-it\n\n[本地联调测试桩 · 非真实模型输出]\n\n已完成请求：按 event_id 去重，使用 Decimal 处理金额，并在事务内写入账本。\n这是用于验证浏览器、独立 API 和决策服务连接的合成响应。\n\n此状态描述输出是否完整，业务正确性尚需验证。",
+  "state": "带入 0 轮历史，裁剪 0 轮。 本轮由决策模型重新选择。 第 1 次调用：google.gemma-3-27b-it。 ServiceUnavailableException，等待 553.9 ms 后重试原模型。 第 2 次调用：google.gemma-3-27b-it。",
+  "browser_errors": []
+}

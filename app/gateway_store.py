@@ -340,7 +340,9 @@ class History:
             item["context"] = data
         if event["type"] == "attempt":
             item.setdefault("attempts", []).append(data)
-            item["fallback_count"] = max(item.get("fallback_count", 0), data["number"] - 1)
+            item["fallback_count"] = max(item.get("fallback_count", 0),
+                                         data.get("fallback_count", data["number"] - 1))
+            item["retry_count"] = max(item.get("retry_count", 0), data.get("retry_count", 0))
             if data["status"] == "started":
                 item.update(model_id=data["model_id"], model=data.get("model_name", data["model_id"]),
                             configuration_id=data["configuration_id"])
@@ -388,6 +390,7 @@ class History:
                 cache=data.get("cache"),
                 ttft_ms=(data.get("timings") or {}).get("ttft_ms"),
                 fallback_count=data.get("fallback_count", 0),
+                retry_count=data.get("retry_count", 0),
             )
         if event["type"] == "completed":
             item.update(status=data["status"], total_ms=data.get("backend_total_ms"))
@@ -508,6 +511,7 @@ class History:
             "context_requests": sum(bool((r.get("context") or {}).get("history_turns")) for r in live),
             "sticky_requests": sum((r.get("stickiness") or {}).get("retained", False) for r in live),
             "fallback_requests": sum(bool(r.get("fallback_count")) for r in live),
+            "retry_requests": sum(bool(r.get("retry_count")) for r in live),
             "cache_observed_requests": sum((r.get("cache") or {}).get("observed", False) for r in live),
             "cache_hit_requests": sum((r.get("cache") or {}).get("read_tokens", 0) > 0 for r in live),
             "cache_read_tokens": sum((r.get("cache") or {}).get("read_tokens", 0) for r in live),

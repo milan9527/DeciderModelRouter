@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-27T02:06:58.721519+00:00",
+  "task_definition": "arn:aws:ecs:us-east-1:632930644527:task-definition/decider-model-router:34",
+  "running": 1,
+  "desired": 1,
+  "image_digest": "sha256:fa6d13e6ec1d87cf8d6a970dbc5666c3ed7a735398f75f64fa35993edb3cd774",
+  "preserved_task_fields": [
+    "containerDefinitions",
+    "family",
+    "taskRoleArn",
+    "executionRoleArn",
+    "networkMode",
+    "volumes",
+    "placementConstraints",
+    "runtimePlatform",
+    "requiresCompatibilities",
+    "cpu",
+    "memory"
+  ],
+  "container_settings_except_image_preserved": true,
+  "invalidation": {
+    "id": "IDNLOBXR49FPDDEPAHQSU20FGB",
+    "status": "Completed"
+  },
+  "root_http_status": 200,
+  "root_matches_local": true,
+  "anonymous_s3_http_status": 403,
+  "source_files_verified": 82,
+  "prior_quality_artifacts_unchanged": 240
+}

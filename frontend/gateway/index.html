@@ -116,7 +116,7 @@
                     <label><input type="checkbox" id="use-stickiness" checked /> 优先用上次模型</label>
                     <label><input type="checkbox" id="use-cache" checked /> 复用提示词缓存</label>
                     <label><input type="checkbox" id="use-stream" checked /> 实时显示回答</label>
-                    <label><input type="checkbox" id="use-fallback" checked /> 限流时尝试其他候选</label>
+                    <label><input type="checkbox" id="use-fallback" checked /> 临时错误自动恢复</label>
                     <label>历史轮数上限 <input type="number" id="history-turns" value="8" min="1" max="16" /></label>
                   </fieldset>
                   <details id="session-options-help" class="session-help" data-persistent hidden>
@@ -130,8 +130,8 @@
                       <dd>支持的模型可复用已处理的相同输入前缀，可能减少耗时和费用；本轮仍会生成新答案。首次请求、内容太短、换模型或缓存过期都可能不命中，以实际缓存读取量为准。</dd>
                       <dt>实时显示回答</dt>
                       <dd>支持流式输出的模型会逐段显示答案；关闭后等生成结束再显示。不改变选模策略，也不减少生成的Token。</dd>
-                      <dt>限流时尝试其他候选</dt>
-                      <dd>文本调用遇到限流或暂时不可用，且尚未输出文字时，尝试符合本次能力与预算条件的备选。含首选最多尝试3个端点；没有合格备选或已经输出部分答案时停止。</dd>
+                      <dt>临时错误自动恢复</dt>
+                      <dd>文本调用遇到限流或暂时不可用，且尚未产生内容时，稍等后重试原模型；仍失败再选择符合本次能力与预算的备选。每个端点最多调用2次、最多3个端点，共不超过6次，受180秒总时限约束。关闭后不自动重试或换模；超时、部分输出及非临时错误停止。</dd>
                       <dt>历史轮数上限</dt>
                       <dd>默认最多带入8轮，可设1–16轮；一问一答算一轮。内容过长时会先移除最早的完整轮次，实际带入数可能更少。</dd>
                     </dl>

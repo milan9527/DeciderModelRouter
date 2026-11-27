@@ -16,6 +16,7 @@ from starlette.concurrency import run_in_threadpool
 
 from app import routing
 from app.gateway_conversation import Conversation, Message, SessionOptions, validate_messages
+from app.gateway_recovery import MAX_ATTEMPTS, MAX_ENDPOINT_ATTEMPTS, MAX_ENDPOINTS
 from app.gateway_templates import load_templates
 from app.routing_inventory import inventory
 from app.routing_media import capability_catalog
@@ -109,7 +110,8 @@ def catalog(request: Request):
         "persistent_history": hasattr(request.app.state, "history"),
         "session_features": {
             "multi_turn": True, "stickiness": True, "prompt_cache": "bedrock_native",
-            "streaming": "converse_stream", "fallback_max_attempts": 3,
+            "streaming": "converse_stream", "fallback_max_attempts": MAX_ENDPOINTS,
+            "recovery_max_attempts": MAX_ATTEMPTS, "endpoint_max_attempts": MAX_ENDPOINT_ATTEMPTS,
             "real_time_search": False,
         } if hasattr(request.app.state, "history") else None,
         "decision_service": request.app.state.gateway_decision.public_config(),

@@ -1,6 +1,6 @@
 # 已部署环境
 
-最近发布日期：2026-11-26。
+最近发布日期：2026-11-27。
 
 ## DeciderModelRouter 独立服务（2026-11-25）
 
@@ -8,7 +8,11 @@
 
 根域名直接返回网关页面，不再通过 HTML 自动跳转。CloudFront 默认首页为 `gateway/index.html`，静态资源使用 `/gateway/` 绝对路径；前端发布同时刷新 `/` 和 `/gateway/*`。
 
-2026-11-26 **当前价格补全版本：ECS revision33 / Python3.12 ARM64**，API固定镜像 `sha256:bd5fff2f076fc2ef44ec0847579d0d307104fe36d5afc67d818cfc99838cb202`。价格证据快照 `9c633e91bc31b859f9a288d7` 同时读取AWS的AmazonBedrock与AmazonBedrockFoundationModels目录；文本配置可估价70/106→106/106，其中103项精确AWS价格、3项外部参考价。支持端点地域、长上下文和缓存费率；原始媒体计量保留单位，没有用量则费用未知。前端目录、候选和会话历史可展开AWS单价、阈值与来源。
+2026-11-27 **当前临时错误恢复版本：ECS revision34 / Python3.12 ARM64**，API固定镜像 `sha256:fa6d13e6ec1d87cf8d6a970dbc5666c3ed7a735398f75f64fa35993edb3cd774`。明确临时错误先指数退避重试原端点，持续失败才重新选模；每端点最多2次、最多3端点/6次调用，共用180秒执行时限并尊重Retry-After。超时、已有部分输出及原生媒体任务不自动重放。704项软件测试与合成浏览器恢复验证通过。
+
+ECS稳定1/1；沿用原IAM角色、环境变量、密钥引用、GPU和AgentCore配置，仅更换API镜像。7个前端对象逐一核验，CloudFront刷新 `IDNLOBXR49FPDDEPAHQSU20FGB` 完成，根域名200无跳转、S3匿名403。此前104项质量与决策延迟结果仍归属revision33，本次未重新训练或重跑该质量批次。[本次报告](../validation/independent_gateway/transient-recovery-2026-11-27/README.zh.md) · [部署核验](../validation/independent_gateway/transient-recovery-2026-11-27/deployment-verification.json)。本机审计目录 `.deployment/transient-recovery-20261127/`。
+
+2026-11-26 **此前价格补全版本：ECS revision33 / Python3.12 ARM64**，API固定镜像 `sha256:bd5fff2f076fc2ef44ec0847579d0d307104fe36d5afc67d818cfc99838cb202`。价格证据快照 `9c633e91bc31b859f9a288d7` 同时读取AWS的AmazonBedrock与AmazonBedrockFoundationModels目录；文本配置可估价70/106→106/106，其中103项精确AWS价格、3项外部参考价。支持端点地域、长上下文和缓存费率；原始媒体计量保留单位，没有用量则费用未知。前端目录、候选和会话历史可展开AWS单价、阈值与来源。
 
 681项软件回归通过，7次成功目标调用的实际用量与保存费用逐项复算一致，两轮真实Agent完成；另有产线任务选Sol6.1 max后超时，未算作成功，不能沿用价格更新前的71/72成绩。API/Agent诊断在revision32完成，33只修订费用范围说明，计价逻辑相同。GPU权重、两次调用及LiveBench质量证据保持原版本，没有新建或重启GPU。[价格覆盖与方法](../validation/independent_gateway/pricing-2026-11-26/README.zh.md) · [线上结果及超时记录](../validation/independent_gateway/pricing-2026-11-26/live/README.zh.md)。
 

@@ -141,18 +141,21 @@ def fallback_body(**options):
     return payload
 
 
-def test_safe_throttle_fallback_and_endpoint_cooldown(client):
+def test_safe_throttle_fallback_and_endpoint_cooldown(client, monkeypatch):
+    monkeypatch.setattr("app.gateway_execution.retry_delay", lambda *args: 0)
     bedrock = gateway_main.app.state.bedrock
     normal = bedrock.converse.return_value
     bedrock.converse.side_effect = [
         ClientError({"Error": {"Code": "ThrottlingException", "Message": "busy"}}, "Converse"),
+        ClientError({"Error": {"Code": "ThrottlingException", "Message": "still busy"}}, "Converse"),
         normal,
     ]
     trace = events(client, fallback_body())
     assert trace[-1]["data"]["status"] == "executed", trace[-1]
     output = data(trace, "execution")
     assert output["fallback_count"] == 1 and output["model_id"] == "google.gemma-3-12b-it"
-    assert len(output["attempts"]) == 2 and bedrock.converse.call_count == 2
+    assert len(output["attempts"]) == 3 and bedrock.converse.call_count == 3
+    assert output["retry_count"] == 1
     bedrock.converse.side_effect = None
     retry = events(client, fallback_body())
     assert data(retry, "selection")["selected_model"]["id"] == "google.gemma-3-12b-it"

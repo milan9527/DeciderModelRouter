@@ -133,7 +133,8 @@ async def converse(request, client, row, task, runtime):
         text, pending, usage, stop, first = "", "", None, None, None
         flushed = time.perf_counter()
         try:
-            stream = client.converse_stream(**kwargs)["stream"]
+            response = client.converse_stream(**kwargs)
+            stream = response["stream"]
             holder["stream"] = stream
             for event in stream:
                 if cancelled.is_set():
@@ -141,7 +142,12 @@ async def converse(request, client, row, task, runtime):
                 for key, value in event.items():
                     if key.endswith("Exception"):
                         raise ClientError({"Error": {"Code": key[0].upper() + key[1:],
-                                                      "Message": value.get("message", "")}}, "ConverseStream")
+                                                      "Message": value.get("message", "")},
+                                           "ResponseMetadata": response.get("ResponseMetadata", {})}, "ConverseStream")
+                if (event.get("contentBlockDelta", {}).get("delta")
+                        or event.get("contentBlockStart", {}).get("start")):
+                    # Reasoning/tool output is progress too, even before visible text.
+                    holder["partial"] = True
                 delta = event.get("contentBlockDelta", {}).get("delta", {}).get("text", "")
                 if delta:
                     if first is None:

@@ -151,7 +151,8 @@ export class Workspace {
       this.metric("带历史 / 沿用模型", `${stats.context_requests || 0} / ${stats.sticky_requests || 0}`, "真实请求数，仍逐轮分类"),
       this.metric("缓存命中", stats.cache_hit_requests || 0, `${stats.cache_observed_requests || 0} 次收到缓存用量；读 ${stats.cache_read_tokens || 0} / 写 ${stats.cache_write_tokens || 0} Token`),
       this.metric("目标首字 P50", this.ms(stats.ttft_p50_ms), "从目标请求发起至首个文本片段"),
-      this.metric("发生回退", stats.fallback_requests || 0, "未收到输出且遇到可回退错误"),
+      this.metric("原模型重试", stats.retry_requests || 0, "临时错误后再次调用同一端点的请求数"),
+      this.metric("换模回退", stats.fallback_requests || 0, "临时错误后调用其他端点的请求数"),
     ].join("");
     $("#performance-note").textContent = stats.note + (stats.truncated ? " 当前统计达到 5000 条上限，请缩小时间范围。" : " 小样本分位数仅描述当前样本。");
     const peak = Math.max(1, ...stats.models.map((m) => m.requests));

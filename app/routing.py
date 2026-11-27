@@ -1008,7 +1008,7 @@ async def execute_selected(
                 429,
                 f"Bedrock 对 {model['name']} 限流：Token 或请求配额不足。"
                 "可稍后重试；若持续发生，需核查该调用端点的账户配额并刷新目录。"
-                "本次未自动重试或切换模型。",
+                "本次端点调用未完成。",
                 headers={"Retry-After": "60"},
             ) from exc
         raise HTTPException(503, f"目标模型调用失败（{code}）：{detail}") from exc
