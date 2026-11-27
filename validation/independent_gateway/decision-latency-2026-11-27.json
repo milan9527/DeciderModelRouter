@@ -1,0 +1,1536 @@
+{
+  "kind": "decision-model-latency-from-saved-online-evaluation",
+  "evaluation_date": "2026-11-27",
+  "source_commit": "95ac6de4b1627a2e52e874d18313a385793e6137",
+  "model": "LiquidAI/d1-2B",
+  "routing_version": "gpu-evidence-anonymous-table-v6",
+  "scope": "106 completed two-stage decisions (212 forward passes), including Agent steps and the decision preceding a downstream timeout; no new model calls.",
+  "boundaries": {
+    "decision_service_ms": "decision_calls[i].timings.service_reported_ms: Liquid server timer after acquiring its lock, including system_one input processing, forward execution, CUDA synchronization and cleanup; excludes lock wait and HTTP; not GPU kernel time.",
+    "decision_stage_ms": "Saved history assessment_ms, selection_ms and model_decision_ms: decision-stage application timings, including decision-service queueing, communication, validation and selection evidence preparation; excludes full gateway routing, target execution and public end-to-end time."
+  },
+  "percentile_method": "Nearest rank, sorted values[ceil(n*p)-1], matching app.gateway_store.percentile; combined values are computed per request before calculating percentiles.",
+  "concurrency": "Ordinary tasks at most 2 concurrently; Agent tasks followed; not a load or SLA test.",
+  "summary": {
+    "decision_service_ms": {
+      "assessment": {
+        "samples": 106,
+        "p50": 102.45810399646871,
+        "p95": 180.9981370170135
+      },
+      "selection": {
+        "samples": 106,
+        "p50": 541.8496330094058,
+        "p95": 623.1454169901554
+      },
+      "combined": {
+        "samples": 106,
+        "p50": 686.5044090081938,
+        "p95": 731.8510589830112
+      }
+    },
+    "decision_stage_ms": {
+      "assessment": {
+        "samples": 106,
+        "p50": 108.902,
+        "p95": 685.164
+      },
+      "selection": {
+        "samples": 106,
+        "p50": 595.714,
+        "p95": 725.274
+      },
+      "combined": {
+        "samples": 106,
+        "p50": 733.341,
+        "p95": 1380.988
+      }
+    }
+  },
+  "samples": [
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/01ba886bc19b3ff0edf9a8b8.json.gz",
+      "source_sha256": "b077c6587486f8c2bb8b8d620e868986842c2b4032cc8fb31096e24b7d2418f5",
+      "decision_service_ms": {
+        "assessment": 101.97214302024804,
+        "selection": 533.687374991132,
+        "combined": 635.65951801138
+      },
+      "decision_stage_ms": {
+        "assessment": 108.029,
+        "selection": 543.16,
+        "combined": 651.189
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/04251429b309f53f32785588.json.gz",
+      "source_sha256": "bfe88b5bdb7c5496f573bff59f43d5b84637d0f1acd73f25ab29049934b86966",
+      "decision_service_ms": {
+        "assessment": 105.7253229955677,
+        "selection": 534.7329289943445,
+        "combined": 640.4582519899122
+      },
+      "decision_stage_ms": {
+        "assessment": 295.569,
+        "selection": 545.283,
+        "combined": 840.852
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/05f03e193a987d3ca9998a75.json.gz",
+      "source_sha256": "5d35522524f78641a32aec52dcc1b84eb4344af5839e70a7e3256fa5733cd80c",
+      "decision_service_ms": {
+        "assessment": 244.67896900023334,
+        "selection": 456.4053549838718,
+        "combined": 701.0843239841051
+      },
+      "decision_stage_ms": {
+        "assessment": 251.198,
+        "selection": 464.921,
+        "combined": 716.119
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/0a7718ab5636a32e6a1b83ea.json.gz",
+      "source_sha256": "e01d5f76b9614e7cf7e7c25453d97630baea9e6c40d0afcd166082d09523af3f",
+      "decision_service_ms": {
+        "assessment": 101.99599599582143,
+        "selection": 529.1266290005296,
+        "combined": 631.1226249963511
+      },
+      "decision_stage_ms": {
+        "assessment": 139.353,
+        "selection": 538.844,
+        "combined": 678.197
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/0bcd34980156e9c78860cf5e.json.gz",
+      "source_sha256": "2b8154f136416292f20c959d15609b1d935c8fed7ef2a647a174e58dd21420d1",
+      "decision_service_ms": {
+        "assessment": 102.8649820073042,
+        "selection": 616.4844229933806,
+        "combined": 719.3494050006848
+      },
+      "decision_stage_ms": {
+        "assessment": 108.465,
+        "selection": 625.675,
+        "combined": 734.14
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/13715c38e1f56252e667e5c5.json.gz",
+      "source_sha256": "bcc1b43384c0c9f023b5ecf41a08da058011eccd0225f09abb5277f0ce116550",
+      "decision_service_ms": {
+        "assessment": 102.84007599693723,
+        "selection": 529.4132360140793,
+        "combined": 632.2533120110165
+      },
+      "decision_stage_ms": {
+        "assessment": 108.657,
+        "selection": 539.034,
+        "combined": 647.691
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/1421b80d50e01d04341fc9b1.json.gz",
+      "source_sha256": "521c46944004666baf1914209db2d8610694739bde9d6ea70e2b0d83728e6977",
+      "decision_service_ms": {
+        "assessment": 103.00286198616959,
+        "selection": 585.7327199773863,
+        "combined": 688.7355819635559
+      },
+      "decision_stage_ms": {
+        "assessment": 109.12,
+        "selection": 594.916,
+        "combined": 704.036
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/14e9431ab453788e85bfb4a3.json.gz",
+      "source_sha256": "dc8b7e46114d0bd41357012be0016909830bd3836cd1d2df1c2b857c677c5c43",
+      "decision_service_ms": {
+        "assessment": 110.68073200294748,
+        "selection": 534.5008329895791,
+        "combined": 645.1815649925265
+      },
+      "decision_stage_ms": {
+        "assessment": 116.76,
+        "selection": 544.045,
+        "combined": 660.805
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/19166b95da185c6bc4eaaca6.json.gz",
+      "source_sha256": "f3441174a1d9c494821f0c9bbfe1f653eea260d721dd94e888fc41611c24c3cf",
+      "decision_service_ms": {
+        "assessment": 101.53318199445494,
+        "selection": 528.7776860059239,
+        "combined": 630.3108680003788
+      },
+      "decision_stage_ms": {
+        "assessment": 107.79,
+        "selection": 589.822,
+        "combined": 697.612
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/21214c5f5be716d49da46300.json.gz",
+      "source_sha256": "a0f2e7cbabc2254eb32d54a18cb4a5903e0c7cb0954a43de70dc23a3b5f8e3d1",
+      "decision_service_ms": {
+        "assessment": 101.86741600045934,
+        "selection": 621.5622389863711,
+        "combined": 723.4296549868304
+      },
+      "decision_stage_ms": {
+        "assessment": 108.032,
+        "selection": 631.341,
+        "combined": 739.373
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/222eea49be45dabf887d1846.json.gz",
+      "source_sha256": "04473e61739b8c109a37fa0f52e5b2655d91ea270d17695dea7e3efc43d18e98",
+      "decision_service_ms": {
+        "assessment": 101.72192499157973,
+        "selection": 622.9666559956968,
+        "combined": 724.6885809872765
+      },
+      "decision_stage_ms": {
+        "assessment": 109.684,
+        "selection": 671.476,
+        "combined": 781.16
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/23c827add8b0c4c08f802e9c.json.gz",
+      "source_sha256": "b6676df0891c20b79f585a7fa35abe88f90f7e3562bdb22f2aaf7ea8dd408d83",
+      "decision_service_ms": {
+        "assessment": 102.84466101438738,
+        "selection": 616.9049729942344,
+        "combined": 719.7496340086218
+      },
+      "decision_stage_ms": {
+        "assessment": 110.481,
+        "selection": 626.248,
+        "combined": 736.729
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/26530ec491ebd18875f1d889.json.gz",
+      "source_sha256": "34fa414330387f06ab63cfd6c11f7ff5422fea18548d066f40c1432ef7eee23e",
+      "decision_service_ms": {
+        "assessment": 101.05944899260066,
+        "selection": 529.3004949926399,
+        "combined": 630.3599439852405
+      },
+      "decision_stage_ms": {
+        "assessment": 107.181,
+        "selection": 539.246,
+        "combined": 646.427
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/2746a7e966c262b1b53bab61.json.gz",
+      "source_sha256": "f220c4055e8d489453298b0761f2eaf559fc686f7e4919c05f7dbb9a647cd42d",
+      "decision_service_ms": {
+        "assessment": 103.00717799691483,
+        "selection": 529.1412819933612,
+        "combined": 632.148459990276
+      },
+      "decision_stage_ms": {
+        "assessment": 750.969,
+        "selection": 648.244,
+        "combined": 1399.213
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/27a824b632913c8e16a26097.json.gz",
+      "source_sha256": "24168371ab6caadc62adbfe051e1dd0733310f59b6a4711e06891feaf1ee4700",
+      "decision_service_ms": {
+        "assessment": 101.652842015028,
+        "selection": 534.7335260012187,
+        "combined": 636.3863680162467
+      },
+      "decision_stage_ms": {
+        "assessment": 107.308,
+        "selection": 676.507,
+        "combined": 783.815
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/2829f365a0a30601b0e42588.json.gz",
+      "source_sha256": "355c14009d9a188bc66635d01760d8899c346990e6e77d3a45374ece434c477a",
+      "decision_service_ms": {
+        "assessment": 101.81328299222514,
+        "selection": 621.5802360093221,
+        "combined": 723.3935190015472
+      },
+      "decision_stage_ms": {
+        "assessment": 107.933,
+        "selection": 631.292,
+        "combined": 739.225
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/2a6861c266183e4fa17fe98f.json.gz",
+      "source_sha256": "671a061a4268ade54d12acb0c2a75bfda266f8fb291107120354c3e602a17534",
+      "decision_service_ms": {
+        "assessment": 101.7022340092808,
+        "selection": 533.5174759966321,
+        "combined": 635.2197100059129
+      },
+      "decision_stage_ms": {
+        "assessment": 107.591,
+        "selection": 542.747,
+        "combined": 650.338
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/2ac609f59a02aba7bf66dcd1.json.gz",
+      "source_sha256": "5c45df731f05f87a5096bf07f91e1e4f6a6c8c335665e04a5d337ec2855790f3",
+      "decision_service_ms": {
+        "assessment": 101.54791199602187,
+        "selection": 533.5171580081806,
+        "combined": 635.0650700042024
+      },
+      "decision_stage_ms": {
+        "assessment": 107.675,
+        "selection": 542.829,
+        "combined": 650.504
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/2af82d1a60747d47c235766f.json.gz",
+      "source_sha256": "a65ee1766c195b32394737ef41ca12056cccb38c7278cb166d6340b3dcdb70db",
+      "decision_service_ms": {
+        "assessment": 101.65271000005305,
+        "selection": 630.1983489829581,
+        "combined": 731.8510589830112
+      },
+      "decision_stage_ms": {
+        "assessment": 108.014,
+        "selection": 641.894,
+        "combined": 749.908
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/2b4eb275b2cb75c3cc27d369.json.gz",
+      "source_sha256": "734ba4f849e14f6978df9fcfb0e20d10c374f20aa8cda7d4cce8d16ea2b37f48",
+      "decision_service_ms": {
+        "assessment": 103.03453099913895,
+        "selection": 622.9156089830212,
+        "combined": 725.9501399821602
+      },
+      "decision_stage_ms": {
+        "assessment": 109.083,
+        "selection": 635.309,
+        "combined": 744.392
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/315c98e1bf22f1d804f25732.json.gz",
+      "source_sha256": "d8ff8de72c8bf80cd47a98af49bbf20a436ddb2b99a0491c784a78ef24fd537a",
+      "decision_service_ms": {
+        "assessment": 103.69931400055066,
+        "selection": 628.4748640027829,
+        "combined": 732.1741780033335
+      },
+      "decision_stage_ms": {
+        "assessment": 109.449,
+        "selection": 638.08,
+        "combined": 747.529
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/32f7abc6da825d35ebcc6b34.json.gz",
+      "source_sha256": "f2ba2035517262cf96958d41079ac3d4ddfa795edc0dd8c6c7ef60780ac3da8f",
+      "decision_service_ms": {
+        "assessment": 102.81051299534738,
+        "selection": 616.8823010229971,
+        "combined": 719.6928140183445
+      },
+      "decision_stage_ms": {
+        "assessment": 108.468,
+        "selection": 626.313,
+        "combined": 734.781
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/33449dcc432b20b8c93b8756.json.gz",
+      "source_sha256": "be5cbf8b25d4ec3b052402912869cea841ed4f6c97c8cc96fc2a2e2202b0233d",
+      "decision_service_ms": {
+        "assessment": 102.51281899400055,
+        "selection": 534.0261370001826,
+        "combined": 636.5389559941832
+      },
+      "decision_stage_ms": {
+        "assessment": 108.207,
+        "selection": 543.407,
+        "combined": 651.614
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/3441ab6bee7cb8e45f220b71.json.gz",
+      "source_sha256": "bb4075557ba1b3be3337cc0262a9792ec9e37cad46c5ed4d3e4459f56bd14669",
+      "decision_service_ms": {
+        "assessment": 101.54106098343618,
+        "selection": 616.0950289922766,
+        "combined": 717.6360899757128
+      },
+      "decision_stage_ms": {
+        "assessment": 109.118,
+        "selection": 625.291,
+        "combined": 734.409
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/35c95d89c4b191c178b8b15d.json.gz",
+      "source_sha256": "7b19369439e88f85a4ecab784ebd858a0d6a0198776e14214888ed48a4b3fcc5",
+      "decision_service_ms": {
+        "assessment": 102.7152210008353,
+        "selection": 617.0061099983286,
+        "combined": 719.7213309991639
+      },
+      "decision_stage_ms": {
+        "assessment": 108.538,
+        "selection": 626.874,
+        "combined": 735.412
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/35d80972ec1ae982fcad7997.json.gz",
+      "source_sha256": "b1a6179b63fe04e4a451d1cc1daeb5da50c82730fe63c103db343e638355e0a1",
+      "decision_service_ms": {
+        "assessment": 103.88211099780165,
+        "selection": 616.5449359978084,
+        "combined": 720.42704699561
+      },
+      "decision_stage_ms": {
+        "assessment": 742.458,
+        "selection": 828.321,
+        "combined": 1570.779
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/36f5b40252db8d6d07431b30.json.gz",
+      "source_sha256": "42ed7b28ed3ca65d72af8a0102431a866fdff34d8290e43b226f8de67d9f937a",
+      "decision_service_ms": {
+        "assessment": 101.78080201148987,
+        "selection": 380.3603429987561,
+        "combined": 482.14114501024596
+      },
+      "decision_stage_ms": {
+        "assessment": 107.352,
+        "selection": 588.002,
+        "combined": 695.354
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/38688b41809317d88459274b.json.gz",
+      "source_sha256": "4efe51ce9daa976a10ac8a7dd4a78e3ef495120cecc5fce61a4e41755702fa25",
+      "decision_service_ms": {
+        "assessment": 99.66118499869481,
+        "selection": 528.481917019235,
+        "combined": 628.1431020179298
+      },
+      "decision_stage_ms": {
+        "assessment": 198.074,
+        "selection": 1101.434,
+        "combined": 1299.508
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/38b60b56826a65b866d2f3b1.json.gz",
+      "source_sha256": "505ce66dca506773341f49173425f809db4e1fc28e05780cf28ebc7ed7559711",
+      "decision_service_ms": {
+        "assessment": 101.17507199174725,
+        "selection": 528.3743430045433,
+        "combined": 629.5494149962906
+      },
+      "decision_stage_ms": {
+        "assessment": 107.251,
+        "selection": 537.828,
+        "combined": 645.079
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/38d8e3ad418d71b6d31a6ac9.json.gz",
+      "source_sha256": "c83da85be1ac26cd7681adec74713403d4043a4bdf08247026d1f102f79d03dc",
+      "decision_service_ms": {
+        "assessment": 104.29321799892932,
+        "selection": 623.891455004923,
+        "combined": 728.1846730038524
+      },
+      "decision_stage_ms": {
+        "assessment": 655.714,
+        "selection": 725.274,
+        "combined": 1380.988
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/3a5feba2d5cf2261409db543.json.gz",
+      "source_sha256": "d030292bdca4d4035d029e935e76a8a128cebaa69be66f7b59528051d63485b4",
+      "decision_service_ms": {
+        "assessment": 102.69054301897995,
+        "selection": 528.8591830176301,
+        "combined": 631.5497260366101
+      },
+      "decision_stage_ms": {
+        "assessment": 653.622,
+        "selection": 593.614,
+        "combined": 1247.236
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/3cd7257d8378cf914de0ad63.json.gz",
+      "source_sha256": "023d5cc53ff3ba2a5741abecee363eb14f4c11a01d08df70d9bbccc7fcf7dac6",
+      "decision_service_ms": {
+        "assessment": 103.43038800056092,
+        "selection": 620.2804229978938,
+        "combined": 723.7108109984547
+      },
+      "decision_stage_ms": {
+        "assessment": 768.25,
+        "selection": 1045.346,
+        "combined": 1813.596
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/3de2f506d05f30ed8ff51c60.json.gz",
+      "source_sha256": "2cb17105819ecbf1256432d9503ba0f7679996bb5a35635a09d10e1e83b2e50d",
+      "decision_service_ms": {
+        "assessment": 102.55961801158264,
+        "selection": 618.0718099931255,
+        "combined": 720.6314280047081
+      },
+      "decision_stage_ms": {
+        "assessment": 110.075,
+        "selection": 627.827,
+        "combined": 737.902
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/3ee394cce09ddf65cb96323b.json.gz",
+      "source_sha256": "1218971bb3c312588544c5ca06ff561cb93730e1a61619c7767e6c103444025a",
+      "decision_service_ms": {
+        "assessment": 102.88363500148989,
+        "selection": 615.4860560200177,
+        "combined": 718.3696910215076
+      },
+      "decision_stage_ms": {
+        "assessment": 108.689,
+        "selection": 625.098,
+        "combined": 733.787
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/4141adffdfec75cb7acd4ba0.json.gz",
+      "source_sha256": "4a44da0bb858fcfe81f6b8d64a4563136a97379bdfa8221f9bc4b6905e75c02c",
+      "decision_service_ms": {
+        "assessment": 101.99537599692121,
+        "selection": 622.2780639945995,
+        "combined": 724.2734399915207
+      },
+      "decision_stage_ms": {
+        "assessment": 107.676,
+        "selection": 631.481,
+        "combined": 739.157
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/457ebb17992be97014c3c205.json.gz",
+      "source_sha256": "7ba5d98a27a98b05c94a2e16b76a1e7e474550bc0a5ffc8f744020c05ce3bc13",
+      "decision_service_ms": {
+        "assessment": 102.08135601715185,
+        "selection": 622.6055089791771,
+        "combined": 724.686864996329
+      },
+      "decision_stage_ms": {
+        "assessment": 107.828,
+        "selection": 634.287,
+        "combined": 742.115
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/485eb9f174cab517cbacbf16.json.gz",
+      "source_sha256": "92bfb33561832db3dce1ad274f499cbfd703e75d6a8f572f37a427b44d57f08e",
+      "decision_service_ms": {
+        "assessment": 102.45810399646871,
+        "selection": 529.238743998576,
+        "combined": 631.6968479950447
+      },
+      "decision_stage_ms": {
+        "assessment": 110.424,
+        "selection": 538.734,
+        "combined": 649.158
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/4abc97bbc0db2e97e3336573.json.gz",
+      "source_sha256": "4f70c126a44e808ef2dce42bb3f71fba1c409e84897acfa0c8987cad5a731469",
+      "decision_service_ms": {
+        "assessment": 102.84991798107512,
+        "selection": 621.9813550123945,
+        "combined": 724.8312729934696
+      },
+      "decision_stage_ms": {
+        "assessment": 108.589,
+        "selection": 633.817,
+        "combined": 742.406
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/4c6251a4ce47b6206aaedeea.json.gz",
+      "source_sha256": "f0758fbb25e7cdd1589a9e3c341043f4abf5ec8526524213371d36c164759ade",
+      "decision_service_ms": {
+        "assessment": 101.41109398682602,
+        "selection": 616.5337359998375,
+        "combined": 717.9448299866635
+      },
+      "decision_stage_ms": {
+        "assessment": 107.336,
+        "selection": 626.263,
+        "combined": 733.599
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/4dfcc72a61c130164dab964e.json.gz",
+      "source_sha256": "c92d4ad299aa1a922d52b86dc94da4253316e9af1498e78655d0a201a5556ed9",
+      "decision_service_ms": {
+        "assessment": 101.68877098476514,
+        "selection": 528.9977070060559,
+        "combined": 630.686477990821
+      },
+      "decision_stage_ms": {
+        "assessment": 107.674,
+        "selection": 538.744,
+        "combined": 646.418
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/4ee0f1802bcd2a72c105b1fb.json.gz",
+      "source_sha256": "0a381e677b859b6806ee055e85742461899d4a207cf0cbac8e30ba376ce02161",
+      "decision_service_ms": {
+        "assessment": 102.98761297599413,
+        "selection": 622.2437149845064,
+        "combined": 725.2313279605005
+      },
+      "decision_stage_ms": {
+        "assessment": 108.998,
+        "selection": 631.511,
+        "combined": 740.509
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/516de52d9b3f5fd286b4c276.json.gz",
+      "source_sha256": "78f07b167fb7f21258ecc47de8c8a828241e9038ca0b6f3da6c17a9cad31dbb3",
+      "decision_service_ms": {
+        "assessment": 180.9981370170135,
+        "selection": 421.3585219986271,
+        "combined": 602.3566590156406
+      },
+      "decision_stage_ms": {
+        "assessment": 188.816,
+        "selection": 429.489,
+        "combined": 618.305
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/51b05b7e740478cef0aac4c3.json.gz",
+      "source_sha256": "5ff347aae32014a68494965c763b6e71a31f96cb08718989258ffda7de63f354",
+      "decision_service_ms": {
+        "assessment": 124.02504601050168,
+        "selection": 630.0075890030712,
+        "combined": 754.0326350135729
+      },
+      "decision_stage_ms": {
+        "assessment": 129.943,
+        "selection": 639.365,
+        "combined": 769.308
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/528b94a283da9a23befe3189.json.gz",
+      "source_sha256": "b4167fc832cf4bd8695662419d247317846d0353413042c16aee2a48c5039872",
+      "decision_service_ms": {
+        "assessment": 264.76555902627297,
+        "selection": 619.9128789885435,
+        "combined": 884.6784380148165
+      },
+      "decision_stage_ms": {
+        "assessment": 286.29,
+        "selection": 630.269,
+        "combined": 916.559
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/537b58232454007066df33bd.json.gz",
+      "source_sha256": "26b01c369408e5e6e1427ad7157b38a9871ee25079f66cde1a0f8d7db1017c54",
+      "decision_service_ms": {
+        "assessment": 102.29678099858575,
+        "selection": 616.7945399938617,
+        "combined": 719.0913209924474
+      },
+      "decision_stage_ms": {
+        "assessment": 108.114,
+        "selection": 626.004,
+        "combined": 734.118
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/573b90b379fd04515dafa639.json.gz",
+      "source_sha256": "e116bfaee115d110ff2f86531e58a6aa25aec1bbe9457a2cba402b8fb09e88bf",
+      "decision_service_ms": {
+        "assessment": 101.63327399641275,
+        "selection": 617.2662859898992,
+        "combined": 718.8995599863119
+      },
+      "decision_stage_ms": {
+        "assessment": 107.013,
+        "selection": 626.474,
+        "combined": 733.487
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/5d685d58c1c66e80f340df52.json.gz",
+      "source_sha256": "6481d881b2bd917ffd7f4b1b8d5bd01305edaf0633032aa896ffd69d38161b90",
+      "decision_service_ms": {
+        "assessment": 108.9452950109262,
+        "selection": 540.1270920119714,
+        "combined": 649.0723870228976
+      },
+      "decision_stage_ms": {
+        "assessment": 116.491,
+        "selection": 549.414,
+        "combined": 665.905
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/663ce6b0a4c40be61d433d3c.json.gz",
+      "source_sha256": "e08b4c27a4da6f8f782bfe34a2339085b3abbb85f09dddbb8b6bbdf2713dc411",
+      "decision_service_ms": {
+        "assessment": 102.44286799570546,
+        "selection": 616.7438400152605,
+        "combined": 719.186708010966
+      },
+      "decision_stage_ms": {
+        "assessment": 108.245,
+        "selection": 626.229,
+        "combined": 734.474
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/66600cf21bb3e98d2dedb508.json.gz",
+      "source_sha256": "ad313a492d0a7035359398566f7f2c41a5ed8e97e0f5727ff63663e81267ec34",
+      "decision_service_ms": {
+        "assessment": 100.46191900619306,
+        "selection": 381.18045299779624,
+        "combined": 481.6423720039893
+      },
+      "decision_stage_ms": {
+        "assessment": 106.083,
+        "selection": 388.008,
+        "combined": 494.091
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/671fb4ab1808a564aaa9184d.json.gz",
+      "source_sha256": "706136cce96f6f0086d9e903708e9b01590da8e148e9ee6ef3206774de578f2b",
+      "decision_service_ms": {
+        "assessment": 102.30896397843026,
+        "selection": 617.0855390082579,
+        "combined": 719.3945029866882
+      },
+      "decision_stage_ms": {
+        "assessment": 108.184,
+        "selection": 627.112,
+        "combined": 735.296
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/6f199ca4d93639227d52d861.json.gz",
+      "source_sha256": "dbc2c46e4b85424b3282dc73d2821397199687a849245520e8a166fb0b77c895",
+      "decision_service_ms": {
+        "assessment": 101.39075500774197,
+        "selection": 533.4423560125288,
+        "combined": 634.8331110202707
+      },
+      "decision_stage_ms": {
+        "assessment": 107.187,
+        "selection": 543.373,
+        "combined": 650.56
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/725f4caaae19ef6212f9642b.json.gz",
+      "source_sha256": "6ac335062af4867bc2035684f8e99da57348df49ab1350d851bab3536b31efc9",
+      "decision_service_ms": {
+        "assessment": 101.13999698660336,
+        "selection": 583.763403003104,
+        "combined": 684.9033999897074
+      },
+      "decision_stage_ms": {
+        "assessment": 107.121,
+        "selection": 606.855,
+        "combined": 713.976
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/7573b7aaf57beb8112320dd4.json.gz",
+      "source_sha256": "4c706b9573a4b08aeffe1d0ba4dc80662e2ccb9ae83a1bcc9dba65aec4f20e7a",
+      "decision_service_ms": {
+        "assessment": 103.43397301039658,
+        "selection": 628.1359170097858,
+        "combined": 731.5698900201824
+      },
+      "decision_stage_ms": {
+        "assessment": 109.616,
+        "selection": 637.876,
+        "combined": 747.492
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/7602d4dd870bfac0ae949a6f.json.gz",
+      "source_sha256": "6c781612d983ec6c3b982c47a7113e572b4dd961d190915dbbd7730924ac0f47",
+      "decision_service_ms": {
+        "assessment": 101.9050310133025,
+        "selection": 533.4842989977915,
+        "combined": 635.389330011094
+      },
+      "decision_stage_ms": {
+        "assessment": 505.205,
+        "selection": 651.466,
+        "combined": 1156.671
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/7608e81fc49faa9f9c4c81c3.json.gz",
+      "source_sha256": "34a7108c32533e15916621a20b5d321e6ffbfca482db4b7df392dbbd7e735b30",
+      "decision_service_ms": {
+        "assessment": 100.82928300835192,
+        "selection": 521.4675539755262,
+        "combined": 622.2968369838782
+      },
+      "decision_stage_ms": {
+        "assessment": 108.083,
+        "selection": 530.86,
+        "combined": 638.943
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/767d2ac233ac13586337d5b6.json.gz",
+      "source_sha256": "4225eea5754f3e5a39f00c6db6cdfe901fac43fcf74bfe8e030c4beddfd7f409",
+      "decision_service_ms": {
+        "assessment": 266.8814479839057,
+        "selection": 466.1514299805276,
+        "combined": 733.0328779644333
+      },
+      "decision_stage_ms": {
+        "assessment": 272.815,
+        "selection": 474.67,
+        "combined": 747.485
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/769493840af27a5963f8b68f.json.gz",
+      "source_sha256": "2b1aca2078e282e9e7766c33a3038f9419744a6bdd8c7fa8491193122df2c279",
+      "decision_service_ms": {
+        "assessment": 103.72079399530776,
+        "selection": 617.3014270025305,
+        "combined": 721.0222209978383
+      },
+      "decision_stage_ms": {
+        "assessment": 323.087,
+        "selection": 682.162,
+        "combined": 1005.249
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/7b207848d596fea893928a2e.json.gz",
+      "source_sha256": "1de9678f674a1f8d2cfccdaa9dffbbe4e9efa2b659d05458486bcb999b5f8ce8",
+      "decision_service_ms": {
+        "assessment": 100.37498601013795,
+        "selection": 64.63101200642996,
+        "combined": 165.0059980165679
+      },
+      "decision_stage_ms": {
+        "assessment": 106.2,
+        "selection": 69.934,
+        "combined": 176.134
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/8073120252690d62be631f40.json.gz",
+      "source_sha256": "233b194a2ff59d14beeca85b1bdd88d679710f5c8751a0c4ab7d69552b03380d",
+      "decision_service_ms": {
+        "assessment": 103.43811099301092,
+        "selection": 617.2951059998013,
+        "combined": 720.7332169928122
+      },
+      "decision_stage_ms": {
+        "assessment": 748.5,
+        "selection": 815.827,
+        "combined": 1564.327
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/84fe237a959771ac9495cc09.json.gz",
+      "source_sha256": "9365a1718dfd706a568256d5b51aef6cd2a1de61feee1ee9296f3a0a2365cb9e",
+      "decision_service_ms": {
+        "assessment": 103.70283699012361,
+        "selection": 534.1642999846954,
+        "combined": 637.867136974819
+      },
+      "decision_stage_ms": {
+        "assessment": 109.596,
+        "selection": 543.718,
+        "combined": 653.314
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/89b70bdd76b3a151bfe98a10.json.gz",
+      "source_sha256": "60ff835e6b8ea3f63db1d2870f0be61315b8257aff257578c5bf45a707b0b81a",
+      "decision_service_ms": {
+        "assessment": 103.0626590072643,
+        "selection": 617.9013919900171,
+        "combined": 720.9640509972814
+      },
+      "decision_stage_ms": {
+        "assessment": 109.304,
+        "selection": 628.597,
+        "combined": 737.901
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/8a10688ccc01a41da7cf6d64.json.gz",
+      "source_sha256": "0af2e8e00015e923f33b5703efc0b0555a1f29c65813a1c3c1acf2d4ecdef863",
+      "decision_service_ms": {
+        "assessment": 101.52290700352751,
+        "selection": 615.9825579961762,
+        "combined": 717.5054649997037
+      },
+      "decision_stage_ms": {
+        "assessment": 109.233,
+        "selection": 625.86,
+        "combined": 735.093
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/8b7d6169af0d592ffe4c6f35.json.gz",
+      "source_sha256": "9718a352ba741ac29a6715f08aff80df17642b6dbbb0fbf4a40b050797d00f84",
+      "decision_service_ms": {
+        "assessment": 102.22431301372126,
+        "selection": 533.435671008192,
+        "combined": 635.6599840219133
+      },
+      "decision_stage_ms": {
+        "assessment": 108.105,
+        "selection": 542.77,
+        "combined": 650.875
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/8bf45b237308026612c99caa.json.gz",
+      "source_sha256": "ceaad35dfb970a08daf78720fc1f0889105362c9cb38e8d9d5e6f4c1235f260e",
+      "decision_service_ms": {
+        "assessment": 103.6539159831591,
+        "selection": 622.4397670011967,
+        "combined": 726.0936829843558
+      },
+      "decision_stage_ms": {
+        "assessment": 670.288,
+        "selection": 631.655,
+        "combined": 1301.943
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/8c10c153ba728d5eb6602089.json.gz",
+      "source_sha256": "74d94b961a6cefa1db92dd64e379f3dd04688471fd16fe88700ff6991059fc5e",
+      "decision_service_ms": {
+        "assessment": 102.50278798048384,
+        "selection": 616.5684570150916,
+        "combined": 719.0712449955754
+      },
+      "decision_stage_ms": {
+        "assessment": 110.809,
+        "selection": 625.917,
+        "combined": 736.726
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/8f75b7eb02ccde65bd557c27.json.gz",
+      "source_sha256": "af6e99fd8de36cfd0de9d8b21d1f1b088772d069a3ca4fc2efb10a56e8acd7fe",
+      "decision_service_ms": {
+        "assessment": 103.28377899713814,
+        "selection": 534.085157996742,
+        "combined": 637.3689369938802
+      },
+      "decision_stage_ms": {
+        "assessment": 111.021,
+        "selection": 543.914,
+        "combined": 654.935
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/90ad9b43de5bc9658dc216ca.json.gz",
+      "source_sha256": "7471a3c7dd31733f433960b05a058439b1a0d070b2471fd4cf70db7211fa451c",
+      "decision_service_ms": {
+        "assessment": 103.57554900110699,
+        "selection": 621.5558349795174,
+        "combined": 725.1313839806244
+      },
+      "decision_stage_ms": {
+        "assessment": 111.803,
+        "selection": 638.997,
+        "combined": 750.8
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/934205de7be2298380b0810a.json.gz",
+      "source_sha256": "3b96296deac10097a5c86969e0715acf52044533f9de94eb3e2e3fc363cee464",
+      "decision_service_ms": {
+        "assessment": 110.90935202082619,
+        "selection": 535.9132970042992,
+        "combined": 646.8226490251254
+      },
+      "decision_stage_ms": {
+        "assessment": 116.601,
+        "selection": 545.733,
+        "combined": 662.334
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/9977666828467cfc1847ddf5.json.gz",
+      "source_sha256": "9443a75d70491ab6bd120cf90d93923b15dadd41bd950fff02e86eb9fadd5bed",
+      "decision_service_ms": {
+        "assessment": 100.38026599795558,
+        "selection": 380.33729197923094,
+        "combined": 480.7175579771865
+      },
+      "decision_stage_ms": {
+        "assessment": 105.816,
+        "selection": 387.305,
+        "combined": 493.121
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/9ca799cc4cee6f3a3433a820.json.gz",
+      "source_sha256": "50922b25d95a26171473ed46a18dd9514e089a095658460704607469604dc3d1",
+      "decision_service_ms": {
+        "assessment": 101.71379099483602,
+        "selection": 589.0950720058754,
+        "combined": 690.8088630007114
+      },
+      "decision_stage_ms": {
+        "assessment": 109.413,
+        "selection": 598.001,
+        "combined": 707.414
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/9cf613e4d57d45063ddab384.json.gz",
+      "source_sha256": "1f2a2b2536944d333951c737b68463cc998aa65cdeb275336a82d19026b3890d",
+      "decision_service_ms": {
+        "assessment": 102.07463800907135,
+        "selection": 534.1695609968156,
+        "combined": 636.2441990058869
+      },
+      "decision_stage_ms": {
+        "assessment": 107.792,
+        "selection": 549.295,
+        "combined": 657.087
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/9d788816e31dbd84f41aebe4.json.gz",
+      "source_sha256": "9eba13bb65cdbe43fd0a59546c68ec51dea7af9421c5f72215cb4545d0edc8e2",
+      "decision_service_ms": {
+        "assessment": 102.88336701341905,
+        "selection": 529.3059840041678,
+        "combined": 632.1893510175869
+      },
+      "decision_stage_ms": {
+        "assessment": 752.61,
+        "selection": 541.085,
+        "combined": 1293.695
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/a25456a733e27e6009c29d95.json.gz",
+      "source_sha256": "91bd499b3732ebb52d80a6df1a05da84f9edbc3fbe28b7f7d30bd9b09b4efaa7",
+      "decision_service_ms": {
+        "assessment": 102.79803699813783,
+        "selection": 616.8858529999852,
+        "combined": 719.683889998123
+      },
+      "decision_stage_ms": {
+        "assessment": 110.324,
+        "selection": 626.872,
+        "combined": 737.196
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/a48fcb62a027a7bb3457c863.json.gz",
+      "source_sha256": "b9ab0ed64fb30edd60f39ae79cc94cb2b4ebcca3bd4feabdde4c0e0851e798d5",
+      "decision_service_ms": {
+        "assessment": 101.53690798324533,
+        "selection": 533.7456029956229,
+        "combined": 635.2825109788682
+      },
+      "decision_stage_ms": {
+        "assessment": 107.456,
+        "selection": 543.378,
+        "combined": 650.834
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/a7dfb72f190d1e338bcd510c.json.gz",
+      "source_sha256": "5fb471c359093c5003caab7546217d139dd2dce7e6816df4f0ae097317e866ac",
+      "decision_service_ms": {
+        "assessment": 101.43043199786916,
+        "selection": 529.0865979914088,
+        "combined": 630.517029989278
+      },
+      "decision_stage_ms": {
+        "assessment": 107.534,
+        "selection": 539.412,
+        "combined": 646.946
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/aed626756f1e018f8a5b5e9c.json.gz",
+      "source_sha256": "d2af669aeb4c34852363bc2fc995c7dbcb323351acd10a0e3ba272c92788860c",
+      "decision_service_ms": {
+        "assessment": 101.85572798945941,
+        "selection": 529.0659010061063,
+        "combined": 630.9216289955657
+      },
+      "decision_stage_ms": {
+        "assessment": 107.581,
+        "selection": 538.605,
+        "combined": 646.186
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/b1dc3d6710f27e2556f3460a.json.gz",
+      "source_sha256": "7705502b95993142b58dd544a57d84e0185ede1d3951b0c79c898e3598df446c",
+      "decision_service_ms": {
+        "assessment": 112.82050900626928,
+        "selection": 541.8496330094058,
+        "combined": 654.6701420156751
+      },
+      "decision_stage_ms": {
+        "assessment": 118.732,
+        "selection": 551.47,
+        "combined": 670.202
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/b38735f9937b0ddd4d3115ac.json.gz",
+      "source_sha256": "52d8dd1b7a8f821b69a480b3a9b6671129dc84cd853b14db8eb5710ca53f3563",
+      "decision_service_ms": {
+        "assessment": 102.39297800580971,
+        "selection": 528.4657770243939,
+        "combined": 630.8587550302036
+      },
+      "decision_stage_ms": {
+        "assessment": 109.848,
+        "selection": 538.373,
+        "combined": 648.221
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/b4211f8b07c65ba4e884fd00.json.gz",
+      "source_sha256": "7fcea9bc819af9ef70fc76f65f8c541f0115e885bfa77b73ffa2bf5259f1d565",
+      "decision_service_ms": {
+        "assessment": 103.17169700283557,
+        "selection": 623.1454169901554,
+        "combined": 726.3171139929909
+      },
+      "decision_stage_ms": {
+        "assessment": 110.831,
+        "selection": 632.427,
+        "combined": 743.258
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/b5027a006cc21caa4eae4d76.json.gz",
+      "source_sha256": "90abdcfe80c833adad2a9e01c71633b2586513cb88d8eb473cdb4e66e7c348e1",
+      "decision_service_ms": {
+        "assessment": 100.28592398157343,
+        "selection": 37.285320984665304,
+        "combined": 137.57124496623874
+      },
+      "decision_stage_ms": {
+        "assessment": 105.926,
+        "selection": 42.58,
+        "combined": 148.506
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/b683c333556c1c767b1e6085.json.gz",
+      "source_sha256": "d6055f538bba8177d700715595214a752a329b39dc495494221b20ebbf53d16e",
+      "decision_service_ms": {
+        "assessment": 101.06036200886592,
+        "selection": 383.34616500651464,
+        "combined": 484.40652701538056
+      },
+      "decision_stage_ms": {
+        "assessment": 107.399,
+        "selection": 390.898,
+        "combined": 498.297
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/bd37ad84ea98f38b0516f3f2.json.gz",
+      "source_sha256": "b1afaff368566aef0a5d1e506789acc504f9ee4ece5d61bd832ef651459e5bdc",
+      "decision_service_ms": {
+        "assessment": 102.38159602158703,
+        "selection": 590.372513019247,
+        "combined": 692.754109040834
+      },
+      "decision_stage_ms": {
+        "assessment": 108.458,
+        "selection": 599.525,
+        "combined": 707.983
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/bda73f7962c8117059765417.json.gz",
+      "source_sha256": "0a065c345296ba8ce58d7068c809225f0c1b4d6871b906bf07de9518e4cc7f90",
+      "decision_service_ms": {
+        "assessment": 102.23741497611627,
+        "selection": 616.9906129944138,
+        "combined": 719.2280279705301
+      },
+      "decision_stage_ms": {
+        "assessment": 108.198,
+        "selection": 626.279,
+        "combined": 734.477
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/c17dad07e1fe7ab250008be4.json.gz",
+      "source_sha256": "22a392403154a8e214fbdfd93ffa27257dcb41d7230dd1f7f17190af5d5dcf8b",
+      "decision_service_ms": {
+        "assessment": 103.09969499940053,
+        "selection": 591.2544780003373,
+        "combined": 694.3541729997378
+      },
+      "decision_stage_ms": {
+        "assessment": 108.902,
+        "selection": 600.383,
+        "combined": 709.285
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/c74b14554303aad831bee57c.json.gz",
+      "source_sha256": "7cc5fd14b3a8420e2cf12e755ad2a04df6e916c35905d89bf50f9cebafe00077",
+      "decision_service_ms": {
+        "assessment": 101.15889098960906,
+        "selection": 529.068287985865,
+        "combined": 630.2271789754741
+      },
+      "decision_stage_ms": {
+        "assessment": 106.808,
+        "selection": 538.547,
+        "combined": 645.355
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/c7e269377a6156097adf5937.json.gz",
+      "source_sha256": "6dccc3e4c84b145514022d6e792868afa0fd0166bd9ba5dcddc87b7cd462e634",
+      "decision_service_ms": {
+        "assessment": 109.76292900159024,
+        "selection": 530.3967029904015,
+        "combined": 640.1596319919918
+      },
+      "decision_stage_ms": {
+        "assessment": 115.563,
+        "selection": 539.457,
+        "combined": 655.02
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/cd95a5de2e6ab677d030c6c2.json.gz",
+      "source_sha256": "92798b27b181218ae8fee72fda06fa16a1319bc9c1ca195153a3a4b133c8e29c",
+      "decision_service_ms": {
+        "assessment": 101.30774200661108,
+        "selection": 617.6091739907861,
+        "combined": 718.9169159973972
+      },
+      "decision_stage_ms": {
+        "assessment": 107.495,
+        "selection": 627.644,
+        "combined": 735.139
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/cf182deccc5ce9bdcfaf9767.json.gz",
+      "source_sha256": "5d8ec7feccbca9c413fe44cbe1450a92c3375a8753c078b67e55bfab3c1f8778",
+      "decision_service_ms": {
+        "assessment": 244.87976499949582,
+        "selection": 424.6333730116021,
+        "combined": 669.5131380110979
+      },
+      "decision_stage_ms": {
+        "assessment": 250.883,
+        "selection": 432.619,
+        "combined": 683.502
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/d3fc15afb59f74b8e13739fa.json.gz",
+      "source_sha256": "62e60ea0b9a5160649e2a95c034562bc43eafd22994ab623708c7eee09fd99c9",
+      "decision_service_ms": {
+        "assessment": 101.30228399066254,
+        "selection": 532.976124988636,
+        "combined": 634.2784089792985
+      },
+      "decision_stage_ms": {
+        "assessment": 107.357,
+        "selection": 542.289,
+        "combined": 649.646
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/d554e35f7492765e6a40fbe0.json.gz",
+      "source_sha256": "7739242484607e225b1ece7d2634045e0e4ffd2ab5641269337bf72f1bac610a",
+      "decision_service_ms": {
+        "assessment": 102.5701129983645,
+        "selection": 616.9573219958693,
+        "combined": 719.5274349942338
+      },
+      "decision_stage_ms": {
+        "assessment": 108.628,
+        "selection": 626.435,
+        "combined": 735.063
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/d60e667bb121518dc0fe9eff.json.gz",
+      "source_sha256": "30c2d8331c62980b6e6bb4855c437406cb81f534541d0dbea2a33e26ddc940bd",
+      "decision_service_ms": {
+        "assessment": 180.27571198763326,
+        "selection": 377.43483899976127,
+        "combined": 557.7105509873945
+      },
+      "decision_stage_ms": {
+        "assessment": 187.794,
+        "selection": 385.444,
+        "combined": 573.238
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/d68976197b5c4c1ddeca781f.json.gz",
+      "source_sha256": "f763077b0266ed758ae7414c23077f0a6f2a222bea3c93012526b34794c08bf5",
+      "decision_service_ms": {
+        "assessment": 103.05908299051225,
+        "selection": 585.8850039949175,
+        "combined": 688.9440869854297
+      },
+      "decision_stage_ms": {
+        "assessment": 108.463,
+        "selection": 595.036,
+        "combined": 703.499
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/d716377b9a893dac03900bd8.json.gz",
+      "source_sha256": "919ccdd5c03eed08af1198cbc3dc74b80fe1813cb9c5ac5b1796a7c01633d7cc",
+      "decision_service_ms": {
+        "assessment": 101.48016500170343,
+        "selection": 616.3838020002004,
+        "combined": 717.8639670019038
+      },
+      "decision_stage_ms": {
+        "assessment": 107.388,
+        "selection": 625.953,
+        "combined": 733.341
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/dee5cacaa6863f319c3842ce.json.gz",
+      "source_sha256": "0f4be2696bc437d62960f51a0df27eadb545dbcd0f78cdc6223f45b07cd78958",
+      "decision_service_ms": {
+        "assessment": 102.524715999607,
+        "selection": 621.814420010196,
+        "combined": 724.339136009803
+      },
+      "decision_stage_ms": {
+        "assessment": 685.164,
+        "selection": 779.492,
+        "combined": 1464.656
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/e060a3683fb69b19d4e4f7a3.json.gz",
+      "source_sha256": "fa37c2a3ad3253a291d3371e6496bed7e681b2f3f27f0e73ed35800a923a3cdc",
+      "decision_service_ms": {
+        "assessment": 101.82732401881367,
+        "selection": 533.4138330072165,
+        "combined": 635.2411570260301
+      },
+      "decision_stage_ms": {
+        "assessment": 107.53,
+        "selection": 542.927,
+        "combined": 650.457
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/e0d2a68c7f06b4f2cdf93e1b.json.gz",
+      "source_sha256": "7e6d950e438be4eb15c172511979075660b2627739dc2460a6cd17869b0ba71f",
+      "decision_service_ms": {
+        "assessment": 102.42725399439223,
+        "selection": 622.1481889951974,
+        "combined": 724.5754429895896
+      },
+      "decision_stage_ms": {
+        "assessment": 108.946,
+        "selection": 631.601,
+        "combined": 740.547
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/e25bc39789d9ff36d8af57d1.json.gz",
+      "source_sha256": "9c7d12a12b0b960a59fed500302cbc9cb8fbac36f55f6eff2e1d5c0ea927ec9a",
+      "decision_service_ms": {
+        "assessment": 103.08830201392993,
+        "selection": 535.4059800156392,
+        "combined": 638.4942820295691
+      },
+      "decision_stage_ms": {
+        "assessment": 109.016,
+        "selection": 545.09,
+        "combined": 654.106
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/e3da6a84979cc29dc3c9f03a.json.gz",
+      "source_sha256": "9a8439dc978e6faa7325fd14e5ff2a8a731d297ca3f0c6dbdb24acd59ac71f1b",
+      "decision_service_ms": {
+        "assessment": 100.22092200233601,
+        "selection": 51.97808600496501,
+        "combined": 152.19900800730102
+      },
+      "decision_stage_ms": {
+        "assessment": 105.824,
+        "selection": 57.698,
+        "combined": 163.522
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/e7d1157991e73e8005ffa91c.json.gz",
+      "source_sha256": "c068e49c9264f3a049eebf30048cab34a782c44e01c7667e781663eff6df7415",
+      "decision_service_ms": {
+        "assessment": 102.2026430000551,
+        "selection": 584.3017660081387,
+        "combined": 686.5044090081938
+      },
+      "decision_stage_ms": {
+        "assessment": 108.174,
+        "selection": 593.235,
+        "combined": 701.409
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/ea1f43485df5045cd0585de7.json.gz",
+      "source_sha256": "45ff6c59030fdd77d9d3fb1d6627ede71e417f129f6417b582d0b70d337495aa",
+      "decision_service_ms": {
+        "assessment": 103.4408230043482,
+        "selection": 586.5428099932615,
+        "combined": 689.9836329976097
+      },
+      "decision_stage_ms": {
+        "assessment": 110.925,
+        "selection": 595.714,
+        "combined": 706.639
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/f0054dd58adf83014ccf9b1f.json.gz",
+      "source_sha256": "06e9d9f02371c2528aeb64b132ba0ada6e22da1c7923d49872b8f1cfcc02eceb",
+      "decision_service_ms": {
+        "assessment": 102.0999549946282,
+        "selection": 534.0463619795628,
+        "combined": 636.146316974191
+      },
+      "decision_stage_ms": {
+        "assessment": 107.697,
+        "selection": 643.459,
+        "combined": 751.156
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/f76cd18ed0e4e0ce284be4d3.json.gz",
+      "source_sha256": "12b02efac24821613f46be8a8595b4cae82dfe36951ec5ea6a5d6d5ab79e60af",
+      "decision_service_ms": {
+        "assessment": 102.7707849862054,
+        "selection": 616.79344199365,
+        "combined": 719.5642269798554
+      },
+      "decision_stage_ms": {
+        "assessment": 108.992,
+        "selection": 627.093,
+        "combined": 736.085
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/f939eb7fe878ce96d18e337b.json.gz",
+      "source_sha256": "0ce00cdfeb456bf28d8cdea168a922167096c9027663af435192ab4a6e7908e8",
+      "decision_service_ms": {
+        "assessment": 125.00965100480244,
+        "selection": 546.8478240072727,
+        "combined": 671.8574750120752
+      },
+      "decision_stage_ms": {
+        "assessment": 131.03,
+        "selection": 556.539,
+        "combined": 687.569
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/fafff528aeba8ed57685513f.json.gz",
+      "source_sha256": "f9226f28b6bf5ad607490d8a650b27505a150cc3f9de0f6f71bc007279e9f749",
+      "decision_service_ms": {
+        "assessment": 304.9040930054616,
+        "selection": 513.6503170069773,
+        "combined": 818.5544100124389
+      },
+      "decision_stage_ms": {
+        "assessment": 312.629,
+        "selection": 521.834,
+        "combined": 834.463
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/fe349a3cae011a5b7ee5959d.json.gz",
+      "source_sha256": "8f701793098e9f69f6eee4510763d1584e1b50873fce695a1973d331e37e816c",
+      "decision_service_ms": {
+        "assessment": 114.70692401053384,
+        "selection": 536.8781049910467,
+        "combined": 651.5850290015806
+      },
+      "decision_stage_ms": {
+        "assessment": 122.79,
+        "selection": 546.764,
+        "combined": 669.554
+      }
+    },
+    {
+      "source": "validation/independent_gateway/online-general-2026-11-27/run/history/fe73dced523c8283889a9f9c.json.gz",
+      "source_sha256": "9d988eaee7171b35e766e699db93569a91e2d21ef6e91c3597a0f1fd4d9d2ece",
+      "decision_service_ms": {
+        "assessment": 101.47264401894063,
+        "selection": 533.660137996776,
+        "combined": 635.1327820157167
+      },
+      "decision_stage_ms": {
+        "assessment": 107.369,
+        "selection": 543.695,
+        "combined": 651.064
+      }
+    }
+  ]
+}
